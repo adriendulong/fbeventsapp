@@ -8,6 +8,8 @@
 
 #import "MemoriesViewController.h"
 #import "PhotosCollectionViewController.h"
+#import "MemorieCell.h"
+#import "FirstMemorieCell.h"
 
 @interface MemoriesViewController ()
 
@@ -58,15 +60,96 @@
     return [self.memoriesInvitations count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        return 44;
+    }
+    else{
+        return 195;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
-    cell.textLabel.text = [self.memoriesInvitations objectAtIndex:indexPath.row][@"event"][@"name"];
+
+    if (indexPath.row==0) {
+        static NSString *CellIdentifier = @"FirstCell";
+        
+        FirstMemorieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell == nil) {
+            cell = [[FirstMemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        return cell;
+    }
+    else{
+        static NSString *CellIdentifier = @"Cell";
+        
+        int indexPosition = indexPath.row-1;
+        
+        MemorieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell == nil) {
+            cell = [[MemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
+        
+        
+        //Get the event object.
+        PFObject *event = [self.memoriesInvitations objectAtIndex:indexPosition][@"event"];
+        
+        //Date
+        NSDate *start_date = event[@"start_time"];
+        //Formatter for the hour
+        NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
+        [formatterHourMinute setDateFormat:@"HH:mm"];
+        NSDateFormatter *formatterMonth = [NSDateFormatter new];
+        [formatterMonth setDateFormat:@"MMM"];
+        NSDateFormatter *formatterDay = [NSDateFormatter new];
+        [formatterDay setDateFormat:@"d"];
+        
+        //Fill the cell
+        cell.nameLabel.text = event[@"name"];
+        cell.placeLabel.text = [NSString stringWithFormat:@"%@", event[@"location"]];
+        cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
+        cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
+        
+        NSLog(@" NB PHOTOS : %i", [[self.photosEvent objectAtIndex:indexPosition] count]);
+        if ([[self.photosEvent objectAtIndex:indexPosition] count]>0) {
+            NSMutableArray *arrayPhotos = [self.photosEvent objectAtIndex:indexPosition];
+            [cell.coverImage setHidden:YES];
+            
+            for (int i=0; i<[arrayPhotos count]; i++) {
+                PFObject *photo =[arrayPhotos objectAtIndex:i];
+                
+                PFImageView *imageView = (PFImageView *)[cell viewWithTag:i+1];
+                
+                if (photo[@"facebookId"]) {
+                    [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+                }
+                else{
+                    imageView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
+                    imageView.file = (PFFile *)photo[@"low_image"]; // remote image
+                    
+                    [imageView loadInBackground];
+                }
+            }
+        }
+        else{
+            [cell.coverImage setHidden:NO];
+            [cell.coverImage setImageWithURL:[NSURL URLWithString:event[@"cover"]]
+                            placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+        }
+        
+        return cell;
+    }
     
-    return cell;
+    
+    
+    
+    
 }
 
 /*
@@ -139,10 +222,36 @@
         if (!error) {
             NSLog(@"LOADED PAST");
             self.memoriesInvitations = objects;
+            self.photosEvent = [[NSMutableArray alloc] init];
+            
+            int i=0;
+            for(PFObject *memorieInvit in self.memoriesInvitations){
+                NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
+                [self.photosEvent addObject:mutableArrayTemp];
+                [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
+                i++;
+            }
+            
             [self.tableView reloadData];
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");
+        }
+    }];
+}
+
+
+-(void)loadPhotosOfEvent: (PFObject *)event atPosition:(int)position{
+    PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
+    [queryPhotos whereKey:@"event" equalTo:event];
+    [queryPhotos orderByDescending:@"createdAt"];
+    queryPhotos.limit = 9;
+
+    
+    [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            [self.photosEvent replaceObjectAtIndex:position withObject:objects];
+            [self.tableView reloadData];
         }
     }];
 }

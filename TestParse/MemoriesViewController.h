@@ -10,5 +10,6 @@
 
 @interface MemoriesViewController : UITableViewController
 @property (strong, nonatomic) NSArray *memoriesInvitations;
+@property (strong, nonatomic) NSMutableArray *photosEvent;
 
 @end

@@ -260,6 +260,7 @@
     [queryPhotos whereKey:@"event" equalTo:self.invitation[@"event"]];
     [queryPhotos includeKey:@"user"];
     [queryPhotos includeKey:@"prospect"];
+    [queryPhotos orderByDescending:@"createdAt"];
     queryPhotos.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -275,6 +276,7 @@
     [queryPhotos whereKey:@"event" equalTo:self.invitation[@"event"]];
     [queryPhotos includeKey:@"user"];
     [queryPhotos includeKey:@"prospect"];
+    [queryPhotos orderByDescending:@"createdAt"];
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             photos = [NSArray arrayWithArray:objects];

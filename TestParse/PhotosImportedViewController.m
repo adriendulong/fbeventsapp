@@ -325,11 +325,94 @@
             NSArray *resultsFB = (NSArray *)result[@"data"];
             nbUsersToRequest = [resultsFB count];
             
+            /////////
+            //PHOTOS uploaded by the user himself
+            ////////
+            
+            NSString *photosUploadedPerso = [NSString stringWithFormat:@"/me/photos?fields=from,source,width,height,created_time,picture&until=%@&since=%@&type=uploaded", endDateString, startDateString];
+            FBRequest *request = [FBRequest requestForGraphPath:photosUploadedPerso];
+            
+            
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (result) {
+                    NSLog(@"RESULT %@", result);
+                    for(id photoFb in result[@"data"]){
+                        Photo *photo = [[Photo alloc] init];
+                        photo.facebookId = photoFb[@"id"];
+                        photo.pictureUrl = photoFb[@"picture"];
+                        photo.sourceUrl = photoFb[@"source"];
+                        photo.width = (int)photoFb[@"width"];
+                        photo.width = (int)photoFb[@"height"];
+                        photo.ownerPhoto = [PFUser currentUser];
+                        photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];
+                        photo.isSelected = YES;
+                        
+                        self.numberOfPhotosSelectedFB++;
+                        
+                        [resultsPhotos addObject:photo];
+                        
+                    }
+                    
+                    nbOfUserAlreadyDone++;
+                    if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
+                        [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                        [self.collectionView reloadData];
+                        
+                    }
+                }
+                else{
+                    NSLog(@"ERROR Photo %@", [error userInfo]);
+                }
+            }];
+            
+            
+            
+            /////////
+            //PHOTOS where the user is tagged
+            ////////
+            
+            
+            NSString *photoTaggedRequest = [NSString stringWithFormat:@"/me/photos?fields=from,source,width,height,created_time,picture&until=%@&since=%@&type=tagged", endDateString, startDateString];
+            FBRequest *requestTagged = [FBRequest requestForGraphPath:photoTaggedRequest];
+            
+            [requestTagged startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (result) {
+                    NSLog(@"RESULT %@", result);
+                    for(id photoFb in result[@"data"]){
+                        Photo *photo = [[Photo alloc] init];
+                        photo.facebookId = photoFb[@"id"];
+                        photo.pictureUrl = photoFb[@"picture"];
+                        photo.sourceUrl = photoFb[@"source"];
+                        photo.width = (int)photoFb[@"width"];
+                        photo.width = (int)photoFb[@"height"];
+                        photo.ownerPhoto = [PFUser currentUser];
+                        photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];
+                        photo.isSelected = YES;
+                        
+                        self.numberOfPhotosSelectedFB++;
+                        
+                        [resultsPhotos addObject:photo];
+                        
+                    }
+                    
+                    nbOfUserAlreadyDone++;
+                    if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
+                        [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                        [self.collectionView reloadData];
+                        
+                    }
+                }
+                else{
+                    NSLog(@"ERROR Photo %@", [error userInfo]);
+                }
+            }];
+            
             for(id friend in result[@"data"]){
                 //Get all the photos uploaded by the user
                 
                 NSString *photoUplodedRequest = [NSString stringWithFormat:@"/%@/photos?fields=from,source,width,height,created_time,picture&until=%@&since=%@&type=uploaded", friend[@"uid"], endDateString, startDateString];
                 FBRequest *request = [FBRequest requestForGraphPath:photoUplodedRequest];
+                
                 
                 [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                     if (result) {
@@ -353,7 +436,7 @@
                         }
                         
                         nbOfUserAlreadyDone++;
-                        if ((nbUsersToRequest*2) == nbOfUserAlreadyDone) {
+                        if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                             [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
                             [self.collectionView reloadData];
                             
@@ -391,7 +474,7 @@
                         }
                         
                         nbOfUserAlreadyDone++;
-                        if ((nbUsersToRequest*2) == nbOfUserAlreadyDone) {
+                        if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                             [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
                             [self.collectionView reloadData];
                             

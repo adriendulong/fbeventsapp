@@ -45,6 +45,8 @@
 		E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E745D416183CFB01007BBC3A /* CommentsCell.m */; };
 		E74F53BA182962D000B1C1AF /* MemoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F53B9182962D000B1C1AF /* MemoriesController.m */; };
 		E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75A0394181EB71600A26EF3 /* EventsCell.m */; };
+		E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E765014E1844FD8600B96E47 /* MemorieCell.m */; };
+		E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E76501511845225400B96E47 /* FirstMemorieCell.m */; };
 		E76605A918337563009AABEE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E76605A818337563009AABEE /* Constants.m */; };
 		E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C48182293C600DEBBDC /* ListInvitationsController.m */; };
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
@@ -163,6 +165,10 @@
 		E74F53B9182962D000B1C1AF /* MemoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesController.m; sourceTree = "<group>"; };
 		E75A0393181EB71600A26EF3 /* EventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsCell.h; sourceTree = "<group>"; };
 		E75A0394181EB71600A26EF3 /* EventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsCell.m; sourceTree = "<group>"; };
+		E765014D1844FD8600B96E47 /* MemorieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorieCell.h; sourceTree = "<group>"; };
+		E765014E1844FD8600B96E47 /* MemorieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemorieCell.m; sourceTree = "<group>"; };
+		E76501501845225400B96E47 /* FirstMemorieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstMemorieCell.h; sourceTree = "<group>"; };
+		E76501511845225400B96E47 /* FirstMemorieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstMemorieCell.m; sourceTree = "<group>"; };
 		E76605A718337563009AABEE /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		E76605A818337563009AABEE /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		E7896C47182293C600DEBBDC /* ListInvitationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListInvitationsController.h; sourceTree = "<group>"; };
@@ -456,6 +462,10 @@
 				E74F53B9182962D000B1C1AF /* MemoriesController.m */,
 				E7D193751840F016008FD530 /* MemoriesViewController.h */,
 				E7D193761840F016008FD530 /* MemoriesViewController.m */,
+				E765014D1844FD8600B96E47 /* MemorieCell.h */,
+				E765014E1844FD8600B96E47 /* MemorieCell.m */,
+				E76501501845225400B96E47 /* FirstMemorieCell.h */,
+				E76501511845225400B96E47 /* FirstMemorieCell.m */,
 			);
 			name = Memories;
 			sourceTree = "<group>";
@@ -697,10 +707,12 @@
 			files = (
 				E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */,
 				E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */,
+				E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */,
 				E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */,
 				E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */,
 				E72055BD1833F9F1003D7AD0 /* CameraViewController.m in Sources */,
 				E70D4977184367A1007A0445 /* UploadFilesAutomaticViewController.m in Sources */,
+				E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */,
 				E73F7A831844AF5B003BF2B1 /* UIImage+Alpha.m in Sources */,
 				E70115DD183B92F90077EAB7 /* ActionPhotoCell.m in Sources */,
 				E70D49801843CDE8007A0445 /* InvitedListViewController.m in Sources */,

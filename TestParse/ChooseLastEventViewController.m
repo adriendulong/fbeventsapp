@@ -269,9 +269,6 @@
          NSInteger rowSelected = [self.pickerView selectedRowInComponent:0];
 
         if (self.selectedType == 1) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Soirée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
-            [alert show];
-            
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForEvening objectAtIndex:rowSelected][@"last"];
@@ -279,24 +276,17 @@
             
         }
         else if (self.selectedType == 2) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Journée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
-            [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForDay objectAtIndex:rowSelected][@"last"];
             
         }
         else if (self.selectedType == 3) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Week-End" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
-            [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForWE objectAtIndex:rowSelected][@"last"];
         }
         else if (self.selectedType == 4) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Vacances !" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
-            [alert show];
-            
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForHolidays objectAtIndex:rowSelected][@"last"];
         }
