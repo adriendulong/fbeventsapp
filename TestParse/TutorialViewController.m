@@ -1,0 +1,47 @@
+//
+//  TutorialViewController.m
+//  FbEvents
+//
+//  Created by Adrien Dulong on 15/11/2013.
+//  Copyright (c) 2013 Adrien Dulong. All rights reserved.
+//
+
+#import "TutorialViewController.h"
+
+@interface TutorialViewController ()
+
+@end
+
+@implementation TutorialViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    if (self.index==0) {
+        self.imageView.image = [UIImage imageNamed:@"tuto_step_1"];
+        self.explicationLabel.text = @"Regroupez tous vos events au même endroit.";
+    }
+    else if(self.index==1){
+        self.imageView.image = [UIImage imageNamed:@"tuto_step_2"];
+        self.explicationLabel.text = @"Regroupez tous vos events au même endroit.";
+    }
+    else if(self.index == 2){
+        self.imageView.image = [UIImage imageNamed:@"tuto_step_3"];
+        self.explicationLabel.text = @"Regroupez tous vos events au même endroit.";
+    }
+    else{
+        self.imageView.image = [UIImage imageNamed:@"tuto_step_4"];
+        self.explicationLabel.text = @"Regroupez tous vos events au même endroit.";
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end
