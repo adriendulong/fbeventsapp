@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F1F63EC1844CF3200D1B01E /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63EB1844CF3200D1B01E /* SDWebImage.framework */; };
+		3F1F63EE1844CFB700D1B01E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63ED1844CFB700D1B01E /* FacebookSDK.framework */; };
+		3F1F63F71844D1C400D1B01E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F11844D1C300D1B01E /* README.md */; };
+		3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F21844D1C300D1B01E /* release_notes.md */; };
+		3F1F63FC1844D25900D1B01E /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63FB1844D25900D1B01E /* GoogleMaps.framework */; };
+		3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63F01844D1C300D1B01E /* libTestFlight.a */; };
+		3F1F63FF1844D3EA00D1B01E /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63FE1844D3EA00D1B01E /* Parse.framework */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -22,8 +29,6 @@
 		E72055C418352E58003D7AD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E72055C318352E58003D7AD0 /* Images.xcassets */; };
 		E7237A95183E470700502113 /* ChooseLastEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7237A94183E470700502113 /* ChooseLastEventViewController.m */; };
 		E724E57E180F02E800741528 /* MOUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = E724E57D180F02E800741528 /* MOUtility.m */; };
-		E73DF794182AEA7F00E560FF /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF793182AEA7F00E560FF /* GoogleMaps.framework */; };
-		E73DF796182AEA9200E560FF /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E73DF795182AEA9200E560FF /* GoogleMaps.bundle */; };
 		E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF797182AEAB400E560FF /* AVFoundation.framework */; };
 		E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF799182AEABD00E560FF /* CoreData.framework */; };
 		E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF79B182AEAD700E560FF /* CoreText.framework */; };
@@ -33,13 +38,10 @@
 		E73DF7A4182AEB0D00E560FF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF7A3182AEB0D00E560FF /* libz.dylib */; };
 		E73DF7A6182AEB1700E560FF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF7A5182AEB1700E560FF /* OpenGLES.framework */; };
 		E73F7A561844A54E003BF2B1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E73F7A551844A54E003BF2B1 /* .gitignore */; };
-		E73F7A711844ADCE003BF2B1 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73F7A701844ADCE003BF2B1 /* SDWebImage.framework */; };
-		E73F7A791844AEF7003BF2B1 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E73F7A751844AEF7003BF2B1 /* libTestFlight.a */; };
 		E73F7A831844AF5B003BF2B1 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = E73F7A7C1844AF5B003BF2B1 /* UIImage+Alpha.m */; };
 		E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E73F7A7E1844AF5B003BF2B1 /* UIImage+AlphaAdditions.m */; };
 		E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E73F7A801844AF5B003BF2B1 /* UIImage+ResizeAdditions.m */; };
 		E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E73F7A821844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m */; };
-		E73F7A881844B0C2003BF2B1 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73F7A871844B0C2003BF2B1 /* FacebookSDK.framework */; };
 		E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E745D416183CFB01007BBC3A /* CommentsCell.m */; };
 		E74F53BA182962D000B1C1AF /* MemoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F53B9182962D000B1C1AF /* MemoriesController.m */; };
 		E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75A0394181EB71600A26EF3 /* EventsCell.m */; };
@@ -61,7 +63,6 @@
 		E7AE14A11803F6870021F321 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14831803F6870021F321 /* UIKit.framework */; };
 		E7AE14A91803F6870021F321 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7AE14A71803F6870021F321 /* InfoPlist.strings */; };
 		E7AE14AB1803F6870021F321 /* TestParseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE14AA1803F6870021F321 /* TestParseTests.m */; };
-		E7AE14B5180599710021F321 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14B4180599710021F321 /* Parse.framework */; };
 		E7AE14B7180599C70021F321 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14B6180599C70021F321 /* libz.1.1.3.dylib */; };
 		E7AE14BB180599DE0021F321 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14B8180599DE0021F321 /* AudioToolbox.framework */; };
 		E7AE14BC180599DE0021F321 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14B9180599DE0021F321 /* CFNetwork.framework */; };
@@ -100,6 +101,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F1F63EB1844CF3200D1B01E /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
+		3F1F63ED1844CFB700D1B01E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
+		3F1F63F01844D1C300D1B01E /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		3F1F63F11844D1C300D1B01E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		3F1F63F21844D1C300D1B01E /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
+		3F1F63F31844D1C300D1B01E /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		3F1F63F41844D1C300D1B01E /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		3F1F63F51844D1C300D1B01E /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		3F1F63FB1844D25900D1B01E /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Libraries/GoogleMaps/GoogleMaps.framework; sourceTree = "<group>"; };
+		3F1F63FE1844D3EA00D1B01E /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -129,8 +140,6 @@
 		E7237A94183E470700502113 /* ChooseLastEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseLastEventViewController.m; sourceTree = "<group>"; };
 		E724E57C180F02E800741528 /* MOUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOUtility.h; sourceTree = "<group>"; };
 		E724E57D180F02E800741528 /* MOUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOUtility.m; sourceTree = "<group>"; };
-		E73DF793182AEA7F00E560FF /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
-		E73DF795182AEA9200E560FF /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		E73DF797182AEAB400E560FF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E73DF799182AEABD00E560FF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		E73DF79B182AEAD700E560FF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -140,11 +149,6 @@
 		E73DF7A3182AEB0D00E560FF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E73DF7A5182AEB1700E560FF /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		E73F7A551844A54E003BF2B1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		E73F7A701844ADCE003BF2B1 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
-		E73F7A751844AEF7003BF2B1 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = Libraries/TestFlight/libTestFlight.a; sourceTree = "<group>"; };
-		E73F7A761844AEF7003BF2B1 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = Libraries/TestFlight/TestFlight.h; sourceTree = "<group>"; };
-		E73F7A771844AEF7003BF2B1 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+AsyncLogging.h"; path = "Libraries/TestFlight/TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		E73F7A781844AEF7003BF2B1 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+ManualSessions.h"; path = "Libraries/TestFlight/TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		E73F7A7B1844AF5B003BF2B1 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
 		E73F7A7C1844AF5B003BF2B1 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		E73F7A7D1844AF5B003BF2B1 /* UIImage+AlphaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AlphaAdditions.h"; sourceTree = "<group>"; };
@@ -153,7 +157,6 @@
 		E73F7A801844AF5B003BF2B1 /* UIImage+ResizeAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeAdditions.m"; sourceTree = "<group>"; };
 		E73F7A811844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCornerAdditions.h"; sourceTree = "<group>"; };
 		E73F7A821844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCornerAdditions.m"; sourceTree = "<group>"; };
-		E73F7A871844B0C2003BF2B1 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 		E745D415183CFB01007BBC3A /* CommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsCell.h; sourceTree = "<group>"; };
 		E745D416183CFB01007BBC3A /* CommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsCell.m; sourceTree = "<group>"; };
 		E74F53B8182962D000B1C1AF /* MemoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesController.h; sourceTree = "<group>"; };
@@ -186,7 +189,6 @@
 		E7AE14A61803F6870021F321 /* FbEventsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FbEventsTests-Info.plist"; sourceTree = "<group>"; };
 		E7AE14A81803F6870021F321 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E7AE14AA1803F6870021F321 /* TestParseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestParseTests.m; sourceTree = "<group>"; };
-		E7AE14B4180599710021F321 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		E7AE14B6180599C70021F321 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		E7AE14B8180599DE0021F321 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E7AE14B9180599DE0021F321 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -234,33 +236,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */,
 				E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */,
 				E73DF7A4182AEB0D00E560FF /* libz.dylib in Frameworks */,
 				E7AE14C718059A070021F321 /* SystemConfiguration.framework in Frameworks */,
 				E7AE14C418059A070021F321 /* QuartzCore.framework in Frameworks */,
+				3F1F63EC1844CF3200D1B01E /* SDWebImage.framework in Frameworks */,
 				E73DF7A6182AEB1700E560FF /* OpenGLES.framework in Frameworks */,
 				E73DF7A2182AEB0600E560FF /* libicucore.dylib in Frameworks */,
 				E73DF7A0182AEAF700E560FF /* libc++.dylib in Frameworks */,
 				E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */,
+				3F1F63FF1844D3EA00D1B01E /* Parse.framework in Frameworks */,
 				E73DF79E182AEAE200E560FF /* GLKit.framework in Frameworks */,
 				E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */,
 				E7AE14BD180599DE0021F321 /* CoreLocation.framework in Frameworks */,
+				3F1F63EE1844CFB700D1B01E /* FacebookSDK.framework in Frameworks */,
 				E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */,
 				E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */,
-				E73F7A881844B0C2003BF2B1 /* FacebookSDK.framework in Frameworks */,
 				E7A053C6182AB84700F43ED0 /* MapKit.framework in Frameworks */,
 				E7AE14C318059A070021F321 /* MobileCoreServices.framework in Frameworks */,
-				E73F7A791844AEF7003BF2B1 /* libTestFlight.a in Frameworks */,
 				E7AE14C518059A070021F321 /* Security.framework in Frameworks */,
 				E7AE14C618059A070021F321 /* StoreKit.framework in Frameworks */,
-				E73DF794182AEA7F00E560FF /* GoogleMaps.framework in Frameworks */,
 				E7AE14BB180599DE0021F321 /* AudioToolbox.framework in Frameworks */,
+				3F1F63FC1844D25900D1B01E /* GoogleMaps.framework in Frameworks */,
 				E7AE14BC180599DE0021F321 /* CFNetwork.framework in Frameworks */,
 				E7AE14821803F6870021F321 /* CoreGraphics.framework in Frameworks */,
 				E7AE14B7180599C70021F321 /* libz.1.1.3.dylib in Frameworks */,
-				E73F7A711844ADCE003BF2B1 /* SDWebImage.framework in Frameworks */,
 				E7AE14841803F6870021F321 /* UIKit.framework in Frameworks */,
-				E7AE14B5180599710021F321 /* Parse.framework in Frameworks */,
 				E7AE14801803F6870021F321 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,6 +280,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F1F63EF1844D1C300D1B01E /* TestFlight */ = {
+			isa = PBXGroup;
+			children = (
+				3F1F63F01844D1C300D1B01E /* libTestFlight.a */,
+				3F1F63F11844D1C300D1B01E /* README.md */,
+				3F1F63F21844D1C300D1B01E /* release_notes.md */,
+				3F1F63F31844D1C300D1B01E /* TestFlight+AsyncLogging.h */,
+				3F1F63F41844D1C300D1B01E /* TestFlight+ManualSessions.h */,
+				3F1F63F51844D1C300D1B01E /* TestFlight.h */,
+			);
+			name = TestFlight;
+			path = Libraries/TestFlight;
+			sourceTree = "<group>";
+		};
 		E70115D1183B88300077EAB7 /* CellsPhotoDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,17 +381,6 @@
 			name = Connection;
 			sourceTree = "<group>";
 		};
-		E73F7A741844AEE2003BF2B1 /* TestFlight */ = {
-			isa = PBXGroup;
-			children = (
-				E73F7A751844AEF7003BF2B1 /* libTestFlight.a */,
-				E73F7A761844AEF7003BF2B1 /* TestFlight.h */,
-				E73F7A771844AEF7003BF2B1 /* TestFlight+AsyncLogging.h */,
-				E73F7A781844AEF7003BF2B1 /* TestFlight+ManualSessions.h */,
-			);
-			name = TestFlight;
-			sourceTree = "<group>";
-		};
 		E73F7A7A1844AF4D003BF2B1 /* UIImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,7 +466,6 @@
 				E73F7A551844A54E003BF2B1 /* .gitignore */,
 				E7AE14851803F6870021F321 /* TestParse */,
 				E7AE14A41803F6870021F321 /* TestParseTests */,
-				E7DA1B49183A2926000527A0 /* External */,
 				E7AE147E1803F6870021F321 /* Frameworks */,
 				E7AE147D1803F6870021F321 /* Products */,
 			);
@@ -479,9 +483,11 @@
 		E7AE147E1803F6870021F321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E73F7A871844B0C2003BF2B1 /* FacebookSDK.framework */,
-				E73F7A741844AEE2003BF2B1 /* TestFlight */,
-				E73F7A701844ADCE003BF2B1 /* SDWebImage.framework */,
+				3F1F63EF1844D1C300D1B01E /* TestFlight */,
+				3F1F63FE1844D3EA00D1B01E /* Parse.framework */,
+				3F1F63FB1844D25900D1B01E /* GoogleMaps.framework */,
+				3F1F63ED1844CFB700D1B01E /* FacebookSDK.framework */,
+				3F1F63EB1844CF3200D1B01E /* SDWebImage.framework */,
 				E7F10F99183F81E70061350A /* AssetsLibrary.framework */,
 				E73DF7A5182AEB1700E560FF /* OpenGLES.framework */,
 				E73DF7A3182AEB0D00E560FF /* libz.dylib */,
@@ -491,8 +497,6 @@
 				E73DF79B182AEAD700E560FF /* CoreText.framework */,
 				E73DF799182AEABD00E560FF /* CoreData.framework */,
 				E73DF797182AEAB400E560FF /* AVFoundation.framework */,
-				E73DF795182AEA9200E560FF /* GoogleMaps.bundle */,
-				E73DF793182AEA7F00E560FF /* GoogleMaps.framework */,
 				E7A053C5182AB84700F43ED0 /* MapKit.framework */,
 				E7896C831822ACA600DEBBDC /* ImageIO.framework */,
 				E7AE14BE18059A070021F321 /* MobileCoreServices.framework */,
@@ -504,7 +508,6 @@
 				E7AE14B9180599DE0021F321 /* CFNetwork.framework */,
 				E7AE14BA180599DE0021F321 /* CoreLocation.framework */,
 				E7AE14B6180599C70021F321 /* libz.1.1.3.dylib */,
-				E7AE14B4180599710021F321 /* Parse.framework */,
 				E7AE147F1803F6870021F321 /* Foundation.framework */,
 				E7AE14811803F6870021F321 /* CoreGraphics.framework */,
 				E7AE14831803F6870021F321 /* UIKit.framework */,
@@ -566,13 +569,6 @@
 				E7AE14A71803F6870021F321 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E7DA1B49183A2926000527A0 /* External */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = External;
 			sourceTree = "<group>";
 		};
 		E7F10F92183F6BE70061350A /* CollectionViewPhotos */ = {
@@ -643,6 +639,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Adrien Dulong";
 				TargetAttributes = {
+					E7AE147B1803F6870021F321 = {
+						DevelopmentTeam = NH7JA75VJ4;
+					};
 					E7AE149C1803F6870021F321 = {
 						TestTargetID = E7AE147B1803F6870021F321;
 					};
@@ -672,9 +671,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */,
 				E73F7A561844A54E003BF2B1 /* .gitignore in Resources */,
-				E73DF796182AEA9200E560FF /* GoogleMaps.bundle in Resources */,
 				E72055C418352E58003D7AD0 /* Images.xcassets in Resources */,
+				3F1F63F71844D1C400D1B01E /* README.md in Resources */,
 				E7AE148A1803F6870021F321 /* InfoPlist.strings in Resources */,
 				E7AE14931803F6870021F321 /* Main.storyboard in Resources */,
 			);
@@ -866,15 +866,16 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
-					/Users/adriendulong/Documents/Developpement/FacebookSDK,
-					/Users/adriendulong/Downloads,
-					"/Users/adriendulong/Downloads/GoogleMaps-iOS-1.5.0",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/SDWebImage,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/Facebook,
+					"$(SRCROOT)",
+					"$(SRCROOT)/Libraries/Facebook",
+					"$(SRCROOT)/Libraries/SDWebImage",
+					"$(SRCROOT)/Libraries/TestFlight",
+					"$(SRCROOT)/Libraries/Parse",
+					"$(SRCROOT)/Libraries/GoogleMaps",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/FbEvents-Prefix.pch";
@@ -882,13 +883,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestFlightSDK2.0.2,
-					/Users/adriendulong/Downloads/TestFlightSDK2.0.2,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/TestFlight,
+					"$(SRCROOT)",
+					/Users/jeremy/MediaFire/Moment/Xcode/fbeventsapp/Libraries/TestFlight,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = FbEvents;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -900,14 +900,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
-					/Users/adriendulong/Documents/Developpement/FacebookSDK,
-					/Users/adriendulong/Downloads,
-					"/Users/adriendulong/Downloads/GoogleMaps-iOS-1.5.0",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/SDWebImage,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/Facebook,
+					"$(SRCROOT)",
+					"$(SRCROOT)/Libraries/Facebook",
+					"$(SRCROOT)/Libraries/SDWebImage",
+					"$(SRCROOT)/Libraries/TestFlight",
+					"$(SRCROOT)/Libraries/Parse",
+					"$(SRCROOT)/Libraries/GoogleMaps",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/FbEvents-Prefix.pch";
@@ -915,13 +916,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestFlightSDK2.0.2,
-					/Users/adriendulong/Downloads/TestFlightSDK2.0.2,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/TestFlight,
+					"$(SRCROOT)",
+					/Users/jeremy/MediaFire/Moment/Xcode/fbeventsapp/Libraries/TestFlight,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = FbEvents;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
