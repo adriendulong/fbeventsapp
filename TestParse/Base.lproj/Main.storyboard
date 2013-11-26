@@ -623,6 +623,7 @@
                                 <outlet property="coverImage" destination="RIy-sx-L6Z" id="vqN-RT-De1"/>
                                 <outlet property="dateEvent" destination="Org-wP-Oq5" id="EEL-Va-lzz"/>
                                 <outlet property="eventDescription" destination="a54-2Z-Vdx" id="G8Y-kv-2UT"/>
+                                <outlet property="labelHide" destination="47d-Kt-YZl" id="ICR-zc-Qnz"/>
                                 <outlet property="locationLabel" destination="wQs-a4-1Fs" id="JG7-Ca-mE4"/>
                                 <outlet property="nameEvent" destination="m30-ZG-H3s" id="ibN-Dl-eWu"/>
                                 <outlet property="ownerEvent" destination="esw-ya-tS8" id="oGe-1Z-4vR"/>

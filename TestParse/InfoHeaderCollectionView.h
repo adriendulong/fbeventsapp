@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
 @property (weak,nonatomic) GMSMapView *mapView_;
 @property (nonatomic, assign) BOOL isShowingDetails;
-@property (weak, nonatomic) IBOutlet UIImageView *arrowHide;
 @property (weak, nonatomic) IBOutlet UILabel *labelHide;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;

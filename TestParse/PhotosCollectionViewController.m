@@ -770,9 +770,11 @@
     NSLog(@"TEST TAPPPP");
     
     if (self.isShowingDetails) {
+        self.headerCollectionView.labelHide.text = @"Afficher les informations";
         [self.headerCollectionView.viewToHide setHidden:YES];
     }
     else{
+        self.headerCollectionView.labelHide.text = @"Masquer les informations";
         [self.headerCollectionView.viewToHide setHidden:NO];
     }
     

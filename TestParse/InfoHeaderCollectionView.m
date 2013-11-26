@@ -133,7 +133,6 @@
 - (IBAction)hideView:(id)sender {
     if (self.isShowingDetails) {
         self.labelHide.text = @"Détails";
-        self.arrowHide.image = [UIImage imageNamed:@"next_gris.png"];
         self.isShowingDetails = NO;
         [self.viewToHide setHidden:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:ShowOrHideDetailsEventNotification object:self userInfo:nil];
@@ -141,7 +140,6 @@
     }
     else{
         self.labelHide.text = @"Masquer";
-        self.arrowHide.image = [UIImage imageNamed:@"down.png"];
         self.isShowingDetails = YES;
         [self.viewToHide setHidden:NO];
         [[NSNotificationCenter defaultCenter] postNotificationName:ShowOrHideDetailsEventNotification object:self userInfo:nil];
