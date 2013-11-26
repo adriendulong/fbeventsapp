@@ -14,3 +14,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeTaken;
 
 @end
+ 
