@@ -884,7 +884,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/jeremy/MediaFire/Moment/Xcode/fbeventsapp/Libraries/TestFlight,
+					"$(SRCROOT)/Libraries/TestFlight",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = FbEvents;
@@ -917,7 +917,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					/Users/jeremy/MediaFire/Moment/Xcode/fbeventsapp/Libraries/TestFlight,
+					"$(SRCROOT)/Libraries/TestFlight",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = FbEvents;
