@@ -882,8 +882,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestFlightSDK2.0.2,
-					/Users/adriendulong/Downloads/TestFlightSDK2.0.2,
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/TestFlight,
 				);
@@ -915,8 +913,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestFlightSDK2.0.2,
-					/Users/adriendulong/Downloads/TestFlightSDK2.0.2,
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/TestFlight,
 				);

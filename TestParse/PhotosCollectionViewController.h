@@ -26,4 +26,5 @@
 @property (nonatomic, assign) BOOL guestViewUpdated;
 @property (nonatomic, assign) BOOL isDuringOrAfter;;
 
+- (IBAction)hideViewTap:(id)sender;
 @end

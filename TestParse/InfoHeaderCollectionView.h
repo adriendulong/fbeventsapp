@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *takePhotoButton;
 @property (weak, nonatomic) IBOutlet UIButton *automaticImport;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintButtonPhoto;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintViewNbPhotos;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *separateConstraint;
 
 
 - (IBAction)rsvpChanged:(id)sender;

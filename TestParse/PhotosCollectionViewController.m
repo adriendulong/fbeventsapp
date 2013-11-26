@@ -192,6 +192,11 @@
         if (!self.isDuringOrAfter) {
             [headerView.automaticImport setHidden:YES];
             headerView.constraintButtonPhoto.constant = 35.0f;
+            headerView.constraintViewNbPhotos.constant = 0.0f;
+            //headerView.separateConstraint.constant = 20.0f;
+        }
+        else{
+            headerView.constraintViewNbPhotos.constant = 0.0f;
         }
         
         //Add button
@@ -228,7 +233,7 @@
                 return CGSizeMake(800, 920);
             }
             else{
-                return CGSizeMake(800, 278);
+                return CGSizeMake(800, 368);
             }
         }
         else{
@@ -236,7 +241,7 @@
                 return CGSizeMake(800, 880);
             }
             else{
-                return CGSizeMake(800, 238);
+                return CGSizeMake(800, 306);
             }
         }
         
@@ -610,6 +615,13 @@
 }
 
 -(void)hideDetails:(NSNotification *)note{
+    if (self.isShowingDetails) {
+        [self.headerCollectionView.viewToHide setHidden:YES];
+    }
+    else{
+        [self.headerCollectionView.viewToHide setHidden:NO];
+    }
+    
     self.isShowingDetails = !self.isShowingDetails;
     [self.collectionViewLayout invalidateLayout];
 }
@@ -754,4 +766,18 @@
     
 }
 
+- (IBAction)hideViewTap:(id)sender {
+    NSLog(@"TEST TAPPPP");
+    
+    if (self.isShowingDetails) {
+        [self.headerCollectionView.viewToHide setHidden:YES];
+    }
+    else{
+        [self.headerCollectionView.viewToHide setHidden:NO];
+    }
+    
+    self.isShowingDetails = !self.isShowingDetails;
+    [self.collectionView reloadData];
+    //[self.collectionViewLayout invalidateLayout];
+}
 @end

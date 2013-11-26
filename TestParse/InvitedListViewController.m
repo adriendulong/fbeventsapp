@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"INVITES";
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -71,11 +72,11 @@
     NSString *name = [[NSString alloc] init];
     PFObject *invited = [self.invited objectAtIndex:indexPath.row]; 
     if (invited[@"user"]) {
-        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", invited[@"user"][@"facebookId"]]];
+        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square&return_ssl_resources=1", invited[@"user"][@"facebookId"]]];
         name = invited[@"user"][@"name"];
     }
     else{
-        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", invited[@"prospect"][@"facebookId"]]];
+        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square&return_ssl_resources=1", invited[@"prospect"][@"facebookId"]]];
         name = invited[@"prospect"][@"name"];
     }
     

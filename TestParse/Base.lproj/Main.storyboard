@@ -258,10 +258,6 @@
                             <rect key="frame" x="0.0" y="64" width="320" height="920"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="separate" translatesAutoresizingMaskIntoConstraints="NO" id="Obn-Ia-z67">
-                                    <rect key="frame" x="0.0" y="899" width="320" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="covertestinfos" translatesAutoresizingMaskIntoConstraints="NO" id="RIy-sx-L6Z">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="144"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -547,12 +543,12 @@
                                     <color key="backgroundColor" red="0.95675223210000004" green="0.95675223210000004" blue="0.95675223210000004" alpha="1" colorSpace="calibratedRGB"/>
                                     <gestureRecognizers/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzZ-jQ-ykY">
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzZ-jQ-ykY">
                                     <rect key="frame" x="8" y="790" width="305" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <state key="normal" title="Prendre une Photo" backgroundImage="bg_btn_orange">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <state key="normal" title="Prendre une Photo" backgroundImage="btn_app_photo">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -563,8 +559,8 @@
                                     <rect key="frame" x="8" y="845" width="305" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <state key="normal" title="Importation Automatique" backgroundImage="btn_automatic_import">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <state key="normal" title="Importation Automatique" backgroundImage="btn_auto_import">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -575,6 +571,10 @@
                                     <rect key="frame" x="0.0" y="900" width="320" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="separate" translatesAutoresizingMaskIntoConstraints="NO" id="Obn-Ia-z67">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="20 Photos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHo-z7-rPw">
                                             <rect key="frame" x="10" y="0.0" width="99" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -604,18 +604,22 @@
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <gestureRecognizers/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="D6y-0f-bmd" appends="YES" id="mzu-QW-iVb"/>
+                                    </connections>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="gzZ-jQ-ykY" secondAttribute="bottom" constant="90" id="Mkl-MD-X56"/>
-                                <constraint firstAttribute="bottom" secondItem="W3I-jE-gXh" secondAttribute="bottom" id="XZ7-6k-sax"/>
-                                <constraint firstAttribute="bottom" secondItem="Obn-Ia-z67" secondAttribute="bottom" constant="20" id="emf-Fd-wkk"/>
+                                <constraint firstAttribute="bottom" secondItem="W3I-jE-gXh" secondAttribute="bottom" id="F00-LR-ytz"/>
+                                <constraint firstAttribute="bottom" secondItem="gzZ-jQ-ykY" secondAttribute="bottom" constant="90" id="lkx-7a-3KO"/>
                                 <constraint firstAttribute="bottom" secondItem="9L9-4r-1dN" secondAttribute="bottom" constant="35" id="qgb-ZO-hA5"/>
                             </constraints>
                             <connections>
                                 <outlet property="automaticImport" destination="9L9-4r-1dN" id="jNu-dG-NH7"/>
-                                <outlet property="constraintButtonPhoto" destination="Mkl-MD-X56" id="udG-i6-Xr8"/>
+                                <outlet property="constraintButtonPhoto" destination="lkx-7a-3KO" id="PsA-Ag-92F"/>
+                                <outlet property="constraintViewNbPhotos" destination="F00-LR-ytz" id="3gR-j2-0jm"/>
                                 <outlet property="coverImage" destination="RIy-sx-L6Z" id="vqN-RT-De1"/>
                                 <outlet property="dateEvent" destination="Org-wP-Oq5" id="EEL-Va-lzz"/>
                                 <outlet property="eventDescription" destination="a54-2Z-Vdx" id="G8Y-kv-2UT"/>
@@ -638,6 +642,11 @@
                     <nil key="simulatedBottomBarMetrics"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SxQ-ZS-scW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="D6y-0f-bmd">
+                    <connections>
+                        <action selector="hideViewTap:" destination="bwP-Lx-Jsp" id="jZa-LJ-KOj"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="3579" y="232"/>
         </scene>
@@ -1104,7 +1113,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Xc-SD-c0M">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Xc-SD-c0M">
                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
@@ -1838,7 +1847,8 @@
         <image name="block_event_revivre" width="312" height="67"/>
         <image name="block_invitation" width="313" height="109"/>
         <image name="blockevent" width="313" height="183"/>
-        <image name="btn_automatic_import" width="305" height="41"/>
+        <image name="btn_app_photo" width="303" height="40"/>
+        <image name="btn_auto_import" width="303" height="39"/>
         <image name="btn_cancel" width="44" height="44"/>
         <image name="btn_comment" width="54" height="30"/>
         <image name="btn_like" width="54" height="30"/>
