@@ -1,7 +1,5 @@
-0S X
-.DS_Store
-
 # Xcode
+.DS_Store
 build/
 *.pbxuser
 !default.pbxuser
@@ -18,4 +16,4 @@ profile
 DerivedData
 *.hmap
 *.xccheckout
-
+.idea/
