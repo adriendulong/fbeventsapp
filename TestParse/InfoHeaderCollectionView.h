@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintButtonPhoto;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintViewNbPhotos;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *separateConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *mapButton;
+@property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
 
 
 - (IBAction)rsvpChanged:(id)sender;

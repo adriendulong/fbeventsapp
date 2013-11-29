@@ -29,6 +29,8 @@
 		E72055C418352E58003D7AD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E72055C318352E58003D7AD0 /* Images.xcassets */; };
 		E7237A95183E470700502113 /* ChooseLastEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7237A94183E470700502113 /* ChooseLastEventViewController.m */; };
 		E724E57E180F02E800741528 /* MOUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = E724E57D180F02E800741528 /* MOUtility.m */; };
+		E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B941845F5360087719E /* MemoriesImportCell.m */; };
+		E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B971845F5590087719E /* MemoriesImportViewController.m */; };
 		E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF797182AEAB400E560FF /* AVFoundation.framework */; };
 		E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF799182AEABD00E560FF /* CoreData.framework */; };
 		E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF79B182AEAD700E560FF /* CoreText.framework */; };
@@ -44,10 +46,13 @@
 		E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E73F7A821844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m */; };
 		E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E745D416183CFB01007BBC3A /* CommentsCell.m */; };
 		E74F53BA182962D000B1C1AF /* MemoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F53B9182962D000B1C1AF /* MemoriesController.m */; };
+		E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F753A1847A4A900F42E2A /* CustomBadge.m */; };
+		E74F753E1847ADAF00F42E2A /* PhotosAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */; };
 		E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75A0394181EB71600A26EF3 /* EventsCell.m */; };
 		E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E765014E1844FD8600B96E47 /* MemorieCell.m */; };
 		E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E76501511845225400B96E47 /* FirstMemorieCell.m */; };
 		E76605A918337563009AABEE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E76605A818337563009AABEE /* Constants.m */; };
+		E77FC7961849071900EDDE86 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E77FC7951849071900EDDE86 /* GoogleMaps.bundle */; };
 		E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C48182293C600DEBBDC /* ListInvitationsController.m */; };
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
 		E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7896C831822ACA600DEBBDC /* ImageIO.framework */; };
@@ -142,6 +147,10 @@
 		E7237A94183E470700502113 /* ChooseLastEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseLastEventViewController.m; sourceTree = "<group>"; };
 		E724E57C180F02E800741528 /* MOUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOUtility.h; sourceTree = "<group>"; };
 		E724E57D180F02E800741528 /* MOUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOUtility.m; sourceTree = "<group>"; };
+		E7294B931845F5360087719E /* MemoriesImportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesImportCell.h; sourceTree = "<group>"; };
+		E7294B941845F5360087719E /* MemoriesImportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesImportCell.m; sourceTree = "<group>"; };
+		E7294B961845F5590087719E /* MemoriesImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesImportViewController.h; sourceTree = "<group>"; };
+		E7294B971845F5590087719E /* MemoriesImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesImportViewController.m; sourceTree = "<group>"; };
 		E73DF797182AEAB400E560FF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E73DF799182AEABD00E560FF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		E73DF79B182AEAD700E560FF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -163,6 +172,10 @@
 		E745D416183CFB01007BBC3A /* CommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsCell.m; sourceTree = "<group>"; };
 		E74F53B8182962D000B1C1AF /* MemoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesController.h; sourceTree = "<group>"; };
 		E74F53B9182962D000B1C1AF /* MemoriesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesController.m; sourceTree = "<group>"; };
+		E74F75391847A4A900F42E2A /* CustomBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomBadge.h; sourceTree = "<group>"; };
+		E74F753A1847A4A900F42E2A /* CustomBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomBadge.m; sourceTree = "<group>"; };
+		E74F753C1847ADAF00F42E2A /* PhotosAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosAlbumViewController.h; sourceTree = "<group>"; };
+		E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosAlbumViewController.m; sourceTree = "<group>"; };
 		E75A0393181EB71600A26EF3 /* EventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsCell.h; sourceTree = "<group>"; };
 		E75A0394181EB71600A26EF3 /* EventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsCell.m; sourceTree = "<group>"; };
 		E765014D1844FD8600B96E47 /* MemorieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorieCell.h; sourceTree = "<group>"; };
@@ -171,6 +184,7 @@
 		E76501511845225400B96E47 /* FirstMemorieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstMemorieCell.m; sourceTree = "<group>"; };
 		E76605A718337563009AABEE /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		E76605A818337563009AABEE /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		E77FC7951849071900EDDE86 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Libraries/GoogleMaps/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		E7896C47182293C600DEBBDC /* ListInvitationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListInvitationsController.h; sourceTree = "<group>"; };
 		E7896C48182293C600DEBBDC /* ListInvitationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListInvitationsController.m; sourceTree = "<group>"; };
 		E7896C4A182294C400DEBBDC /* InvitationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationCell.h; sourceTree = "<group>"; };
@@ -356,6 +370,10 @@
 				E72055BF18351C42003D7AD0 /* SharePhotoViewController.m */,
 				E7DA1B56183A9563000527A0 /* PhotoDetailViewController.h */,
 				E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */,
+				E74F75391847A4A900F42E2A /* CustomBadge.h */,
+				E74F753A1847A4A900F42E2A /* CustomBadge.m */,
+				E74F753C1847ADAF00F42E2A /* PhotosAlbumViewController.h */,
+				E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -466,6 +484,10 @@
 				E765014E1844FD8600B96E47 /* MemorieCell.m */,
 				E76501501845225400B96E47 /* FirstMemorieCell.h */,
 				E76501511845225400B96E47 /* FirstMemorieCell.m */,
+				E7294B931845F5360087719E /* MemoriesImportCell.h */,
+				E7294B941845F5360087719E /* MemoriesImportCell.m */,
+				E7294B961845F5590087719E /* MemoriesImportViewController.h */,
+				E7294B971845F5590087719E /* MemoriesImportViewController.m */,
 			);
 			name = Memories;
 			sourceTree = "<group>";
@@ -493,6 +515,7 @@
 		E7AE147E1803F6870021F321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E77FC7951849071900EDDE86 /* GoogleMaps.bundle */,
 				3F1F640B1844DDFD00D1B01E /* GoogleMaps.framework */,
 				3F1F64091844DDBC00D1B01E /* SDWebImage.framework */,
 				3F1F64071844DDAF00D1B01E /* Parse.framework */,
@@ -529,6 +552,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E73F7A7A1844AF4D003BF2B1 /* UIImage */,
 				E7F10F9B183F85670061350A /* Models */,
 				E7237A92183E46DC00502113 /* ReLive */,
@@ -536,7 +560,6 @@
 				E7A27F8318296131009615A8 /* Memories */,
 				E705F67C182799A800FB967E /* Events Details */,
 				E75A039B181EE83500A26EF3 /* Libraries */,
-				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E7896C461822939000DEBBDC /* List Invitations */,
 				E75A0392181EB6FB00A26EF3 /* ListEvents */,
 				E724E575180EF41A00741528 /* Connection */,
@@ -687,6 +710,7 @@
 				3F1F63F71844D1C400D1B01E /* README.md in Resources */,
 				E7AE148A1803F6870021F321 /* InfoPlist.strings in Resources */,
 				E7AE14931803F6870021F321 /* Main.storyboard in Resources */,
+				E77FC7961849071900EDDE86 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +732,7 @@
 				E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */,
 				E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */,
 				E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */,
+				E74F753E1847ADAF00F42E2A /* PhotosAlbumViewController.m in Sources */,
 				E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */,
 				E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */,
 				E72055BD1833F9F1003D7AD0 /* CameraViewController.m in Sources */,
@@ -717,6 +742,7 @@
 				E70115DD183B92F90077EAB7 /* ActionPhotoCell.m in Sources */,
 				E70D49801843CDE8007A0445 /* InvitedListViewController.m in Sources */,
 				E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */,
+				E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */,
 				E7B406F7181ADA86001559CF /* ListEvents.m in Sources */,
 				E7AE14901803F6870021F321 /* TestParseAppDelegate.m in Sources */,
 				E7AE148C1803F6870021F321 /* main.m in Sources */,
@@ -724,6 +750,7 @@
 				E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */,
 				E7FA244A182CD26C00FFDBE6 /* PhotosCollectionViewController.m in Sources */,
 				E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */,
+				E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */,
 				E70D49841843CE1E007A0445 /* InvitedCell.m in Sources */,
 				E705F67F182799C500FB967E /* EventDetailViewController.m in Sources */,
 				E70D497A1843BEE4007A0445 /* DetailDescriptionViewController.m in Sources */,
@@ -731,6 +758,7 @@
 				E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */,
 				E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */,
 				E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */,
+				E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */,
 				E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */,
 				E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */,
 				E7FA244D182CE19E00FFDBE6 /* InfoHeaderCollectionView.m in Sources */,

@@ -11,9 +11,14 @@
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SharePhotoViewController.h"
+#import "MOUtility.h"
+#import "PhotosAlbumViewController.h"
 //#import "UIImage+Resize.h"
 
-@interface CameraViewController ()
+@interface CameraViewController (){
+    @private
+    int photosMatched;
+}
 
 @property (strong, nonatomic) AVCaptureSession *session;
 @property (strong, nonatomic) AVCaptureDevice *device;
@@ -41,6 +46,14 @@
     [self activeCameraWithPosition:AVCaptureDevicePositionBack];
     
     self.isPictureTaken = NO;
+    photosMatched = 0;
+    
+    CALayer *imageLayer = self.albumButton.layer;
+    [imageLayer setCornerRadius:25];
+    [imageLayer setMasksToBounds:YES];
+    
+    [self setLatestPhotoOnAlbumButton];
+    [self getCountPhotosMatchedWithEventDate];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -319,158 +332,72 @@
 
 
 
-#pragma mark - Work on Image
-/*
-- (void) processImage:(UIImage *)image { //process captured image, crop, resize and rotate
-    haveImage = YES;
+#pragma mark - Work on Album
+
+- (void)setLatestPhotoOnAlbumButton
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
-    if([UIDevice currentDevice].userInterfaceIdiom==UIUserInterfaceIdiomPad) { //Device is ipad
-        // Resize image
-        UIGraphicsBeginImageContext(CGSizeMake(768, 1022));
-        [image drawInRect: CGRectMake(0, 0, 768, 1022)];
-        UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         
-        CGRect cropRect = CGRectMake(0, 130, 768, 768);
-        CGImageRef imageRef = CGImageCreateWithImageInRect([smallImage CGImage], cropRect);
-        //or use the UIImage wherever you like
+        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
         
-        [captureImage setImage:[UIImage imageWithCGImage:imageRef]];
-        
-        CGImageRelease(imageRef);
-        
-    }else{ //Device is iphone
-        // Resize image
-        UIGraphicsBeginImageContext(CGSizeMake(320, 426));
-        [image drawInRect: CGRectMake(0, 0, 320, 426)];
-        UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        CGRect cropRect = CGRectMake(0, 55, 320, 320);
-        CGImageRef imageRef = CGImageCreateWithImageInRect([smallImage CGImage], cropRect);
-        
-        [captureImage setImage:[UIImage imageWithCGImage:imageRef]];
-        
-        CGImageRelease(imageRef);
-    }
-    
-    //adjust image orientation based on device orientation
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
-        NSLog(@"landscape left image");
-        
-        [UIView beginAnimations:@"rotate" context:nil];
-        [UIView setAnimationDuration:0.5];
-        captureImage.transform = CGAffineTransformMakeRotation(DegreesToRadians(-90));
-        [UIView commitAnimations];
-        
-    }
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
-        NSLog(@"landscape right");
-        
-        [UIView beginAnimations:@"rotate" context:nil];
-        [UIView setAnimationDuration:0.5];
-        captureImage.transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
-        [UIView commitAnimations];
-        
-    }
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown) {
-        NSLog(@"upside down");
-        [UIView beginAnimations:@"rotate" context:nil];
-        [UIView setAnimationDuration:0.5];
-        captureImage.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
-        [UIView commitAnimations];
-        
-    }
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait) {
-        NSLog(@"upside upright");
-        [UIView beginAnimations:@"rotate" context:nil];
-        [UIView setAnimationDuration:0.5];
-        captureImage.transform = CGAffineTransformMakeRotation(DegreesToRadians(0));
-        [UIView commitAnimations];
-    }    
+        if (group.numberOfAssets > 0) {
+            
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets-1] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                
+                if (result) {
+                    CGImageRef representation = [result thumbnail];
+                    UIImage *latestPhoto = [UIImage imageWithCGImage:representation];
+                    
+                    [self.albumButton setImage:latestPhoto forState:UIControlStateNormal];
+                    
+                    latestPhoto = nil;
+                }
+            }];
+        }
+    } failureBlock: ^(NSError *error) {
+        NSLog(@"No groups");
+    }];
 }
- 
- 
- - (UIImage *)fixOrientation {
- 
- // No-op if the orientation is already correct
- if (self.imageOrientation == UIImageOrientationUp) return self;
- 
- // We need to calculate the proper transformation to make the image upright.
- // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
- CGAffineTransform transform = CGAffineTransformIdentity;
- 
- switch (self.imageOrientation) {
- case UIImageOrientationDown:
- case UIImageOrientationDownMirrored:
- transform = CGAffineTransformTranslate(transform, self.size.width, self.size.height);
- transform = CGAffineTransformRotate(transform, M_PI);
- break;
- 
- case UIImageOrientationLeft:
- case UIImageOrientationLeftMirrored:
- transform = CGAffineTransformTranslate(transform, self.size.width, 0);
- transform = CGAffineTransformRotate(transform, M_PI_2);
- break;
- 
- case UIImageOrientationRight:
- case UIImageOrientationRightMirrored:
- transform = CGAffineTransformTranslate(transform, 0, self.size.height);
- transform = CGAffineTransformRotate(transform, -M_PI_2);
- break;
- case UIImageOrientationUp:
- case UIImageOrientationUpMirrored:
- break;
- }
- 
- switch (self.imageOrientation) {
- case UIImageOrientationUpMirrored:
- case UIImageOrientationDownMirrored:
- transform = CGAffineTransformTranslate(transform, self.size.width, 0);
- transform = CGAffineTransformScale(transform, -1, 1);
- break;
- 
- case UIImageOrientationLeftMirrored:
- case UIImageOrientationRightMirrored:
- transform = CGAffineTransformTranslate(transform, self.size.height, 0);
- transform = CGAffineTransformScale(transform, -1, 1);
- break;
- case UIImageOrientationUp:
- case UIImageOrientationDown:
- case UIImageOrientationLeft:
- case UIImageOrientationRight:
- break;
- }
- 
- // Now we draw the underlying CGImage into a new context, applying the transform
- // calculated above.
- CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height,
- CGImageGetBitsPerComponent(self.CGImage), 0,
- CGImageGetColorSpace(self.CGImage),
- CGImageGetBitmapInfo(self.CGImage));
- CGContextConcatCTM(ctx, transform);
- switch (self.imageOrientation) {
- case UIImageOrientationLeft:
- case UIImageOrientationLeftMirrored:
- case UIImageOrientationRight:
- case UIImageOrientationRightMirrored:
- // Grr...
- CGContextDrawImage(ctx, CGRectMake(0,0,self.size.height,self.size.width), self.CGImage);
- break;
- 
- default:
- CGContextDrawImage(ctx, CGRectMake(0,0,self.size.width,self.size.height), self.CGImage);
- break;
- }
- 
- // And now we just create a new UIImage from the drawing context
- CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
- UIImage *img = [UIImage imageWithCGImage:cgimg];
- CGContextRelease(ctx);
- CGImageRelease(cgimg);
- return img;
- }
- */
+
+
+- (void)getCountPhotosMatchedWithEventDate
+{
+    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        
+        @autoreleasepool {
+            if (group) {
+                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    if (result) {
+                        
+                        NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                        
+                        if (startDate && endDate) {
+                            
+                            if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
+                                
+                                photosMatched++;
+                            }
+                            
+                        }
+                        
+                        [self.badge updateBadgeWithNumber:photosMatched];
+                    }
+                }];
+            }
+        }
+        
+    } failureBlock:^(NSError *error) {
+        NSLog(@"Failed.");
+    }];
+}
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -488,6 +415,15 @@
         photosCollectionViewController.takenPhoto = self.takenImage;
         photosCollectionViewController.event = self.event;
     }
+    else if ([segue.identifier isEqualToString:@"PhotosAlbum"]) {
+        
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        PhotosAlbumViewController *photosAlbums = segue.destinationViewController;
+        photosAlbums.event = self.event;
+    }
 }
+
+
 
 @end

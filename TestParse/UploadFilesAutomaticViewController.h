@@ -17,4 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *progessView;
+
+@property (assign, nonatomic) int levelRoot;
 @end

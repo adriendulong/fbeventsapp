@@ -65,7 +65,7 @@
                 }
                 else{
                     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                 }
             }
             
@@ -93,7 +93,7 @@
                         }
                         else{
                             [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                         }
                     }];
                 }
@@ -129,7 +129,7 @@
                                 }
                                 else{
                                     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                                 }
                             }];
                             
@@ -168,7 +168,7 @@
                                         }
                                         else{
                                             [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                                         }
                                     }];
                                     
@@ -208,7 +208,7 @@
                                                 }
                                                 else{
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                                                 }
                                             }];
                                         }
@@ -239,8 +239,8 @@
             NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.8f);
             
             
-            __block float width = image.size.width;
-            __block float height = image.size.height;
+            __block float width = resizedImage.size.width;
+            __block float height = resizedImage.size.height;
             PFFile *imageFile = [PFFile fileWithData:imageData];
             
             [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -254,7 +254,7 @@
                             }
                             else{
                                 [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                             }
                         }
                     }];

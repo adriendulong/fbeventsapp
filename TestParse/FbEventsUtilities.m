@@ -74,6 +74,10 @@
         eventObject[@"is_date_only"] = event[@"is_date_only"];
     }
     
+    if (event[@"venue"]) {
+        eventObject[@"venue"] = event[@"venue"];
+    }
+    
     //
     
     //Save in the background, and associate it to the user when created
@@ -83,7 +87,7 @@
             [invitation setObject:eventObject forKey:@"event"];
             [invitation setObject:[PFUser currentUser] forKey:@"user"];
             invitation[@"rsvp_status"] = event[@"rsvp_status"];
-            invitation[@"start_time"] = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+            invitation[@"start_time"] = eventObject[@"start_time"];
             
             invitation[@"isOwner"] = @NO;
             invitation[@"isAdmin"] = @NO;
@@ -136,6 +140,15 @@
         else{
             if(eventToCompare[@"location"]){
                 eventToCompare[@"location"] = null;
+            }
+        }
+        
+        if(event[@"venue"]){
+            eventToCompare[@"venue"] = event[@"venue"];
+        }
+        else{
+            if(eventToCompare[@"venue"]){
+                eventToCompare[@"venue"] = null;
             }
         }
         

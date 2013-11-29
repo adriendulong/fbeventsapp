@@ -43,13 +43,15 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    [self.validateButton setEnabled:NO];
+    
     [self getFriendsInvited];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSelectFacebook:) name:SelectAllPhotosFacebook object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeSelectPhone:) name:SelectAllPhotosPhone object:nil];
     
-    NSArray *photosFromPhone = [NSArray arrayWithObjects: nil];
-    NSArray *photosFromFB = [NSArray arrayWithObjects: nil];
+    NSArray *photosFromPhone = [[NSArray alloc] init];
+    NSArray *photosFromFB = [[NSArray alloc] init];
     self.imagesFound = [[NSMutableArray alloc] init];
     [self.imagesFound addObject:photosFromPhone];
     [self.imagesFound addObject:photosFromFB];
@@ -114,9 +116,47 @@
         
         reusableview = headerView;
     }
+    else if (kind == UICollectionElementKindSectionFooter){
+        UICollectionReusableView *footerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"Footer" forIndexPath:indexPath];
+        
+        if (indexPath.section == 0) {
+            if (!self.isLoadingFromPhone) {
+                [footerView setHidden:YES];
+            }
+            
+        }
+        else if (indexPath.section == 1){
+            if (!self.isLoadingFromFB) {
+                [footerView setHidden:YES];
+            }
+        }
+        reusableview = footerView;
+    }
 
     
     return reusableview;
+}
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    
+    if (section==0) {
+        if (!self.isLoadingFromPhone) {
+            return CGSizeMake(320, 0);
+        }
+        else{
+            return CGSizeMake(320, 50);
+        }
+    }
+    else{
+        if (!self.isLoadingFromFB) {
+            return CGSizeMake(320, 0);
+        }
+        else{
+            return CGSizeMake(320, 50);
+        }
+    }
+    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -190,6 +230,11 @@
 
 -(void)loadPhotos
 {
+    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    
+    self.isLoadingFromPhone = YES;
+    
     NSMutableArray *photosFoundLibrary = [[NSMutableArray alloc] init];
     self.numberOfPhotosSelectedPhone = 0;
     
@@ -205,7 +250,7 @@
                         
                         NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
                         
-                        if ([MOUtility date:photoDate isBetweenDate:[[NSDate date] dateByAddingTimeInterval:-3600*48] andDate:[NSDate date]]) {
+                        if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                             
                             Photo *photo = [[Photo alloc] init];
                             photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
@@ -228,6 +273,12 @@
         
         NSArray *photosLibrary = [photosFoundLibrary copy];
         [self.imagesFound setObject:photosLibrary atIndexedSubscript:0];
+        
+        self.isLoadingFromPhone = NO;
+        
+        if (!self.isLoadingFromFB && !self.isLoadingFromFB) {
+            [self.validateButton setEnabled:YES];
+        }
         
         [self.collectionView reloadData];
         //[self updateNavBar];
@@ -293,22 +344,23 @@
 
 //Get all the friends of the user who was at this event
 -(void)getFriendsInvited{
+    self.isLoadingFromFB = YES;
     
     __block int nbUsersToRequest = 0;
     __block int nbOfUserAlreadyDone = 0;
     
     NSMutableArray *resultsPhotos = [[NSMutableArray alloc] init];
     
-    //Start Date
-    NSDate *start_date = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-3600*6];
-    int startTimeInterval = (int)[self.event[@"start_time"] timeIntervalSince1970];
-    NSString *startDateString = [NSString stringWithFormat:@"%i", startTimeInterval];
+    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
     
-    //End Date
-    NSDate *endDate = [EventUtilities endDateForStart:start_date withType:self.event[@"type"] andLast:self.event[@"last"]];
-    NSLog(@"Start Date %@, End date %@", start_date, endDate);
+    int startTimeInterval = (int)[startDate timeIntervalSince1970];
+    NSString *startDateString = [NSString stringWithFormat:@"%i", startTimeInterval];
+
+    NSLog(@"Start Date %@, End date %@", startDate, endDate);
     int endTimeInterval = (int)[endDate timeIntervalSince1970];
     NSString *endDateString = [NSString stringWithFormat:@"%i", endTimeInterval];
+    
     
     //FQL request
     NSString *requestFql = [NSString stringWithFormat:@"SELECT uid  FROM event_member WHERE eid=%@ and uid IN (SELECT uid2 FROM friend WHERE uid1 = me());", self.event[@"eventId"]];
@@ -356,6 +408,12 @@
                     nbOfUserAlreadyDone++;
                     if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                         [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                        self.isLoadingFromFB = NO;
+                        
+                        if (!self.isLoadingFromFB && !self.isLoadingFromFB) {
+                            [self.validateButton setEnabled:YES];
+                        }
+                        
                         [self.collectionView reloadData];
                         
                     }
@@ -398,6 +456,12 @@
                     nbOfUserAlreadyDone++;
                     if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                         [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                        self.isLoadingFromFB = NO;
+                        
+                        if (!self.isLoadingFromFB && !self.isLoadingFromFB) {
+                            [self.validateButton setEnabled:YES];
+                        }
+                        
                         [self.collectionView reloadData];
                         
                     }
@@ -438,6 +502,12 @@
                         nbOfUserAlreadyDone++;
                         if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                             [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                            self.isLoadingFromFB = NO;
+                            
+                            if (!self.isLoadingFromFB && !self.isLoadingFromFB) {
+                                [self.validateButton setEnabled:YES];
+                            }
+                            
                             [self.collectionView reloadData];
                             
                         }
@@ -476,6 +546,12 @@
                         nbOfUserAlreadyDone++;
                         if (((nbUsersToRequest+1)*2) == nbOfUserAlreadyDone) {
                             [self.imagesFound setObject:[resultsPhotos copy] atIndexedSubscript:1];
+                            self.isLoadingFromFB = NO;
+                            
+                            if (!self.isLoadingFromFB && !self.isLoadingFromFB) {
+                                [self.validateButton setEnabled:YES];
+                            }
+                            
                             [self.collectionView reloadData];
                             
                         }
@@ -515,6 +591,7 @@
         UploadFilesAutomaticViewController *photoCollectionController = (UploadFilesAutomaticViewController *)segue.destinationViewController;
         photoCollectionController.photosToUpload = [selectedPhotos copy];
         photoCollectionController.event = self.event;
+        photoCollectionController.levelRoot = self.levelRoot;
     }
     
 }

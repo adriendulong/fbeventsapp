@@ -18,5 +18,6 @@
 +(void)updateInviteUser:(PFUser *)user toEvent:(PFObject *)event withRsvp:(NSString *)rsvp withInvitation:(PFObject *)invitation;
 +(void)setBadgeForInvitation:(UITabBarController *)controller atIndex:(NSUInteger)index;
 +(NSDate *)endDateForStart:(NSDate *)startDate withType:(NSNumber *)type andLast:(NSNumber *)lastTime;
++(NSDate *)endDateForStart:(NSDate *)startDate withType:(NSNumber *)type andEndDate:(NSDate *)endDate;
 
 @end

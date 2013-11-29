@@ -26,7 +26,13 @@ NSString *const FacebookEventMaybe               = @"unsure";
 NSString *const FacebookEventDeclined            = @"declined";
 NSString *const FacebookEventNotReplied          = @"not_replied";
 
+NSString *const FacebookEventsFields             = @"owner.fields(id,name,picture),name,location,start_time,end_time,rsvp_status,cover,updated_time,description,is_date_only,admins.fields(id,name,picture),venue";
+
 
 #pragma mark - Colors
 
 NSString *const FacebookFirstBlue                = @"3b5998";
+
+
+#pragma mark - App Constants
+int const DefaultNbHoursEvent                    = 24;

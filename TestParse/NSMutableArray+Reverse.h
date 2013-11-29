@@ -11,5 +11,6 @@
 @interface NSMutableArray (Reverse)
 
 - (void)reverse;
+-(void)shuffle;
 
 @end

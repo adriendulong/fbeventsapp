@@ -10,4 +10,6 @@
 
 @interface MapViewController : UIViewController
 
+@property (strong, nonatomic) PFObject *event;
+
 @end

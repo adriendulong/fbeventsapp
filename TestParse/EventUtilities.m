@@ -66,6 +66,7 @@
     PFObject *invitation = [PFObject objectWithClassName:@"Invitation"];
     [invitation setObject:event forKey:@"event"];
     [invitation setObject:user forKey:@"user"];
+    invitation[@"is_memory"]=@YES;
     invitation[@"rsvp_status"] = rsvp;
     invitation[@"start_time"] = event[@"start_time"];
     
@@ -96,6 +97,11 @@
     
     if(![invitation[@"rsvp_status"] isEqualToString:rsvp]){
         invitation[@"rsvp_status"] = rsvp;
+        needToUpdate = YES;
+    }
+    
+    if (!invitation[@"is_memory"]) {
+        invitation[@"is_memory"] = @YES;
         needToUpdate = YES;
     }
     
@@ -191,6 +197,35 @@
     NSDate *endDate = [startDate dateByAddingTimeInterval:3600*realLast];
     
     return endDate;
+    
+}
+
+
++(NSDate *)endDateForStart:(NSDate *)startDate withType:(NSNumber *)type andEndDate:(NSDate *)endDate{
+    
+    int add;
+    
+    //Party (add 6 jours)
+    if ([type isEqualToNumber:[NSNumber numberWithInt:1]]) {
+        add = 6;
+    }
+    //Day (add 12 hours)
+    else if ([type isEqualToNumber:[NSNumber numberWithInt:2]]){
+        add = 12;
+    }
+    //Week-End (Add 24 hours)
+    else if ([type isEqualToNumber:[NSNumber numberWithInt:3]]){
+        add =  24;
+    }
+    
+    //Holidays (add 72 hours)
+    else {
+        add = 72;
+    }
+    
+    NSDate *endDateFinal = [endDate dateByAddingTimeInterval:3600*add];
+    
+    return endDateFinal;
     
 }
 

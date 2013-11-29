@@ -44,6 +44,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userClickedLike:) name:ClickLikePhoto object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(morePhoto:) name:MorePhoto object:nil];
     
+    if (self.photo[@"width"]) {
+        NSLog(@"Width %@, Height %@", self.photo[@"width"], self.photo[@"height"]);
+    }
+    
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query includeKey:@"user"];
     [query includeKey:@"prospect"];
@@ -62,7 +67,7 @@
     if (indexPath.row == 0) {
         return 50;
     } else if (indexPath.row==1) {
-        return 320;
+        return [self heightForImage];
     }
     else if (indexPath.row==2){
         return 50;
@@ -126,16 +131,21 @@
         if (cell == nil) {
             cell = [[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         }
+
+        PFImageView *imgView = [[PFImageView alloc] initWithFrame:CGRectMake(0, 0, 320, [self heightForImage])];
+        
         
         if (self.photo[@"facebookId"]) {
-            [cell.photoImage setImageWithURL:self.photo[@"facebook_url_full"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+            [imgView setImageWithURL:self.photo[@"facebook_url_full"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
         }
         else{
-            cell.photoImage.image = [UIImage imageNamed:@"covertest"]; // placeholder image
-            cell.photoImage.file = (PFFile *)self.photo[@"full_image"];
+            imgView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
+            imgView.file = (PFFile *)self.photo[@"full_image"];
             
-            [cell.photoImage loadInBackground];
+            [imgView loadInBackground];
         }
+        
+        [cell addSubview:imgView];
         
         
         
@@ -321,6 +331,21 @@
         }];
 	} else {
 	}
+}
+
+
+-(float)heightForImage{
+    if (self.photo[@"width"]) {
+        float height = [self.photo[@"height"] floatValue];
+        float width =[self.photo[@"width"] floatValue];
+        
+        float ratio = width/320;
+        
+        return height/ratio;
+    }
+    else{
+        return 320;
+    }
 }
 
 @end

@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MemoriesViewController : UITableViewController
-@property (strong, nonatomic) NSArray *memoriesInvitations;
+@interface MemoriesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@property (strong, nonatomic) NSMutableArray *memoriesInvitations;
 @property (strong, nonatomic) NSMutableArray *photosEvent;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
