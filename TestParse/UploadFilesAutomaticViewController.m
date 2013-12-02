@@ -57,33 +57,8 @@
                 NSLog(@"Already exist for this evenet, don't upload");
                 self.nbOfPhotosUploaded++;
                 
-                //WE HAVE A USER //
-                //////////////////
-                
-                PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
-                photoServer[@"user"] = object;
-                photoServer[@"event"] = self.event;
-                photoServer[@"facebookId"] = photoToUpload.facebookId;
-                photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
-                photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
-                photoServer[@"created_time"] = photoToUpload.date;
-                photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
-                
-                [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    self.nbOfPhotosUploaded++;
-                    
-                    self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
-                    [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
-                    
-                    if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
-                        [self uploadPhotos];
-                    }
-                    else{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
-                    }
-                }];
+                self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
+                [self.progessView setProgress:1];
                 
                 if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
                     [self uploadPhotos];
@@ -130,8 +105,8 @@
                         if (!error) {
                             NSLog(@"UN USER !");
                             
-                            self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
-                            [self.progessView setProgress:1];
+                            //WE HAVE A USER //
+                            //////////////////
                             
                             PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
                             photoServer[@"user"] = object;
@@ -167,8 +142,8 @@
                             [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
                                 if (!error) {
                                     
-                                    self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
-                                    [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
+                                    /// WE HAVE A PROSPECT ///
+                                    //////////////////////////
                                     
                                     NSLog(@"UN PROSPECT");
                                     

@@ -221,10 +221,7 @@
                 }];
             }
             else{
-                NSLog(@"%@", [error userInfo]);
-                NSLog(@"Photo failed to save: %@", error);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Photo_Error", nil) message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
-                [alert show];
+                
             }
         }
         

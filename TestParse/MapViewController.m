@@ -48,9 +48,18 @@
                                                                  zoom:zoom];
     GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = camera.target;
-    marker.snippet = NSLocalizedString(@"MapViewController_Marker_Snippet", nil);
+    if (self.event[@"location"] || self.event[@"venue"][@"name"]) {
+        GMSMarker *marker = [[GMSMarker alloc] init];
+        marker.position = CLLocationCoordinate2DMake(latitude, longitude);
+        if (self.event[@"venue"][@"name"]) {
+            marker.snippet = self.event[@"venue"][@"name"];
+        }
+        else{
+            marker.snippet = self.event[@"location"];
+        }
+        marker.map = mapView;
+    }
+    
     
     self.view = mapView;
     
