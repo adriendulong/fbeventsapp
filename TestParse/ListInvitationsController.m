@@ -10,6 +10,7 @@
 #import "InvitationCell.h"
 #import "EventUtilities.h"
 #import "ListEvents.h"
+#import "PhotosCollectionViewController.h"
 
 @interface ListInvitationsController ()
 
@@ -283,16 +284,23 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
+ 
+ -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+     if ([segue.identifier isEqualToString:@"DetailEvent"]) {
+ 
+         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+ 
+         //Selected row
+         NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
+ 
+ 
+         PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
+         photosCollectionViewController.invitation = [self.self.objectsForTable objectAtIndex:selectedRowIndex.row];
+    }
+ 
+ }
 
 @end

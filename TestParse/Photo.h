@@ -23,8 +23,8 @@
 
 @property (strong, nonatomic) PFUser *ownerPhoto;
 
-@property (assign, nonatomic) float width;
-@property (assign, nonatomic) float height;
+@property (strong, nonatomic) NSNumber *width;
+@property (strong, nonatomic) NSNumber *height;
 
 
 

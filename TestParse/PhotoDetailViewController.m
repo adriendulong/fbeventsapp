@@ -121,6 +121,9 @@
         [cell.ownerImage setImageWithURL:pictureURL
                         placeholderImage:[UIImage imageNamed:@"covertest.png"]];
         
+        //Time taken
+        cell.timeTaken.text = [self lastSincePhotoTaken];
+        
         return cell;
     }
     else if (indexPath.row==1){
@@ -167,6 +170,16 @@
         else{
             [cell.likeButton setSelected:NO];
         }
+        
+        NSString *message = [[NSString alloc] init];
+        if (((NSArray *)self.photo[@"likes"]).count >1) {
+             message = [NSString stringWithFormat:@"%i likes", ((NSArray *)self.photo[@"likes"]).count];
+            
+        }
+        else{
+            message = [NSString stringWithFormat:@"%i like", ((NSArray *)self.photo[@"likes"]).count];
+        }
+        [cell.nbPhotosButton setTitle:message forState:UIControlStateNormal];
         
         return cell;
     }
@@ -346,6 +359,46 @@
     else{
         return 320;
     }
+}
+
+
+-(NSString *)lastSincePhotoTaken{
+    NSDate *taken = [[NSDate alloc] init];
+    NSString *response = [[NSString alloc] init];
+    
+    if (self.photo[@"facebookId"]) {
+        taken = self.photo[@"created_time"];
+    }
+    else{
+        taken = self.photo.createdAt;
+    }
+    
+    NSTimeInterval distanceBetweenDates = [[NSDate date] timeIntervalSinceDate:taken];
+    NSInteger time  = distanceBetweenDates;
+    
+    //In seconds
+    if (time<60) {
+        response = [NSString stringWithFormat:@"%is", time];
+    }
+    //In minutes
+    else if(time < 3600){
+        NSInteger distanceMinutes = time/60;
+        response = [NSString stringWithFormat:@"%im", distanceMinutes];
+    }
+    //In Hours
+    else if(time < 86400){
+        NSInteger distanceHours = time/3600;
+        response = [NSString stringWithFormat:@"%ih", distanceHours];
+    }
+    //In days
+    else{
+        NSInteger distanceDays = time/86400;
+        response = [NSString stringWithFormat:@"%ij", distanceDays];
+    }
+    
+    return response;
+    
+    
 }
 
 @end

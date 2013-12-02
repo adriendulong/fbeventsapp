@@ -79,8 +79,8 @@
                     photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
                     photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
                     photoServer[@"created_time"] = photoToUpload.date;
-                    photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                    photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                    photoServer[@"width"] = photoToUpload.width;
+                    photoServer[@"height"] = photoToUpload.height;
                     
                     [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         self.nbOfPhotosUploaded++;
@@ -115,8 +115,8 @@
                             photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
                             photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
                             photoServer[@"created_time"] = photoToUpload.date;
-                            photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                            photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                            photoServer[@"width"] = photoToUpload.width;
+                            photoServer[@"height"] = photoToUpload.height;
                             
                             [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                 self.nbOfPhotosUploaded++;
@@ -154,8 +154,8 @@
                                     photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
                                     photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
                                     photoServer[@"created_time"] = photoToUpload.date;
-                                    photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                                    photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                                    photoServer[@"width"] = photoToUpload.width;
+                                    photoServer[@"height"] = photoToUpload.height;
                                     
                                     [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                         self.nbOfPhotosUploaded++;
@@ -194,8 +194,8 @@
                                             photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
                                             photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
                                             photoServer[@"created_time"] = photoToUpload.date;
-                                            photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                                            photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                                            photoServer[@"width"] = photoToUpload.width;
+                                            photoServer[@"height"] = photoToUpload.height;
                                             
                                             [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                                 self.nbOfPhotosUploaded++;
