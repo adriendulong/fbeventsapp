@@ -59,7 +59,7 @@
     
     //Top bar
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
-    self.navigationItem.backBarButtonItem.title = @"Test";
+    self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"SharePhotoViewController_Title", nil);
     
     self.previewImage.image = self.takenPhoto;
 	// Do any additional setup after loading the view.
@@ -129,7 +129,7 @@
             else{
                 NSLog(@"%@", [error userInfo]);
                 NSLog(@"Photo failed to save: %@", error);
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn't post your photo" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Photo_Error", nil) message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             }
         }];
@@ -211,7 +211,7 @@
     if (self.titlePhoto.text.length == 0) {
         self.hintIsWritten = YES;
         [self.titlePhoto setTextColor:[UIColor grayColor]];
-        self.titlePhoto.text = @"Ajoutez une légende à votre photo";
+        self.titlePhoto.text = NSLocalizedString(@"SharePhotoViewController_AddLegend", nil);
     }
 }
 

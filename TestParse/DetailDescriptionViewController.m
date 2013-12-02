@@ -18,7 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"DESCRIPTION";
+    self.title = NSLocalizedString(@"DetailDescriptionViewController_Title", nil);
     self.descriptionTextView.text = self.description;
 
     // Uncomment the following line to preserve selection between presentations.

@@ -132,14 +132,14 @@
 
 - (IBAction)hideView:(id)sender {
     if (self.isShowingDetails) {
-        self.labelHide.text = @"Détails";
+        self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Details", nil);
         self.isShowingDetails = NO;
         [self.viewToHide setHidden:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:ShowOrHideDetailsEventNotification object:self userInfo:nil];
         
     }
     else{
-        self.labelHide.text = @"Masquer";
+        self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Hide", nil);
         self.isShowingDetails = YES;
         [self.viewToHide setHidden:NO];
         [[NSNotificationCenter defaultCenter] postNotificationName:ShowOrHideDetailsEventNotification object:self userInfo:nil];

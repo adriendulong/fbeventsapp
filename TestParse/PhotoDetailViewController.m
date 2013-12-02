@@ -38,7 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"PHOTO";
+    self.title = NSLocalizedString(@"PhotoDetailViewController_Title", nil);
     
     //Notifs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userClickedLike:) name:ClickLikePhoto object:nil];
@@ -211,14 +211,14 @@
                     [self.tableView reloadData];
                 }
                 else{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"It was not possible to perform this action, please try again later." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                     [alert show];
                 }
             }];
             
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"It was not possible to perform this action, please try again later." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
             [alert show];
         }
         
@@ -279,15 +279,15 @@
     if ([owner.objectId isEqualToString:[PFUser currentUser].objectId]) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Supprimer"
+                                                        cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Cancel", nil)
+                                                   destructiveButtonTitle:NSLocalizedString(@"UIActionSheet_Delete", nil)
                                                         otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
     else{
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
-                                                        cancelButtonTitle:@"Cancel"
+                                                        cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Cancel", nil)
                                                    destructiveButtonTitle:nil
                                                         otherButtonTitles:nil];
         [actionSheet showInView:self.view];
@@ -301,7 +301,7 @@
     
     //Delete
     if (buttonIndex==0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Suppression" message:@"Etes vous sur de vouloir suprimer cette photo ?" delegate:self cancelButtonTitle:@"Non" otherButtonTitles:@"Oui", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Removal_Title", nil) message:NSLocalizedString(@"UIAlertView_Removal_Message", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_No", nil) otherButtonTitles:NSLocalizedString(@"UIAlertView_Yes", nil), nil];
         [alert show];
     }
 }
@@ -315,7 +315,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
             }
             else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problème" message:@"Problème pendant la supression de la photo" delegate:nil cancelButtonTitle:@"Annuler" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message2", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"UIAlertView_OK", nil) otherButtonTitles:nil, nil];
                 [alert show];
             }
         }];

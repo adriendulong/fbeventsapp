@@ -430,13 +430,6 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		E75A039B181EE83500A26EF3 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Libraries;
-			sourceTree = "<group>";
-		};
 		E7896C1D18224D0800DEBBDC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,7 +524,6 @@
 				E72055BA1833F8B4003D7AD0 /* Photo */,
 				E7A27F8318296131009615A8 /* Memories */,
 				E705F67C182799A800FB967E /* Events Details */,
-				E75A039B181EE83500A26EF3 /* Libraries */,
 				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E7896C461822939000DEBBDC /* List Invitations */,
 				E75A0392181EB6FB00A26EF3 /* ListEvents */,

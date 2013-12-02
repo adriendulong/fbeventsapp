@@ -36,7 +36,7 @@
     
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = camera.target;
-    marker.snippet = @"Hello World";
+    marker.snippet = NSLocalizedString(@"MapViewController_Marker_Snippet", nil);
     
     self.view = mapView;
     
@@ -44,7 +44,7 @@
     [button addTarget:self
                action:@selector(back:)
      forControlEvents:UIControlEventTouchDown];
-    [button setTitle:@"Retour" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"UIButton_Back", nil) forState:UIControlStateNormal];
     [button setTintColor:[UIColor orangeColor]];
     button.frame = CGRectMake(15.0, 20.0, 60.0, 40.0);
     [self.view addSubview:button];
