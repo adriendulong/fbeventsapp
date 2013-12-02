@@ -27,6 +27,15 @@
     //Facebook init
     [PFFacebookUtils initializeFacebook];
     
+    CGSize iOSDeviceScreenSize = [[UIScreen mainScreen] bounds].size;
+    
+    UIStoryboard *iPhoneStoryboard = (iOSDeviceScreenSize.height == 480) ? [UIStoryboard storyboardWithName:@"Storyboard_iPhone35" bundle:nil] : [UIStoryboard storyboardWithName:@"Storyboard_iPhone35" bundle:nil];
+    
+    UIViewController *viewController = [iPhoneStoryboard instantiateInitialViewController];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController  = viewController;
+    [self.window makeKeyAndVisible];
+    
     //Customize Tab bar Text
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]
                                                         } forState:UIControlStateSelected];
