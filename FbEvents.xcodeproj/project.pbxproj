@@ -10,12 +10,12 @@
 		3F1F63F71844D1C400D1B01E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F11844D1C300D1B01E /* README.md */; };
 		3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F21844D1C300D1B01E /* release_notes.md */; };
 		3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63F01844D1C300D1B01E /* libTestFlight.a */; };
-		3F48B4CE184CB85700067E4A /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F48B4CD184CB85700067E4A /* FacebookSDK.framework */; };
-		3F48B4D0184CB86600067E4A /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F48B4CF184CB86600067E4A /* GoogleMaps.framework */; };
-		3F48B4D2184CB87000067E4A /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F48B4D1184CB87000067E4A /* Parse.framework */; };
-		3F48B4D4184CB87A00067E4A /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F48B4D3184CB87A00067E4A /* SDWebImage.framework */; };
 		3F490CCF1844F86F00A5811E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F490CD11844F86F00A5811E /* Localizable.strings */; };
 		3F490CD61844F92B00A5811E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F490CD51844F92B00A5811E /* InfoPlist.strings */; };
+		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
+		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
+		3F775D80184CB98D007E8897 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7F184CB98D007E8897 /* GoogleMaps.framework */; };
+		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -108,13 +108,13 @@
 		3F1F63F31844D1C300D1B01E /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		3F1F63F41844D1C300D1B01E /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		3F1F63F51844D1C300D1B01E /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
-		3F48B4CD184CB85700067E4A /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
-		3F48B4CF184CB86600067E4A /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Libraries/GoogleMaps/GoogleMaps.framework; sourceTree = "<group>"; };
-		3F48B4D1184CB87000067E4A /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
-		3F48B4D3184CB87A00067E4A /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F490CD01844F86F00A5811E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F490CD21844F87300A5811E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F490CD51844F92B00A5811E /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
+		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
+		3F775D7F184CB98D007E8897 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Libraries/GoogleMaps/GoogleMaps.framework; sourceTree = "<group>"; };
+		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 		3FB793D61844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		3FB793D81844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3FB793DA1844E6440037878A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -242,25 +242,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F48B4D4184CB87A00067E4A /* SDWebImage.framework in Frameworks */,
-				3F48B4D2184CB87000067E4A /* Parse.framework in Frameworks */,
-				3F48B4D0184CB86600067E4A /* GoogleMaps.framework in Frameworks */,
-				3F48B4CE184CB85700067E4A /* FacebookSDK.framework in Frameworks */,
 				3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */,
 				E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */,
 				E73DF7A4182AEB0D00E560FF /* libz.dylib in Frameworks */,
 				E7AE14C718059A070021F321 /* SystemConfiguration.framework in Frameworks */,
 				E7AE14C418059A070021F321 /* QuartzCore.framework in Frameworks */,
 				E73DF7A6182AEB1700E560FF /* OpenGLES.framework in Frameworks */,
+				3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */,
 				E73DF7A2182AEB0600E560FF /* libicucore.dylib in Frameworks */,
 				E73DF7A0182AEAF700E560FF /* libc++.dylib in Frameworks */,
 				E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */,
 				E73DF79E182AEAE200E560FF /* GLKit.framework in Frameworks */,
 				E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */,
 				E7AE14BD180599DE0021F321 /* CoreLocation.framework in Frameworks */,
+				3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */,
 				E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */,
 				E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */,
+				3F775D80184CB98D007E8897 /* GoogleMaps.framework in Frameworks */,
 				E7A053C6182AB84700F43ED0 /* MapKit.framework in Frameworks */,
+				3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */,
 				E7AE14C318059A070021F321 /* MobileCoreServices.framework in Frameworks */,
 				E7AE14C518059A070021F321 /* Security.framework in Frameworks */,
 				E7AE14C618059A070021F321 /* StoreKit.framework in Frameworks */,
@@ -489,10 +489,10 @@
 		E7AE147E1803F6870021F321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3F48B4D3184CB87A00067E4A /* SDWebImage.framework */,
-				3F48B4D1184CB87000067E4A /* Parse.framework */,
-				3F48B4CF184CB86600067E4A /* GoogleMaps.framework */,
-				3F48B4CD184CB85700067E4A /* FacebookSDK.framework */,
+				3F775D81184CB9A8007E8897 /* FacebookSDK.framework */,
+				3F775D7F184CB98D007E8897 /* GoogleMaps.framework */,
+				3F775D7D184CB973007E8897 /* Parse.framework */,
+				3F775D7B184CB953007E8897 /* SDWebImage.framework */,
 				3F1F63EF1844D1C300D1B01E /* TestFlight */,
 				E7F10F99183F81E70061350A /* AssetsLibrary.framework */,
 				E73DF7A5182AEB1700E560FF /* OpenGLES.framework */,
