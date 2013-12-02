@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Parse/Parse.h>
 
 @protocol SecondDelegate <NSObject>
 -(void) comingFromLogin;

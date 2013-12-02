@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <Parse/Parse.h>
 
 
 @interface InvitedListViewController : UITableViewController

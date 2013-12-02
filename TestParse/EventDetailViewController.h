@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Parse/Parse.h>
 #import <MapKit/MapKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import <SDWebImage/UIImageView+WebCache.h>
