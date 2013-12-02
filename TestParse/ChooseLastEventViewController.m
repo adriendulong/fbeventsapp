@@ -39,7 +39,7 @@
     [self initArraysPickers];
     
     //Title
-    self.title = @"Durée de l'évènement";
+    self.title = NSLocalizedString(@"ChooseLastEventViewController_Title", nil);
     
     //Init View
     NSDate *start_date = self.event[@"start_time"];
@@ -53,7 +53,8 @@
     self.dateLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
     NSMutableString *listInvited = [[NSMutableString alloc] init];
-    [listInvited appendString:@"avec "];
+    [listInvited appendFormat:@"%@ ", NSLocalizedString(@"ChooseLastEventViewController_with", nil)];
+    //[listInvited appendString:@"avec "];
     for (int i=0; i<self.invited.count; i++) {
         if ([self.invited objectAtIndex:i][@"user"]) {
             [listInvited appendFormat:@"%@", [self.invited objectAtIndex:i][@"user"][@"name"]];
@@ -66,8 +67,10 @@
     }
     
     if (self.invited.count > 1) {
-        [listInvited appendFormat:@" et %i autres amis", (self.invited.count - 1)];
-    }
+        [listInvited appendFormat:@" %@ %i %@", NSLocalizedString(@"ChooseLastEventViewController_and", nil), (self.invited.count - 1), NSLocalizedString(@"ChooseLastEventViewController_more_friends", nil)];
+    } /*else if (self.invited.count == 1) {
+        [listInvited appendFormat:@" %@ %i %@", NSLocalizedString(@"ChooseLastEventViewController_and", nil), (self.invited.count - 1), NSLocalizedString(@"ChooseLastEventViewController_more_friend", nil)];
+    }*/
     
     self.invitedLabel.text = listInvited;
     
@@ -91,7 +94,7 @@
     NSInteger rowSelected = [self.pickerView selectedRowInComponent:0];
     
     if (self.selectedType == 1) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Soirée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
         
@@ -100,7 +103,7 @@
         
     }
     else if (self.selectedType == 2) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Journée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Journey", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
         self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
@@ -108,14 +111,14 @@
         
     }
     else if (self.selectedType == 3) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Week-End" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Week-End", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
         self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
         self.event[@"last"] = [NSNumber numberWithInt:(int)[self.elementsForWE objectAtIndex:rowSelected][@"last"]];
     }
     else if (self.selectedType == 4) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Vacances !" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Holiday", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
         self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
@@ -190,69 +193,69 @@
 }
 
 -(void)initArraysPickers{
-    NSDictionary *oneHour = @{@"label": @"1 Heure",
+    NSDictionary *oneHour = @{@"label": [NSString stringWithFormat:@"1 %@", NSLocalizedString(@"ChooseLastEventViewController_Hour", nil)],
                               @"last": @1};
-    NSDictionary *twoHour = @{@"label": @"2 Heure",
+    NSDictionary *twoHour = @{@"label": [NSString stringWithFormat:@"2 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @2};
-    NSDictionary *threeHour = @{@"label": @"3 Heure",
+    NSDictionary *threeHour = @{@"label": [NSString stringWithFormat:@"3 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @3};
-    NSDictionary *fourHour = @{@"label": @"4 Heure",
+    NSDictionary *fourHour = @{@"label": [NSString stringWithFormat:@"4 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @4};
-    NSDictionary *fiveHour = @{@"label": @"5 Heure",
+    NSDictionary *fiveHour = @{@"label": [NSString stringWithFormat:@"5 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @5};
-    NSDictionary *sixHours = @{@"label": @"6 Heure",
+    NSDictionary *sixHours = @{@"label": [NSString stringWithFormat:@"6 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                @"last": @6};
-    NSDictionary *sevenHour = @{@"label": @"7 Heure",
+    NSDictionary *sevenHour = @{@"label": [NSString stringWithFormat:@"7 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @7};
-    NSDictionary *heightHour = @{@"label": @"8 Heure",
+    NSDictionary *heightHour = @{@"label": [NSString stringWithFormat:@"8 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @8};
-    NSDictionary *nineHour = @{@"label": @"9 Heure",
+    NSDictionary *nineHour = @{@"label": [NSString stringWithFormat:@"9 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @9};
-    NSDictionary *tenHour = @{@"label": @"10 Heure",
+    NSDictionary *tenHour = @{@"label": [NSString stringWithFormat:@"10 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @10};
-    NSDictionary *elevenHour = @{@"label": @"11 Heure",
+    NSDictionary *elevenHour = @{@"label": [NSString stringWithFormat:@"11 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @11};
-    NSDictionary *twelveHour = @{@"label": @"12 Heure",
+    NSDictionary *twelveHour = @{@"label": [NSString stringWithFormat:@"12 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                               @"last": @12};
-    NSDictionary *fourteenHour = @{@"label": @"14 Heure",
+    NSDictionary *fourteenHour = @{@"label": [NSString stringWithFormat:@"14 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @14};
-    NSDictionary *sixteenHour = @{@"label": @"16 Heure",
+    NSDictionary *sixteenHour = @{@"label": [NSString stringWithFormat:@"16 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @16};
-    NSDictionary *heighteenHour = @{@"label": @"18 Heure",
+    NSDictionary *heighteenHour = @{@"label": [NSString stringWithFormat:@"18 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @18};
-    NSDictionary *twentyHour = @{@"label": @"20 Heure",
+    NSDictionary *twentyHour = @{@"label": [NSString stringWithFormat:@"20 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @20};
-    NSDictionary *twentyTwoHour = @{@"label": @"22 Heure",
+    NSDictionary *twentyTwoHour = @{@"label": [NSString stringWithFormat:@"22 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @22};
-    NSDictionary *twentyFourHour = @{@"label": @"24 Heure",
+    NSDictionary *twentyFourHour = @{@"label": [NSString stringWithFormat:@"24 %@", NSLocalizedString(@"ChooseLastEventViewController_Hours", nil)],
                                  @"last": @24};
-    NSDictionary *oneDay = @{@"label": @"1 Jour",
+    NSDictionary *oneDay = @{@"label": [NSString stringWithFormat:@"1 %@", NSLocalizedString(@"ChooseLastEventViewController_Day", nil)],
                                      @"last": @24};
-    NSDictionary *twoDays = @{@"label": @"2 Jours",
+    NSDictionary *twoDays = @{@"label": [NSString stringWithFormat:@"2 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                      @"last": @48};
-    NSDictionary *threeDays = @{@"label": @"3 Jours",
+    NSDictionary *threeDays = @{@"label": [NSString stringWithFormat:@"3 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                      @"last": @72};
-    NSDictionary *fourDays = @{@"label": @"4 Jours",
+    NSDictionary *fourDays = @{@"label": [NSString stringWithFormat:@"4 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                 @"last": @96};
-    NSDictionary *fiveDays = @{@"label": @"5 Jours",
+    NSDictionary *fiveDays = @{@"label": [NSString stringWithFormat:@"5 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                 @"last": @120};
-    NSDictionary *sixDays = @{@"label": @"6 Jours",
+    NSDictionary *sixDays = @{@"label": [NSString stringWithFormat:@"6 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                @"last": @144};
-    NSDictionary *sevenDays = @{@"label": @"7 Jours",
+    NSDictionary *sevenDays = @{@"label": [NSString stringWithFormat:@"7 %@", NSLocalizedString(@"ChooseLastEventViewController_Days", nil)],
                                @"last": @168};
-    NSDictionary *oneWeek = @{@"label": @"1 Semaine",
+    NSDictionary *oneWeek = @{@"label": [NSString stringWithFormat:@"1 %@", NSLocalizedString(@"ChooseLastEventViewController_Week", nil)],
                                 @"last": @168};
-    NSDictionary *twoWeeks = @{@"label": @"2 Semaines",
+    NSDictionary *twoWeeks = @{@"label": [NSString stringWithFormat:@"2 %@", NSLocalizedString(@"ChooseLastEventViewController_Weeks", nil)],
                               @"last": @336};
-    NSDictionary *threeWeeks = @{@"label": @"3 Semaines",
+    NSDictionary *threeWeeks = @{@"label": [NSString stringWithFormat:@"3 %@", NSLocalizedString(@"ChooseLastEventViewController_Weeks", nil)],
                               @"last": @504};
-    NSDictionary *fourWeeks = @{@"label": @"4 Semaines",
+    NSDictionary *fourWeeks = @{@"label": [NSString stringWithFormat:@"4 %@", NSLocalizedString(@"ChooseLastEventViewController_Weeks", nil)],
                               @"last": @672};
-    NSDictionary *oneMonth = @{@"label": @"1 Mois",
+    NSDictionary *oneMonth = @{@"label": [NSString stringWithFormat:@"1 %@", NSLocalizedString(@"ChooseLastEventViewController_Month", nil)],
                                 @"last": @720};
-    NSDictionary *twoMonths = @{@"label": @"2 Mois",
+    NSDictionary *twoMonths = @{@"label": [NSString stringWithFormat:@"2 %@", NSLocalizedString(@"ChooseLastEventViewController_Months", nil)],
                                 @"last": @1440};
-    NSDictionary *threeMonths = @{@"label": @"3 Mois",
+    NSDictionary *threeMonths = @{@"label": [NSString stringWithFormat:@"3 %@", NSLocalizedString(@"ChooseLastEventViewController_Months", nil)],
                                 @"last": @2160};
     
     
@@ -269,7 +272,7 @@
          NSInteger rowSelected = [self.pickerView selectedRowInComponent:0];
 
         if (self.selectedType == 1) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Soirée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
             [alert show];
             
             
@@ -279,7 +282,7 @@
             
         }
         else if (self.selectedType == 2) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Journée" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Journey", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
             [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
@@ -287,14 +290,14 @@
             
         }
         else if (self.selectedType == 3) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Week-End" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Week-End", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
             [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForWE objectAtIndex:rowSelected][@"last"];
         }
         else if (self.selectedType == 4) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choix" message:@"Vacances !" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Holiday", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
             [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];

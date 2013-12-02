@@ -1,0 +1,38 @@
+/* 
+  Localizable.strings
+  FbEvents
+
+  Created by Jérémy on 26/11/2013.
+  Copyright (c) 2013 Adrien Dulong. All rights reserved.
+*/
+
+
+///// TutorialViewController /////
+"TutorialViewController_tuto_step_1" = "Regroupez tous vos events au même endroit.";
+"TutorialViewController_tuto_step_2" = "Regroupez tous vos events au même endroit.";
+"TutorialViewController_tuto_step_3" = "Regroupez tous vos events au même endroit.";
+"TutorialViewController_tuto_step_4" = "Regroupez tous vos events au même endroit.";
+
+
+///// ChooseLastEventViewController /////
+"ChooseLastEventViewController_Title" = "Durée de l'évènement";
+"ChooseLastEventViewController_with" = "avec";
+"ChooseLastEventViewController_and" = "et";
+"ChooseLastEventViewController_more_friend" = "autre ami";
+"ChooseLastEventViewController_more_friends" = "autres amis";
+
+"ChooseLastEventViewController_Choice" = "Choix";
+"ChooseLastEventViewController_Party" = "Soirée";
+"ChooseLastEventViewController_Journey" = "Journée";
+"ChooseLastEventViewController_Week-End" = "Week-End";
+"ChooseLastEventViewController_Holiday" = "Vacances !";
+"ChooseLastEventViewController_OK" = "OK";
+
+"ChooseLastEventViewController_Hour" = "heure";
+"ChooseLastEventViewController_Hours" = "heures";
+"ChooseLastEventViewController_Day" = "jour";
+"ChooseLastEventViewController_Days" = "jours";
+"ChooseLastEventViewController_Week" = "semaine";
+"ChooseLastEventViewController_Weeks" = "semaines";
+"ChooseLastEventViewController_Month" = "mois";
+"ChooseLastEventViewController_Months" = "mois";
