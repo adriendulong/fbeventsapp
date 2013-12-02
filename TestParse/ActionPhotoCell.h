@@ -10,7 +10,9 @@
 
 @interface ActionPhotoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *nbPhotosButton;
 
 - (IBAction)like:(id)sender;
 - (IBAction)more:(id)sender;
+- (IBAction)detailLikes:(id)sender;
 @end

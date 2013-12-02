@@ -393,8 +393,8 @@
                         photo.facebookId = photoFb[@"id"];
                         photo.pictureUrl = photoFb[@"picture"];
                         photo.sourceUrl = photoFb[@"source"];
-                        photo.width = (int)photoFb[@"width"];
-                        photo.width = (int)photoFb[@"height"];
+                        photo.width = [NSNumber numberWithInt:[photoFb[@"width"] intValue]];
+                        photo.height = [NSNumber numberWithInt:[photoFb[@"height"] intValue]];
                         photo.ownerPhoto = [PFUser currentUser];
                         photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];
                         photo.isSelected = YES;
@@ -441,8 +441,8 @@
                         photo.facebookId = photoFb[@"id"];
                         photo.pictureUrl = photoFb[@"picture"];
                         photo.sourceUrl = photoFb[@"source"];
-                        photo.width = (int)photoFb[@"width"];
-                        photo.width = (int)photoFb[@"height"];
+                        photo.width = [NSNumber numberWithInt:[photoFb[@"width"] intValue]];
+                        photo.height = [NSNumber numberWithInt:[photoFb[@"height"] intValue]];
                         photo.ownerPhoto = [PFUser currentUser];
                         photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];
                         photo.isSelected = YES;
@@ -486,8 +486,8 @@
                             photo.facebookId = photoFb[@"id"];
                             photo.pictureUrl = photoFb[@"picture"];
                             photo.sourceUrl = photoFb[@"source"];
-                            photo.width = (int)photoFb[@"width"];
-                            photo.width = (int)photoFb[@"height"];
+                            photo.width = [NSNumber numberWithInt:[photoFb[@"width"] intValue]];
+                            photo.height = [NSNumber numberWithInt:[photoFb[@"height"] intValue]];
                             photo.userFBName = photoFb[@"from"][@"name"];
                             photo.userId = photoFb[@"from"][@"id"];
                             photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];
@@ -530,8 +530,8 @@
                             photo.facebookId = photoFb[@"id"];
                             photo.pictureUrl = photoFb[@"picture"];
                             photo.sourceUrl = photoFb[@"source"];
-                            photo.width = (int)photoFb[@"width"];
-                            photo.width = (int)photoFb[@"height"];
+                            photo.width = [NSNumber numberWithInt:[photoFb[@"width"] intValue]];
+                            photo.height = [NSNumber numberWithInt:[photoFb[@"height"] intValue]];
                             photo.userFBName = photoFb[@"from"][@"name"];
                             photo.userId = photoFb[@"from"][@"id"];
                             photo.date = [MOUtility parseFacebookDate:photoFb[@"created_time"] isDateOnly:NO];

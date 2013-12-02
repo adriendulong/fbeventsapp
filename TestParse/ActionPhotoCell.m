@@ -45,4 +45,7 @@
 - (IBAction)more:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:MorePhoto object:self userInfo:nil];
 }
+
+- (IBAction)detailLikes:(id)sender {
+}
 @end
