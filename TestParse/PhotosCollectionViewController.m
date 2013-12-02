@@ -139,30 +139,7 @@
         PFObject *event = self.invitation[@"event"];
         
         //Add Google Maps
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                                longitude:151.20
-                                                                     zoom:6];
-        
-        //When click on map
-        UITapGestureRecognizer *singleFingerTap =
-        [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                action:@selector(touchedMap:)];
-        
-        headerView.mapView_ = [GMSMapView mapWithFrame:CGRectMake(0, 275, self.view.bounds.size.width, 149) camera:camera];
-        [headerView.mapView_ addGestureRecognizer:singleFingerTap];
-        headerView.mapView_.myLocationEnabled = YES;
-        headerView.mapView_.settings.scrollGestures = NO;
-        headerView.mapView_.settings.zoomGestures = NO;
-        headerView.mapView_.settings.tiltGestures = NO;
-        headerView.mapView_.settings.rotateGestures = NO;
-        [toHideView addSubview:headerView.mapView_];
-        
-        // Creates a marker in the center of the map.
-        GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-        marker.title = NSLocalizedString(@"PhotosCollectionViewController_Marker_Title", nil);
-        marker.snippet = NSLocalizedString(@"PhotosCollectionViewController_Marker_snippet", nil);
-        marker.map = headerView.mapView_;
+
         
         
         if (![toHideView viewWithTag:3000]) {
