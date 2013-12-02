@@ -66,7 +66,7 @@
 		E7AE14841803F6870021F321 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14831803F6870021F321 /* UIKit.framework */; };
 		E7AE148C1803F6870021F321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE148B1803F6870021F321 /* main.m */; };
 		E7AE14901803F6870021F321 /* TestParseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */; };
-		E7AE14931803F6870021F321 /* Storyboard_iPhone35.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7AE14911803F6870021F321 /* Storyboard_iPhone35.storyboard */; };
+		E7AE14931803F6870021F321 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7AE14911803F6870021F321 /* Main.storyboard */; };
 		E7AE149F1803F6870021F321 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE149E1803F6870021F321 /* XCTest.framework */; };
 		E7AE14A01803F6870021F321 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE147F1803F6870021F321 /* Foundation.framework */; };
 		E7AE14A11803F6870021F321 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14831803F6870021F321 /* UIKit.framework */; };
@@ -124,9 +124,9 @@
 		3F775D7F184CB98D007E8897 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = Libraries/GoogleMaps/GoogleMaps.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 		3F7A4A14184CF2B300B2339B /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Libraries/GoogleMaps/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
-		3FB793D61844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Storyboard_iPhone35.strings; sourceTree = "<group>"; };
+		3FB793D61844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		3FB793D81844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3FB793DA1844E6440037878A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Storyboard_iPhone35.strings; sourceTree = "<group>"; };
+		3FB793DA1844E6440037878A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 		E7AE148D1803F6870021F321 /* FbEvents-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FbEvents-Prefix.pch"; sourceTree = "<group>"; };
 		E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestParseAppDelegate.h; sourceTree = "<group>"; };
 		E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestParseAppDelegate.m; sourceTree = "<group>"; };
-		E7AE14921803F6870021F321 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Storyboard_iPhone35.storyboard; sourceTree = "<group>"; };
+		E7AE14921803F6870021F321 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7AE149D1803F6870021F321 /* FbEventsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FbEventsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AE149E1803F6870021F321 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E7AE14A61803F6870021F321 /* FbEventsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FbEventsTests-Info.plist"; sourceTree = "<group>"; };
@@ -566,7 +566,7 @@
 				E724E575180EF41A00741528 /* Connection */,
 				E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */,
 				E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */,
-				E7AE14911803F6870021F321 /* Storyboard_iPhone35.storyboard */,
+				E7AE14911803F6870021F321 /* Main.storyboard */,
 				E7AE14C818095F310021F321 /* DetailInfosViewController.h */,
 				E7AE14C918095F310021F321 /* DetailInfosViewController.m */,
 				E72055C318352E58003D7AD0 /* Images.xcassets */,
@@ -715,7 +715,7 @@
 				E72055C418352E58003D7AD0 /* Images.xcassets in Resources */,
 				3F490CCF1844F86F00A5811E /* Localizable.strings in Resources */,
 				3F1F63F71844D1C400D1B01E /* README.md in Resources */,
-				E7AE14931803F6870021F321 /* Storyboard_iPhone35.storyboard in Resources */,
+				E7AE14931803F6870021F321 /* Main.storyboard in Resources */,
 				E77FC7961849071900EDDE86 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -814,14 +814,14 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		E7AE14911803F6870021F321 /* Storyboard_iPhone35.storyboard */ = {
+		E7AE14911803F6870021F321 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				E7AE14921803F6870021F321 /* Base */,
 				3FB793D61844E6290037878A /* fr */,
 				3FB793DA1844E6440037878A /* en */,
 			);
-			name = Storyboard_iPhone35.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		E7AE14A71803F6870021F321 /* InfoPlist.strings */ = {
