@@ -312,6 +312,7 @@
         
         PhotosImportedViewController *photoCollectionController = (PhotosImportedViewController *)segue.destinationViewController;
         photoCollectionController.event = self.event;
+        photoCollectionController.levelRoot = self.levelRoot;
     }
     
 }
@@ -320,6 +321,18 @@
     if (self.event[@"type"]) {
         if ([(NSNumber *)self.event[@"type"] intValue] == 1) {
             UIButton *button = (UIButton *)[self.viewOne viewWithTag:1];
+            [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
+        else if ([(NSNumber *)self.event[@"type"] intValue] == 2) {
+            UIButton *button = (UIButton *)[self.viewTwo viewWithTag:2];
+            [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
+        else if ([(NSNumber *)self.event[@"type"] intValue] == 3) {
+            UIButton *button = (UIButton *)[self.viewThree viewWithTag:3];
+            [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
+        else if ([(NSNumber *)self.event[@"type"] intValue] == 4) {
+            UIButton *button = (UIButton *)[self.viewFour viewWithTag:4];
             [button sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
     }

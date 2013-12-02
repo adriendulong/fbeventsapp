@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomBadge.h"
+
 
 @interface CameraViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIButton *switchCamera;
@@ -19,6 +21,8 @@
 @property (strong, nonatomic) PFObject *event;
 
 @property (strong, nonatomic) NSURL *assetUrl;
+@property (weak, nonatomic) IBOutlet UIButton *albumButton;
+@property (weak, nonatomic) IBOutlet CustomBadge *badge;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)takePhoto:(id)sender;

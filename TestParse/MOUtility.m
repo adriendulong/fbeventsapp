@@ -7,6 +7,7 @@
 //
 
 #import "MOUtility.h"
+#import "EventUtilities.h"
 
 @implementation MOUtility
 
@@ -37,6 +38,9 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
+    NSDateFormatter *oldDateFormat = [[NSDateFormatter alloc] init];
+    [oldDateFormat setDateFormat:@"yyyy'-'MM'-'dd'T'HH:mm:ss"];
+    
     NSDate* dateToReturn;
     
     
@@ -48,6 +52,9 @@
     }
     
     
+    if (dateToReturn==nil) {
+        dateToReturn = [oldDateFormat dateFromString:date];
+    }
     
     return dateToReturn;
 }
@@ -56,6 +63,82 @@
     NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", profileId]];
     
     return pictureURL;
+}
+
+
+
++(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent{
+    PFObject *eventObject = [PFObject objectWithClassName:@"Event"];
+    eventObject[@"eventId"] = facebookEvent[@"id"];
+    eventObject[@"name"] = facebookEvent[@"name"];
+    
+    if(facebookEvent[@"location"]){
+        eventObject[@"location"] = facebookEvent[@"location"];
+    }
+    
+    if(facebookEvent[@"start_time"]){
+        eventObject[@"start_time"] =  [MOUtility parseFacebookDate:facebookEvent[@"start_time"] isDateOnly:[facebookEvent[@"is_date_only"] boolValue]];
+    }
+    
+    if(facebookEvent[@"end_time"]){
+        eventObject[@"end_time"] = [MOUtility parseFacebookDate:facebookEvent[@"end_time"] isDateOnly:[facebookEvent[@"is_date_only"] boolValue]];
+        eventObject[@"type"] = [NSNumber numberWithInt:[MOUtility typeEvent:eventObject]];
+    }
+    
+    if (facebookEvent[@"description"]) {
+        eventObject[@"description"] = facebookEvent[@"description"];
+    }
+    
+    if (facebookEvent[@"cover"]) {
+        eventObject[@"cover"] = facebookEvent[@"cover"][@"source"];
+    }
+    
+    if (facebookEvent[@"owner"]) {
+        eventObject[@"owner"] = facebookEvent[@"owner"];
+    }
+    
+    if (facebookEvent[@"admins"]) {
+        eventObject[@"admins"] = facebookEvent[@"admins"][@"data"];
+        
+    }
+    
+    if(facebookEvent[@"is_date_only"]){
+        eventObject[@"is_date_only"] = facebookEvent[@"is_date_only"];
+    }
+    
+    if (facebookEvent[@"venue"]) {
+        eventObject[@"venue"] = facebookEvent[@"venue"];
+    }
+    
+    
+    
+    return eventObject;
+}
+
+
++(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event{
+    
+    PFObject *invitation = [PFObject objectWithClassName:@"Invitation"];
+    [invitation setObject:event forKey:@"event"];
+    [invitation setObject:[PFUser currentUser] forKey:@"user"];
+    invitation[@"rsvp_status"] = facebookEvent[@"rsvp_status"];
+    invitation[@"start_time"] = event[@"start_time"];
+    
+    invitation[@"isOwner"] = @NO;
+    invitation[@"isAdmin"] = @NO;
+    
+    if([EventUtilities isOwnerOfEvent:event forUser:[PFUser currentUser]])
+    {
+        NSLog(@"You are the owner !!");
+        invitation[@"isOwner"] = @YES;
+    }
+    
+    if ([EventUtilities isAdminOfEvent:event forUser:[PFUser currentUser]]) {
+        invitation[@"isAdmin"] = @YES;
+    }
+    
+    
+    return invitation;
 }
 
 
@@ -110,6 +193,22 @@
     return YES;
 }
 
++(NSDate *)getEndDateEvent:(PFObject *)event{
+    NSDate *startDate = (NSDate *)event[@"start_time"];
+    
+    
+    if (event[@"end_time"]) {
+        return (NSDate *)event[@"end_time"];
+    }
+    else if(event[@"type"]){
+        int last = [(NSNumber *)event[@"last"] intValue];
+        return [startDate dateByAddingTimeInterval:last*3600];
+    }
+    else{
+        return [startDate dateByAddingTimeInterval:DefaultNbHoursEvent*3600];
+    }
+}
+
 
 #pragma mark - Image
 
@@ -144,5 +243,29 @@
     
     
 }
+
+
+#pragma mark - Type Event
++(int)typeEvent:(PFObject *)event{
+    
+    NSTimeInterval distanceBetweenDates = [event[@"end_time"] timeIntervalSinceDate:event[@"start_time"]];
+    double secondsInHours = 3600;
+    NSInteger daysBetweenDates = distanceBetweenDates / secondsInHours;
+    
+    if (0<=daysBetweenDates<12) {
+        return 1;
+    }
+    else if(12<=daysBetweenDates<=24){
+        return 2;
+    }
+    else if(24< daysBetweenDates < 96){
+        return 3;
+    }
+    else{
+        return 4;
+    }
+}
+
+
 
 @end

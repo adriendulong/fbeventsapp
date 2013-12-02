@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewFour;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
 
+@property (assign, nonatomic) int levelRoot;
+
 - (IBAction)validate:(id)sender;
 - (IBAction)chosedType:(id)sender;
 @end

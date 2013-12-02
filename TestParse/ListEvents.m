@@ -162,10 +162,10 @@
     //Request
     NSString *requestString;
     if(joined){
-        requestString = [NSString stringWithFormat:@"me/events?fields=owner.fields(id,name,picture),name,location,start_time,end_time,rsvp_status,cover,updated_time,description,is_date_only,admins.fields(id,name,picture)&since=%@", startDate];
+        requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@",FacebookEventsFields, startDate];
     }
     else{
-        requestString = [NSString stringWithFormat:@"me/events?fields=owner.fields(id,name,picture),name,location,start_time,end_time,rsvp_status,cover,updated_time,description,is_date_only,admins.fields(id,name,picture)&since=%@&type=not_replied", startDate];
+        requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@&type=not_replied",FacebookEventsFields, startDate];
     }
    
     NSLog(@"Request : %@", requestString);
@@ -247,8 +247,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"start_time" greaterThan:[NSDate date]];
-    [query whereKey:@"rsvp_status" notEqualTo:FacebookEventNotReplied];
-    [query whereKey:@"rsvp_status" notEqualTo:FacebookEventDeclined];
+    [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
     [query includeKey:@"event"];
     [query orderByAscending:@"start_time"];
     

@@ -14,4 +14,5 @@
 @property (strong, nonatomic) PFObject *photo;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+
 @end

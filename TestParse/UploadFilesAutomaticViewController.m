@@ -49,12 +49,13 @@
     
     //Photo Facebook
     if (photoToUpload.facebookId) {
-        //We see if a user exists in order to associate him with the photo
-        PFQuery *queryUser = [PFUser query];
-        [queryUser whereKey:@"facebookId" equalTo:photoToUpload.userId];
-        [queryUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        PFQuery *queryFacebookPhoto = [PFQuery queryWithClassName:@"Photo"];
+        [queryFacebookPhoto whereKey:@"facebookId" equalTo:photoToUpload.facebookId];
+        [queryFacebookPhoto whereKey:@"event" equalTo:self.event];
+        [queryFacebookPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
             if (!error) {
-                NSLog(@"UN USER !");
+                NSLog(@"Already exist for this evenet, don't upload");
+                self.nbOfPhotosUploaded++;
                 
                 //WE HAVE A USER //
                 //////////////////
@@ -84,92 +85,170 @@
                     }
                 }];
                 
+                if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                    [self uploadPhotos];
+                }
+                else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                }
             }
+            
+            //The photos does not exixt for this event, we save it
             else if(error && error.code == kPFErrorObjectNotFound){
-                
-                //See if there is a prospect
-                PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
-                [queryProspect whereKey:@"facebookId" equalTo:photoToUpload.userId];
-                [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                    if (!error) {
+                if (photoToUpload.ownerPhoto) {
+                    PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
+                    photoServer[@"user"] = photoToUpload.ownerPhoto;
+                    photoServer[@"event"] = self.event;
+                    photoServer[@"facebookId"] = photoToUpload.facebookId;
+                    photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
+                    photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
+                    photoServer[@"created_time"] = photoToUpload.date;
+                    photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
+                    photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                    
+                    [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        self.nbOfPhotosUploaded++;
                         
-                        /// WE HAVE A PROSPECT ///
-                        //////////////////////////
+                        self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                        [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
                         
-                        NSLog(@"UN PROSPECT");
-                        
-                        PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
-                        photoServer[@"prospect"] = object;
-                        photoServer[@"event"] = self.event;
-                        photoServer[@"facebookId"] = photoToUpload.facebookId;
-                        photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
-                        photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
-                        photoServer[@"created_time"] = photoToUpload.date;
-                        photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                        photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
-                        
-                        [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            self.nbOfPhotosUploaded++;
+                        if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                            [self uploadPhotos];
+                        }
+                        else{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                        }
+                    }];
+                }
+                else{
+                    //We see if a user exists in order to associate him with the photo
+                    PFQuery *queryUser = [PFUser query];
+                    [queryUser whereKey:@"facebookId" equalTo:photoToUpload.userId];
+                    [queryUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                        if (!error) {
+                            NSLog(@"UN USER !");
                             
                             self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                             [self.progessView setProgress:1];
                             
-                            if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
-                                [self uploadPhotos];
-                            }
-                            else{
-                                [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
-                            }
-                        }];
-                        
-                        
-                    }
-                    else if(error && error.code == kPFErrorObjectNotFound){
-                        NSLog(@"NOOOO PROSPECT");
-                        //If no prospect create it
-                        PFObject *prospect = [PFObject objectWithClassName:@"Prospect"];
-                        prospect[@"facebookId"] = photoToUpload.userId;
-                        prospect[@"name"] = photoToUpload.userFBName;
-                        
-                        
-                        // CREATE A PROSPECT //
-                        ///////////////////////
-                        
-                        [prospect saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            if (succeeded) {
-                                PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
-                                photoServer[@"prospect"] = prospect;
-                                photoServer[@"event"] = self.event;
-                                photoServer[@"facebookId"] = photoToUpload.facebookId;
-                                photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
-                                photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
-                                photoServer[@"created_time"] = photoToUpload.date;
-                                photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
-                                photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                            PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
+                            photoServer[@"user"] = object;
+                            photoServer[@"event"] = self.event;
+                            photoServer[@"facebookId"] = photoToUpload.facebookId;
+                            photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
+                            photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
+                            photoServer[@"created_time"] = photoToUpload.date;
+                            photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
+                            photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                            
+                            [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                self.nbOfPhotosUploaded++;
                                 
-                                [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                    self.nbOfPhotosUploaded++;
+                                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
+                                
+                                if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                                    [self uploadPhotos];
+                                }
+                                else{
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                }
+                            }];
+                            
+                        }
+                        else if(error && error.code == kPFErrorObjectNotFound){
+                            
+                            //See if there is a prospect
+                            PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
+                            [queryProspect whereKey:@"facebookId" equalTo:photoToUpload.userId];
+                            [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                                if (!error) {
                                     
                                     self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                                     [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
                                     
-                                    if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
-                                        [self uploadPhotos];
-                                    }
-                                    else{
-                                        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
-                                    }
-                                }];
-                            }
-                        }];
-                        
-                        
-                    }
-                }];
+                                    NSLog(@"UN PROSPECT");
+                                    
+                                    PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
+                                    photoServer[@"prospect"] = object;
+                                    photoServer[@"event"] = self.event;
+                                    photoServer[@"facebookId"] = photoToUpload.facebookId;
+                                    photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
+                                    photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
+                                    photoServer[@"created_time"] = photoToUpload.date;
+                                    photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
+                                    photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                                    
+                                    [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                        self.nbOfPhotosUploaded++;
+                                        
+                                        self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                        [self.progessView setProgress:1];
+                                        
+                                        if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                                            [self uploadPhotos];
+                                        }
+                                        else{
+                                            [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                        }
+                                    }];
+                                    
+                                    
+                                }
+                                else if(error && error.code == kPFErrorObjectNotFound){
+                                    NSLog(@"NOOOO PROSPECT");
+                                    //If no prospect create it
+                                    PFObject *prospect = [PFObject objectWithClassName:@"Prospect"];
+                                    prospect[@"facebookId"] = photoToUpload.userId;
+                                    prospect[@"name"] = photoToUpload.userFBName;
+                                    
+                                    
+                                    // CREATE A PROSPECT //
+                                    ///////////////////////
+                                    
+                                    [prospect saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                        if (succeeded) {
+                                            PFObject *photoServer = [PFObject objectWithClassName:@"Photo"];
+                                            photoServer[@"prospect"] = prospect;
+                                            photoServer[@"event"] = self.event;
+                                            photoServer[@"facebookId"] = photoToUpload.facebookId;
+                                            photoServer[@"facebook_url_full"] = photoToUpload.sourceUrl;
+                                            photoServer[@"facebook_url_low"] = photoToUpload.pictureUrl;
+                                            photoServer[@"created_time"] = photoToUpload.date;
+                                            photoServer[@"width"] = [NSNumber numberWithFloat:photoToUpload.width];
+                                            photoServer[@"height"] = [NSNumber numberWithFloat:photoToUpload.height];
+                                            
+                                            [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                                self.nbOfPhotosUploaded++;
+                                                
+                                                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                                [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
+                                                
+                                                if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                                                    [self uploadPhotos];
+                                                }
+                                                else{
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                                }
+                                            }];
+                                        }
+                                    }];
+                                    
+                                    
+                                }
+                            }];
+                        }
+                    }];
+                }
+
             }
         }];
+        
     }
     else{
         
@@ -185,8 +264,8 @@
             NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.8f);
             
             
-            __block float width = image.size.width;
-            __block float height = image.size.height;
+            __block float width = resizedImage.size.width;
+            __block float height = resizedImage.size.height;
             PFFile *imageFile = [PFFile fileWithData:imageData];
             
             [imageFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -200,7 +279,7 @@
                             }
                             else{
                                 [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] animated:YES];
+                               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
                             }
                         }
                     }];

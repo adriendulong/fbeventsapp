@@ -16,6 +16,7 @@
 #import "DetailDescriptionViewController.h"
 #import "MapViewController.h"
 #import "InvitedListViewController.h"
+#import "PhotosImportedViewController.h"
 
 @interface PhotosCollectionViewController ()
 
@@ -135,6 +136,8 @@
         headerView.isShowingDetails = YES;
         UIView *toHideView = [headerView viewWithTag:1000];
         
+        PFObject *event = self.invitation[@"event"];
+        
         //Add Google Maps
         GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
                                                                 longitude:151.20
@@ -161,14 +164,73 @@
         marker.snippet = NSLocalizedString(@"PhotosCollectionViewController_Marker_snippet", nil);
         marker.map = headerView.mapView_;
         
-        PFObject *event = self.invitation[@"event"];
+        
+        if (![toHideView viewWithTag:3000]) {
+            CLLocationDegrees latitude;
+            CLLocationDegrees longitude;
+            float zoom;
+            if (event[@"venue"][@"latitude"]) {
+                latitude = [event[@"venue"][@"latitude"] doubleValue];
+                longitude = [event[@"venue"][@"longitude"] doubleValue];
+                zoom = 9;
+            }
+            else{
+                latitude = 48;
+                longitude = 2;
+                zoom = 1;
+                
+            }
+            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:latitude
+                                                                    longitude:longitude
+                                                                         zoom:zoom];
+            
+            //When click on map
+            UITapGestureRecognizer *singleFingerTap =
+            [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                    action:@selector(touchedMap:)];
+            
+            headerView.mapView_ = [GMSMapView mapWithFrame:CGRectMake(0, 275, self.view.bounds.size.width, 149) camera:camera];
+            [headerView.mapView_ addGestureRecognizer:singleFingerTap];
+            headerView.mapView_.myLocationEnabled = YES;
+            headerView.mapView_.settings.scrollGestures = NO;
+            headerView.mapView_.settings.zoomGestures = NO;
+            headerView.mapView_.settings.tiltGestures = NO;
+            headerView.mapView_.settings.rotateGestures = NO;
+            [headerView.mapView_ setTag:3000];
+            [toHideView addSubview:headerView.mapView_];
+            
+            // Creates a marker in the center of the map.
+            if (event[@"location"] || event[@"venue"][@"name"]) {
+                GMSMarker *marker = [[GMSMarker alloc] init];
+                marker.position = CLLocationCoordinate2DMake(latitude, longitude);
+                marker.map = headerView.mapView_;
+            }
+            
+            //button map add gesture recognizer
+            UITapGestureRecognizer *singleFingerTapSecond =
+            [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                    action:@selector(touchedMap:)];
+            [headerView.mapButton addGestureRecognizer:singleFingerTapSecond];
+        }
+        
+        
+        
+        
+        
+        
         
         headerView.invitation = self.invitation;
         headerView.nameEvent.text = event[@"name"];
         headerView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
         headerView.eventDescription.text = event[@"description"];
-        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
-        headerView.locationLabel.text = event[@"location"];
+        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertest"]];
+        if (event[@"location"]) {
+            headerView.locationLabel.text = event[@"location"];
+        }
+        else if(event[@"venue"][@"name"]){
+            headerView.locationLabel.text = event[@"venue"][@"name"];
+        }
+        
         
         if ([self.invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
             [headerView.segmentRsvp setSelectedSegmentIndex:0];
@@ -201,18 +263,6 @@
         
         //Add button
         //Add import automatic button
-        /*UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button addTarget:self
-                   action:nil
-         forControlEvents:UIControlEventTouchDown];
-        [button setBackgroundImage:[UIImage imageNamed:@"btn_automatic_import"] forState:UIControlStateNormal];
-        button.frame = CGRectMake(6.0, 760.0, 305.0, 41.0);
-        [headerView addSubview:button];
-        [headerView addConstraints:[NSLayoutConstraint
-                                   constraintsWithVisualFormat:@"V:[headerView]-60-[button]"
-                                   options:NSLayoutFormatDirectionLeadingToTrailing
-                                   metrics:nil
-                                   views:NSDictionaryOfVariableBindings(button, headerView)]];*/
         
         
         
@@ -255,11 +305,27 @@
 
 #pragma mark - Photo
 
+-(void)getNbPhotos{
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query whereKey:@"event" equalTo:self.invitation[@"event"]];
+    [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
+        if (!error) {
+            if (self.headerCollectionView) {
+                self.headerCollectionView.nbPhotosLabel.text = [NSString stringWithFormat:@"%i Photos", count];
+            }
+        } else {
+            // The request failed
+        }
+    }];
+}
+
 -(void)loadPhotos{
+    [self getNbPhotos];
     PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
     [queryPhotos whereKey:@"event" equalTo:self.invitation[@"event"]];
     [queryPhotos includeKey:@"user"];
     [queryPhotos includeKey:@"prospect"];
+    [queryPhotos orderByDescending:@"createdAt"];
     queryPhotos.cachePolicy = kPFCachePolicyCacheThenNetwork;
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
@@ -271,10 +337,12 @@
 }
 
 -(void)loadPhotosAfterUpload:(NSNotification *)note{
+    [self getNbPhotos];
     PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
     [queryPhotos whereKey:@"event" equalTo:self.invitation[@"event"]];
     [queryPhotos includeKey:@"user"];
     [queryPhotos includeKey:@"prospect"];
+    [queryPhotos orderByDescending:@"createdAt"];
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             photos = [NSArray arrayWithArray:objects];
@@ -658,7 +726,7 @@
     self.headerCollectionView.nameEvent.text = event[@"name"];
     self.headerCollectionView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
     self.headerCollectionView.eventDescription.text = event[@"description"];
-    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos"]];
     
     if ([self.invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
         [self.headerCollectionView.segmentRsvp setSelectedSegmentIndex:0];
@@ -701,7 +769,7 @@
             [guestView setHidden:NO];
             UIImageView *photo = (UIImageView *)[guestView viewWithTag:6];
             [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:guest[@"facebookId"]]
-                  placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+                  placeholderImage:[UIImage imageNamed:@"covertest"]];
             photo.layer.cornerRadius = 23.0f;
             photo.layer.masksToBounds = YES;
         }
@@ -738,6 +806,14 @@
         ChooseLastEventViewController *chooseLastEvent = (ChooseLastEventViewController *)segue.destinationViewController;
         chooseLastEvent.event = self.invitation[@"event"];
         chooseLastEvent.invited = self.invited;
+        chooseLastEvent.levelRoot = 1;
+    }
+    #warning Direct if end time for event (update type ??)
+    else if ([segue.identifier isEqualToString:@"DirectImport"]){
+        
+        PhotosImportedViewController *photoImported = (PhotosImportedViewController *)segue.destinationViewController;
+        photoImported.event = self.invitation[@"event"];
+        photoImported.levelRoot = 1;
     }
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){
         DetailDescriptionViewController *detailDescription = (DetailDescriptionViewController *)segue.destinationViewController;
@@ -745,6 +821,7 @@
     }
     else if([segue.identifier isEqualToString:@"Map"]){
         MapViewController *mapController = (MapViewController *)segue.destinationViewController;
+        mapController.event =self.invitation[@"event"];
     }
     else if([segue.identifier isEqualToString:@"Invited"]){
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;
@@ -757,7 +834,42 @@
 
 - (void)touchedMap:(UITapGestureRecognizer *)recognizer {
     NSLog(@"MAP !!");
-    [self performSegueWithIdentifier:@"Map" sender:nil];
+    if ([[UIApplication sharedApplication] canOpenURL:
+              [NSURL URLWithString:@"comgooglemaps://"]]) {
+        
+        NSString *placeGoodFormat;
+        if (self.invitation[@"event"][@"location"]) {
+            placeGoodFormat = [[self.invitation[@"event"][@"location"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+        }
+        else if(self.invitation[@"event"][@"venue"][@"name"]){
+            placeGoodFormat = [[self.invitation[@"event"][@"venue"][@"name"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+        }
+        
+        NSString *request = [NSString stringWithFormat:@"comgooglemaps://?q=%@", placeGoodFormat];
+        
+        if(![[UIApplication sharedApplication] openURL:
+            [NSURL URLWithString:request]]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Erreur" message:@"Erreur lors de l'ouverture de Google Maps" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            [alert show];
+        }
+    } else {
+        NSString *placeGoodFormat;
+        if (self.invitation[@"event"][@"location"]) {
+            placeGoodFormat = [[self.invitation[@"event"][@"location"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+        }
+        else if(self.invitation[@"event"][@"venue"][@"name"]){
+            placeGoodFormat = [[self.invitation[@"event"][@"venue"][@"name"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+        }
+        
+        NSString *request = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", placeGoodFormat];
+        
+        if(![[UIApplication sharedApplication] openURL:
+             [NSURL URLWithString:request]]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Erreur" message:@"Erreur lors de l'ouverture de Maps" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            [alert show];
+        }
+    }
+    
     
     //Do stuff here...
 }

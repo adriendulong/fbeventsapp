@@ -18,5 +18,9 @@
 @property (strong, nonatomic) PFObject *event;
 @property (strong, nonatomic) NSDate *endDate;
 
+@property (assign, nonatomic) int levelRoot;
+@property (assign, nonatomic) BOOL isLoadingFromPhone;
+@property (assign, nonatomic) BOOL isLoadingFromFB;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
 @end

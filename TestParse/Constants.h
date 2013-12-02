@@ -24,7 +24,12 @@ extern NSString *const FacebookEventMaybe;
 extern NSString *const FacebookEventDeclined;
 extern NSString *const FacebookEventNotReplied;
 
+extern NSString *const FacebookEventsFields;
+
 #pragma mark - Colors
 extern NSString *const FacebookFirstBlue;
+
+#pragma mark - App Constants
+extern int const DefaultNbHoursEvent;
 
 

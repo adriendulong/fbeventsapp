@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 
-@interface SharePhotoViewController : UIViewController
+@interface SharePhotoViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 @property (weak, nonatomic) IBOutlet UIImage *takenPhoto;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
@@ -26,6 +26,13 @@
 @property (nonatomic, assign) BOOL hasFInishedUpload;
 @property (nonatomic, assign) BOOL hintIsWritten;
 @property (weak, nonatomic) IBOutlet UITextView *titlePhoto;
+@property (strong,nonatomic) NSArray * photosArray;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
+
+@property (assign, nonatomic) int nbPhotosUploaded;
+@property (strong, nonatomic) NSMutableArray *photosUploaded;
+@property (weak, nonatomic) IBOutlet UILabel *labelPhotosUploaded;
 
 
 

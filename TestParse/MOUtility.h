@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface MOUtility : NSObject
 
@@ -15,16 +16,25 @@
 
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
++(NSDate *)getEndDateEvent:(PFObject *)event;
 
 #pragma mark - Facebook
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId;
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly;
++(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
++(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;
 
 #pragma mark - Colors
 +(UIColor*)colorWithHexString:(NSString*)hex;
 
 #pragma mark - Image
 +(CGSize)newBoundsForMaxSize:(float)max andActualSize:(CGSize)size;
+
+#pragma mark - Type Event
++(int)typeEvent:(PFObject *)event;
+
+#pragma mark - IOS Resources
+//- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;
 
 
 @end

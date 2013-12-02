@@ -29,9 +29,23 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.868
-                                                            longitude:151.2086
-                                                                 zoom:6];
+    CLLocationDegrees latitude;
+    CLLocationDegrees longitude;
+    float zoom;
+    if (self.event[@"venue"][@"latitude"]) {
+        latitude = [self.event[@"venue"][@"latitude"] doubleValue];
+        longitude = [self.event[@"venue"][@"longitude"] doubleValue];
+        zoom = 9;
+    }
+    else{
+        latitude = 48;
+        longitude = 2;
+        zoom = 1;
+        
+    }
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:latitude
+                                                            longitude:longitude
+                                                                 zoom:zoom];
     GMSMapView *mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     
     GMSMarker *marker = [[GMSMarker alloc] init];
