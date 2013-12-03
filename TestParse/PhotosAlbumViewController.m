@@ -35,7 +35,7 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
-    self.title = @"PHOTOS";
+    self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);
     
     self.datasourceAutomatic = [NSMutableArray array];
     self.datasourceComplete = [NSMutableArray array];
@@ -126,8 +126,8 @@
         }
         else{
             int nbMax = MAX_PHOTOS_UPLOAD;
-            NSString *message = [NSString stringWithFormat:@"Le nombre de photos que vous pouvez ajouter en une fois est limité à %d", nbMax];
-            UIAlertView *limitAlert = [[UIAlertView alloc] initWithTitle:@"Attention" message:message delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            NSString *message = [NSString stringWithFormat:NSLocalizedString(@"PhotosAlbumViewController_NbLimit", nil), nbMax];
+            UIAlertView *limitAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Warning", nil) message:message delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_Dismiss", nil) otherButtonTitles:nil, nil];
             
             [limitAlert show];
         }
@@ -168,7 +168,7 @@
         
         UILabel *labelTitle = (UILabel *)[headerView viewWithTag:10];
         
-        labelTitle.text = (indexPath.section == 0) ? @"Sélection automatique" : @"Tout l'album";
+        labelTitle.text = (indexPath.section == 0) ? NSLocalizedString(@"PhotosAlbumViewController_AutoSelect", nil) : NSLocalizedString(@"PhotosAlbumViewController_AllAlbum", nil);
         
         return headerView;
     }
@@ -191,7 +191,7 @@
         }
         [self.collectionView reloadData];
         
-        [sender setTitle:@"Tout désélectionner" forState:UIControlStateNormal];
+        [sender setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
     } else {
         for(Photo *photo in self.datasourceAutomatic){
             photo.isSelected = NO;
@@ -202,7 +202,7 @@
         
         [self.collectionView reloadData];
         
-        [sender setTitle:@"Tout sélectionner" forState:UIControlStateNormal];
+        [sender setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllSelect", nil) forState:UIControlStateNormal];
     }
 }
 
@@ -353,7 +353,7 @@
         
         //Remove image preview from this screen if come back
         
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Modifier" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"PhotosAlbumViewController_Modify", nil) style:UIBarButtonItemStylePlain target:nil action:nil];
         
         NSMutableArray *photosSelected = [[NSMutableArray alloc] init];
         for(Photo *photo in self.datasourceAutomatic){

@@ -13,11 +13,12 @@
 #import "SharePhotoViewController.h"
 #import "MOUtility.h"
 #import "PhotosAlbumViewController.h"
-//#import "UIImage+Resize.h"
+#import "CameraFocusSquare.h"
 
 @interface CameraViewController (){
     @private
     int photosMatched;
+    BOOL flashMenuOpen;
 }
 
 @property (strong, nonatomic) AVCaptureSession *session;
@@ -25,6 +26,11 @@
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
 @property (strong, nonatomic) UIImageView *pictureShowing;
 @property (nonatomic) BOOL isPictureTaken;
+
+@property (nonatomic, strong) NSArray *photosToUpload;
+
+@property (strong, nonatomic) UIButton *yesButton;
+@property (strong, nonatomic) UIButton *noButton;
 
 @end
 
@@ -47,6 +53,7 @@
     
     self.isPictureTaken = NO;
     photosMatched = 0;
+    flashMenuOpen = NO;
     
     CALayer *imageLayer = self.albumButton.layer;
     [imageLayer setCornerRadius:25];
@@ -103,11 +110,16 @@
     NSLog(@"Position = %d", position);
     
     self.device = (position == AVCaptureDevicePositionBack) ? [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo] : [self frontCamera];
-    if ([self.device hasFlash]){
+    /*if ([self.device hasFlash]){
         [self.device lockForConfiguration:nil];
         [self.device setFlashMode:AVCaptureFlashModeOff];
         [self.device unlockForConfiguration];
         self.labelFlash.text = @"Off";
+    }*/
+    
+    if (![self.device hasFlash]) {
+        self.flashIcon.hidden = YES;
+        self.flashButton.hidden = YES;
     }
     
     NSError *error = nil;
@@ -140,8 +152,9 @@
 }
 
 
-- (IBAction)cancel:(id)sender {
+- (IBAction)cancel:(UIButton *)sender {
     if (self.isPictureTaken) {
+        self.toolboxView.alpha = 0.80;
         [self.previewImage setHidden:YES];
         self.isPictureTaken = NO;
         [self.takePhoto setImage:[UIImage imageNamed:@"btn_photo"] forState:UIControlStateNormal];
@@ -151,7 +164,7 @@
     }
 }
 
-- (IBAction)takePhoto:(id)sender {
+- (IBAction)takePhoto:(UIButton *)sender {
     
     if (!self.isPictureTaken) {
         AVCaptureConnection *videoConnection = nil;
@@ -238,6 +251,7 @@
              //self.previewImage.image = tempImage;
              
              //Graphical modifs
+             self.toolboxView.alpha = 1.0;
              [self.previewImage setHidden:NO];
              [self.takePhoto setImage:[UIImage imageNamed:@"validate_photo"] forState:UIControlStateNormal];
              [self.cancelButton setImage:[UIImage imageNamed:@"back_stream"] forState:UIControlStateNormal];
@@ -277,27 +291,130 @@
     
 }
 
-- (IBAction)switchFlashMode:(id)sender {
+- (void)openFlashMenu
+{
+    // YES BUTTON
+    self.yesButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.yesButton.tag = 1;
+    [self.yesButton addTarget:self
+                       action:@selector(switchFlashMode:)
+             forControlEvents:UIControlEventTouchDown];
+    [self.yesButton setTitle:@"Oui" forState:UIControlStateNormal];
+    self.yesButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
+    self.yesButton.frame = CGRectMake(self.flashButton.frame.origin.x+45, self.flashButton.frame.origin.y, self.flashButton.frame.size.width, self.flashButton.frame.size.height);
+    [self.view addSubview:self.yesButton];
+    
+    
+    // NO BUTTON
+    self.noButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.noButton.tag = 2;
+    [self.noButton addTarget:self
+                      action:@selector(switchFlashMode:)
+            forControlEvents:UIControlEventTouchDown];
+    [self.noButton setTitle:@"Non" forState:UIControlStateNormal];
+    self.noButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
+    self.noButton.frame = CGRectMake(self.yesButton.frame.origin.x+45, self.yesButton.frame.origin.y, self.yesButton.frame.size.width, self.yesButton.frame.size.height);
+    [self.view addSubview:self.noButton];
+    
+    
+    // ANIMATION
+    [UIView animateWithDuration:0.16f
+                     animations:^{
+                         
+                         [self.yesButton.layer addAnimation:[self fadeAnimationToOpen:YES]
+                                                     forKey:@"animateOpacity"];
+                         [self.noButton.layer addAnimation:[self fadeAnimationToOpen:YES]
+                                                    forKey:@"animateOpacity"];
+                         
+                         
+                         self.yesButton.frame = CGRectMake(self.yesButton.frame.origin.x+20, self.yesButton.frame.origin.y, self.yesButton.frame.size.width, self.yesButton.frame.size.height);
+                         self.noButton.frame = CGRectMake(self.noButton.frame.origin.x+40, self.noButton.frame.origin.y, self.noButton.frame.size.width, self.noButton.frame.size.height);
+                         
+                     } completion:nil];
+    
+    flashMenuOpen = YES;
+}
+
+- (void)closeFlashMenu
+{
+    NSLog(@"closeFlashMenu");
+    // ANIMATION
+    /*[UIView beginAnimations:@"CloseFlashMenu" context:nil];
+     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+     [UIView setAnimationDuration:0.2f];
+     [UIView commitAnimations];*/
+    
+    [UIView animateWithDuration:0.16f
+                     animations:^{
+                         
+                         [self.yesButton.layer addAnimation:[self fadeAnimationToOpen:NO]
+                                                     forKey:@"animateOpacity"];
+                         [self.noButton.layer addAnimation:[self fadeAnimationToOpen:NO]
+                                                    forKey:@"animateOpacity"];
+                         
+                         self.yesButton.frame = CGRectMake(self.yesButton.frame.origin.x-20, self.yesButton.frame.origin.y, self.yesButton.frame.size.width, self.yesButton.frame.size.height);
+                         self.noButton.frame = CGRectMake(self.noButton.frame.origin.x-40, self.noButton.frame.origin.y, self.noButton.frame.size.width, self.noButton.frame.size.height);
+                         
+                         
+                         self.yesButton.alpha = 0.0;
+                         self.noButton.alpha = 0.0;
+                         
+                     } completion:^(BOOL finished) {
+                         [self.yesButton removeFromSuperview];
+                         [self.noButton removeFromSuperview];
+                     }];
+    
+    //[self.yesButton removeFromSuperview];
+    //[self.noButton removeFromSuperview];
+    
+    flashMenuOpen = NO;
+}
+
+- (IBAction)switchFlashMode:(UIButton *)sender
+{
+    
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if ([device hasFlash]){
+    if ([device hasFlash]) {
+        
         
         [device lockForConfiguration:nil];
-        if (device.flashMode == AVCaptureFlashModeOn) {
-            [device setFlashMode:AVCaptureFlashModeAuto];
-            self.labelFlash.text = @"Auto";
-        } else if(device.flashMode == AVCaptureFlashModeOff) {
-            [device setFlashMode:AVCaptureFlashModeOn];
-            self.labelFlash.text = @"On";
+        
+        
+        if (flashMenuOpen) {
+            [self closeFlashMenu];
+        } else {
+            [self openFlashMenu];
         }
-        else{
-            [device setFlashMode:AVCaptureFlashModeOff];
-            self.labelFlash.text = @"Off";
+        
+        
+        switch (sender.tag) {
+            default:
+            case 0: {
+                [self.flashButton setTitle:@"Auto" forState:UIControlStateNormal];
+                [device setFlashMode:AVCaptureFlashModeAuto];
+                break;
+            }
+                
+            case 1: {
+                [self.flashButton setTitle:@"Oui" forState:UIControlStateNormal];
+                [device setFlashMode:AVCaptureFlashModeOn];
+                break;
+            }
+                
+            case 2: {
+                [self.flashButton setTitle:@"Non" forState:UIControlStateNormal];
+                [device setFlashMode:AVCaptureFlashModeOff];
+                break;
+            }
         }
+        
         [device unlockForConfiguration];
     }
 }
 
-- (IBAction)switchCamera:(id)sender {
+- (IBAction)switchCamera:(UIButton *)sender
+{
+    
     NSIndexSet *indexSet = [self.cameraView.layer.sublayers indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop){
         return [obj isMemberOfClass:[AVCaptureVideoPreviewLayer class]];
     }];
@@ -312,7 +429,34 @@
             if( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront ])
             {
                 NSLog(@"On est avec celle de derrière. On active celle de devant !");
+                
+                if (flashMenuOpen) {
+                    NSLog(@"On ferme le menu du flash !");
+                    [self closeFlashMenu];
+                }
+                
+                [UIView animateWithDuration:0.16f
+                                 animations:^{
+                                     
+                                     [self.flashIcon.layer addAnimation:[self fadeAnimationToOpen:NO]
+                                                                 forKey:@"animateOpacity"];
+                                     [self.flashButton.layer addAnimation:[self fadeAnimationToOpen:NO]
+                                                                   forKey:@"animateOpacity"];
+                                     
+                                     
+                                     self.flashIcon.alpha = 0.0;
+                                     self.flashButton.alpha = 0.0;
+                                     
+                                 } completion:^(BOOL finished) {
+                                     
+                                     if (finished) {
+                                         self.flashIcon.hidden = YES;
+                                         self.flashButton.hidden = YES;
+                                     }
+                                 }];
+                
                 [self activeCameraWithPosition:AVCaptureDevicePositionFront];
+                
             }
             break;
             
@@ -320,7 +464,29 @@
             if( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear ])
             {
                 NSLog(@"On est avec celle de devant. On active celle de derrière !");
+                
+                [UIView animateWithDuration:0.16f
+                                 animations:^{
+                                     
+                                     [self.flashIcon.layer addAnimation:[self fadeAnimationToOpen:YES]
+                                                                 forKey:@"animateOpacity"];
+                                     [self.flashButton.layer addAnimation:[self fadeAnimationToOpen:YES]
+                                                                   forKey:@"animateOpacity"];
+                                     
+                                     
+                                     self.flashIcon.alpha = 1.0;
+                                     self.flashButton.alpha = 1.0;
+                                     
+                                 } completion:^(BOOL finished) {
+                                     
+                                     if (finished) {
+                                         self.flashIcon.hidden = NO;
+                                         self.flashButton.hidden = NO;
+                                     }
+                                 }];
+                
                 [self activeCameraWithPosition:AVCaptureDevicePositionBack];
+                
             }
             break;
             
@@ -424,6 +590,78 @@
     }
 }
 
+#pragma mark - Photo Focus
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint touchPoint = [touch locationInView:self.cameraView];
+    [self focus:touchPoint];
+    
+    if (self.camFocus)
+    {
+        [self.camFocus removeFromSuperview];
+    }
+    if ([touch.view isEqual:self.cameraView])
+    {
+        self.camFocus = [[CameraFocusSquare alloc] initWithFrame:CGRectMake(touchPoint.x-40, touchPoint.y-40, 80, 80)];
+        [self.camFocus setBackgroundColor:[UIColor clearColor]];
+        [self.cameraView addSubview:self.camFocus];
+        [self.camFocus setNeedsDisplay];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:1.5];
+        [self.camFocus setAlpha:0.0];
+        [UIView commitAnimations];
+    }
+}
+
+- (void)focus:(CGPoint)aPoint;
+{
+    if ([self.device isKindOfClass:[AVCaptureDevice class]]) {
+        
+        if([self.device isFocusPointOfInterestSupported] &&
+           [self.device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
+            
+            CGRect screenRect = self.cameraView.frame;
+            double screenWidth = screenRect.size.width;
+            double screenHeight = screenRect.size.height;
+            double focus_x = aPoint.x/screenWidth;
+            double focus_y = aPoint.y/screenHeight;
+            if ([self.device lockForConfiguration:nil]) {
+                [self.device setFocusPointOfInterest:CGPointMake(focus_x,focus_y)];
+                [self.device setFocusMode:AVCaptureFocusModeAutoFocus];
+                if ([self.device isExposureModeSupported:AVCaptureExposureModeAutoExpose]){
+                    [self.device setExposureMode:AVCaptureExposureModeAutoExpose];
+                }
+                /*if ([self.device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
+                    [self.device setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
+                }*/
+                [self.device unlockForConfiguration];
+            }
+        }
+    }
+}
+
+#pragma mark - Animations
+
+- (CABasicAnimation *)fadeAnimationToOpen:(BOOL)isOpened
+{
+    CABasicAnimation *theAnimation;
+    
+    theAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    theAnimation.duration = 0.15;
+    
+    if (isOpened) {
+        theAnimation.fromValue = [NSNumber numberWithFloat:0.0];
+        theAnimation.toValue = [NSNumber numberWithFloat:1.0];
+    } else {
+        theAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+        theAnimation.toValue = [NSNumber numberWithFloat:0.0];
+    }
+    
+    return theAnimation;
+}
 
 
 @end

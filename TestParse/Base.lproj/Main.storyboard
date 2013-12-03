@@ -1109,45 +1109,6 @@
                                 <rect key="frame" x="0.0" y="50" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ew-1f-AIi">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Auto" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xZ-51-Dae">
-                                        <rect key="frame" x="39" y="16" width="36" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flash" translatesAutoresizingMaskIntoConstraints="NO" id="sPQ-ct-87i">
-                                        <rect key="frame" x="20" y="17" width="11" height="18"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1nP-O8-k4r">
-                                        <rect key="frame" x="245" y="0.0" width="75" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="reverse_cam">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="switchCamera:" destination="cDf-RZ-hTg" eventType="touchUpInside" id="1wA-Sc-Tzn"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w9q-AO-lJb">
-                                        <rect key="frame" x="0.0" y="0.0" width="83" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="switchFlashMode:" destination="cDf-RZ-hTg" eventType="touchUpInside" id="Tj0-az-mYg"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
-                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bSv-BF-Bj3">
                                 <rect key="frame" x="0.0" y="370" width="320" height="134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1196,6 +1157,38 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <view alpha="0.79999999999999982" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hK-40-EUJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flash" translatesAutoresizingMaskIntoConstraints="NO" id="Gcr-g3-tPj">
+                                        <rect key="frame" x="2" y="0.0" width="35" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9k-wq-Zl1">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
+                                        <state key="normal" title="Auto"/>
+                                        <connections>
+                                            <action selector="switchFlashMode:" destination="cDf-RZ-hTg" eventType="touchUpInside" id="uTo-c6-BYy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNp-QW-0Ky">
+                                        <rect key="frame" x="245" y="0.0" width="75" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="reverse_cam">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="switchCamera:" destination="cDf-RZ-hTg" eventType="touchUpInside" id="El4-jb-0UP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -1207,10 +1200,12 @@
                         <outlet property="badge" destination="O3K-oU-09a" id="Myx-V3-MXk"/>
                         <outlet property="cameraView" destination="RA1-aL-sgw" id="mc6-zI-oyu"/>
                         <outlet property="cancelButton" destination="dtl-Ts-RpM" id="9MC-yk-alc"/>
-                        <outlet property="labelFlash" destination="7xZ-51-Dae" id="BYA-nf-Zi1"/>
+                        <outlet property="flashButton" destination="c9k-wq-Zl1" id="Dcw-Sn-AA9"/>
+                        <outlet property="flashIcon" destination="Gcr-g3-tPj" id="AMH-Z4-HXm"/>
                         <outlet property="previewImage" destination="l0F-Aq-4XN" id="V6M-gJ-SL5"/>
-                        <outlet property="switchCamera" destination="1nP-O8-k4r" id="2yW-Mc-VO5"/>
+                        <outlet property="switchCamera" destination="ZNp-QW-0Ky" id="COV-yj-L5G"/>
                         <outlet property="takePhoto" destination="H6E-I0-qdy" id="iS6-Ff-2c4"/>
+                        <outlet property="toolboxView" destination="9hK-40-EUJ" id="yZ8-78-Dov"/>
                         <segue destination="CTI-H4-4ZD" kind="push" identifier="PhotoValidate" id="17P-5b-VHW"/>
                     </connections>
                 </viewController>
@@ -2548,10 +2543,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="6xL-71-AeC"/>
         <segue reference="pYD-9M-pFo"/>
+        <segue reference="6xL-71-AeC"/>
+        <segue reference="17P-5b-VHW"/>
         <segue reference="pId-s9-PUV"/>
         <segue reference="EkG-m5-ZxD"/>
-        <segue reference="gQS-Od-x3H"/>
     </inferredMetricsTieBreakers>
 </document>
