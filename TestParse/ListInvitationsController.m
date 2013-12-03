@@ -11,6 +11,7 @@
 #import "EventUtilities.h"
 #import "ListEvents.h"
 #import "PhotosCollectionViewController.h"
+#import "MOUtility.h"
 
 @interface ListInvitationsController ()
 
@@ -103,8 +104,7 @@
     cell.profilImageView.layer.masksToBounds = YES;
     
     //Profile picture
-    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", event[@"owner"][@"id"]]];
-    [cell.profilImageView setImageWithURL:pictureURL
+    [cell.profilImageView setImageWithURL:[MOUtility UrlOfFacebooProfileImage:event[@"owner"][@"id"] withResolution:FacebookNormalProfileImage]
                         placeholderImage:[UIImage imageNamed:@"covertest.png"]];
     
     //Assign the event Id

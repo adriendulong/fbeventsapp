@@ -19,7 +19,7 @@
 +(NSDate *)getEndDateEvent:(PFObject *)event;
 
 #pragma mark - Facebook
-+(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId;
++(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality;
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly;
 +(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
 +(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;

@@ -8,6 +8,7 @@
 
 #import "InvitedListViewController.h"
 #import "InvitedCell.h"
+#import "MOUtility.h"
 
 @interface InvitedListViewController ()
 
@@ -28,6 +29,26 @@
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"InvitedListViewController_Title", nil);
+    
+    self.attending = [[NSMutableArray alloc] init];
+    self.maybe = [[NSMutableArray alloc] init];
+    self.no = [[NSMutableArray alloc] init];
+    self.notjoined = [[NSMutableArray alloc] init];
+    
+    for(PFObject *invit in self.invited){
+        if ([invit[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
+            [self.attending addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventMaybe]) {
+            [self.maybe addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventNotReplied]) {
+            [self.notjoined addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventDeclined]) {
+            [self.no addObject:invit];
+        }
+    }
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -46,16 +67,41 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 1;
+    return 4;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section ==0) {
+        return @"Présents";
+    }
+    else if(section ==1){
+        return @"Peut-être";
+    }
+    else if(section ==2){
+        return @"Pas de réponse";
+    }
+    else{
+        return @"Absent";
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return [self.invited count];
+    if (section == 0) {
+        return [self.attending count];
+    }
+    else if(section == 1){
+        return [self.maybe count];
+    }
+    else if(section == 2){
+        return [self.notjoined count];
+    }
+    else{
+        return [self.no count];
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,13 +116,29 @@
     // Configure the cell...
     NSURL *pictureURL = [[NSURL alloc] init];
     NSString *name = [[NSString alloc] init];
-    PFObject *invited = [self.invited objectAtIndex:indexPath.row]; 
+    
+    PFObject *invited;
+    if (indexPath.section==0) {
+        invited = [self.attending objectAtIndex:indexPath.row];
+    }
+    else if (indexPath.section==1) {
+        invited = [self.maybe objectAtIndex:indexPath.row];
+    }
+    else if (indexPath.section==2) {
+        invited = [self.notjoined objectAtIndex:indexPath.row];
+    }
+    else{
+        invited = [self.no objectAtIndex:indexPath.row];
+    }
+    
+    
+    
     if (invited[@"user"]) {
-        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square&return_ssl_resources=1", invited[@"user"][@"facebookId"]]];
+        pictureURL = [MOUtility UrlOfFacebooProfileImage:invited[@"user"][@"facebookId"] withResolution:FacebookLargeProfileImage];
         name = invited[@"user"][@"name"];
     }
     else{
-        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=square&return_ssl_resources=1", invited[@"prospect"][@"facebookId"]]];
+        pictureURL = [MOUtility UrlOfFacebooProfileImage:invited[@"prospect"][@"facebookId"] withResolution:FacebookLargeProfileImage];
         name = invited[@"prospect"][@"name"];
     }
     

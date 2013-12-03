@@ -19,3 +19,13 @@
 "ChooseLastEventViewController_with" = "avec";
 "ChooseLastEventViewController_and" = "et";
 "ChooseLastEventViewController_more_friends" = "autres amis";
+
+
+
+//PhotosCollectionViewController
+"PhotosCollectionViewController_Title" = "in %i days";
+"PhotosCollectionViewController_Marker_Title" = "Sydney";
+"PhotosCollectionViewController_Marker_snippet" = "Australia";
+"PhotosCollectionViewController_OwnerEvent" = "Event organized by %@";
+"PhotosCollectionViewController_Show_Label" = "Show informations";
+"PhotosCollectionViewController_Hide_Label" = "Hide informations";

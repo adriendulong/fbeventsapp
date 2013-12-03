@@ -213,6 +213,10 @@
                 currentUser[@"last_name"] = userData[@"last_name"];
             }
             
+            if(userData[@"name"]){
+                currentUser[@"name"] = userData[@"name"];
+            }
+            
             if(userData[@"location"][@"name"]){
                 currentUser[@"location"] = userData[@"location"][@"name"];
             }

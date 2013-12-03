@@ -26,6 +26,12 @@ NSString *const FacebookEventMaybe               = @"unsure";
 NSString *const FacebookEventDeclined            = @"declined";
 NSString *const FacebookEventNotReplied          = @"not_replied";
 
+NSString *const FacebookSmallProfileImage          = @"small";
+NSString *const FacebookNormalProfileImage         = @"normal";
+NSString *const FacebookLargeProfileImage          = @"large";
+NSString *const FacebookSquareProfileImage         = @"square";
+
+
 NSString *const FacebookEventsFields             = @"owner.fields(id,name,picture),name,location,start_time,end_time,rsvp_status,cover,updated_time,description,is_date_only,admins.fields(id,name,picture),venue";
 
 
