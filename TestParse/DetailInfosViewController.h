@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Parse/Parse.h>
 
 @interface DetailInfosViewController : UIViewController <NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;

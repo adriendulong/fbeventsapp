@@ -7,7 +7,6 @@
 //
 
 #import "TestParseAppDelegate.h"
-#import <Parse/Parse.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "TestFlight.h"
 

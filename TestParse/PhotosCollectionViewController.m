@@ -63,7 +63,7 @@
     NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
     double secondsInAnDays = 86400;
     NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
-    self.title = [NSString stringWithFormat:@"dans %i jours", daysBetweenDates];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title", nil), daysBetweenDates];
     
     //Init images
     //self.photos = [NSArray arrayWithObjects:@"horloge", @"covertest", @"covertest", nil];
@@ -139,6 +139,7 @@
         PFObject *event = self.invitation[@"event"];
         
         //Add Google Maps
+
         
         
         if (![toHideView viewWithTag:3000]) {
@@ -197,7 +198,7 @@
         
         headerView.invitation = self.invitation;
         headerView.nameEvent.text = event[@"name"];
-        headerView.ownerEvent.text = [NSString stringWithFormat:@"Evènement organisé par %@", event[@"owner"][@"name"]];
+        headerView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
         headerView.eventDescription.text = event[@"description"];
         [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertest"]];
         if (event[@"location"]) {
@@ -700,7 +701,7 @@
     
     self.headerCollectionView.invitation = self.invitation;
     self.headerCollectionView.nameEvent.text = event[@"name"];
-    self.headerCollectionView.ownerEvent.text = [NSString stringWithFormat:@"Evènement organisé par %@", event[@"owner"][@"name"]];
+    self.headerCollectionView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
     self.headerCollectionView.eventDescription.text = event[@"description"];
     [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos"]];
     
@@ -858,11 +859,11 @@
     NSLog(@"TEST TAPPPP");
     
     if (self.isShowingDetails) {
-        self.headerCollectionView.labelHide.text = @"Afficher les informations";
+        self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:YES];
     }
     else{
-        self.headerCollectionView.labelHide.text = @"Masquer les informations";
+        self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Hide_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:NO];
     }
     

@@ -7,7 +7,7 @@
 //
 
 #import "EventDetailViewController.h"
-#import  "MOUtility.h"
+#import "MOUtility.h"
 #import "EventUtilities.h"
 #import "FbEventsUtilities.h"
 
@@ -41,7 +41,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]}];
-    self.title = @"Dans x jours";
+    self.title = NSLocalizedString(@"EventDetailViewController_Title", nil);
     
     //Init
     self.isShowingDetails = YES;
@@ -60,8 +60,8 @@
     // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-    marker.title = @"Sydney";
-    marker.snippet = @"Australia";
+    marker.title = NSLocalizedString(@"EventDetailViewController_Marker_Title", nil);
+    marker.snippet = NSLocalizedString(@"EventDetailViewController_Marker_snippet", nil);
     marker.map = self.mapView_;
     
     
@@ -95,10 +95,10 @@
     NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
     double secondsInAnDays = 86400;
     NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
-    self.title = [NSString stringWithFormat:@"dans %i jours", daysBetweenDates];
+    self.title = [NSString stringWithFormat:NSLocalizedString(@"EventDetailViewController_Countdown", nil), daysBetweenDates];
     
     self.nameEvent.text = event[@"name"];
-    self.ownerEvent.text = [NSString stringWithFormat:@"Evènement organisé par %@", event[@"owner"][@"name"]];
+    self.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"EventDetailViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
     self.descriptionLabel.text = event[@"description"];
     [self.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
     

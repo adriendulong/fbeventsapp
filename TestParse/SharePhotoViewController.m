@@ -68,7 +68,7 @@
     
     //Top bar
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
-    self.navigationItem.backBarButtonItem.title = @"Test";
+    self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"SharePhotoViewController_Title", nil);
     
     self.previewImage.image = self.takenPhoto;
 	// Do any additional setup after loading the view.
@@ -494,7 +494,7 @@
     if (self.titlePhoto.text.length == 0) {
         self.hintIsWritten = YES;
         [self.titlePhoto setTextColor:[UIColor grayColor]];
-        self.titlePhoto.text = @"Ajoutez une légende à votre photo";
+        self.titlePhoto.text = NSLocalizedString(@"SharePhotoViewController_AddLegend", nil);
     }
 }
 

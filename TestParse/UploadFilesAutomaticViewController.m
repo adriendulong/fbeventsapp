@@ -32,7 +32,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self.progessView setProgress:0.0f];
-    self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", 0, self.photosToUpload.count];
+    self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), 0, self.photosToUpload.count];
     [self uploadPhotos];
 }
 
@@ -57,7 +57,7 @@
                 NSLog(@"Already exist for this evenet, don't upload");
                 self.nbOfPhotosUploaded++;
                 
-                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                 [self.progessView setProgress:1];
                 
                 if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
@@ -283,7 +283,7 @@
                 // Update your progress spinner here. percentDone will be between 0 and 100.
                 
                 [self.progessView setProgress:(float)percentDone/100];
-                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
             }];
         }];
         

@@ -82,9 +82,9 @@
         //Phone
         if (indexPath.section == 0) {
             headerView.viewHeader.backgroundColor = [UIColor orangeColor];
-            headerView.typeOfSource.text = @"Sur mon iPhone";
+            headerView.typeOfSource.text = NSLocalizedString(@"PhotosImportedViewController_OnMyiPhone", nil);
             headerView.imageLogo.image = [UIImage imageNamed:@"camera_app"];
-            headerView.numberPhotos.text = [NSString stringWithFormat:@"%i photos de l'évènement touvées", [[self.imagesFound objectAtIndex:0] count]];
+            headerView.numberPhotos.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosImportedViewController_NbPhotoFind", nil), [[self.imagesFound objectAtIndex:0] count]];
             
             if (self.numberOfPhotosSelectedPhone == [[self.imagesFound objectAtIndex:0] count]) {
                 [headerView.modifySelectionButton setSelected:YES];
@@ -99,9 +99,9 @@
         //Facebook
         else if(indexPath.section == 1){
             headerView.viewHeader.backgroundColor = [MOUtility colorWithHexString:FacebookFirstBlue];
-            headerView.typeOfSource.text = @"Sur Facebook";
+            headerView.typeOfSource.text = NSLocalizedString(@"PhotosImportedViewController_OnFacebook", nil);
             headerView.imageLogo.image = [UIImage imageNamed:@"facebook_logo_white"];
-            headerView.numberPhotos.text = [NSString stringWithFormat:@"%i photos de l'évènement touvées", [[self.imagesFound objectAtIndex:1] count]];
+            headerView.numberPhotos.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosImportedViewController_NbPhotoFind", nil), [[self.imagesFound objectAtIndex:1] count]];
             
             if (self.numberOfPhotosSelectedFB == [[self.imagesFound objectAtIndex:1] count]) {
                 [headerView.modifySelectionButton setSelected:YES];

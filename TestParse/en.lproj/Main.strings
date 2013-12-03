@@ -1,0 +1,213 @@
+
+/* Class = "IBUILabel"; text = "Regroupez tous vos évènements au même endroit"; ObjectID = "0oA-Yx-99e"; */
+"0oA-Yx-99e.text" = "Gather all your events in one place";
+
+/* Class = "IBUILabel"; text = "Soirée"; ObjectID = "3i9-9e-e7e"; */
+"3i9-9e-e7e.text" = "Party";
+
+/* Class = "IBUILabel"; text = "Masquer les informations"; ObjectID = "47d-Kt-YZl"; */
+"47d-Kt-YZl.text" = "Hide information";
+
+/* Class = "IBUILabel"; text = "Vacances"; ObjectID = "5bD-ir-VaR"; */
+"5bD-ir-VaR.text" = "Holiday";
+
+/* Class = "IBUITabBarItem"; title = "Memories"; ObjectID = "68z-aR-BPg"; */
+"68z-aR-BPg.title" = "Memories";
+
+/* Class = "IBUILabel"; text = "OCT"; ObjectID = "6wl-Cr-MT7"; */
+"6wl-Cr-MT7.text" = "OCT";
+
+/* Class = "IBUILabel"; text = "23"; ObjectID = "75V-xS-Zg7"; */
+"75V-xS-Zg7.text" = "23";
+
+/* Class = "IBUILabel"; text = "Auto"; ObjectID = "7xZ-51-Dae"; */
+"7xZ-51-Dae.text" = "Auto";
+
+/* Class = "IBUIButton"; normalTitle = "Importation Automatique"; ObjectID = "9L9-4r-1dN"; */
+"9L9-4r-1dN.normalTitle" = "Automatic import";
+
+/* Class = "IBUIButton"; normalTitle = "Twitter"; ObjectID = "AeB-fb-maB"; */
+"AeB-fb-maB.normalTitle" = "Twitter";
+
+/* Class = "IBUIButton"; selectedTitle = "Twitter"; ObjectID = "AeB-fb-maB"; */
+"AeB-fb-maB.selectedTitle" = "Twitter";
+
+/* Class = "IBUILabel"; text = "8 Nouvelles discussions"; ObjectID = "B81-Fs-mQq"; */
+"B81-Fs-mQq.text" = "8 New discussions";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "EI0-GO-qEf"; */
+"EI0-GO-qEf.text" = "Label";
+
+/* Class = "IBUILabel"; text = "20 Photos"; ObjectID = "GHo-z7-rPw"; */
+"GHo-z7-rPw.text" = "20 Photos";
+
+/* Class = "IBUISegmentedControl"; Gar-FE-BB9.segmentTitles[0] = "Accepter"; ObjectID = "Gar-FE-BB9"; */
+"Gar-FE-BB9.segmentTitles[0]" = "Accept";
+
+/* Class = "IBUISegmentedControl"; Gar-FE-BB9.segmentTitles[1] = "Peut-être"; ObjectID = "Gar-FE-BB9"; */
+"Gar-FE-BB9.segmentTitles[1]" = "Maybe";
+
+/* Class = "IBUISegmentedControl"; Gar-FE-BB9.segmentTitles[2] = "Refuser"; ObjectID = "Gar-FE-BB9"; */
+"Gar-FE-BB9.segmentTitles[2]" = "Refuse";
+
+/* Class = "IBUILabel"; text = "Week-End"; ObjectID = "H6R-wk-Saz"; */
+"H6R-wk-Saz.text" = "Week-End";
+
+/* Class = "IBUIBarButtonItem"; title = "Item"; ObjectID = "Hgj-K3-HWG"; */
+"Hgj-K3-HWG.title" = "Item";
+
+/* Class = "IBUIButton"; normalTitle = "Facebook"; ObjectID = "IYy-zv-KmS"; */
+"IYy-zv-KmS.normalTitle" = "Facebook";
+
+/* Class = "IBUIButton"; selectedTitle = "Facebook"; ObjectID = "IYy-zv-KmS"; */
+"IYy-zv-KmS.selectedTitle" = "Facebook";
+
+/* Class = "IBUILabel"; text = "80 invités"; ObjectID = "JbC-uX-IpG"; */
+"JbC-uX-IpG.text" = "80 guests";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "N4T-F6-794"; */
+"N4T-F6-794.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Samedi 23 Octobre à 20:30"; ObjectID = "Org-wP-Oq5"; */
+"Org-wP-Oq5.text" = "Saturday, October 23 at 20:30";
+
+/* Class = "IBUIBarButtonItem"; title = "Valider"; ObjectID = "QgN-0B-C4d"; */
+"QgN-0B-C4d.title" = "Validate";
+
+/* Class = "IBUILabel"; text = "6h à 24h"; ObjectID = "T0E-ne-KH1"; */
+"T0E-ne-KH1.text" = "6h to 24h";
+
+/* Class = "IBUINavigationItem"; title = "Prenez une photo de l'évènement !"; ObjectID = "TML-IG-DOh"; */
+"TML-IG-DOh.title" = "Take a photo of the event !";
+
+/* Class = "IBUILabel"; text = "Journée"; ObjectID = "UIL-39-m7S"; */
+"UIL-39-m7S.text" = "Day";
+
+/* Class = "IBUILabel"; text = "18:00 à Le Star Café"; ObjectID = "UOz-Be-I0f"; */
+"UOz-Be-I0f.text" = "18:00 to Le Star Café";
+
+/* Class = "IBUILabel"; text = "21 photos de l'évènement trouvées"; ObjectID = "Vo8-nF-ayA"; */
+"Vo8-nF-ayA.text" = "21 photos of the event found";
+
+/* Class = "IBUILabel"; text = "18:00 à Le Star Café"; ObjectID = "ZeB-fw-c8g"; */
+"ZeB-fw-c8g.text" = "18:00 to Le Star Café";
+
+/* Class = "IBUILabel"; text = "1h à 8h"; ObjectID = "Zmt-81-ftr"; */
+"Zmt-81-ftr.text" = "1h to 8h";
+
+/* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "a54-2Z-Vdx"; */
+"a54-2Z-Vdx.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "IBUIButton"; normalTitle = "FACEBOOK"; ObjectID = "crz-qW-qcK"; */
+"crz-qW-qcK.normalTitle" = "FACEBOOK";
+
+/* Class = "IBUILabel"; text = "De quel type d'évènement s'agit-il ?"; ObjectID = "d07-Gh-Iyj"; */
+"d07-Gh-Iyj.text" = "What kind of event is it ?";
+
+/* Class = "IBUIBarButtonItem"; title = "Valider"; ObjectID = "dWK-tp-AxM"; */
+"dWK-tp-AxM.title" = "Validate";
+
+/* Class = "IBUILabel"; text = "Organisé par Emmanuelle Barthou"; ObjectID = "esw-ya-tS8"; */
+"esw-ya-tS8.text" = "Organized by Emmanuelle Barthou";
+
+/* Class = "IBUILabel"; text = "18"; ObjectID = "fFk-r4-7Nd"; */
+"fFk-r4-7Nd.text" = "18";
+
+/* Class = "IBUIViewController"; title = "FirstLaunch"; ObjectID = "gjV-dc-mLQ"; */
+"gjV-dc-mLQ.title" = "FirstLaunch";
+
+/* Class = "IBUIButton"; normalTitle = "Prendre une Photo"; ObjectID = "gzZ-jQ-ykY"; */
+"gzZ-jQ-ykY.normalTitle" = "Take a Photo";
+
+/* Class = "IBUILabel"; text = "23 présents - 12 peut-être"; ObjectID = "hc8-6X-VE4"; */
+"hc8-6X-VE4.text" = "23 present - 12 may";
+
+/* Class = "IBUINavigationItem"; title = "Postez votre photo"; ObjectID = "iY4-24-MAl"; */
+"iY4-24-MAl.title" = "Post your photo";
+
+/* Class = "IBUIButton"; normalTitle = "Postez la photo"; ObjectID = "igi-9J-nj5"; */
+"igi-9J-nj5.normalTitle" = "Post the photo";
+
+/* Class = "IBUILabel"; text = "Rémi Bardoux vous a envoyé une invitation"; ObjectID = "jAO-yp-XJF"; */
+"jAO-yp-XJF.text" = "Rémi Bardoux has sent you an invitation";
+
+/* Class = "IBUILabel"; text = "avec moncul et mabite et je ne sais pas qui"; ObjectID = "kln-HF-h2M"; */
+"kln-HF-h2M.text" = "with my ass and my dick and I do not know who";
+
+/* Class = "IBUILabel"; text = "3j"; ObjectID = "lHs-t3-u6H"; */
+"lHs-t3-u6H.text" = "3d";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "m30-ZG-H3s"; */
+"m30-ZG-H3s.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Le Star Café"; ObjectID = "nYt-Oh-p93"; */
+"nYt-Oh-p93.text" = "Le Star Café";
+
+/* Class = "IBUITextView"; text = "Ajoutez un légende à votre photo"; ObjectID = "p6T-oQ-WEn"; */
+"p6T-oQ-WEn.text" = "Add a caption to your photo";
+
+/* Class = "IBUILabel"; text = "La séance"; ObjectID = "qDS-H3-Nqs"; */
+"qDS-H3-Nqs.text" = "The meeting";
+
+/* Class = "IBUIBarButtonItem"; title = " "; ObjectID = "qfQ-YQ-gTB"; */
+"qfQ-YQ-gTB.title" = " ";
+
+/* Class = "IBUILabel"; text = "Rémi Bardoux vous a envoyé une invitation"; ObjectID = "r66-mq-oBm"; */
+"r66-mq-oBm.text" = "Rémi Bardoux has sent you an invitation";
+
+/* Class = "IBUITabBarItem"; title = "Evènements"; ObjectID = "rNH-bR-BBY"; */
+"rNH-bR-BBY.title" = "Events";
+
+/* Class = "IBUIButton"; normalTitle = "Valider"; ObjectID = "rUB-qg-eRy"; */
+"rUB-qg-eRy.normalTitle" = "Validate";
+
+/* Class = "IBUILabel"; text = "Adrien Dulong"; ObjectID = "tOE-9d-ZzP"; */
+"tOE-9d-ZzP.text" = "Adrien Dulong";
+
+/* Class = "IBUILabel"; text = "1j à 4j"; ObjectID = "tiy-fn-tAM"; */
+"tiy-fn-tAM.text" = "1d to 4d";
+
+/* Class = "IBUISegmentedControl"; tyq-mJ-NpV.segmentTitles[0] = "Invitations"; ObjectID = "tyq-mJ-NpV"; */
+"tyq-mJ-NpV.segmentTitles[0]" = "Invitations";
+
+/* Class = "IBUISegmentedControl"; tyq-mJ-NpV.segmentTitles[1] = "Refusées"; ObjectID = "tyq-mJ-NpV"; */
+"tyq-mJ-NpV.segmentTitles[1]" = "Refused";
+
+/* Class = "IBUIButton"; normalTitle = "Connectez vous avec Facebook"; ObjectID = "uOh-Z5-0DB"; */
+"uOh-Z5-0DB.normalTitle" = "Log-In with Facebook";
+
+/* Class = "IBUILabel"; text = "18:00 à Le Star Café"; ObjectID = "uWB-eb-ypC"; */
+"uWB-eb-ypC.text" = "18:00 at Le Star Café";
+
+/* Class = "IBUILabel"; text = "SEP"; ObjectID = "v5N-zU-xix"; */
+"v5N-zU-xix.text" = "SEP";
+
+/* Class = "IBUILabel"; text = "4j et plus"; ObjectID = "v5z-PH-Mk3"; */
+"v5z-PH-Mk3.text" = "4d and more";
+
+/* Class = "IBUITabBarItem"; title = "Invitations"; ObjectID = "wGe-Sg-YeR"; */
+"wGe-Sg-YeR.title" = "Invitations";
+
+/* Class = "IBUILabel"; text = "Bordeaux Super Ville"; ObjectID = "wQs-a4-1Fs"; */
+"wQs-a4-1Fs.text" = "Bordeaux Super City";
+
+/* Class = "IBUISegmentedControl"; wV8-JR-7sI.segmentTitles[0] = "Accepter"; ObjectID = "wV8-JR-7sI"; */
+"wV8-JR-7sI.segmentTitles[0]" = "Accept";
+
+/* Class = "IBUISegmentedControl"; wV8-JR-7sI.segmentTitles[1] = "Peut-être"; ObjectID = "wV8-JR-7sI"; */
+"wV8-JR-7sI.segmentTitles[1]" = "Maybe";
+
+/* Class = "IBUISegmentedControl"; wV8-JR-7sI.segmentTitles[2] = "Refuser"; ObjectID = "wV8-JR-7sI"; */
+"wV8-JR-7sI.segmentTitles[2]" = "Refuse";
+
+/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "xbQ-IV-lGV"; */
+"xbQ-IV-lGV.normalTitle" = "Button";
+
+/* Class = "IBUITextView"; text = "Adrien DUlong"; ObjectID = "y0h-To-W5d"; */
+"y0h-To-W5d.text" = "Adrien Dulong";
+
+/* Class = "IBUILabel"; text = "Rémi Bardoux"; ObjectID = "yWy-Uv-9b1"; */
+"yWy-Uv-9b1.text" = "Rémi Bardoux";
+
+/* Class = "IBUILabel"; text = "Sur mon iPhone"; ObjectID = "z80-DY-aEk"; */
+"z80-DY-aEk.text" = "On my iPhone";

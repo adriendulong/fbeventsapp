@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import <Parse/Parse.h>
 #import "InfoHeaderCollectionView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
