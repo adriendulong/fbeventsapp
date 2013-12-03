@@ -295,10 +295,13 @@
 -(void)addCurrentUserToLikes{
     NSMutableArray *tempLikes = [[NSMutableArray alloc] init];
     
-    for(id like in self.photo[@"likes"]){
-        [tempLikes addObject:like];
+    if (self.photo[@"likes"]) {
+        for(id like in self.photo[@"likes"]){
+            [tempLikes addObject:like];
+        }
     }
     
+    NSLog(@"%@", [PFUser currentUser]);
     NSDictionary *userLiked = @{@"name": [PFUser currentUser][@"name"],
                                 @"id": [PFUser currentUser].objectId,
                                 @"facebookId" : [PFUser currentUser][@"facebookId"],

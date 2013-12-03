@@ -23,7 +23,10 @@
 @property (nonatomic, assign) int nbInvitedToAdd;
 @property (nonatomic, assign) int nbInvitedAlreadyAdded;
 @property (nonatomic, assign) BOOL guestViewUpdated;
-@property (nonatomic, assign) BOOL isDuringOrAfter;;
+@property (nonatomic, assign) BOOL isDuringOrAfter;
+@property (nonatomic, assign) int nbAttending;
+@property (nonatomic, assign) int nbMaybe;
+@property (nonatomic, assign) int nbTotal;
 
 - (IBAction)hideViewTap:(id)sender;
 @end

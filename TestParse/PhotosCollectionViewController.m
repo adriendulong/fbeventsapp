@@ -235,11 +235,13 @@
             //headerView.separateConstraint.constant = 20.0f;
         }
         else{
+            headerView.constraintButtonPhoto.constant = 90.0f;
             headerView.constraintViewNbPhotos.constant = 0.0f;
         }
         
         //Add button
         //Add import automatic button
+        NSLog(@"Center view bottom : %f", headerView.bottomView.center.y);
         
         
         
@@ -577,7 +579,7 @@
         PFQuery *query = [PFUser query];
         [query whereKey:@"facebookId" equalTo:invited[@"id"]];
         [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (!object) {
+            if (error && error.code == kPFErrorObjectNotFound) {
                 ///////
                 // PROSPECT EXISTS ??
                 //////
@@ -586,7 +588,7 @@
                 [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
                     
                     //If there is no prospect
-                    if (!object) {
+                    if (error && error.code == kPFErrorObjectNotFound) {
                         //We create a prospect
                         PFObject *prospectObject = [PFObject objectWithClassName:@"Prospect"];
                         prospectObject[@"facebookId"] = invited[@"id"];
@@ -597,13 +599,23 @@
                         }];
                     }
                     //A prospect already exist, add invitation
-                    else{
+                    else if(!error){
                         [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:object];
                     }
                 }];
             }
-            else{
-                [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)object forProspect:nil];
+            else if(!error){
+                //Invitation exists ?
+                PFQuery *invitationUser = [PFQuery queryWithClassName:@"Invitation"];
+                [invitationUser whereKey:@"user" equalTo:object];
+                [invitationUser whereKey:@"event" equalTo:self.invitation[@"event"]];
+                [invitationUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    if (error && error.code == kPFErrorObjectNotFound) {
+                        [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)object forProspect:nil];
+                    }
+                }];
+                
+                
             }
         }];
         
@@ -679,7 +691,7 @@
             [self getInvitedFromServer];
             self.guestViewUpdated = YES;
         }
-        else if (self.nbInvitedAlreadyAdded ==5){
+        else if (self.nbInvitedAlreadyAdded==5){
             [self getInvitedFromServer];
             self.guestViewUpdated = YES;
         }
@@ -759,6 +771,29 @@
         
         //UIImageView *indicator = (UIImageView *)[guestView viewWithTag:2];
     }
+    
+    [self updateNbInvited];
+}
+
+-(void)updateNbInvited{
+    self.nbAttending = 0;
+    self.nbMaybe = 0;
+    self.nbTotal = 0;
+    
+    for(PFObject *invitation in self.invited){
+        self.nbTotal++;
+        if ([invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
+            self.nbAttending++;
+        }
+        else if([invitation[@"rsvp_status"] isEqualToString:FacebookEventMaybe]){
+            self.nbMaybe++;
+        }
+    }
+
+   //Update labels
+    self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:@"%i invités", self.nbTotal];
+    self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:@"%i présents - %i peut-être", self.nbAttending, self.nbMaybe];
+    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

@@ -31,6 +31,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *separateConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *mapButton;
 @property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
+@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UILabel *nbTotalInvitedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailInvitedLabel;
 
 
 - (IBAction)rsvpChanged:(id)sender;

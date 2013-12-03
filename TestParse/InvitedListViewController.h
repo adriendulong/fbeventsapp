@@ -13,5 +13,9 @@
 @interface InvitedListViewController : UITableViewController
 
 @property (strong, nonatomic) NSArray *invited;
+@property (strong, nonatomic) NSMutableArray *attending;
+@property (strong, nonatomic) NSMutableArray *maybe;
+@property (strong, nonatomic) NSMutableArray *no;
+@property (strong, nonatomic) NSMutableArray *notjoined;
 
 @end

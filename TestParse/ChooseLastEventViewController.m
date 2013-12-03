@@ -272,9 +272,6 @@
          NSInteger rowSelected = [self.pickerView selectedRowInComponent:0];
 
         if (self.selectedType == 1) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
-            [alert show];
-            
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForEvening objectAtIndex:rowSelected][@"last"];
@@ -282,23 +279,17 @@
             
         }
         else if (self.selectedType == 2) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Journey", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
-            [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForDay objectAtIndex:rowSelected][@"last"];
             
         }
         else if (self.selectedType == 3) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Week-End", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
-            [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForWE objectAtIndex:rowSelected][@"last"];
         }
         else if (self.selectedType == 4) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Holiday", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
-            [alert show];
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForHolidays objectAtIndex:rowSelected][@"last"];
