@@ -12,6 +12,7 @@
 @interface PhotoDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 @property (strong, nonatomic) PFObject *photo;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *fbLikers;
 
 
 @end

@@ -744,7 +744,7 @@
             UIView *guestView = [self.headerCollectionView.viewToHide viewWithTag:i];
             [guestView setHidden:NO];
             UIImageView *photo = (UIImageView *)[guestView viewWithTag:6];
-            [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:guest[@"facebookId"]]
+            [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:guest[@"facebookId"] withResolution:FacebookLargeProfileImage]
                   placeholderImage:[UIImage imageNamed:@"covertest"]];
             photo.layer.cornerRadius = 23.0f;
             photo.layer.masksToBounds = YES;

@@ -59,8 +59,8 @@
     return dateToReturn;
 }
 
-+(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId{
-    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", profileId]];
++(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality{
+    NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=%@&return_ssl_resources=1", profileId, quality]];
     
     return pictureURL;
 }

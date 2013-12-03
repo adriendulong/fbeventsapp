@@ -24,6 +24,11 @@ extern NSString *const FacebookEventMaybe;
 extern NSString *const FacebookEventDeclined;
 extern NSString *const FacebookEventNotReplied;
 
+extern NSString *const FacebookSmallProfileImage;
+extern NSString *const FacebookNormalProfileImage;
+extern NSString *const FacebookLargeProfileImage;
+extern NSString *const FacebookSquareProfileImage;
+
 extern NSString *const FacebookEventsFields;
 
 #pragma mark - Colors

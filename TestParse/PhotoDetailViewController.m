@@ -12,6 +12,7 @@
 #import "LikesPhotoCell.h"
 #import "ActionPhotoCell.h"
 #import "CommentsCell.h"
+#import "LikesCollectionsController.h"
 
 @interface PhotoDetailViewController ()
 
@@ -48,6 +49,8 @@
         NSLog(@"Width %@, Height %@", self.photo[@"width"], self.photo[@"height"]);
     }
     
+    self.fbLikers = [[NSMutableArray alloc] init];
+    [self getLikesPhotosFromFB];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
     [query includeKey:@"user"];
@@ -164,7 +167,7 @@
             cell = [[ActionPhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
         }
         
-        if ([self hasLikedPhoto]) {
+        if ([self hasLikedPhoto:[PFUser currentUser][@"facebookId"]]) {
             [cell.likeButton setSelected:YES];
         }
         else{
@@ -172,12 +175,12 @@
         }
         
         NSString *message = [[NSString alloc] init];
-        if (((NSArray *)self.photo[@"likes"]).count >1) {
-             message = [NSString stringWithFormat:@"%i likes", ((NSArray *)self.photo[@"likes"]).count];
+        if ((((NSArray *)self.photo[@"likes"]).count + self.fbLikers.count) >1) {
+             message = [NSString stringWithFormat:@"%i likes", (((NSArray *)self.photo[@"likes"]).count + self.fbLikers.count)];
             
         }
         else{
-            message = [NSString stringWithFormat:@"%i like", ((NSArray *)self.photo[@"likes"]).count];
+            message = [NSString stringWithFormat:@"%i like", (((NSArray *)self.photo[@"likes"]).count + self.fbLikers.count)];
         }
         [cell.nbPhotosButton setTitle:message forState:UIControlStateNormal];
         
@@ -221,8 +224,9 @@
         if (!error) {
             self.photo = photoObject;
             
-            if ([self hasLikedPhoto]) {
+            if ([self hasLikedPhoto:[PFUser currentUser][@"facebookId"]]) {
                 [self removeCurrentUserFromLikes];
+                [self getLikesPhotosFromFB];
             }
             else{
                 [self addCurrentUserToLikes];
@@ -257,12 +261,20 @@
 - (IBAction)likeAction:(id)sender {
 }
 
--(BOOL)hasLikedPhoto{
+-(BOOL)hasLikedPhoto:(NSString *)facebookId{
     for(id like in self.photo[@"likes"]){
-        if ([like[@"id" ] isEqualToString:[PFUser currentUser].objectId]) {
+        if ([like[@"facebookId"] isEqualToString:facebookId]) {
             return YES;
         }
     }
+    
+    /*
+    for(id like in self.fbLikers){
+        if ([like[@"id"] isEqualToString:[PFUser currentUser][@"facebookId"]]) {
+            return YES;
+        }
+    }*/
+    
     
     return NO;
 }
@@ -289,11 +301,13 @@
     
     NSDictionary *userLiked = @{@"name": [PFUser currentUser][@"name"],
                                 @"id": [PFUser currentUser].objectId,
+                                @"facebookId" : [PFUser currentUser][@"facebookId"],
                                 @"date": [NSDate date]};
     [tempLikes addObject:userLiked];
     
     NSArray *likes = [tempLikes copy];
     self.photo[@"likes"] = likes;
+    [self ifLikedOnFacebookRemove:[PFUser currentUser][@"facebookId"]];
 }
 
 -(void)morePhoto:(NSNotification *)note{
@@ -389,5 +403,65 @@
     
     
 }
+
+
+-(void)getLikesPhotosFromFB{
+    [self.fbLikers removeAllObjects];
+    
+    if (self.photo[@"facebookId"]) {
+        NSString *requestString = [NSString stringWithFormat:@"%@/likes", self.photo[@"facebookId"]];
+        
+        FBRequest *request = [FBRequest requestForGraphPath:requestString];
+        
+        // Send request to Facebook
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                for(NSDictionary *user in result[@"data"]){
+                    if(![self hasLikedPhoto:user[@"id"]]){
+                        NSDictionary *userDict = @{@"id": user[@"id"],
+                                                   @"name" : user[@"name"]};
+                        [self.fbLikers addObject:userDict];
+                    }
+                    
+                }
+                [self.tableView reloadData];
+                
+                
+            }
+            else{
+                NSLog(@"%@", error);
+            }
+        }];
+    }
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"Likers"]) {
+        
+        //Remove image preview from this screen if come back
+        
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+        
+        NSMutableArray *likers = [[NSMutableArray alloc] init];
+
+        [likers addObjectsFromArray:self.photo[@"likes"]];
+        [likers addObjectsFromArray:self.fbLikers];
+
+        
+        LikesCollectionsController *likesCollection = segue.destinationViewController;
+        likesCollection.likers = likers;
+    }
+}
+
+-(void)ifLikedOnFacebookRemove:(NSString *)facebookId{
+    for(NSDictionary *user in self.fbLikers){
+        if([user[@"id"] isEqualToString:facebookId]){
+            [self.fbLikers removeObject:user];
+            break;
+        }
+    }
+}
+
 
 @end

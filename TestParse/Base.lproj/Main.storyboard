@@ -2350,6 +2350,7 @@
                                                     </state>
                                                     <connections>
                                                         <action selector="detailLikes:" destination="Uxh-P6-mTa" eventType="touchUpInside" id="qfx-rJ-nBT"/>
+                                                        <segue destination="t2e-aH-S4i" kind="push" identifier="Likers" id="sNr-Qc-Kx9"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -2407,6 +2408,59 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qWc-4Y-Epz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4767" y="1065"/>
+        </scene>
+        <!--Likes Collections Controller-->
+        <scene sceneID="4r2-St-E1a">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="t2e-aH-S4i" customClass="LikesCollectionsController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="mbb-Rb-3T0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XbV-cb-LIS">
+                            <size key="itemSize" width="95" height="115"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="5" minY="10" maxX="5" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="H8Z-Yd-efz">
+                                <rect key="frame" x="5" y="74" width="95" height="115"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="95" height="115"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2gT-S1-K26">
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="30" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Adrien Dulong" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Fdt-VV-9gQ">
+                                            <rect key="frame" x="2" y="93" width="92" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView hidden="YES" userInteractionEnabled="NO" tag="20" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fb_on_share" translatesAutoresizingMaskIntoConstraints="NO" id="RKA-D5-RX6">
+                                            <rect key="frame" x="79" y="73" width="7" height="14"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="t2e-aH-S4i" id="qKE-HD-V3s"/>
+                            <outlet property="delegate" destination="t2e-aH-S4i" id="9yn-L9-Fou"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="b6h-Ll-n0c"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D1i-C9-nus" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5244" y="1072"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="w4O-uY-9rf">
@@ -2515,6 +2569,7 @@
         <image name="facebook_connect_button" width="306" height="41"/>
         <image name="facebook_logo_white" width="11" height="22"/>
         <image name="fb_off_share" width="11" height="22"/>
+        <image name="fb_on_share" width="11" height="22"/>
         <image name="flash" width="11" height="18"/>
         <image name="go.png" width="18" height="18"/>
         <image name="holidays_picto" width="119" height="118"/>

@@ -83,6 +83,7 @@
 		E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE150D180999C00021F321 /* FirstLaunchViewController.m */; };
 		E7B406F7181ADA86001559CF /* ListEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B406F6181ADA86001559CF /* ListEvents.m */; };
 		E7BD58B61823E9D200A62F2F /* FbEventsUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E7BD58B51823E9D200A62F2F /* FbEventsUtilities.m */; };
+		E7C87D27184CF8CD00C586E6 /* LikesCollectionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */; };
 		E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF26183628AA001821BF /* LoginViewController.m */; };
 		E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF2918362939001821BF /* TutorialViewController.m */; };
 		E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193731840CC24008FD530 /* NSMutableArray+Reverse.m */; };
@@ -226,6 +227,8 @@
 		E7B406F6181ADA86001559CF /* ListEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListEvents.m; sourceTree = "<group>"; };
 		E7BD58B41823E9D200A62F2F /* FbEventsUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FbEventsUtilities.h; sourceTree = "<group>"; };
 		E7BD58B51823E9D200A62F2F /* FbEventsUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FbEventsUtilities.m; sourceTree = "<group>"; };
+		E7C87D25184CF8CD00C586E6 /* LikesCollectionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikesCollectionsController.h; sourceTree = "<group>"; };
+		E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikesCollectionsController.m; sourceTree = "<group>"; };
 		E7CFCF25183628AA001821BF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		E7CFCF26183628AA001821BF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		E7CFCF2818362939001821BF /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
@@ -374,6 +377,8 @@
 				E74F753A1847A4A900F42E2A /* CustomBadge.m */,
 				E74F753C1847ADAF00F42E2A /* PhotosAlbumViewController.h */,
 				E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */,
+				E7C87D25184CF8CD00C586E6 /* LikesCollectionsController.h */,
+				E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -736,6 +741,7 @@
 				E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */,
 				E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */,
 				E72055BD1833F9F1003D7AD0 /* CameraViewController.m in Sources */,
+				E7C87D27184CF8CD00C586E6 /* LikesCollectionsController.m in Sources */,
 				E70D4977184367A1007A0445 /* UploadFilesAutomaticViewController.m in Sources */,
 				E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */,
 				E73F7A831844AF5B003BF2B1 /* UIImage+Alpha.m in Sources */,
