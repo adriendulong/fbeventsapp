@@ -10,6 +10,7 @@
 		3F1F63F71844D1C400D1B01E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F11844D1C300D1B01E /* README.md */; };
 		3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F21844D1C300D1B01E /* release_notes.md */; };
 		3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63F01844D1C300D1B01E /* libTestFlight.a */; };
+		3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3986D3184E26F6009A2D54 /* CameraFocusSquare.m */; };
 		3F490CCF1844F86F00A5811E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F490CD11844F86F00A5811E /* Localizable.strings */; };
 		3F490CD61844F92B00A5811E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F490CD51844F92B00A5811E /* InfoPlist.strings */; };
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
@@ -117,6 +118,8 @@
 		3F1F63F31844D1C300D1B01E /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		3F1F63F41844D1C300D1B01E /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		3F1F63F51844D1C300D1B01E /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		3F3986D2184E26F6009A2D54 /* CameraFocusSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraFocusSquare.h; sourceTree = "<group>"; };
+		3F3986D3184E26F6009A2D54 /* CameraFocusSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraFocusSquare.m; sourceTree = "<group>"; };
 		3F490CD01844F86F00A5811E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F490CD21844F87300A5811E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3F490CD51844F92B00A5811E /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -377,6 +380,8 @@
 				E70115D1183B88300077EAB7 /* CellsPhotoDetail */,
 				E72055BB1833F9F1003D7AD0 /* CameraViewController.h */,
 				E72055BC1833F9F1003D7AD0 /* CameraViewController.m */,
+				3F3986D2184E26F6009A2D54 /* CameraFocusSquare.h */,
+				3F3986D3184E26F6009A2D54 /* CameraFocusSquare.m */,
 				E72055BE18351C42003D7AD0 /* SharePhotoViewController.h */,
 				E72055BF18351C42003D7AD0 /* SharePhotoViewController.m */,
 				E7DA1B56183A9563000527A0 /* PhotoDetailViewController.h */,
@@ -784,6 +789,7 @@
 				E7F10F9E183F85E80061350A /* Photo.m in Sources */,
 				E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */,
 				E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */,
+				3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */,
 				E7AE14CA18095F310021F321 /* DetailInfosViewController.m in Sources */,
 				E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */,
 				E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */,

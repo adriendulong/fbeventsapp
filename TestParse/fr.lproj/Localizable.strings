@@ -16,6 +16,7 @@
 "UIAlertView_Problem_Title" = "Problème";
 "UIAlertView_Removal_Title" = "Suppression";
 "UIAlertView_ErrorLogin_Title" = "Erreur de connexion";
+"UIAlertView_Warning" = "Attention";
 "UIAlertView_Problem_Message" = "Il n'était pas possible d'effectuer cette action, s'il vous plaît essayer à nouveau plus tard.";
 "UIAlertView_Problem_Message2" = "Problème pendant la supression de la photo";
 "UIAlertView_Removal_Message" = "Êtes-vous sûr de vouloir suprimer cette photo ?";
@@ -87,6 +88,16 @@
 "PhotosCollectionViewController_OwnerEvent" = "Evènement organisé par %@";
 "PhotosCollectionViewController_Show_Label" = "Afficher les informations";
 "PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
+
+
+///// PhotosAlbumViewController /////
+"PhotosAlbumViewController_Title" = "PHOTOS";
+"PhotosAlbumViewController_NbLimit" = "Le nombre de photos que vous pouvez ajouter en une fois est limité à %i";
+"PhotosAlbumViewController_AutoSelect" = "Sélection automatique";
+"PhotosAlbumViewController_AllAlbum" = "Tout l'album";
+"PhotosAlbumViewController_AllDeselect" = "Tout désélectionner";
+"PhotosAlbumViewController_AllSelect" = "Tout sélectionner";
+"PhotosAlbumViewController_Modify" = "Modifier";
 
 
 ///// EventDetailViewController /////

@@ -10,22 +10,26 @@
 #import "CustomBadge.h"
 
 
-@interface CameraViewController : UIViewController
+@interface CameraViewController : UIViewController //<PhotosAlbumSelectionViewControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *flashButton;
 @property (weak, nonatomic) IBOutlet UIButton *switchCamera;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIView *cameraView;
 @property (weak, nonatomic) IBOutlet UIButton *takePhoto;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
-@property (weak, nonatomic) IBOutlet UILabel *labelFlash;
+@property (weak, nonatomic) IBOutlet UIView *toolboxView;
+@property (weak, nonatomic) IBOutlet UIImageView *flashIcon;
 @property (strong, nonatomic) UIImage *takenImage;
 @property (strong, nonatomic) PFObject *event;
+
+@property (strong, nonatomic) UIView *camFocus;
 
 @property (strong, nonatomic) NSURL *assetUrl;
 @property (weak, nonatomic) IBOutlet UIButton *albumButton;
 @property (weak, nonatomic) IBOutlet CustomBadge *badge;
 
-- (IBAction)cancel:(id)sender;
-- (IBAction)takePhoto:(id)sender;
-- (IBAction)switchFlashMode:(id)sender;
-- (IBAction)switchCamera:(id)sender;
+- (IBAction)cancel:(UIButton *)sender;
+- (IBAction)takePhoto:(UIButton *)sender;
+- (IBAction)switchFlashMode:(UIButton *)sender;
+- (IBAction)switchCamera:(UIButton *)sender;
 @end
