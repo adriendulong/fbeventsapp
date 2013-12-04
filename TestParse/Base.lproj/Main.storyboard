@@ -2606,10 +2606,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="6xL-71-AeC"/>
-        <segue reference="pYD-9M-pFo"/>
         <segue reference="pId-s9-PUV"/>
         <segue reference="EkG-m5-ZxD"/>
-        <segue reference="gQS-Od-x3H"/>
+        <segue reference="pYD-9M-pFo"/>
+        <segue reference="6xL-71-AeC"/>
+        <segue reference="17P-5b-VHW"/>
     </inferredMetricsTieBreakers>
 </document>

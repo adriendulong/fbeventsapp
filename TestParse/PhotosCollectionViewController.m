@@ -686,16 +686,19 @@
 -(void)greatMomentToUpdateInvited:(NSNotification *)note{
     self.nbInvitedAlreadyAdded++;
     
-    if (!self.guestViewUpdated) {
-        if (self.nbInvitedAlreadyAdded==self.nbInvitedToAdd) {
-            [self getInvitedFromServer];
-            self.guestViewUpdated = YES;
-        }
-        else if (self.nbInvitedAlreadyAdded==5){
-            [self getInvitedFromServer];
-            self.guestViewUpdated = YES;
-        }
+    
+    if (self.nbInvitedAlreadyAdded==self.nbInvitedToAdd) {
+        [self getInvitedFromServer];
+        self.guestViewUpdated = YES;
     }
+    else if (self.nbInvitedAlreadyAdded==5){
+        [self getInvitedFromServer];
+        self.guestViewUpdated = YES;
+    }
+    
+    /*if (!self.guestViewUpdated) {
+        
+    }*/
     
     
 }

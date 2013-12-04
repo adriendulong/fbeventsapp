@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
 
 @interface MOUtility : NSObject
 
@@ -32,6 +34,9 @@
 
 #pragma mark - Type Event
 +(int)typeEvent:(PFObject *)event;
+
+#pragma mark - Twitter
++(void)postImage:(UIImage *)image withStatus:(NSString *)status;
 
 #pragma mark - IOS Resources
 //- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;

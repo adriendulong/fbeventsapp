@@ -146,6 +146,21 @@
 
 - (IBAction)postPhoto:(id)sender {
     
+    
+    //Facebook share
+    if (self.facebookButton.isSelected) {
+        FBRequest *request = [FBRequest requestWithGraphPath:@"/me/photos" parameters:@{@"source": self.takenPhoto, @"message":@"Test"} HTTPMethod:@"POST"];
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSLog(@"PHOTO SHARED ON FACEBOOK");
+            }
+        }];
+    }
+    if (self.twitterButton.isSelected) {
+        [MOUtility postImage:self.takenPhoto withStatus:@"test"];
+    }
+    
+    
     [self.navigationItem setHidesBackButton:YES];
     //Progress
     [self.progressView setHidden:NO];
