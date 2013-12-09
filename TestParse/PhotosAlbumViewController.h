@@ -16,5 +16,12 @@
 @property (nonatomic, strong) NSMutableArray *datasourceComplete;
 @property (strong, nonatomic) PFObject *event;
 
+@property (nonatomic) int nbAutomaticPhotos;
+
+
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerConstraint;
+
+
 - (IBAction)selectPhotos:(id)sender;
 @end

@@ -56,18 +56,25 @@
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 2;
+    if (self.nbAutomaticPhotos == 0) {
+        return 1;
+    } else {
+        return 2;
+    }
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return  self.datasourceAutomatic.count;
-    } else if (section == 1) {
+    if (self.nbAutomaticPhotos > 1) {
+        
+        if (section == 0) {
+            return  self.datasourceAutomatic.count;
+        } else {
+            return  self.datasourceComplete.count;
+        }
+    } else {
         return  self.datasourceComplete.count;
     }
-    
-    return 0;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -82,9 +89,15 @@
     //cell.photoView.tag = indexPath.item;
     
     Photo *photo;
-    if (indexPath.section == 0) {
-        photo = (Photo *)[self.datasourceAutomatic objectAtIndex:indexPath.row];
-    } else if (indexPath.section == 1) {
+    
+    if (self.nbAutomaticPhotos > 1) {
+        
+        if (indexPath.section == 0) {
+            photo = (Photo *)[self.datasourceAutomatic objectAtIndex:indexPath.row];
+        } else {
+            photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.row];
+        }
+    } else {
         photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.row];
     }
     
@@ -107,11 +120,14 @@
     
     //NSLog(@"%@", selectedCell.photo.description);
     Photo *photo;
-    if (indexPath.section ==0)
-    {
-        photo = [self.datasourceAutomatic objectAtIndex:indexPath.row];
-    }
-    else{
+    if (self.nbAutomaticPhotos > 1) {
+        
+        if (indexPath.section == 0) {
+            photo = [self.datasourceAutomatic objectAtIndex:indexPath.row];
+        } else {
+            photo = [self.datasourceComplete objectAtIndex:indexPath.row];
+        }
+    } else {
         photo = [self.datasourceComplete objectAtIndex:indexPath.row];
     }
     
@@ -168,7 +184,12 @@
         
         UILabel *labelTitle = (UILabel *)[headerView viewWithTag:10];
         
-        labelTitle.text = (indexPath.section == 0) ? NSLocalizedString(@"PhotosAlbumViewController_AutoSelect", nil) : NSLocalizedString(@"PhotosAlbumViewController_AllAlbum", nil);
+        if (self.nbAutomaticPhotos > 1) {
+            labelTitle.text = (indexPath.section == 0) ? NSLocalizedString(@"PhotosAlbumViewController_AutoSelect", nil) : NSLocalizedString(@"PhotosAlbumViewController_AllAlbum", nil);
+            
+        } else {
+            labelTitle.text = NSLocalizedString(@"PhotosAlbumViewController_AllAlbum", nil);
+        }
         
         return headerView;
     }
@@ -292,6 +313,16 @@
                     
                     if (self.datasourceAutomatic.count == 0) {
                         [self.selectButton removeFromSuperview];
+                        self.headerConstraint.constant = 0;
+                        
+                        
+                        /*CGRect frame = self.collectionView.frame;
+                        frame.size.height += self.selectButton.frame.size.height;
+                        frame.origin.y -= self.selectButton.frame.size.height;
+                        
+                        [self.selectButton removeFromSuperview];
+                        
+                        [self.collectionView setFrame:frame];*/
                     }
                 }
             }

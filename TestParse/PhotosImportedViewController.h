@@ -22,4 +22,8 @@
 @property (assign, nonatomic) BOOL isLoadingFromFB;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
+
+
+- (IBAction)finishImport:(UIBarButtonItem *)sender;
+
 @end

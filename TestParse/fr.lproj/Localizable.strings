@@ -66,10 +66,17 @@
 "PhotosImportedViewController_OnFacebook" = "Sur Facebook";
 "PhotosImportedViewController_OnMyiPhone" = "Sur mon iPhone";
 "PhotosImportedViewController_NbPhotoFind" = "%i photos de l'évènement touvées";
+"PhotosImportedViewController_Finish" = "Terminer";
 
 
 ///// UploadFilesAutomaticViewController /////
 "UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
+
+
+///// CameraViewController /////
+"CameraViewController_Auto" = "Auto";
+"CameraViewController_Yes" = "Oui";
+"CameraViewController_No" = "Non";
 
 
 ///// SharePhotoViewController /////
@@ -98,6 +105,10 @@
 "PhotosAlbumViewController_AllDeselect" = "Tout désélectionner";
 "PhotosAlbumViewController_AllSelect" = "Tout sélectionner";
 "PhotosAlbumViewController_Modify" = "Modifier";
+
+
+///// LikesCollectionsController /////
+"LikesCollectionsController_Title" = "LIKERS";
 
 
 ///// EventDetailViewController /////

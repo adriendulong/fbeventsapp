@@ -280,6 +280,10 @@
             [self.validateButton setEnabled:YES];
         }
         
+        if (self.numberOfPhotosSelectedFB+self.numberOfPhotosSelectedPhone == 0) {
+            [self.validateButton setTitle:NSLocalizedString(@"PhotosImportedViewController_Finish", nil)];
+        }
+        
         [self.collectionView reloadData];
         //[self updateNavBar];
     } failureBlock:^(NSError *error) {
@@ -571,7 +575,7 @@
 
 
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"UploadPhotos"]) {
         
         NSMutableArray *selectedPhotos = [[NSMutableArray alloc] init];
@@ -596,4 +600,14 @@
     
 }
 
+#pragma mark - Action
+- (IBAction)finishImport:(UIBarButtonItem *)sender {
+    
+    if (self.numberOfPhotosSelectedFB+self.numberOfPhotosSelectedPhone == 0) {
+        
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+    } else {
+        [self performSegueWithIdentifier:@"UploadPhotos" sender:self];
+    }
+}
 @end

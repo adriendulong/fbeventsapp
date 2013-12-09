@@ -49,6 +49,8 @@
 {
     //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     
+    self.badge.hidden = YES;
+    
     [self activeCameraWithPosition:AVCaptureDevicePositionBack];
     
     self.isPictureTaken = NO;
@@ -299,7 +301,7 @@
     [self.yesButton addTarget:self
                        action:@selector(switchFlashMode:)
              forControlEvents:UIControlEventTouchDown];
-    [self.yesButton setTitle:@"Oui" forState:UIControlStateNormal];
+    [self.yesButton setTitle:NSLocalizedString(@"CameraViewController_Yes", nil) forState:UIControlStateNormal];
     self.yesButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
     self.yesButton.frame = CGRectMake(self.flashButton.frame.origin.x+45, self.flashButton.frame.origin.y, self.flashButton.frame.size.width, self.flashButton.frame.size.height);
     [self.view addSubview:self.yesButton];
@@ -311,7 +313,7 @@
     [self.noButton addTarget:self
                       action:@selector(switchFlashMode:)
             forControlEvents:UIControlEventTouchDown];
-    [self.noButton setTitle:@"Non" forState:UIControlStateNormal];
+    [self.noButton setTitle:NSLocalizedString(@"CameraViewController_No", nil) forState:UIControlStateNormal];
     self.noButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13];
     self.noButton.frame = CGRectMake(self.yesButton.frame.origin.x+45, self.yesButton.frame.origin.y, self.yesButton.frame.size.width, self.yesButton.frame.size.height);
     [self.view addSubview:self.noButton];
@@ -390,19 +392,19 @@
         switch (sender.tag) {
             default:
             case 0: {
-                [self.flashButton setTitle:@"Auto" forState:UIControlStateNormal];
+                [self.flashButton setTitle:NSLocalizedString(@"CameraViewController_Auto", nil) forState:UIControlStateNormal];
                 [device setFlashMode:AVCaptureFlashModeAuto];
                 break;
             }
                 
             case 1: {
-                [self.flashButton setTitle:@"Oui" forState:UIControlStateNormal];
+                [self.flashButton setTitle:NSLocalizedString(@"CameraViewController_Yes", nil) forState:UIControlStateNormal];
                 [device setFlashMode:AVCaptureFlashModeOn];
                 break;
             }
                 
             case 2: {
-                [self.flashButton setTitle:@"Non" forState:UIControlStateNormal];
+                [self.flashButton setTitle:NSLocalizedString(@"CameraViewController_No", nil) forState:UIControlStateNormal];
                 [device setFlashMode:AVCaptureFlashModeOff];
                 break;
             }
@@ -554,7 +556,10 @@
                             
                         }
                         
-                        [self.badge updateBadgeWithNumber:photosMatched];
+                        if (photosMatched > 0) {
+                            self.badge.hidden = NO;
+                            [self.badge updateBadgeWithNumber:photosMatched];
+                        }
                     }
                 }];
             }
@@ -587,6 +592,7 @@
         
         PhotosAlbumViewController *photosAlbums = segue.destinationViewController;
         photosAlbums.event = self.event;
+        photosAlbums.nbAutomaticPhotos = photosMatched;
     }
 }
 
