@@ -21,8 +21,6 @@
 {
     [TestFlight takeOff:@"abb31330-3ffd-4455-ab95-dd07c3381468"];
     
-    NSManagedObjectContext *context = [self managedObjectContext];
-    
     // Override point for customization after application launch.
     [Parse setApplicationId:@"8UT7kL1fmD9Orti3P7obNJyTgSpJpEGvz4HkCrr8"
                   clientKey:@"dT15cWACdZqlNCu0UIb1goDN6KXmTjs9yolq9CVB"];
