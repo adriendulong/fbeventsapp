@@ -72,6 +72,12 @@
 "UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
 
 
+///// CameraViewController /////
+"CameraViewController_Auto" = "Auto";
+"CameraViewController_Yes" = "Oui";
+"CameraViewController_No" = "Non";
+
+
 ///// SharePhotoViewController /////
 "SharePhotoViewController_Title" = "Test";
 "SharePhotoViewController_AddLegend" = "Ajoutez une légende à votre photo";
@@ -98,6 +104,10 @@
 "PhotosAlbumViewController_AllDeselect" = "Tout désélectionner";
 "PhotosAlbumViewController_AllSelect" = "Tout sélectionner";
 "PhotosAlbumViewController_Modify" = "Modifier";
+
+
+///// LikesCollectionsController /////
+"LikesCollectionsController_Title" = "LIKERS";
 
 
 ///// EventDetailViewController /////

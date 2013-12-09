@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"LIKERS";
+    self.title = NSLocalizedString(@"LikesCollectionsController_Title", nil);
 	// Do any additional setup after loading the view.
 }
 
