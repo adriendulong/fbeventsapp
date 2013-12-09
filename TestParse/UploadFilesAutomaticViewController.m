@@ -22,8 +22,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Envoie des photos";
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+    
     NSLog(@"NOMBre de photos : %i", [self.photosToUpload count]);
     self.nbOfPhotosUploaded = 0;
+    self.photosReallyUploaded = 0;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -49,6 +53,9 @@
     
     //Photo Facebook
     if (photoToUpload.facebookId) {
+        self.percentIndicator.text = @"50%";
+        
+        
         PFQuery *queryFacebookPhoto = [PFQuery queryWithClassName:@"Photo"];
         [queryFacebookPhoto whereKey:@"facebookId" equalTo:photoToUpload.facebookId];
         [queryFacebookPhoto whereKey:@"event" equalTo:self.event];
@@ -64,8 +71,7 @@
                     [self uploadPhotos];
                 }
                 else{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                    [self finishedUpload];
                 }
             }
             
@@ -84,6 +90,7 @@
                     
                     [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         self.nbOfPhotosUploaded++;
+                        self.photosReallyUploaded ++;
                         
                         self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
                         [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
@@ -92,8 +99,7 @@
                             [self uploadPhotos];
                         }
                         else{
-                            [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                            [self finishedUpload];
                         }
                     }];
                 }
@@ -120,6 +126,7 @@
                             
                             [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                 self.nbOfPhotosUploaded++;
+                                self.photosReallyUploaded ++;
                                 
                                 self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
                                 [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
@@ -128,8 +135,7 @@
                                     [self uploadPhotos];
                                 }
                                 else{
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                    [self finishedUpload];
                                 }
                             }];
                             
@@ -159,6 +165,7 @@
                                     
                                     [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                         self.nbOfPhotosUploaded++;
+                                        self.photosReallyUploaded++;
                                         
                                         self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
                                         [self.progessView setProgress:1];
@@ -167,15 +174,13 @@
                                             [self uploadPhotos];
                                         }
                                         else{
-                                            [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                            [self finishedUpload];
                                         }
                                     }];
                                     
                                     
                                 }
                                 else if(error && error.code == kPFErrorObjectNotFound){
-                                    NSLog(@"NOOOO PROSPECT");
                                     //If no prospect create it
                                     PFObject *prospect = [PFObject objectWithClassName:@"Prospect"];
                                     prospect[@"facebookId"] = photoToUpload.userId;
@@ -199,6 +204,7 @@
                                             
                                             [photoServer saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                                 self.nbOfPhotosUploaded++;
+                                                self.photosReallyUploaded++;
                                                 
                                                 self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
                                                 [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
@@ -207,8 +213,7 @@
                                                     [self uploadPhotos];
                                                 }
                                                 else{
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                                                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+                                                    [self finishedUpload];
                                                 }
                                             }];
                                         }
@@ -248,39 +253,40 @@
                     [thumbnailFile saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if (succeeded) {
                             NSLog(@"THumbnail Ok");
-                            
-                            if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
-                                [self uploadPhotos];
-                            }
-                            else{
-                                [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
-                            }
+                            PFObject *eventPhoto = [PFObject objectWithClassName:@"Photo"];
+                            eventPhoto[@"full_image"] = imageFile;
+                            eventPhoto[@"low_image"] = thumbnailFile;
+                            eventPhoto[@"width"] = [NSNumber numberWithFloat:width];;
+                            eventPhoto[@"height"] = [NSNumber numberWithFloat:height];
+                            eventPhoto[@"user"] = [PFUser currentUser];
+                            eventPhoto[@"event"] = self.event;
+                            [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                if (succeeded) {
+                                    self.photosReallyUploaded++;
+                                }
+                                
+                                if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                                    [self uploadPhotos];
+                                }
+                                else{
+                                    [self finishedUpload];
+                                }
+                            }];
                         }
                     }];
                     
-                    
-                    PFObject *eventPhoto = [PFObject objectWithClassName:@"Photo"];
-                    eventPhoto[@"full_image"] = imageFile;
-                    eventPhoto[@"low_image"] = thumbnailFile;
-                    eventPhoto[@"width"] = [NSNumber numberWithFloat:width];;
-                    eventPhoto[@"height"] = [NSNumber numberWithFloat:height];
-                    eventPhoto[@"user"] = [PFUser currentUser];
-                    eventPhoto[@"event"] = self.event;
-                    [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                         if (succeeded) {
-                             
-                         }
-                         else{
-                             NSLog(@"%@", [error userInfo]);
-                         }
-                    }];
                 }
                 else{
-                    NSLog(@"Problem Uploading");
+                    if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
+                        [self uploadPhotos];
+                    }
+                    else{
+                        [self finishedUpload];
+                    }
                 }
             } progressBlock:^(int percentDone) {
                 // Update your progress spinner here. percentDone will be between 0 and 100.
+                self.percentIndicator.text = [NSString stringWithFormat:@"%i%%", percentDone];
                 
                 [self.progessView setProgress:(float)percentDone/100];
                 self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
@@ -349,6 +355,18 @@
             block(nil);
         }];
     }
+}
+
+
+-(void)finishedUpload{
+    [self pushEveryInvited:self.photosReallyUploaded];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+}
+
+//Push notif
+-(void)pushEveryInvited:(int)nbPhotos{
+    [PFCloud callFunction:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId}];
 }
 
 

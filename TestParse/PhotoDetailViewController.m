@@ -40,6 +40,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = NSLocalizedString(@"PhotoDetailViewController_Title", nil);
+    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
     //Notifs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userClickedLike:) name:ClickLikePhoto object:nil];
@@ -74,6 +75,15 @@
     }
     else if (indexPath.row==2){
         return 50;
+    }
+    else if(indexPath.row == 3){
+        if (self.photo[@"comments"]) {
+            NSString *title = (NSString *)[self.photo[@"comments"] objectAtIndex:0][@"comment"];
+            CGFloat heightSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}].height;
+            
+            return heightSize+10;
+        }
+        else return 0;
     }
     else{
         return 100;
@@ -223,6 +233,7 @@
     [query getObjectInBackgroundWithId:self.photo.objectId block:^(PFObject *photoObject, NSError *error) {
         if (!error) {
             self.photo = photoObject;
+            BOOL hasLiked = NO;
             
             if ([self hasLikedPhoto:[PFUser currentUser][@"facebookId"]]) {
                 [self removeCurrentUserFromLikes];
@@ -230,11 +241,16 @@
             }
             else{
                 [self addCurrentUserToLikes];
+                hasLiked = YES;
             }
             
             //Save the new version
             [self.photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error) {
+                    if (hasLiked) {
+                        //Push
+                        [self pushOwnerPhotoLiked];
+                    }
                     [self.tableView reloadData];
                 }
                 else{
@@ -335,16 +351,6 @@
     
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSLog(@"The %@ button was tapped.", [actionSheet buttonTitleAtIndex:buttonIndex]);
-    
-    //Delete
-    if (buttonIndex==0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Removal_Title", nil) message:NSLocalizedString(@"UIAlertView_Removal_Message", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_No", nil) otherButtonTitles:NSLocalizedString(@"UIAlertView_Yes", nil), nil];
-        [alert show];
-    }
-}
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -475,6 +481,18 @@
             break;
         }
     }
+}
+
+-(void)pushOwnerPhotoLiked{
+    
+    //We push only if the owner is a user of the app
+    if (self.photo[@"user"]) {
+        if (!([((PFUser *)self.photo[@"user"]).objectId isEqualToString:[PFUser currentUser].objectId])) {
+            [PFCloud callFunction:@"pushnewlike" withParameters:@{@"photoid" : self.photo.objectId}];
+        }
+        
+    }
+    
 }
 
 

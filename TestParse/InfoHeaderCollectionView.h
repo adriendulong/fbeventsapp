@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
+#import <MapKit/MapKit.h>
 
 @interface InfoHeaderCollectionView : UICollectionReusableView
 
@@ -20,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameEvent;
 @property (weak, nonatomic) IBOutlet UILabel *ownerEvent;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
-@property (weak,nonatomic) GMSMapView *mapView_;
 @property (nonatomic, assign) BOOL isShowingDetails;
 @property (weak, nonatomic) IBOutlet UILabel *labelHide;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
@@ -34,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomView;
 @property (weak, nonatomic) IBOutlet UILabel *nbTotalInvitedLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailInvitedLabel;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 
 - (IBAction)rsvpChanged:(id)sender;

@@ -14,9 +14,11 @@
 @property (strong, nonatomic) NSArray *photosToUpload;
 @property (strong, nonatomic) PFObject *event;
 @property (assign, nonatomic) int nbOfPhotosUploaded;
+@property (assign, nonatomic) int photosReallyUploaded;
 
 @property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
 @property (weak, nonatomic) IBOutlet UIProgressView *progessView;
 
+@property (weak, nonatomic) IBOutlet UILabel *percentIndicator;
 @property (assign, nonatomic) int levelRoot;
 @end

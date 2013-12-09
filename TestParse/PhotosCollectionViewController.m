@@ -14,9 +14,11 @@
 #import "PhotoDetailViewController.h"
 #import "ChooseLastEventViewController.h"
 #import "DetailDescriptionViewController.h"
-#import "MapViewController.h"
 #import "InvitedListViewController.h"
 #import "PhotosImportedViewController.h"
+#import <MapKit/MapKit.h>
+
+#define METERS_PER_MILE 1609.344
 
 @interface PhotosCollectionViewController ()
 
@@ -24,15 +26,6 @@
 
 @implementation PhotosCollectionViewController
 @synthesize photos;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ShowOrHideDetailsEventNotification object:nil];
@@ -53,6 +46,8 @@
     
     //Do we sho details about the event
     self.isShowingDetails = YES;
+    
+    self.isMapInit = NO;
     
     //Appearance
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
@@ -76,7 +71,7 @@
         self.isShowingDetails = YES;
     }
     
-    
+    self.hasUpdatedGuestsFromFB = NO;
     
     
     //Update view
@@ -134,14 +129,31 @@
         InfoHeaderCollectionView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
         
         headerView.isShowingDetails = YES;
-        UIView *toHideView = [headerView viewWithTag:1000];
         
         PFObject *event = self.invitation[@"event"];
         
-        //Add Google Maps
-
+        if (!self.isMapInit) {
+            CLLocationCoordinate2D zoomLocation;
+            if (event[@"venue"][@"latitude"]) {
+                zoomLocation.latitude = [event[@"venue"][@"latitude"] doubleValue];
+                zoomLocation.longitude= [event[@"venue"][@"longitude"] doubleValue];
+                
+                MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 1*METERS_PER_MILE, 1*METERS_PER_MILE);
+                
+                [headerView.mapView setRegion:viewRegion animated:NO];
+                [headerView.mapView setZoomEnabled:NO];
+                [headerView.mapView setUserInteractionEnabled:NO];
+                
+                self.isMapInit = YES;
+                
+            }
+        }
         
         
+        
+        
+        
+        /*
         if (![toHideView viewWithTag:3000]) {
             CLLocationDegrees latitude;
             CLLocationDegrees longitude;
@@ -177,7 +189,7 @@
             [toHideView addSubview:headerView.mapView_];
             
             // Creates a marker in the center of the map.
-            if (event[@"location"] || event[@"venue"][@"name"]) {
+            if (event[@"venue"][@"latitude"]) {
                 GMSMarker *marker = [[GMSMarker alloc] init];
                 marker.position = CLLocationCoordinate2DMake(latitude, longitude);
                 marker.map = headerView.mapView_;
@@ -190,7 +202,7 @@
             [headerView.mapButton addGestureRecognizer:singleFingerTapSecond];
         }
         
-        
+        */
         
         
         
@@ -346,9 +358,6 @@
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             [self updateEvent:result compareTo:self.invitation];
-            
-            //Get all the invited
-            [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"]];
         }
         else{
             NSLog(@"%@", error);
@@ -506,6 +515,12 @@
             NSLog(@"LOADED INVITED");
             self.invited = objects;
             [self updateGuestsView];
+            
+            //Get all the invited
+            if (!self.hasUpdatedGuestsFromFB) {
+                [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"]];
+            }
+            
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");
@@ -518,6 +533,8 @@
 -(void)getGuestsFromFacebookEvent:(NSString *)facebookId{
     NSString *requestString = [NSString stringWithFormat:@"%@?fields=invited.limit(50)", self.invitation[@"event"][@"eventId"]];
     FBRequest *request = [FBRequest requestForGraphPath:requestString];
+    
+    self.hasUpdatedGuestsFromFB = YES;
     
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -546,7 +563,7 @@
     PFObject *guest;
     PFObject *invitation;
     
-    //We see if there is an invitation ofr this user
+    //We see if there is an invitation for this user
     for(id invit in self.invited){
         PFObject *tempGuests = [FbEventsUtilities getProspectOrUserFromInvitation:invit];
         if ([tempGuests[@"facebookId"] isEqualToString:invited[@"id"]]) {
@@ -578,7 +595,7 @@
         //See if a user or a prospect exist
         PFQuery *query = [PFUser query];
         [query whereKey:@"facebookId" equalTo:invited[@"id"]];
-        [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject *userFound, NSError *error) {
             if (error && error.code == kPFErrorObjectNotFound) {
                 ///////
                 // PROSPECT EXISTS ??
@@ -607,11 +624,11 @@
             else if(!error){
                 //Invitation exists ?
                 PFQuery *invitationUser = [PFQuery queryWithClassName:@"Invitation"];
-                [invitationUser whereKey:@"user" equalTo:object];
+                [invitationUser whereKey:@"user" equalTo:userFound];
                 [invitationUser whereKey:@"event" equalTo:self.invitation[@"event"]];
                 [invitationUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
                     if (error && error.code == kPFErrorObjectNotFound) {
-                        [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)object forProspect:nil];
+                        [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)userFound forProspect:nil];
                     }
                 }];
                 
@@ -659,8 +676,10 @@
     invitation[@"rsvp_status"] = rsvp;
     invitation[@"start_time"] = self.invitation[@"event"][@"start_time"];
     
-    [invitation saveInBackground];
-    [[NSNotificationCenter defaultCenter] postNotificationName:UpdateInvitedFinished object:self userInfo:nil];
+    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateInvitedFinished object:self userInfo:nil];
+    }];
+    
 }
 
 
@@ -833,10 +852,6 @@
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){
         DetailDescriptionViewController *detailDescription = (DetailDescriptionViewController *)segue.destinationViewController;
         detailDescription.description = self.invitation[@"event"][@"description"];
-    }
-    else if([segue.identifier isEqualToString:@"Map"]){
-        MapViewController *mapController = (MapViewController *)segue.destinationViewController;
-        mapController.event =self.invitation[@"event"];
     }
     else if([segue.identifier isEqualToString:@"Invited"]){
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;

@@ -25,6 +25,7 @@
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly;
 +(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
 +(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;
++(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message;
 
 #pragma mark - Colors
 +(UIColor*)colorWithHexString:(NSString*)hex;
@@ -40,6 +41,5 @@
 
 #pragma mark - IOS Resources
 //- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;
-
 
 @end
