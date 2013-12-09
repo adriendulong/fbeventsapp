@@ -140,6 +140,13 @@
 -(void)loadInvitationFromServer{
     NSLog(@"Load Future Events");
     
+    //Load Invitation from local database
+    self.invitations = [MOUtility getFuturInvitationNotReplied];
+    if(self.listSegmentControll.selectedSegmentIndex==0){
+        self.objectsForTable = self.invitations;
+        [self.tableView reloadData];
+    }
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:@"not_replied"];
@@ -153,10 +160,15 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             self.invitations = objects;
+            
+            //Save in local database
+            for(PFObject *invitation in objects){
+                [MOUtility saveInvitationWithEvent:invitation];
+            }
+            
             if(self.listSegmentControll.selectedSegmentIndex==0){
                 self.objectsForTable = self.invitations;
                 [self.tableView reloadData];
-                
             }
         } else {
             // Log details of the failure
@@ -169,6 +181,13 @@
 //Get all the declined events
 -(void)loadDeclinedFromSever{
     NSLog(@"Load Declined Events");
+    
+    self.declined = [MOUtility getFuturInvitationDeclined];
+    if(self.listSegmentControll.selectedSegmentIndex==1){
+        self.objectsForTable = self.declined;
+        [self.tableView reloadData];
+    }
+    
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -183,6 +202,12 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             self.declined = objects;
+            
+            //Save in local databse
+            for(PFObject *invitation in objects){
+                [MOUtility saveInvitationWithEvent:invitation];
+            }
+            
             if(self.listSegmentControll.selectedSegmentIndex==1){
                 self.objectsForTable = self.declined;
                 [self.tableView reloadData];

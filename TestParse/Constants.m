@@ -42,3 +42,7 @@ NSString *const FacebookFirstBlue                = @"3b5998";
 
 #pragma mark - App Constants
 int const DefaultNbHoursEvent                    = 24;
+
+#pragma mark - Notif Type
+int const NewPhotosEvent                         = 0;
+int const NewLikePhoto                           = 1;

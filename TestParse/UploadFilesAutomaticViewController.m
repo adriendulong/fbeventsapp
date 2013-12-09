@@ -53,7 +53,7 @@
     
     //Photo Facebook
     if (photoToUpload.facebookId) {
-        self.percentIndicator.text = @"50%";
+        self.percentIndicator.text = @"100%";
         
         
         PFQuery *queryFacebookPhoto = [PFQuery queryWithClassName:@"Photo"];
@@ -361,12 +361,14 @@
 -(void)finishedUpload{
     [self pushEveryInvited:self.photosReallyUploaded];
     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
+    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
 }
 
 //Push notif
 -(void)pushEveryInvited:(int)nbPhotos{
-    [PFCloud callFunction:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId}];
+    [PFCloud callFunctionInBackground:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId} block:^(id object, NSError *error) {
+        NSLog(@"Push sent");
+    }];
 }
 
 

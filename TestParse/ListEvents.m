@@ -244,6 +244,10 @@
 -(void)loadFutureEventsFromServer{
     NSLog(@"Load Future Events");
     
+    //Load from database before the server
+    self.invitations = [MOUtility getAllFuturInvitations];
+    [self.tableView reloadData];
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"start_time" greaterThan:[NSDate date]];
@@ -260,6 +264,10 @@
             NSLog(@"LOADED FUTURE");
             self.invitations = objects;
             [self.tableEvents reloadData];
+            
+            for(PFObject *invitation in objects){
+                [MOUtility saveInvitationWithEvent:invitation];
+            }
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");

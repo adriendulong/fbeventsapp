@@ -12,6 +12,7 @@
 #import "FirstMemorieCell.h"
 #import "MemoriesImportViewController.h"
 #import "NSMutableArray+Reverse.h"
+#import "MOUtility.h"
 
 @interface MemoriesViewController ()
 
@@ -266,6 +267,19 @@
 #pragma mark - Parse Events
 
 -(void)loadMemoriesFromSever{
+    //From local database
+    self.memoriesInvitations = [[MOUtility getPastMemories] mutableCopy];
+    [self.tableView reloadData];
+    self.photosEvent = [[NSMutableArray alloc] init];
+    int i=0;
+    for(PFObject *memorieInvit in self.memoriesInvitations){
+        NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
+        [self.photosEvent addObject:mutableArrayTemp];
+        [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
+        i++;
+    }
+    
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"start_time" lessThan:[NSDate date]];
@@ -285,6 +299,11 @@
             }
             
             self.memoriesInvitations = [objects mutableCopy];
+            
+            for(PFObject *invitation in objects){
+                [MOUtility saveInvitationWithEvent:invitation];
+            }
+            
             self.photosEvent = [[NSMutableArray alloc] init];
             
             int i=0;
@@ -298,6 +317,10 @@
             [self.tableView reloadData];
         } else {
             // Log details of the failure
+            if (self.activityIndicator.isAnimating) {
+                [self.activityIndicator stopAnimating];
+                [self.activityIndicator setHidden:YES];
+            }
             NSLog(@"Problème de chargement");
         }
     }];

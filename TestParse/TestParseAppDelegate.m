@@ -10,6 +10,8 @@
 #import "TestFlight.h"
 #import "PhotosCollectionViewController.h"
 #import "PhotoDetailViewController.h"
+#import "MOUtility.h"
+
 
 @implementation TestParseAppDelegate
 
@@ -78,6 +80,9 @@
         currentInstallation[@"language"] = [[NSLocale preferredLanguages] objectAtIndex:0];
         [currentInstallation saveEventually];
     }
+
+    //[MOUtility removeAllInvitations];
+    //[MOUtility removeAllEvents];
 
     
     return YES;
@@ -154,6 +159,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             if (error && error.code == kPFErrorObjectNotFound) {
                 completionHandler(UIBackgroundFetchResultFailed);
             }else if ([PFUser currentUser]) {
+                //Add a notif to the core data
+                NSDictionary *dictionnary = @{@"objectId": eventId,
+                                              @"type" : @0,
+                                              @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                [MOUtility saveNotification:dictionnary];
                 
                 PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
                 viewController.invitation = object;
@@ -183,6 +193,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             if (error && error.code == kPFErrorObjectNotFound) {
                 completionHandler(UIBackgroundFetchResultFailed);
             }else if ([PFUser currentUser]) {
+                NSDictionary *dictionnary = @{@"objectId": photoId,
+                                              @"type" : @1,
+                                              @"message": [userInfo valueForKey:@"alert"]};
+                [MOUtility saveNotification:dictionnary];
+                
                 
                 PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
                 viewController.photo = object;
@@ -253,7 +268,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MyDataModel" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"datamodel" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -266,7 +281,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"YourDataBaseName.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"datamodel.sqlite"];
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

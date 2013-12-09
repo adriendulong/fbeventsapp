@@ -56,6 +56,10 @@
 		E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C48182293C600DEBBDC /* ListInvitationsController.m */; };
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
 		E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7896C831822ACA600DEBBDC /* ImageIO.framework */; };
+		E7948A391855D59F004A5351 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A381855D59F004A5351 /* Event.m */; };
+		E7948A3C1855D5A0004A5351 /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A3B1855D5A0004A5351 /* Invitation.m */; };
+		E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A3F185626D4004A5351 /* NotificationsViewController.m */; };
+		E7948A461856343E004A5351 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A451856343E004A5351 /* Notification.m */; };
 		E79E5FB3181FCF1D00C8A3AC /* EventUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E79E5FB2181FCF1D00C8A3AC /* EventUtilities.m */; };
 		E7A053C6182AB84700F43ED0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A053C5182AB84700F43ED0 /* MapKit.framework */; };
 		E7AE14801803F6870021F321 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE147F1803F6870021F321 /* Foundation.framework */; };
@@ -194,6 +198,14 @@
 		E7896C4A182294C400DEBBDC /* InvitationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationCell.h; sourceTree = "<group>"; };
 		E7896C4B182294C400DEBBDC /* InvitationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationCell.m; sourceTree = "<group>"; };
 		E7896C831822ACA600DEBBDC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E7948A371855D59F004A5351 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		E7948A381855D59F004A5351 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		E7948A3A1855D5A0004A5351 /* Invitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invitation.h; sourceTree = "<group>"; };
+		E7948A3B1855D5A0004A5351 /* Invitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invitation.m; sourceTree = "<group>"; };
+		E7948A3E185626D4004A5351 /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
+		E7948A3F185626D4004A5351 /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
+		E7948A441856343E004A5351 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		E7948A451856343E004A5351 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		E79E5FB1181FCF1D00C8A3AC /* EventUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventUtilities.h; sourceTree = "<group>"; };
 		E79E5FB2181FCF1D00C8A3AC /* EventUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventUtilities.m; sourceTree = "<group>"; };
 		E7A053C5182AB84700F43ED0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -471,6 +483,28 @@
 			name = "List Invitations";
 			sourceTree = "<group>";
 		};
+		E7948A301855CF8B004A5351 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				E7948A371855D59F004A5351 /* Event.h */,
+				E7948A381855D59F004A5351 /* Event.m */,
+				E7948A3A1855D5A0004A5351 /* Invitation.h */,
+				E7948A3B1855D5A0004A5351 /* Invitation.m */,
+				E7948A441856343E004A5351 /* Notification.h */,
+				E7948A451856343E004A5351 /* Notification.m */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
+		E7948A3D18562671004A5351 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				E7948A3E185626D4004A5351 /* NotificationsViewController.h */,
+				E7948A3F185626D4004A5351 /* NotificationsViewController.m */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
 		E7A27F8318296131009615A8 /* Memories */ = {
 			isa = PBXGroup;
 			children = (
@@ -548,6 +582,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E7948A3D18562671004A5351 /* Notifications */,
 				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E73F7A7A1844AF4D003BF2B1 /* UIImage */,
 				E7F10F9B183F85670061350A /* Models */,
@@ -616,6 +651,7 @@
 		E7F10F9B183F85670061350A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E7948A301855CF8B004A5351 /* Database */,
 				E7F10F9C183F85E80061350A /* Photo.h */,
 				E7F10F9D183F85E80061350A /* Photo.m */,
 			);
@@ -736,6 +772,7 @@
 				E74F753E1847ADAF00F42E2A /* PhotosAlbumViewController.m in Sources */,
 				E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */,
 				E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */,
+				E7948A391855D59F004A5351 /* Event.m in Sources */,
 				E72055BD1833F9F1003D7AD0 /* CameraViewController.m in Sources */,
 				E7C87D27184CF8CD00C586E6 /* LikesCollectionsController.m in Sources */,
 				E70D4977184367A1007A0445 /* UploadFilesAutomaticViewController.m in Sources */,
@@ -747,6 +784,7 @@
 				E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */,
 				E7B406F7181ADA86001559CF /* ListEvents.m in Sources */,
 				E7AE14901803F6870021F321 /* TestParseAppDelegate.m in Sources */,
+				E7948A461856343E004A5351 /* Notification.m in Sources */,
 				E7AE148C1803F6870021F321 /* main.m in Sources */,
 				E724E57E180F02E800741528 /* MOUtility.m in Sources */,
 				E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */,
@@ -756,11 +794,13 @@
 				E70D49841843CE1E007A0445 /* InvitedCell.m in Sources */,
 				E70D497A1843BEE4007A0445 /* DetailDescriptionViewController.m in Sources */,
 				E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */,
+				E7948A3C1855D5A0004A5351 /* Invitation.m in Sources */,
 				E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */,
 				E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */,
 				E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */,
 				E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */,
 				E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */,
+				E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */,
 				E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */,
 				E7FA244D182CE19E00FFDBE6 /* InfoHeaderCollectionView.m in Sources */,
 				E7BD58B61823E9D200A62F2F /* FbEventsUtilities.m in Sources */,

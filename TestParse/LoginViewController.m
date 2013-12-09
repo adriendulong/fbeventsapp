@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "TutorialViewController.h"
+#import "MOUtility.h"
 
 #define IS_BIG_SCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
@@ -212,6 +213,14 @@
             
             if(userData[@"id"]){
                 currentUser[@"facebookId"] = userData[@"id"];
+                
+                if ([MOUtility isATestUser:currentUser[@"facebookId"]]) {
+                    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+                    [currentInstallation addUniqueObject:@"Testers" forKey:@"channels"];
+                    [currentInstallation saveInBackground];
+                }
+                
+
             }
             
             if(userData[@"first_name"]){

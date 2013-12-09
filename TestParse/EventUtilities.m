@@ -165,12 +165,22 @@
 }
 
 +(void)setBadgeForInvitation:(UITabBarController *)controller atIndex:(NSUInteger)index{
+    
+    //From local database
+    int countInvit = [MOUtility countFutureInvitations];
+    if(countInvit>0){
+        [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:[NSString stringWithFormat:@"%d", countInvit]];
+    }
+    else{
+        [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:nil];
+    }
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:@"not_replied"];
     [query whereKey:@"start_time" greaterThan:[NSDate date]];
     
-#warning Modify Cache Policy
+    #warning Modify Cache Policy
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
