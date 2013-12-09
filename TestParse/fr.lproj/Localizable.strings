@@ -66,6 +66,7 @@
 "PhotosImportedViewController_OnFacebook" = "Sur Facebook";
 "PhotosImportedViewController_OnMyiPhone" = "Sur mon iPhone";
 "PhotosImportedViewController_NbPhotoFind" = "%i photos de l'évènement touvées";
+"PhotosImportedViewController_Finish" = "Terminer";
 
 
 ///// UploadFilesAutomaticViewController /////

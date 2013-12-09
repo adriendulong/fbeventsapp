@@ -49,6 +49,8 @@
 {
     //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     
+    self.badge.hidden = YES;
+    
     [self activeCameraWithPosition:AVCaptureDevicePositionBack];
     
     self.isPictureTaken = NO;
@@ -554,7 +556,10 @@
                             
                         }
                         
-                        [self.badge updateBadgeWithNumber:photosMatched];
+                        if (photosMatched > 0) {
+                            self.badge.hidden = NO;
+                            [self.badge updateBadgeWithNumber:photosMatched];
+                        }
                     }
                 }];
             }
@@ -587,6 +592,7 @@
         
         PhotosAlbumViewController *photosAlbums = segue.destinationViewController;
         photosAlbums.event = self.event;
+        photosAlbums.nbAutomaticPhotos = photosMatched;
     }
 }
 
