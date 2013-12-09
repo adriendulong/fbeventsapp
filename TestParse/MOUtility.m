@@ -142,6 +142,63 @@
 }
 
 
++(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message{
+    
+    NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"link": url, @"message":message} HTTPMethod:@"POST"];
+    
+    FBSession *session = [PFFacebookUtils session] ;
+    
+    NSArray *permissions =
+    [NSArray arrayWithObjects:@"publish_actions",@"publish_stream", nil];
+    
+    NSLog(@"Permissions : %@", session.permissions );
+
+    BOOL publish_perm = [[PFUser currentUser][@"has_publish_perm"] boolValue];
+
+    if (([session.permissions indexOfObject:@"publish_stream"] == NSNotFound) && !publish_perm) {
+        [PFFacebookUtils reauthorizeUser:[PFUser currentUser] withPublishPermissions:permissions audience:FBSessionDefaultAudienceFriends block:^(BOOL succeeded, NSError *error) {
+            
+            
+            //Add permission rsvp to user
+            FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
+            [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                
+                NSArray *permissions = result[@"data"];
+                if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
+                    PFUser *currentUser =[PFUser currentUser];
+                    currentUser[@"has_publish_perm"] = @YES;
+                    [currentUser saveInBackground];
+                }
+                NSLog(@"TEST");
+            }];
+            
+            
+            
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    NSLog(@"Message posted");
+                }
+                else{
+                    NSLog(@"%@", [error userInfo]);
+                }
+            }];
+        }];
+    }
+    else{
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSLog(@"Message posted");
+            }
+            else{
+                NSLog(@"%@", [error userInfo]);
+            }
+        }];
+    }
+    
+}
+
+
 #pragma mark - Colors
 
 +(UIColor*)colorWithHexString:(NSString*)hex
@@ -324,6 +381,9 @@
         return 4;
     }
 }
+
+
+
 
 
 

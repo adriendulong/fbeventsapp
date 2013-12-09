@@ -187,6 +187,10 @@
                 if (succeeded) {
                     self.hasCLickOnPost = YES;
                     if (self.hasFInishedUpload) {
+                        //Post on facebook event wall
+                        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:@"Je viens de rajouter une photo sur xxx, retrouvez les toutes à l'adresse suivante"];
+                        
+                        
                         [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
                         [self dismissViewControllerAnimated:NO completion:nil];
                     }
@@ -230,15 +234,21 @@
                     addedPhotos++;
                     //If all the files uploaded
                     if (addedPhotos == self.photosArray.count) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                        [self dismissViewControllerAnimated:NO completion:nil];
+                        [self hasFinishedUpload];
                     }
                 }];
             }
             else{
                 
+                addedPhotos++;
+                //If all the files uploaded
+                if (addedPhotos == self.photosArray.count) {
+                    [self hasFinishedUpload];
+                }
+                
             }
         }
+        
         
         [self.photosUploaded removeAllObjects];
     }
@@ -275,8 +285,8 @@
                     self.hasFInishedUpload = YES;
                     
                     if (self.hasCLickOnPost) {
-                        [self dismissViewControllerAnimated:NO completion:nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                        //Post on facebook event wall
+                        [self hasFinishedUpload];
                     }
                 }
             }];
@@ -345,8 +355,11 @@
                                     [self postArrayOfFilesInBackground:self.nbPhotosUploaded];
                                 }
                                 else{
-                                    [self dismissViewControllerAnimated:NO completion:nil];
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                                    if (self.hasCLickOnPost) {
+                                        //Push
+                                        [self hasFinishedUpload];
+                                    }
+                                    
                                 }
                             }];
                             
@@ -367,10 +380,6 @@
                             self.labelPhotosUploaded.text = [NSString stringWithFormat:@"%i/%i", self.nbPhotosUploaded+1, self.photosArray.count];
                             if (self.nbPhotosUploaded < self.photosArray.count) {
                                 [self postArrayOfFilesInBackground:self.nbPhotosUploaded];
-                            }
-                            else{
-                                [self dismissViewControllerAnimated:NO completion:nil];
-                                [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
                             }
                         }
                         
@@ -394,8 +403,10 @@
                             [self postArrayOfFilesInBackground:self.nbPhotosUploaded];
                         }
                         else{
-                            [self dismissViewControllerAnimated:NO completion:nil];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                            if (self.hasCLickOnPost) {
+                                [self hasFinishedUpload];
+                            }
+                            
                         }
                     }
                 }];
@@ -419,8 +430,9 @@
                     [self postArrayOfFilesInBackground:self.nbPhotosUploaded];
                 }
                 else{
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+                    if (self.hasCLickOnPost) {
+                        [self hasFinishedUpload];
+                    }
                 }
             }
         } progressBlock:^(int percentDone) {
@@ -524,6 +536,32 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSLog(@"Button index %i", buttonIndex);
+}
+
+-(void)hasFinishedUpload{
+    
+    NSString *message = [[NSString alloc] init];
+    
+    if (self.photosArray) {
+        message = [NSString stringWithFormat:@"Je viens de poster %i photos de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante", self.photosArray.count];
+        [self pushEveryInvited:self.photosArray.count];
+    }
+    else{
+        message = @"Je viens de poster une photo de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
+        [self pushEveryInvited:1];
+    }
+    
+    
+    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:message];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+}
+
+
+//Push notif
+-(void)pushEveryInvited:(int)nbPhotos{
+    [PFCloud callFunction:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId}];
 }
 
 @end

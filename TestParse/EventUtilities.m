@@ -52,8 +52,27 @@
             [EventUtilities updateInviteUser:user toEvent:event withRsvp:rsvp withInvitation:object];
         }
         else{
-             NSLog(@"Error retrieving invitations : %@", [error userInfo]);
-            [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
+            //Maybe this user was a prospect in the event
+            PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
+            [queryProspect whereKey:@"facebookId" equalTo:user[@"facebookId"]];
+            
+            PFQuery *queryInvitationProsp = [PFQuery queryWithClassName:@"Invitation"];
+            [queryInvitationProsp whereKey:@"prospect" matchesQuery:queryProspect];
+            
+            [queryInvitationProsp getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    NSLog(@"Error retrieving invitations : %@", [error userInfo]);
+                    [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
+                }
+                //Exists invitation where the user is prospect
+                else if(!error){
+                    [object deleteInBackground];
+                    [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
+                }
+            }];
+            
+            
+            
         }
         
     }];

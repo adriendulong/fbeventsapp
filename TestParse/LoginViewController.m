@@ -174,10 +174,19 @@
                 [alert show];
             }
         } else if (user.isNew) {
-            NSLog(@"User signed up and logged in through Facebook!");
+            
+            //Attach this user to this device
+            PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+            currentInstallation[@"owner"] = user;
+            [currentInstallation saveInBackground];
+            
             [self updateUserInfos];
         } else {
-            NSLog(@"User logged in through Facebook!");
+            //Attach this user to this device
+            PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+            currentInstallation[@"owner"] = user;
+            [currentInstallation saveInBackground];
+            
             [self updateUserInfos];
         }
     }];

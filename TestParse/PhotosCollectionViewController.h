@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import "InfoHeaderCollectionView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
 @interface PhotosCollectionViewController : UICollectionViewController
 
 @property (strong, nonatomic) NSArray *photos;
-@property (weak,nonatomic) GMSMapView *mapView_;
 @property (strong, nonatomic) PFObject *invitation;
 @property (strong, nonatomic) NSArray *invited;
 @property (strong, nonatomic) InfoHeaderCollectionView *headerCollectionView;
@@ -23,10 +21,12 @@
 @property (nonatomic, assign) int nbInvitedToAdd;
 @property (nonatomic, assign) int nbInvitedAlreadyAdded;
 @property (nonatomic, assign) BOOL guestViewUpdated;
+@property (nonatomic, assign) BOOL hasUpdatedGuestsFromFB;
 @property (nonatomic, assign) BOOL isDuringOrAfter;
 @property (nonatomic, assign) int nbAttending;
 @property (nonatomic, assign) int nbMaybe;
 @property (nonatomic, assign) int nbTotal;
+@property (nonatomic, assign) BOOL isMapInit;
 
 - (IBAction)hideViewTap:(id)sender;
 @end
