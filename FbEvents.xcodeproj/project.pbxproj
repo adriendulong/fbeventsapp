@@ -16,6 +16,7 @@
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
+		3F93AF8B18572C3100865563 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F93AF8D18572C3100865563 /* Main.storyboard */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -67,7 +68,6 @@
 		E7AE14841803F6870021F321 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14831803F6870021F321 /* UIKit.framework */; };
 		E7AE148C1803F6870021F321 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE148B1803F6870021F321 /* main.m */; };
 		E7AE14901803F6870021F321 /* TestParseAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */; };
-		E7AE14931803F6870021F321 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7AE14911803F6870021F321 /* Main.storyboard */; };
 		E7AE149F1803F6870021F321 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE149E1803F6870021F321 /* XCTest.framework */; };
 		E7AE14A01803F6870021F321 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE147F1803F6870021F321 /* Foundation.framework */; };
 		E7AE14A11803F6870021F321 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14831803F6870021F321 /* UIKit.framework */; };
@@ -127,9 +127,10 @@
 		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
-		3FB793D61844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		3F93AF8C18572C3100865563 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F93AF8E18572C5300865563 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		3F93AF8F18572C5600865563 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		3FB793D81844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3FB793DA1844E6440037878A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 		E7AE148D1803F6870021F321 /* FbEvents-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FbEvents-Prefix.pch"; sourceTree = "<group>"; };
 		E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestParseAppDelegate.h; sourceTree = "<group>"; };
 		E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestParseAppDelegate.m; sourceTree = "<group>"; };
-		E7AE14921803F6870021F321 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7AE149D1803F6870021F321 /* FbEventsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FbEventsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AE149E1803F6870021F321 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		E7AE14A61803F6870021F321 /* FbEventsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FbEventsTests-Info.plist"; sourceTree = "<group>"; };
@@ -582,6 +582,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				3F93AF8D18572C3100865563 /* Main.storyboard */,
 				E7948A3D18562671004A5351 /* Notifications */,
 				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E73F7A7A1844AF4D003BF2B1 /* UIImage */,
@@ -596,7 +597,6 @@
 				E724E575180EF41A00741528 /* Connection */,
 				E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */,
 				E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */,
-				E7AE14911803F6870021F321 /* Main.storyboard */,
 				E7AE14C818095F310021F321 /* DetailInfosViewController.h */,
 				E7AE14C918095F310021F321 /* DetailInfosViewController.m */,
 				E72055C318352E58003D7AD0 /* Images.xcassets */,
@@ -743,10 +743,10 @@
 				3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */,
 				3F490CD61844F92B00A5811E /* InfoPlist.strings in Resources */,
 				E73F7A561844A54E003BF2B1 /* .gitignore in Resources */,
+				3F93AF8B18572C3100865563 /* Main.storyboard in Resources */,
 				E72055C418352E58003D7AD0 /* Images.xcassets in Resources */,
 				3F490CCF1844F86F00A5811E /* Localizable.strings in Resources */,
 				3F1F63F71844D1C400D1B01E /* README.md in Resources */,
-				E7AE14931803F6870021F321 /* Main.storyboard in Resources */,
 				E77FC7961849071900EDDE86 /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -850,12 +850,12 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		E7AE14911803F6870021F321 /* Main.storyboard */ = {
+		3F93AF8D18572C3100865563 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E7AE14921803F6870021F321 /* Base */,
-				3FB793D61844E6290037878A /* fr */,
-				3FB793DA1844E6440037878A /* en */,
+				3F93AF8C18572C3100865563 /* Base */,
+				3F93AF8E18572C5300865563 /* en */,
+				3F93AF8F18572C5600865563 /* fr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
