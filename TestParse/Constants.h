@@ -37,4 +37,8 @@ extern NSString *const FacebookFirstBlue;
 #pragma mark - App Constants
 extern int const DefaultNbHoursEvent;
 
+#pragma mark - Notif Type
+extern int const NewPhotosEvent;
+extern int const NewLikePhoto;
+
 

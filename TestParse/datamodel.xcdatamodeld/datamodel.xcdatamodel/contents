@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A3017" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Entity" syncable="YES"/>
+    <entity name="Event" representedClassName="Event" syncable="YES">
+        <attribute name="cover" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="descrip" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="end_date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="eventId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_date_only" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objectId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="owner" optional="YES" attributeType="Transformable" valueTransformerName="Owner" syncable="YES"/>
+        <attribute name="start_date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="venue" optional="YES" attributeType="Transformable" valueTransformerName="Venue" syncable="YES"/>
+    </entity>
+    <entity name="Invitation" representedClassName="Invitation" syncable="YES">
+        <attribute name="is_memory" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="objectId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rsvp_status" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Event" syncable="YES"/>
+    </entity>
+    <entity name="Notification" representedClassName="Notification" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objectId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Entity" positionX="160" positionY="192" width="128" height="45"/>
+        <element name="Event" positionX="621" positionY="110" width="128" height="208"/>
+        <element name="Invitation" positionX="196" positionY="189" width="128" height="103"/>
+        <element name="Notification" positionX="279" positionY="-261" width="128" height="103"/>
     </elements>
 </model>

@@ -10,11 +10,16 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
+#import "Invitation.h"
+#import "Notification.h"
+#import "Event.h"
+#import "TestParseAppDelegate.h"
 
 @interface MOUtility : NSObject
 
 #pragma mark - Email
 +(BOOL)isValidEmailAddress:(NSString *)emailaddress;
++(BOOL)isATestUser:(NSString *)facebookId;
 
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
@@ -41,5 +46,26 @@
 
 #pragma mark - IOS Resources
 //- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;
+
+#pragma mark - Database Local
++(BOOL)removeAllInvitations;
++(BOOL)removeAllEvents;
++(Invitation *)getInvitationForObjectId:(NSString *)objectId;
++(Event *)getEventForObjectId:(NSString *)objectId;
++(BOOL)saveInvitationWithEvent:(PFObject *)invitation;
++(Event *)saveEvent:(PFObject *)event;
++(Notification *)saveNotification:(NSDictionary *)infos;
+
+#pragma mark - Model to Parse Object
++(PFObject *)invitationToParseInvitation:(Invitation *)invitation;
++(PFObject *)eventToParseEvent:(Event *)event;
+
+#pragma mark - Access Local Database
++(NSArray *)getAllFuturInvitations;
++(NSArray *)getFuturInvitationNotReplied;
++(NSArray *)getFuturInvitationDeclined;
++(NSArray *)getPastMemories;
++(int)countFutureInvitations;
++(NSArray *)getNotifs;
 
 @end

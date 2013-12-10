@@ -26,6 +26,16 @@
     return [emailTest evaluateWithObject:emailaddress];
 }
 
++(BOOL)isATestUser:(NSString *)facebookId{
+    NSArray *testeurs = [NSArray arrayWithObjects:@"662393812", nil];
+    
+    if ([testeurs containsObject:facebookId]) {
+        return YES;
+    }
+    
+    else return NO;
+}
+
 
 #pragma mark - Facebook
 
@@ -123,6 +133,7 @@
     [invitation setObject:[PFUser currentUser] forKey:@"user"];
     invitation[@"rsvp_status"] = facebookEvent[@"rsvp_status"];
     invitation[@"start_time"] = event[@"start_time"];
+    invitation[@"is_memory"] = @YES;
     
     invitation[@"isOwner"] = @NO;
     invitation[@"isAdmin"] = @NO;
@@ -383,6 +394,424 @@
 }
 
 
+
+#pragma mark - Database Local
++(BOOL)removeAllInvitations{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"Houston, we have a problem: %@", error);
+    }
+    
+    // display all objects
+    for (Invitation *invitation in fetchedObjects) {
+        NSLog(@"%@", invitation.objectId);
+        [context deleteObject:invitation];
+        NSLog(@"deleted");
+    }
+    
+    return YES;
+}
+
++(BOOL)removeAllEvents{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"Houston, we have a problem: %@", error);
+    }
+    
+    // display all objects
+    for (Event *event in fetchedObjects) {
+        NSLog(@"%@", event.objectId);
+        [context deleteObject:event];
+        NSLog(@"deleted");
+    }
+    
+    return YES;
+}
+
++(Invitation *)getInvitationForObjectId:(NSString *)objectId{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    // setup a predicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectId == %@", objectId];
+    fetchRequest.predicate = predicate;
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    else if(fetchedObjects.count == 0){
+        return nil;
+    }
+    else{
+        return (Invitation *)[fetchedObjects objectAtIndex:0];
+    }
+    
+}
+
++(Event *)getEventForObjectId:(NSString *)objectId{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    // setup a predicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectId == %@", objectId];
+    fetchRequest.predicate = predicate;
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    else if(fetchedObjects.count == 0){
+        return nil;
+    }
+    else{
+        return (Event *)[fetchedObjects objectAtIndex:0];
+    }
+    
+}
+
++(BOOL)saveInvitationWithEvent:(PFObject *)invitation{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    Invitation *invitationBase;
+    
+    //See if an invitation with this Id already exists
+    
+    
+    if ([self getInvitationForObjectId:invitation.objectId] != nil) {
+        invitationBase = [self getInvitationForObjectId:invitation.objectId];
+    }
+    else{
+        invitationBase = [NSEntityDescription insertNewObjectForEntityForName:@"Invitation" inManagedObjectContext:context];
+    }
+    
+    
+    invitationBase.objectId = invitation.objectId;
+    invitationBase.is_memory = [NSNumber numberWithBool:[invitation[@"is_memory"] boolValue]];
+    invitationBase.rsvp_status = invitation[@"rsvp_status"];
+    invitationBase.event = [self saveEvent:invitation[@"event"]];
+    
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        return NO;
+    }
+    else return YES;
+}
+
++(Event *)saveEvent:(PFObject *)event{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    Event *eventBase;
+    
+    if ([self getEventForObjectId:event.objectId]!=nil) {
+        eventBase =[self getEventForObjectId:event.objectId];
+    }
+    else{
+        eventBase = [NSEntityDescription insertNewObjectForEntityForName:@"Event" inManagedObjectContext:context];
+    }
+    
+    eventBase.objectId = event.objectId;
+    eventBase.name = event[@"name"];
+    eventBase.descrip = event[@"description"];
+    eventBase.eventId = event[@"eventId"];
+    eventBase.cover = event[@"cover"];
+    eventBase.is_date_only = [NSNumber numberWithBool:[event[@"is_date_only"] boolValue]];
+    eventBase.location = event[@"location"];
+    eventBase.start_date = event[@"start_time"];
+    eventBase.end_date = event[@"end_time"];
+    eventBase.owner = event[@"owner"];
+    eventBase.venue = event[@"venue"];
+    
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        return nil;
+    }
+    else return eventBase;
+}
+
++(Notification *)saveNotification:(NSDictionary *)infos{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    Notification *notif = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
+    
+    notif.objectId = infos[@"objectId"];
+    notif.type = infos[@"type"];
+    notif.date = [NSDate date];
+    notif.message = infos[@"message"];
+    
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        return nil;
+    }
+    
+    else return notif;
+}
+
+
+#pragma mark - Model to Parse Object
+
++(PFObject *)invitationToParseInvitation:(Invitation *)invitation{
+    PFObject *parseInvitation = [PFObject objectWithClassName:@"Invitation"];
+    
+    parseInvitation.objectId = invitation.objectId;
+    if (invitation.is_memory) {
+        if ([invitation.is_memory isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            parseInvitation[@"is_memory"] = @YES;
+        }
+        else{
+            parseInvitation[@"is_memory"] = @NO;
+        }
+        
+    }
+    if (invitation.rsvp_status) {
+        parseInvitation[@"rsvp_status"] = invitation.rsvp_status;
+    }
+    if (invitation.event) {
+        parseInvitation[@"event"] = [self eventToParseEvent:invitation.event];
+    }
+    
+    
+    
+    return parseInvitation;
+}
+
++(PFObject *)eventToParseEvent:(Event *)event{
+    PFObject *parseEvent = [PFObject objectWithClassName:@"Event"];
+    
+    parseEvent.objectId = event.objectId;
+    
+    if (event.name) {
+        parseEvent[@"name"] = event.name;
+    }
+    if (event.descrip) {
+        parseEvent[@"description"] = event.descrip;
+    }
+    
+    if (event.eventId) {
+        parseEvent[@"eventId"] = event.eventId;
+    }
+    
+    if (event.cover) {
+        parseEvent[@"cover"] = event.cover;
+    }
+    if (event.is_date_only) {
+        if ([event.is_date_only isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            parseEvent[@"is_date_only"] = @YES;
+        }
+        else{
+            parseEvent[@"is_date_only"] = @NO;
+        }
+    }
+    if (event.location) {
+        parseEvent[@"location"] = event.location;
+    }
+    if (event.start_date) {
+        parseEvent[@"start_time"] = event.start_date;
+    }
+    if (event.end_date) {
+        parseEvent[@"end_time"] = event.end_date;
+    }
+    if (event.owner) {
+        parseEvent[@"owner"] = event.owner;
+    }
+    if (event.venue) {
+        parseEvent[@"venue"] = event.venue;
+    }
+    
+    return parseEvent;
+}
+
+
+#pragma mark - Access Local Database
++(NSArray *)getAllFuturInvitations{
+    NSMutableArray *invitationsTemp = [[NSMutableArray alloc] init];
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event.start_date >= %@", [NSDate date]];
+    fetchRequest.predicate = predicate;
+
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+
+    for(Invitation *invitation in fetchedObjects){
+        PFObject *parseInvit = [self invitationToParseInvitation:invitation];
+        [invitationsTemp addObject:parseInvit];
+    }
+    
+    return [invitationsTemp copy];
+}
+
+
++(NSArray *)getFuturInvitationNotReplied{
+    NSMutableArray *invitationsTemp = [[NSMutableArray alloc] init];
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND (rsvp_status like %@) ", [NSDate date], FacebookEventNotReplied];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    
+    for(Invitation *invitation in fetchedObjects){
+        PFObject *parseInvit = [self invitationToParseInvitation:invitation];
+        [invitationsTemp addObject:parseInvit];
+    }
+    
+    return [invitationsTemp copy];
+}
+
+
++(NSArray *)getFuturInvitationDeclined{
+    NSMutableArray *invitationsTemp = [[NSMutableArray alloc] init];
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND (rsvp_status like %@) ", [NSDate date], FacebookEventDeclined];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    
+    for(Invitation *invitation in fetchedObjects){
+        PFObject *parseInvit = [self invitationToParseInvitation:invitation];
+        [invitationsTemp addObject:parseInvit];
+    }
+    
+    return [invitationsTemp copy];
+}
+
++(NSArray *)getPastMemories{
+    NSMutableArray *invitationsTemp = [[NSMutableArray alloc] init];
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date < %@) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    
+    for(Invitation *invitation in fetchedObjects){
+        PFObject *parseInvit = [self invitationToParseInvitation:invitation];
+        [invitationsTemp addObject:parseInvit];
+    }
+    
+    return [invitationsTemp copy];
+}
+
++(int)countFutureInvitations{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setIncludesSubentities:NO];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND (rsvp_status like %@) ", [NSDate date], FacebookEventNotReplied];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *err;
+    NSUInteger count = [context countForFetchRequest:fetchRequest error:&err];
+    if(count == NSNotFound) {
+        return 0;
+    }
+    
+    else return count;
+}
+
++(NSArray *)getNotifs{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (fetchedObjects == nil) {
+        return nil;
+    }
+    else return fetchedObjects;
+}
 
 
 
