@@ -89,7 +89,11 @@
 
 
 ///// PhotosCollectionViewController /////
-"PhotosCollectionViewController_Title" = "dans %i jours";
+"PhotosCollectionViewController_Title_Future" = "dans %i jours";
+"PhotosCollectionViewController_Title_Tomorrow" = "demain";
+"PhotosCollectionViewController_Title_Past" = "il y a %i jours";
+"PhotosCollectionViewController_Title_Yesterday" = "hier";
+"PhotosCollectionViewController_Title_Today" = "aujourd'hui";
 "PhotosCollectionViewController_Marker_Title" = "Sydney";
 "PhotosCollectionViewController_Marker_snippet" = "Australia";
 "PhotosCollectionViewController_OwnerEvent" = "Evènement organisé par %@";
@@ -145,4 +149,6 @@
 "ListInvitationsController_SendInvit" = "%@ vous a envoyé une invitation.";
 
 
-///// ListEvents /////
+///// MemoriesImportViewController /////
+"MemoriesImportViewController_Title" = "Evènements";
+"MemoriesImportViewController_Loading" = "Chargement";

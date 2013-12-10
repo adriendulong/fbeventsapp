@@ -28,6 +28,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *albumButton;
 @property (weak, nonatomic) IBOutlet CustomBadge *badge;
 
+@property (weak, nonatomic) IBOutlet UIImageView *top_camera_shutter;
+@property (weak, nonatomic) IBOutlet UIImageView *bottom_camera_shutter;
+
+
 - (IBAction)cancel:(UIButton *)sender;
 - (IBAction)takePhoto:(UIButton *)sender;
 - (IBAction)switchFlashMode:(UIButton *)sender;

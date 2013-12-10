@@ -11,8 +11,11 @@
 #import "MOUtility.h"
 #import "ChooseLastEventViewController.h"
 #import "PhotosImportedViewController.h"
+#import "MBProgressHUD.h"
 
 @interface MemoriesImportViewController ()
+
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 @end
 
@@ -31,7 +34,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Evènements";
+    self.title = NSLocalizedString(@"MemoriesImportViewController_Title", nil);
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
     self.arrayEvents = [[NSMutableArray alloc] init];
@@ -63,6 +66,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Selected %i", indexPath.row);
+    
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.labelText = NSLocalizedString(@"MemoriesImportViewController_Loading", nil);
     
     NSDictionary *eventFacebook = [self.arrayEvents objectAtIndex:indexPath.row];
     
@@ -278,7 +284,8 @@
 }
 
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    [self.hud hide:YES];
 
     if ([segue.identifier isEqualToString:@"TypeEvent"]){
         ChooseLastEventViewController *chooseLastEvent = (ChooseLastEventViewController *)segue.destinationViewController;

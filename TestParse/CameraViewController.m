@@ -14,6 +14,7 @@
 #import "MOUtility.h"
 #import "PhotosAlbumViewController.h"
 #import "CameraFocusSquare.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface CameraViewController (){
     @private
@@ -31,6 +32,8 @@
 
 @property (strong, nonatomic) UIButton *yesButton;
 @property (strong, nonatomic) UIButton *noButton;
+
+@property (nonatomic) SystemSoundID soundToPlay;
 
 @end
 
@@ -169,6 +172,54 @@
 - (IBAction)takePhoto:(UIButton *)sender {
     
     if (!self.isPictureTaken) {
+        
+        [self.top_camera_shutter setHidden:NO];
+        [self.bottom_camera_shutter setHidden:NO];
+        
+        self.toolboxView.alpha = 1.0;
+        
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"shutter-photo" ofType:@"caf"];
+        NSURL *soundPathURL = [NSURL fileURLWithPath:soundPath];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundPathURL, &_soundToPlay);
+        AudioServicesPlaySystemSound(_soundToPlay);
+        
+        // ANIMATION
+        [UIView animateWithDuration:0.375f
+                         animations:^{
+                             
+                             CGRect frameTop = self.top_camera_shutter.frame;
+                             frameTop.origin.y += 162.0f;
+                             self.top_camera_shutter.frame = frameTop;
+                             
+                             CGRect frameBot = self.bottom_camera_shutter.frame;
+                             frameBot.origin.y -= 160.0f;
+                             self.bottom_camera_shutter.frame = frameBot;
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             [UIView animateWithDuration:0.375f
+                                                   delay:0.5f
+                                                 options:UIViewAnimationOptionTransitionNone
+                                              animations:^{
+                                                  
+                                                  CGRect frameTop = self.top_camera_shutter.frame;
+                                                  frameTop.origin.y -= 162.0f;
+                                                  self.top_camera_shutter.frame = frameTop;
+                                                  
+                                                  CGRect frameBot = self.bottom_camera_shutter.frame;
+                                                  frameBot.origin.y += 160.0f;
+                                                  self.bottom_camera_shutter.frame = frameBot;
+                                                  
+                                              } completion:^(BOOL finished) {
+                                                  
+                                                  if (finished) {
+                                                      [self.top_camera_shutter setHidden:YES];
+                                                      [self.bottom_camera_shutter setHidden:YES];
+                                                  }
+                                              }];
+                         }];
+        
+        
         AVCaptureConnection *videoConnection = nil;
         for (AVCaptureConnection *connection in self.stillImageOutput.connections)
         {
@@ -213,7 +264,7 @@
              
              UIImage *finalImage = [UIImage imageWithCGImage:imageRef
                                                        scale:1.0
-                                                 orientation: UIImageOrientationUp];
+                                                 orientation:UIImageOrientationUp];
              [self.previewImage setImage:finalImage];
              
              
@@ -253,7 +304,6 @@
              //self.previewImage.image = tempImage;
              
              //Graphical modifs
-             self.toolboxView.alpha = 1.0;
              [self.previewImage setHidden:NO];
              [self.takePhoto setImage:[UIImage imageNamed:@"validate_photo"] forState:UIControlStateNormal];
              [self.cancelButton setImage:[UIImage imageNamed:@"back_stream"] forState:UIControlStateNormal];

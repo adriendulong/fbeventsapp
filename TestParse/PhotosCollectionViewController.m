@@ -58,7 +58,28 @@
     NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
     double secondsInAnDays = 86400;
     NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
-    self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title", nil), daysBetweenDates];
+    
+    /*
+     "PhotosCollectionViewController_Title_Future" = "dans %i jours";
+     "PhotosCollectionViewController_Title_Tomorrow" = "demain";
+     "PhotosCollectionViewController_Title_Past" = "il y a %i jours";
+     "PhotosCollectionViewController_Title_Yesterday" = "hier";
+     "PhotosCollectionViewController_Title_Today" = "Aujourd'hui";
+     */
+    
+    if (daysBetweenDates > 1) {
+        self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Future", nil), daysBetweenDates];
+    } else if (daysBetweenDates == 1) {
+        self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Tomorrow", nil);
+    } else if (daysBetweenDates == 0) {
+        self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Today", nil);
+    } else {
+        if (abs(daysBetweenDates) > 1) {
+            self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Past", nil), abs(daysBetweenDates)];
+        } else {
+            self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Yesterday", nil);
+        }
+    }
     
     //Init images
     //self.photos = [NSArray arrayWithObjects:@"horloge", @"covertest", @"covertest", nil];
