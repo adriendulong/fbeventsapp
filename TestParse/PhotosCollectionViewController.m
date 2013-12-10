@@ -141,15 +141,28 @@
                 MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 1*METERS_PER_MILE, 1*METERS_PER_MILE);
                 
                 [headerView.mapView setRegion:viewRegion animated:NO];
-                [headerView.mapView setZoomEnabled:NO];
-                [headerView.mapView setUserInteractionEnabled:NO];
-                
-                self.isMapInit = YES;
                 
             }
+            
+            [headerView.mapView setZoomEnabled:NO];
+            [headerView.mapView setExclusiveTouch:YES];
+            [headerView.mapView setRotateEnabled:NO];
+            [headerView.mapView setScrollEnabled:NO];
+            
+            self.isMapInit = YES;
+            
         }
         
+        UITapGestureRecognizer *singleFingerTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(touchedMap:)];
+        [headerView.mapView addGestureRecognizer:singleFingerTap];
         
+        //button map add gesture recognizer
+        UITapGestureRecognizer *singleFingerTapSecond =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(touchedMap:)];
+        [headerView.mapButton addGestureRecognizer:singleFingerTapSecond];
         
         
         

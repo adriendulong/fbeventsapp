@@ -7,7 +7,7 @@
 //
 
 #import "Notification.h"
-#import "Event.h"
+#import "Invitation.h"
 
 
 @implementation Notification
@@ -16,6 +16,7 @@
 @dynamic message;
 @dynamic objectId;
 @dynamic type;
-@dynamic event;
+@dynamic is_new;
+@dynamic invitation;
 
 @end

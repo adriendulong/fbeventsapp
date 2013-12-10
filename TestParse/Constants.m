@@ -18,6 +18,7 @@ NSString *const ClickLikePhoto                      = @"com.moment.FbEvents.User
 NSString *const MorePhoto                           = @"com.moment.FbEvents.MorePhoto";
 NSString *const SelectAllPhotosPhone                = @"com.moment.FbEvents.SelectAllPhotosPhone";
 NSString *const SelectAllPhotosFacebook             = @"com.moment.FbEvents.SelectAllPhotosFacebook";
+NSString *const ModifEventsInvitationsAnswers       = @"com.moment.FbEvents.ModifEventsInvitationsAnswers";
 
 #pragma mark - Facebook
 

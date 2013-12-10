@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) NSArray *notifications;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) PFObject *selectedInvitation;
+@property (strong, nonatomic) PFObject *selectedPhoto;
 
 - (IBAction)finish:(id)sender;
 @end

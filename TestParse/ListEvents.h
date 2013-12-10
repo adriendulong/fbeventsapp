@@ -19,6 +19,8 @@
 @property(nonatomic, assign) int facebookEventNotRepliedDone;
 @property(nonatomic, assign) bool comeFromLogin;
 @property(nonatomic, assign) bool loadingNotJoinFBEvents;
+@property (nonatomic, assign) BOOL animating;
+@property (weak, nonatomic) IBOutlet UIImageView *refreshImage;
 
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;

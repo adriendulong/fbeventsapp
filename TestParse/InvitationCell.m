@@ -31,15 +31,15 @@
     
     //Accept
     if(self.rsvpSegmentedControl.selectedSegmentIndex == 0){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"attending"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"attending" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     //Maybe
     else if (self.rsvpSegmentedControl.selectedSegmentIndex == 1){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"maybe"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"maybe" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     //No
     else{
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"declined"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"declined" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     
     
@@ -47,12 +47,14 @@
 }
 
 //RSVP to an event
--(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp{
+-(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp oldRsvpIndex:(NSInteger)oldSelected{
     NSLog(@"Change the rsvp on FB : %@", rsvp);
     
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:nil HTTPMethod:@"POST"];
+    
+    __block NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self.invitation.objectId forKey:@"invitationId"];
     
     //@"rsvp_event"
     //If not have permission to rsvp
@@ -90,10 +92,10 @@
                         [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                             if(!error){
                                 //Warn the table view controller
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
                             }
                             else{
-                                [self.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                                [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
                             }
                         }];
                     }
@@ -101,7 +103,7 @@
                 }
                 else{
                     NSLog(@"%@", error);
-                    [self.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                    [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
                 }
             }];
          }];
@@ -120,10 +122,10 @@
                     [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if(!error){
                             //Warn the table view controller
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
                         }
                         else{
-                            [self.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                            [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
                         }
                     }];
                 }
@@ -131,7 +133,7 @@
             }
             else{
                 NSLog(@"%@", error);
-                [self.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
             }
         }];
     }

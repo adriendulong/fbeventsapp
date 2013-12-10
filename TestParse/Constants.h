@@ -16,6 +16,7 @@ extern NSString *const ClickLikePhoto;
 extern NSString *const MorePhoto;
 extern NSString *const SelectAllPhotosPhone;
 extern NSString *const SelectAllPhotosFacebook;
+extern NSString *const ModifEventsInvitationsAnswers;
 
 
 #pragma mark - Facebook

@@ -9,6 +9,8 @@
 #import "NotificationsViewController.h"
 #import "MOUtility.h"
 #import "Notification.h"
+#import "PhotosCollectionViewController.h"
+#import "PhotoDetailViewController.h"
 
 @interface NotificationsViewController ()
 
@@ -82,13 +84,12 @@
     title.text = notif.message;
     
     if ([notif.type intValue]==0) {
-        imageView.image = [UIImage imageNamed:@"chat"];
+        imageView.image = [UIImage imageNamed:@"camera_orange"];
     }
     else {
         imageView.image = [UIImage imageNamed:@"chat"];
     }
     
-    NSLog(@"NAME event : %@", [MOUtility eventToParseEvent:notif.event][@"name"]);
     
     
     return cell;
@@ -98,12 +99,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Notification *notif = [self.notifications objectAtIndex:indexPath.row];
     
+    //Notif read one time, no more new
+    [MOUtility notificationJustRead:notif];
+    
     //Event Detail
     if ([notif.type intValue]==0) {
-        NSLog(@"0");
+        self.selectedInvitation = [MOUtility invitationToParseInvitation:notif.invitation];
+        [self performSegueWithIdentifier:@"EventDetail" sender:nil];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     else if([notif.type intValue] == 1){
-        NSLog(@"1");
+        
+        PFObject *photo = [PFObject objectWithClassName:@"Photo"];
+        photo.objectId = notif.objectId;
+        
+        self.selectedPhoto = photo;
+        [self performSegueWithIdentifier:@"PhotoDetail" sender:nil];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
 }
@@ -113,4 +125,20 @@
 - (IBAction)finish:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+
+#pragma mark - Segue
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"EventDetail"]) {
+        PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
+        photosCollectionViewController.invitation = self.selectedInvitation;
+    }
+    else if([segue.identifier isEqualToString:@"PhotoDetail"]){
+        PhotoDetailViewController *photoDetail = segue.destinationViewController;
+        photoDetail.photo = self.selectedPhoto;
+    }
+    
+}
+
 @end

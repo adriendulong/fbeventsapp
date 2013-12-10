@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Event;
+@class Invitation;
 
 @interface Notification : NSManagedObject
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * message;
 @property (nonatomic, retain) NSString * objectId;
 @property (nonatomic, retain) NSNumber * type;
-@property (nonatomic, retain) Event *event;
+@property (nonatomic, retain) NSNumber * is_new;
+@property (nonatomic, retain) Invitation *invitation;
 
 @end

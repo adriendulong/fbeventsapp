@@ -17,6 +17,7 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (strong, nonatomic) UIPageControl *pageControl;
 @property (nonatomic, assign) id<SecondDelegate> myDelegate;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)facebook:(id)sender;
 -(void)updateUserInfos;

@@ -21,14 +21,15 @@
     </entity>
     <entity name="Notification" representedClassName="Notification" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="is_new" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="objectId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" syncable="YES"/>
+        <relationship name="invitation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Invitation" syncable="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="621" positionY="110" width="128" height="208"/>
         <element name="Invitation" positionX="196" positionY="189" width="128" height="103"/>
-        <element name="Notification" positionX="279" positionY="-261" width="128" height="118"/>
+        <element name="Notification" positionX="279" positionY="-261" width="128" height="133"/>
     </elements>
 </model>

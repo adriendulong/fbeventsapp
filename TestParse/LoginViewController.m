@@ -33,6 +33,8 @@
 {
     [super viewDidLoad];
     
+    [self.activityIndicator setHidden:YES];
+    
 	// Do any additional setup after loading the view.
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                                                           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
@@ -155,10 +157,7 @@
 
 - (IBAction)facebook:(id)sender {
     //LOADER
-    UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityView.center=self.view.center;
-    [activityView startAnimating];
-    [self.view addSubview:activityView];
+    [self.activityIndicator setHidden:NO];
     
     
     NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream"];

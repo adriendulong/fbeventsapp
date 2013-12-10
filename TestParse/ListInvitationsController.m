@@ -29,17 +29,27 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self loadInvitationFromServer];
+    [self loadDeclinedFromSever];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadInvitationFromServer];
-    [self loadDeclinedFromSever];
     
     //Notifications Center
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(invitationChanged:)
                                                  name:@"RsvpChanged"
                                                object:nil];
+    
+    //Init
+    self.declined = [[NSMutableArray alloc] init];
+    self.invitations = [[NSMutableArray alloc] init];
+    self.objectsForTable = [[NSMutableArray alloc] init];;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -142,7 +152,7 @@
     NSLog(@"Load Future Events");
     
     //Load Invitation from local database
-    self.invitations = [MOUtility getFuturInvitationNotReplied];
+    self.invitations = [[MOUtility getFuturInvitationNotReplied] mutableCopy];
     if(self.listSegmentControll.selectedSegmentIndex==0){
         self.objectsForTable = self.invitations;
         [self.tableView reloadData];
@@ -160,7 +170,7 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.invitations = objects;
+            self.invitations = [objects mutableCopy];
             
             //Save in local database
             for(PFObject *invitation in objects){
@@ -183,7 +193,7 @@
 -(void)loadDeclinedFromSever{
     NSLog(@"Load Declined Events");
     
-    self.declined = [MOUtility getFuturInvitationDeclined];
+    self.declined = [[MOUtility getFuturInvitationDeclined] mutableCopy];
     if(self.listSegmentControll.selectedSegmentIndex==1){
         self.objectsForTable = self.declined;
         [self.tableView reloadData];
@@ -202,7 +212,7 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.declined = objects;
+            self.declined = [objects mutableCopy];;
             
             //Save in local databse
             for(PFObject *invitation in objects){
@@ -230,9 +240,34 @@
 # pragma mark Segment results
 
 -(void)invitationChanged:(NSNotification *) notification{
+    //find position invitation
+    int i=0;
+    int positionToRemove = 0;
+    for(PFObject *invitation in self.objectsForTable){
+        if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+            positionToRemove = i;
+            break;
+        }
+        i++;
+    }
+    
+    //Remove it
+    //[self.objectsForTable removeObjectAtIndex:positionToRemove];
+    if (self.listSegmentControll.selectedSegmentIndex == 0) {
+        [self.invitations removeObjectAtIndex:positionToRemove];
+    }
+    else{
+        [self.declined removeObjectAtIndex:positionToRemove];
+    }
+    
+    //reload
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    
+    
+    /*
     NSLog(@"DETECT PROTOCOL");
     [self loadInvitationFromServer];
-    [self loadDeclinedFromSever];
+    [self loadDeclinedFromSever];*/
     [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
     
     //We reload the list in the future events

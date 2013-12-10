@@ -94,7 +94,7 @@
                         [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                             if(!error){
                                 //Warn the table view controller
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
                             }
                             else{
                                 [self.segmentRsvp setSelectedSegmentIndex:UISegmentedControlNoSegment];
@@ -125,7 +125,7 @@
                     [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if(!error){
                             //Warn the table view controller
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
                         }
                         else{
                             [self.segmentRsvp setSelectedSegmentIndex:UISegmentedControlNoSegment];

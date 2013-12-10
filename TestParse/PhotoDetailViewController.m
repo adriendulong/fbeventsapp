@@ -50,6 +50,10 @@
         NSLog(@"Width %@, Height %@", self.photo[@"width"], self.photo[@"height"]);
     }
     
+    if (!self.photo[@"full_image"]) {
+        [self.tableView setHidden:YES];
+    }
+    
     self.fbLikers = [[NSMutableArray alloc] init];
     [self getLikesPhotosFromFB];
     
@@ -58,6 +62,7 @@
     [query includeKey:@"prospect"];
     [query getObjectInBackgroundWithId:self.photo.objectId block:^(PFObject *photoObject, NSError *error) {
         if (!error) {
+            [self.tableView setHidden:NO];
             self.photo = photoObject;
             [self.tableView reloadData];
         }
@@ -93,7 +98,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"Section %i", section);
-    return 4;
+    if(self.photo[@"comment"]) return 4;
+    else return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -523,7 +523,7 @@
     
 }
 
-+(BOOL)saveInvitationWithEvent:(PFObject *)invitation{
++(Invitation *)saveInvitationWithEvent:(PFObject *)invitation{
     NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     Invitation *invitationBase;
     
@@ -546,9 +546,9 @@
     NSError *error;
     if (![context save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-        return NO;
+        return nil;
     }
-    else return YES;
+    else return invitationBase;
 }
 
 +(Event *)saveEvent:(PFObject *)event{
@@ -586,10 +586,17 @@
     NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     Notification *notif = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
     
-    notif.event = infos[@"event"];
+    if (infos[@"invitation"]) {
+        notif.invitation = infos[@"invitation"];
+    }
+    else{
+        notif.objectId = infos[@"objectId"];
+    }
+    
     notif.type = infos[@"type"];
     notif.date = [NSDate date];
     notif.message = infos[@"message"];
+    notif.is_new = [NSNumber numberWithBool:YES];
     
     NSError *error;
     if (![context save:&error]) {
@@ -847,6 +854,41 @@
     [self removeAllNotifs];
 }
 
+
++(BOOL)notificationJustRead:(Notification *)notification;{
+    notification.is_new = [NSNumber numberWithBool:NO];    
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        return NO;
+    }
+    
+    else return YES;
+}
+
++(NSInteger)nbNewNotifs{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    //See if an invitation with this Id already exists
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"is_new == %@", [NSNumber numberWithBool:YES]];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
+    
+    if (count == NSNotFound) {
+        return 0;
+    }
+    else return count;
+}
 
 
 #pragma mark - LogOut

@@ -162,12 +162,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                 //Add a notif to the core data
                 NSDictionary *dictionnary;
                 if ([MOUtility getEventForObjectId:eventId]!=nil) {
-                   dictionnary = @{@"event": [MOUtility getEventForObjectId:eventId],
+                   dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
                                     @"type" : @0,
                                     @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
                 }
                 else{
-                    dictionnary = @{@"event": [MOUtility saveEvent:object],
+                    dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
                                     @"type" : @0,
                                     @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
                 }
@@ -205,7 +205,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             }else if ([PFUser currentUser]) {
                 NSDictionary *dictionnary = @{@"objectId": photoId,
                                               @"type" : @1,
-                                              @"message": [userInfo valueForKey:@"alert"]};
+                                              @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
                 [MOUtility saveNotification:dictionnary];
                 
                 

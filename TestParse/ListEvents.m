@@ -26,12 +26,15 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FacebookEventUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ModifEventsInvitationsAnswers object:nil];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //self.title = @"";
+    
+    
     
     NSLog(@"WIll Appear");
     //[self loadFutureEventsFromServer];
@@ -60,10 +63,25 @@
 
 - (void)viewDidLoad
 {
+    
+    //Refresh view
+    self.animating = NO;
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc]
+                                        init];
+    refreshControl.tintColor = [UIColor orangeColor];
+    [refreshControl addTarget:self action:@selector(fbReload:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    
+    //Init Notif number
+    UIButton *buttonNotif = (UIButton *)[[self.navigationController.navigationBar viewWithTag:9] viewWithTag:10];
+    NSString *notifMessage = [NSString stringWithFormat:@"Notifs : %i", [MOUtility nbNewNotifs]];
+    [buttonNotif setTitle:notifMessage forState:UIControlStateNormal];
+    
     [super viewDidLoad];
     
     //Init badge of invitations
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneFacebookEventUpdated:) name:@"FacebookEventUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fbReload:) name:ModifEventsInvitationsAnswers object:nil];
     
     //init
     self.facebookEventsNbDone = 0;
@@ -239,6 +257,15 @@
 }
 
 - (IBAction)fbReload:(id)sender {
+    if (!self.refreshControl.isRefreshing) {
+        [self startSpin];
+    }
+    
+    [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
+    [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+}
+
+-(void)mustReloadEvents:(NSNotification *)note{
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
 }
@@ -267,12 +294,16 @@
             self.invitations = objects;
             [self.tableEvents reloadData];
             
+            self.animating = NO;
+            [self.refreshControl endRefreshing];
+            
             for(PFObject *invitation in objects){
                 [MOUtility saveInvitationWithEvent:invitation];
             }
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");
+            [self.refreshControl endRefreshing];
         }
     }];
 }
@@ -361,6 +392,42 @@
     //Sync with FB
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+}
+
+
+#pragma mark - Animate Button Refresh
+
+- (void) spinWithOptions: (UIViewAnimationOptions) options {
+    // this spin completes 360 degrees every 2 seconds
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: options
+                     animations: ^{
+                         self.refreshImage.transform = CGAffineTransformRotate(self.refreshImage.transform, M_PI / 2);
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             if (self.animating) {
+                                 // if flag still set, keep spinning with constant speed
+                                 [self spinWithOptions: UIViewAnimationOptionCurveLinear];
+                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
+                                 // one last spin, with deceleration
+                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut];
+                             }
+                         }
+                     }];
+}
+
+- (void) startSpin {
+    if (!self.animating) {
+        self.animating = YES;
+        [self spinWithOptions: UIViewAnimationOptionCurveEaseIn];
+    }
+}
+
+- (void) stopSpin {
+    // set the flag to stop spinning after one last 90 degree increment
+    self.animating = NO;
 }
 
 

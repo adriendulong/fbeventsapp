@@ -11,9 +11,9 @@
 
 
 @interface ListInvitationsController : UITableViewController
-@property (nonatomic, strong) NSArray *invitations;
-@property (nonatomic, strong) NSArray *declined;
-@property (nonatomic, strong) NSArray *objectsForTable;
+@property (nonatomic, strong) NSMutableArray *invitations;
+@property (nonatomic, strong) NSMutableArray *declined;
+@property (nonatomic, strong) NSMutableArray *objectsForTable;
 @property (strong, nonatomic) IBOutlet UITableView *invitationsTable;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *listSegmentControll;
 

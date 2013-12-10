@@ -52,7 +52,7 @@
 +(BOOL)removeAllEvents;
 +(Invitation *)getInvitationForObjectId:(NSString *)objectId;
 +(Event *)getEventForObjectId:(NSString *)objectId;
-+(BOOL)saveInvitationWithEvent:(PFObject *)invitation;
++(Invitation *)saveInvitationWithEvent:(PFObject *)invitation;
 +(Event *)saveEvent:(PFObject *)event;
 +(Notification *)saveNotification:(NSDictionary *)infos;
 
@@ -67,6 +67,8 @@
 +(NSArray *)getPastMemories;
 +(int)countFutureInvitations;
 +(NSArray *)getNotifs;
++(BOOL)notificationJustRead:(Notification *)notification;
++(NSInteger)nbNewNotifs;
 
 
 #pragma mark - LogOut
