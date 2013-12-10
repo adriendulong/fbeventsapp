@@ -18,10 +18,9 @@
 
 @property (nonatomic) int nbAutomaticPhotos;
 
-
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerConstraint;
 
 
 - (IBAction)selectPhotos:(id)sender;
+
 @end

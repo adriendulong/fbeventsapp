@@ -1083,10 +1083,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Nr6-sz-Bz4">
-                        <barButtonItem key="rightBarButtonItem" title="Valider" id="Kcj-ns-0CQ">
+                        <barButtonItem key="rightBarButtonItem" title="Valider" style="plain" id="Kcj-ns-0CQ">
                             <color key="tintColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             <connections>
-                                <segue destination="CTI-H4-4ZD" kind="push" identifier="SharePhotos" id="gQS-Od-x3H"/>
+                                <segue destination="CTI-H4-4ZD" kind="push" identifier="SharePhotos" id="QXy-jn-JYv"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2654,10 +2654,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="85D-2h-GPM"/>
         <segue reference="pId-s9-PUV"/>
-        <segue reference="gQS-Od-x3H"/>
-        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="85D-2h-GPM"/>
+        <segue reference="QXy-jn-JYv"/>
         <segue reference="ItH-HP-BNq"/>
+        <segue reference="EkG-m5-ZxD"/>
     </inferredMetricsTieBreakers>
 </document>

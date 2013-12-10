@@ -37,6 +37,8 @@
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);
     
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     self.datasourceAutomatic = [NSMutableArray array];
     self.datasourceComplete = [NSMutableArray array];
 	// Do any additional setup after loading the view.
@@ -149,6 +151,14 @@
         }
     }
     
+    self.navigationItem.rightBarButtonItem.enabled = ([self nbSelectedPhotos] == 0) ? NO : YES;
+    
+    if ([self nbSelectedAutomaticPhotos] == 1) {
+        [self.selectButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
+    } else if ([self nbSelectedAutomaticPhotos] == 0) {
+        [self.selectButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllSelect", nil) forState:UIControlStateNormal];
+    }
+    
     /*
     if ([self.photosToUpload containsObject:selectedCell.photo]) {
         //NSLog(@"La photo est sélectionnée. On la supprime !");
@@ -202,7 +212,7 @@
 #pragma mark - Selected Photos
 
 - (IBAction)selectPhotos:(id)sender {
-    if ([self nbSelectedPhotos] == 0) {
+    if ([self nbSelectedAutomaticPhotos] == 0) {
         int i = 0;
         for(Photo *photo in self.datasourceAutomatic){
             if (i<MAX_PHOTOS_UPLOAD) {
@@ -213,17 +223,24 @@
         [self.collectionView reloadData];
         
         [sender setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
+        
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        
     } else {
         for(Photo *photo in self.datasourceAutomatic){
             photo.isSelected = NO;
         }
-        for(Photo *photo in self.datasourceComplete){
+        /*for(Photo *photo in self.datasourceComplete){
             photo.isSelected = NO;
-        }
+        }*/
         
         [self.collectionView reloadData];
         
         [sender setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllSelect", nil) forState:UIControlStateNormal];
+        
+        if ([self nbSelectedPhotos] == 0) {
+            self.navigationItem.rightBarButtonItem.enabled = NO;
+        }
     }
 }
 
@@ -237,6 +254,18 @@
     }
     
     for (Photo *photo in self.datasourceComplete) {
+        if (photo.isSelected) {
+            selectedPhotos++;
+        }
+    }
+    
+    return selectedPhotos;
+}
+
+-(int)nbSelectedAutomaticPhotos{
+    int selectedPhotos = 0;
+    
+    for(Photo *photo in self.datasourceAutomatic){
         if (photo.isSelected) {
             selectedPhotos++;
         }
@@ -314,15 +343,8 @@
                     if (self.datasourceAutomatic.count == 0) {
                         [self.selectButton removeFromSuperview];
                         self.headerConstraint.constant = 0;
-                        
-                        
-                        /*CGRect frame = self.collectionView.frame;
-                        frame.size.height += self.selectButton.frame.size.height;
-                        frame.origin.y -= self.selectButton.frame.size.height;
-                        
-                        [self.selectButton removeFromSuperview];
-                        
-                        [self.collectionView setFrame:frame];*/
+                    } else {
+                        self.navigationItem.rightBarButtonItem.enabled = YES;
                     }
                 }
             }
