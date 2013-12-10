@@ -12,6 +12,7 @@
 #import "ListEvents.h"
 #import "PhotosCollectionViewController.h"
 #import "MOUtility.h"
+#import "ListEvents.h"
 
 @interface ListInvitationsController ()
 
@@ -253,13 +254,6 @@
 
 #pragma mark - Other
 
-- (IBAction)settings:(id)sender {
-    NSLog(@"LOGOUT");
-    [PFUser logOut];
-    [self performSegueWithIdentifier:@"FirstLaunch" sender:nil];
-    
-}
-
 - (void) dealloc
 {
     // If you don't remove yourself as an observer, the Notification Center
@@ -325,6 +319,17 @@
          PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
          photosCollectionViewController.invitation = [self.self.objectsForTable objectAtIndex:selectedRowIndex.row];
     }
+     else if ([segue.identifier isEqualToString:@"Login"]){
+         NSLog(@"LOGOUT LIST");
+         UINavigationController *navController = (UINavigationController *)[self.tabBarController.viewControllers objectAtIndex:0];
+         ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
+         listEvents.invitations = nil;
+         [listEvents.tableView reloadData];
+         LoginViewController *loginViewController = segue.destinationViewController;
+         loginViewController.myDelegate = listEvents;
+         
+         [MOUtility logoutApp];
+     }
  
  }
 

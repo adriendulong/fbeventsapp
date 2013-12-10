@@ -22,6 +22,8 @@
 
 @implementation ListEvents
 
+@synthesize invitations;
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FacebookEventUploaded" object:nil];
 }
@@ -341,14 +343,13 @@
         photosCollectionViewController.invitation = [self.invitations objectAtIndex:selectedRowIndex.row];
     }
     else if ([segue.identifier isEqualToString:@"Login"]){
-        NSLog(@"LOGOUT LIST");
+        
         self.invitations = nil;
         [self.tableView reloadData];
         LoginViewController *loginViewController = segue.destinationViewController;
         loginViewController.myDelegate = self;
-        // Clear all caches
-        [PFQuery clearAllCachedResults];
-        [PFUser logOut];
+        
+        [MOUtility logoutApp];
     }
 }
 
@@ -362,15 +363,7 @@
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
 }
 
-#pragma mark - Logout
 
-- (IBAction)logout:(id)sender {
-    NSLog(@"LOGOUT LIST");
-    
-    
-    [PFUser logOut];
-    [self performSegueWithIdentifier:@"Login" sender:nil];
-}
 
 
 @end

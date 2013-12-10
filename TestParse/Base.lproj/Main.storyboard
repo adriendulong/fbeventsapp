@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B40" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A3017" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -110,7 +110,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="settings:" destination="dhX-me-Oqp" eventType="touchUpInside" id="CWY-lq-wOm"/>
+                                    <segue destination="2d6-q4-Sf3" kind="modal" identifier="Login" animates="NO" id="s66-y4-WgA"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -2617,6 +2617,8 @@
                             <constraint firstItem="buo-fI-L4l" firstAttribute="top" secondItem="uOh-Z5-0DB" secondAttribute="bottom" constant="6" id="NXK-J0-fN7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="dpJ-Rl-A15"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mVG-Le-oLg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2743,10 +2745,11 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="85D-2h-GPM"/>
         <segue reference="pId-s9-PUV"/>
-        <segue reference="gQS-Od-x3H"/>
-        <segue reference="EkG-m5-ZxD"/>
         <segue reference="ItH-HP-BNq"/>
+        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="s66-y4-WgA"/>
+        <segue reference="pYD-9M-pFo"/>
+        <segue reference="gQS-Od-x3H"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -446,6 +446,29 @@
     return YES;
 }
 
++(BOOL)removeAllNotifs{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"Houston, we have a problem: %@", error);
+    }
+    
+    // display all objects
+    for (Notification *notif in fetchedObjects) {
+        [context deleteObject:notif];
+    }
+    
+    return YES;
+}
+
 +(Invitation *)getInvitationForObjectId:(NSString *)objectId{
     NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     
@@ -813,6 +836,29 @@
     else return fetchedObjects;
 }
 
++(void)emptyDatabase{
+    //Empty Invitations
+    [self removeAllInvitations];
+    
+    //Empty Events
+    [self removeAllEvents];
+    
+    //Empty Notif
+    [self removeAllNotifs];
+}
+
+
+
+#pragma mark - LogOut
++(BOOL)logoutApp{
+    [self emptyDatabase];
+    
+    // Clear all caches
+    [PFQuery clearAllCachedResults];
+    [PFUser logOut];
+    
+    return YES;
+}
 
 
 

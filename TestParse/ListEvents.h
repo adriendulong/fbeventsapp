@@ -20,9 +20,9 @@
 @property(nonatomic, assign) bool comeFromLogin;
 @property(nonatomic, assign) bool loadingNotJoinFBEvents;
 
-- (IBAction)logout:(id)sender;
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;
 -(void)retrieveEventsSince:(NSDate *)sinceDate to:(NSDate *)toDate isJoin:(BOOL)joined;
++(void)emptyForLogOut;
 
 @end

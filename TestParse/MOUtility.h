@@ -68,4 +68,7 @@
 +(int)countFutureInvitations;
 +(NSArray *)getNotifs;
 
+#pragma mark - LogOut
++(BOOL)logoutApp;
+
 @end
