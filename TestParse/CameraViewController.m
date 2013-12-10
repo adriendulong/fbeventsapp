@@ -14,6 +14,7 @@
 #import "MOUtility.h"
 #import "PhotosAlbumViewController.h"
 #import "CameraFocusSquare.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface CameraViewController (){
     @private
@@ -31,6 +32,8 @@
 
 @property (strong, nonatomic) UIButton *yesButton;
 @property (strong, nonatomic) UIButton *noButton;
+
+@property (nonatomic) SystemSoundID soundToPlay;
 
 @end
 
@@ -170,40 +173,51 @@
     
     if (!self.isPictureTaken) {
         
-        
-        
-        /*CABasicAnimation *hover = [CABasicAnimation animationWithKeyPath:@"position"];
-        hover.additive = YES; // fromValue and toValue will be relative instead of absolute values
-        hover.fromValue = [NSValue valueWithCGPoint:CGPointZero];
-        hover.toValue = [NSValue valueWithCGPoint:CGPointMake(0.0, -10.0)]; // y increases downwards on iOS
-        hover.autoreverses = YES; // Animate back to normal afterwards
-        hover.duration = 0.2; // The duration for one part of the animation (0.2 up and 0.2 down)
-        hover.repeatCount = INFINITY; // The number of times the animation should repeat
-        [myView.layer addAnimation:hover forKey:@"myHoverAnimation"];*/
-        
         [self.top_camera_shutter setHidden:NO];
         [self.bottom_camera_shutter setHidden:NO];
         
-        [self.top_camera_shutter setImage:[UIImage imageNamed:@"top_camera_close"]];
-         [self.bottom_camera_shutter setImage:[UIImage imageNamed:@"bottom_close_camera"]];
+        self.toolboxView.alpha = 1.0;
         
+        NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"shutter-photo" ofType:@"caf"];
+        NSURL *soundPathURL = [NSURL fileURLWithPath:soundPath];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundPathURL, &_soundToPlay);
+        AudioServicesPlaySystemSound(_soundToPlay);
         
-        [UIView animateWithDuration:1.0f
+        // ANIMATION
+        [UIView animateWithDuration:0.375f
                          animations:^{
+                             
                              CGRect frameTop = self.top_camera_shutter.frame;
-                             frameTop.size.height += 162.0f;
+                             frameTop.origin.y += 162.0f;
                              self.top_camera_shutter.frame = frameTop;
                              
                              CGRect frameBot = self.bottom_camera_shutter.frame;
-                             frameBot.size.height += 160.0f;
+                             frameBot.origin.y -= 160.0f;
                              self.bottom_camera_shutter.frame = frameBot;
-                         }
-                         completion:^(BOOL finished){
-                             NSLog(@"Finish shutter !");
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             [UIView animateWithDuration:0.375f
+                                                   delay:0.5f
+                                                 options:UIViewAnimationOptionTransitionNone
+                                              animations:^{
+                                                  
+                                                  CGRect frameTop = self.top_camera_shutter.frame;
+                                                  frameTop.origin.y -= 162.0f;
+                                                  self.top_camera_shutter.frame = frameTop;
+                                                  
+                                                  CGRect frameBot = self.bottom_camera_shutter.frame;
+                                                  frameBot.origin.y += 160.0f;
+                                                  self.bottom_camera_shutter.frame = frameBot;
+                                                  
+                                              } completion:^(BOOL finished) {
+                                                  
+                                                  if (finished) {
+                                                      [self.top_camera_shutter setHidden:YES];
+                                                      [self.bottom_camera_shutter setHidden:YES];
+                                                  }
+                                              }];
                          }];
-        
-        
-        
         
         
         AVCaptureConnection *videoConnection = nil;
@@ -290,7 +304,6 @@
              //self.previewImage.image = tempImage;
              
              //Graphical modifs
-             self.toolboxView.alpha = 1.0;
              [self.previewImage setHidden:NO];
              [self.takePhoto setImage:[UIImage imageNamed:@"validate_photo"] forState:UIControlStateNormal];
              [self.cancelButton setImage:[UIImage imageNamed:@"back_stream"] forState:UIControlStateNormal];
