@@ -169,6 +169,43 @@
 - (IBAction)takePhoto:(UIButton *)sender {
     
     if (!self.isPictureTaken) {
+        
+        
+        
+        /*CABasicAnimation *hover = [CABasicAnimation animationWithKeyPath:@"position"];
+        hover.additive = YES; // fromValue and toValue will be relative instead of absolute values
+        hover.fromValue = [NSValue valueWithCGPoint:CGPointZero];
+        hover.toValue = [NSValue valueWithCGPoint:CGPointMake(0.0, -10.0)]; // y increases downwards on iOS
+        hover.autoreverses = YES; // Animate back to normal afterwards
+        hover.duration = 0.2; // The duration for one part of the animation (0.2 up and 0.2 down)
+        hover.repeatCount = INFINITY; // The number of times the animation should repeat
+        [myView.layer addAnimation:hover forKey:@"myHoverAnimation"];*/
+        
+        [self.top_camera_shutter setHidden:NO];
+        [self.bottom_camera_shutter setHidden:NO];
+        
+        [self.top_camera_shutter setImage:[UIImage imageNamed:@"top_camera_close"]];
+         [self.bottom_camera_shutter setImage:[UIImage imageNamed:@"bottom_close_camera"]];
+        
+        
+        [UIView animateWithDuration:1.0f
+                         animations:^{
+                             CGRect frameTop = self.top_camera_shutter.frame;
+                             frameTop.size.height += 162.0f;
+                             self.top_camera_shutter.frame = frameTop;
+                             
+                             CGRect frameBot = self.bottom_camera_shutter.frame;
+                             frameBot.size.height += 160.0f;
+                             self.bottom_camera_shutter.frame = frameBot;
+                         }
+                         completion:^(BOOL finished){
+                             NSLog(@"Finish shutter !");
+                         }];
+        
+        
+        
+        
+        
         AVCaptureConnection *videoConnection = nil;
         for (AVCaptureConnection *connection in self.stillImageOutput.connections)
         {
@@ -213,7 +250,7 @@
              
              UIImage *finalImage = [UIImage imageWithCGImage:imageRef
                                                        scale:1.0
-                                                 orientation: UIImageOrientationUp];
+                                                 orientation:UIImageOrientationUp];
              [self.previewImage setImage:finalImage];
              
              
