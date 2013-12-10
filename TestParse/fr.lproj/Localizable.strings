@@ -105,6 +105,10 @@
 "PhotosAlbumViewController_AllDeselect" = "Tout désélectionner";
 "PhotosAlbumViewController_AllSelect" = "Tout sélectionner";
 "PhotosAlbumViewController_Modify" = "Modifier";
+"PhotosAlbumViewController_Alert_Title" = "Information";
+"PhotosAlbumViewController_Alert_Message" = "Aucune photo n'a été sélectionnée";
+"PhotosAlbumViewController_OK" = "OK";
+
 
 
 ///// LikesCollectionsController /////
