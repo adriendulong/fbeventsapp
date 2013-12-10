@@ -2,7 +2,7 @@
 //  Invitation.h
 //  FbEvents
 //
-//  Created by Adrien Dulong on 09/12/2013.
+//  Created by Adrien Dulong on 10/12/2013.
 //  Copyright (c) 2013 Adrien Dulong. All rights reserved.
 //
 

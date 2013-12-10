@@ -160,9 +160,19 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                 completionHandler(UIBackgroundFetchResultFailed);
             }else if ([PFUser currentUser]) {
                 //Add a notif to the core data
-                NSDictionary *dictionnary = @{@"objectId": eventId,
-                                              @"type" : @0,
-                                              @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                NSDictionary *dictionnary;
+                if ([MOUtility getEventForObjectId:eventId]!=nil) {
+                   dictionnary = @{@"event": [MOUtility getEventForObjectId:eventId],
+                                    @"type" : @0,
+                                    @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                }
+                else{
+                    dictionnary = @{@"event": [MOUtility saveEvent:object],
+                                    @"type" : @0,
+                                    @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                }
+                
+                
                 [MOUtility saveNotification:dictionnary];
                 
                 PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
@@ -268,7 +278,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"datamodel" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"FbEvents" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -281,11 +291,17 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"datamodel.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"FbEvents.sqlite"];
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES
+                              };
+    
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
