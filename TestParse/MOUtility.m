@@ -586,7 +586,7 @@
     NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
     Notification *notif = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
     
-    notif.objectId = infos[@"objectId"];
+    notif.event = infos[@"event"];
     notif.type = infos[@"type"];
     notif.date = [NSDate date];
     notif.message = infos[@"message"];

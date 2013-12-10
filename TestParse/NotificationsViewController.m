@@ -87,10 +87,24 @@
     else {
         imageView.image = [UIImage imageNamed:@"chat"];
     }
-        
+    
+    NSLog(@"NAME event : %@", [MOUtility eventToParseEvent:notif.event][@"name"]);
     
     
     return cell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    Notification *notif = [self.notifications objectAtIndex:indexPath.row];
+    
+    //Event Detail
+    if ([notif.type intValue]==0) {
+        NSLog(@"0");
+    }
+    else if([notif.type intValue] == 1){
+        NSLog(@"1");
+    }
     
 }
 

@@ -58,9 +58,9 @@
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
 		E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7896C831822ACA600DEBBDC /* ImageIO.framework */; };
 		E7948A391855D59F004A5351 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A381855D59F004A5351 /* Event.m */; };
-		E7948A3C1855D5A0004A5351 /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A3B1855D5A0004A5351 /* Invitation.m */; };
 		E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A3F185626D4004A5351 /* NotificationsViewController.m */; };
-		E7948A461856343E004A5351 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A451856343E004A5351 /* Notification.m */; };
+		E7949539185733B90014CA36 /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = E7949538185733B90014CA36 /* Invitation.m */; };
+		E794953C185734B70014CA36 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = E794953B185734B70014CA36 /* Notification.m */; };
 		E79E5FB3181FCF1D00C8A3AC /* EventUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E79E5FB2181FCF1D00C8A3AC /* EventUtilities.m */; };
 		E7A053C6182AB84700F43ED0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A053C5182AB84700F43ED0 /* MapKit.framework */; };
 		E7AE14801803F6870021F321 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE147F1803F6870021F321 /* Foundation.framework */; };
@@ -82,14 +82,13 @@
 		E7AE14C518059A070021F321 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14C018059A070021F321 /* Security.framework */; };
 		E7AE14C618059A070021F321 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14C118059A070021F321 /* StoreKit.framework */; };
 		E7AE14C718059A070021F321 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7AE14C218059A070021F321 /* SystemConfiguration.framework */; };
-		E7AE14CA18095F310021F321 /* DetailInfosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE14C918095F310021F321 /* DetailInfosViewController.m */; };
 		E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7AE150D180999C00021F321 /* FirstLaunchViewController.m */; };
 		E7B406F7181ADA86001559CF /* ListEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B406F6181ADA86001559CF /* ListEvents.m */; };
 		E7BD58B61823E9D200A62F2F /* FbEventsUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E7BD58B51823E9D200A62F2F /* FbEventsUtilities.m */; };
 		E7C87D27184CF8CD00C586E6 /* LikesCollectionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */; };
 		E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF26183628AA001821BF /* LoginViewController.m */; };
 		E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF2918362939001821BF /* TutorialViewController.m */; };
-		E7D09A9718533EE400BBCAB6 /* datamodel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7D09A9518533EE400BBCAB6 /* datamodel.xcdatamodeld */; };
+		E7D09A9718533EE400BBCAB6 /* FbEvents.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */; };
 		E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193731840CC24008FD530 /* NSMutableArray+Reverse.m */; };
 		E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193761840F016008FD530 /* MemoriesViewController.m */; };
 		E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */; };
@@ -127,7 +126,7 @@
 		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
-		3F93AF8C18572C3100865563 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3F93AF8C18572C3100865563 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F93AF8E18572C5300865563 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		3F93AF8F18572C5600865563 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		3FB793D81844E6290037878A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -201,12 +200,13 @@
 		E7896C831822ACA600DEBBDC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		E7948A371855D59F004A5351 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		E7948A381855D59F004A5351 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
-		E7948A3A1855D5A0004A5351 /* Invitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invitation.h; sourceTree = "<group>"; };
-		E7948A3B1855D5A0004A5351 /* Invitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invitation.m; sourceTree = "<group>"; };
 		E7948A3E185626D4004A5351 /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		E7948A3F185626D4004A5351 /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
-		E7948A441856343E004A5351 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
-		E7948A451856343E004A5351 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
+		E7949536185732430014CA36 /* FbEvents 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FbEvents 2.xcdatamodel"; sourceTree = "<group>"; };
+		E7949537185733B90014CA36 /* Invitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invitation.h; sourceTree = "<group>"; };
+		E7949538185733B90014CA36 /* Invitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invitation.m; sourceTree = "<group>"; };
+		E794953A185734B70014CA36 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
+		E794953B185734B70014CA36 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		E79E5FB1181FCF1D00C8A3AC /* EventUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventUtilities.h; sourceTree = "<group>"; };
 		E79E5FB2181FCF1D00C8A3AC /* EventUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventUtilities.m; sourceTree = "<group>"; };
 		E7A053C5182AB84700F43ED0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -233,8 +233,6 @@
 		E7AE14C018059A070021F321 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E7AE14C118059A070021F321 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E7AE14C218059A070021F321 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		E7AE14C818095F310021F321 /* DetailInfosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailInfosViewController.h; sourceTree = "<group>"; };
-		E7AE14C918095F310021F321 /* DetailInfosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailInfosViewController.m; sourceTree = "<group>"; };
 		E7AE150C180999C00021F321 /* FirstLaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstLaunchViewController.h; sourceTree = "<group>"; };
 		E7AE150D180999C00021F321 /* FirstLaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstLaunchViewController.m; sourceTree = "<group>"; };
 		E7B406F5181ADA86001559CF /* ListEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListEvents.h; sourceTree = "<group>"; };
@@ -247,7 +245,7 @@
 		E7CFCF26183628AA001821BF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		E7CFCF2818362939001821BF /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		E7CFCF2918362939001821BF /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
-		E7D09A9618533EE400BBCAB6 /* datamodel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = datamodel.xcdatamodel; sourceTree = "<group>"; };
+		E7D09A9618533EE400BBCAB6 /* FbEvents.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FbEvents.xcdatamodel; sourceTree = "<group>"; };
 		E7D193721840CC24008FD530 /* NSMutableArray+Reverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Reverse.h"; sourceTree = "<group>"; };
 		E7D193731840CC24008FD530 /* NSMutableArray+Reverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Reverse.m"; sourceTree = "<group>"; };
 		E7D193751840F016008FD530 /* MemoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesViewController.h; sourceTree = "<group>"; };
@@ -488,10 +486,10 @@
 			children = (
 				E7948A371855D59F004A5351 /* Event.h */,
 				E7948A381855D59F004A5351 /* Event.m */,
-				E7948A3A1855D5A0004A5351 /* Invitation.h */,
-				E7948A3B1855D5A0004A5351 /* Invitation.m */,
-				E7948A441856343E004A5351 /* Notification.h */,
-				E7948A451856343E004A5351 /* Notification.m */,
+				E7949537185733B90014CA36 /* Invitation.h */,
+				E7949538185733B90014CA36 /* Invitation.m */,
+				E794953A185734B70014CA36 /* Notification.h */,
+				E794953B185734B70014CA36 /* Notification.m */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -597,12 +595,10 @@
 				E724E575180EF41A00741528 /* Connection */,
 				E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */,
 				E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */,
-				E7AE14C818095F310021F321 /* DetailInfosViewController.h */,
-				E7AE14C918095F310021F321 /* DetailInfosViewController.m */,
 				E72055C318352E58003D7AD0 /* Images.xcassets */,
 				E7896C1D18224D0800DEBBDC /* Resources */,
 				E7AE14861803F6870021F321 /* Supporting Files */,
-				E7D09A9518533EE400BBCAB6 /* datamodel.xcdatamodeld */,
+				E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */,
 			);
 			path = TestParse;
 			sourceTree = "<group>";
@@ -784,8 +780,8 @@
 				E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */,
 				E7B406F7181ADA86001559CF /* ListEvents.m in Sources */,
 				E7AE14901803F6870021F321 /* TestParseAppDelegate.m in Sources */,
-				E7948A461856343E004A5351 /* Notification.m in Sources */,
 				E7AE148C1803F6870021F321 /* main.m in Sources */,
+				E7949539185733B90014CA36 /* Invitation.m in Sources */,
 				E724E57E180F02E800741528 /* MOUtility.m in Sources */,
 				E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */,
 				E7FA244A182CD26C00FFDBE6 /* PhotosCollectionViewController.m in Sources */,
@@ -794,7 +790,6 @@
 				E70D49841843CE1E007A0445 /* InvitedCell.m in Sources */,
 				E70D497A1843BEE4007A0445 /* DetailDescriptionViewController.m in Sources */,
 				E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */,
-				E7948A3C1855D5A0004A5351 /* Invitation.m in Sources */,
 				E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */,
 				E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */,
 				E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */,
@@ -807,15 +802,15 @@
 				E7237A95183E470700502113 /* ChooseLastEventViewController.m in Sources */,
 				E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */,
 				E74F53BA182962D000B1C1AF /* MemoriesController.m in Sources */,
-				E7D09A9718533EE400BBCAB6 /* datamodel.xcdatamodeld in Sources */,
+				E7D09A9718533EE400BBCAB6 /* FbEvents.xcdatamodeld in Sources */,
 				E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */,
 				E7F10FA1183FA39F0061350A /* PhotosSelectionCell.m in Sources */,
 				E7F10F9E183F85E80061350A /* Photo.m in Sources */,
 				E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */,
 				E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */,
 				3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */,
-				E7AE14CA18095F310021F321 /* DetailInfosViewController.m in Sources */,
 				E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */,
+				E794953C185734B70014CA36 /* Notification.m in Sources */,
 				E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */,
 				E79E5FB3181FCF1D00C8A3AC /* EventUtilities.m in Sources */,
 				E76605A918337563009AABEE /* Constants.m in Sources */,
@@ -1099,13 +1094,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		E7D09A9518533EE400BBCAB6 /* datamodel.xcdatamodeld */ = {
+		E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				E7D09A9618533EE400BBCAB6 /* datamodel.xcdatamodel */,
+				E7949536185732430014CA36 /* FbEvents 2.xcdatamodel */,
+				E7D09A9618533EE400BBCAB6 /* FbEvents.xcdatamodel */,
 			);
-			currentVersion = E7D09A9618533EE400BBCAB6 /* datamodel.xcdatamodel */;
-			path = datamodel.xcdatamodeld;
+			currentVersion = E7949536185732430014CA36 /* FbEvents 2.xcdatamodel */;
+			path = FbEvents.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
