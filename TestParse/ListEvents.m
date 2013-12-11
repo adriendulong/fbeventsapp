@@ -26,6 +26,8 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FacebookEventUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LogOutUser object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LogInUser object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ModifEventsInvitationsAnswers object:nil];
 }
 
@@ -82,6 +84,8 @@
     //Init badge of invitations
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneFacebookEventUpdated:) name:@"FacebookEventUploaded" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fbReload:) name:ModifEventsInvitationsAnswers object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOut:) name:LogOutUser object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logIn:) name:LogInUser object:nil];
     
     //init
     self.facebookEventsNbDone = 0;
@@ -373,17 +377,35 @@
         PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
         photosCollectionViewController.invitation = [self.invitations objectAtIndex:selectedRowIndex.row];
     }
+    
     else if ([segue.identifier isEqualToString:@"Login"]){
-        
+        /*
         self.invitations = nil;
         [self.tableView reloadData];
         LoginViewController *loginViewController = segue.destinationViewController;
-        loginViewController.myDelegate = self;
+        loginViewController.myDelegate = self;*/
         
-        [MOUtility logoutApp];
+        
     }
 }
 
+
+#pragma mark - Log Out and In
+
+-(void)logOut:(NSNotification *)note{
+    self.invitations = nil;
+    [self.tableView reloadData];
+    [self performSegueWithIdentifier:@"Login" sender:nil];
+}
+
+-(void)logIn:(NSNotification *)note{
+    [self loadFutureEventsFromServer];
+    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+    
+    //Sync with FB
+    [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
+    [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+}
 
 -(void)comingFromLogin{
     [self loadFutureEventsFromServer];

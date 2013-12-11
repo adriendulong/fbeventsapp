@@ -129,6 +129,8 @@
         [cell.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
     }
     
+    [cell.activityIndicator setHidden:YES];
+    
     return cell;
 }
 
@@ -263,6 +265,13 @@
     //reload
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     
+    NSLog(@"RSVP : %@", notification.userInfo[@"rsvp"]);
+    if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
+        //Animation tab Evenements
+        self.countTimer = 0;
+        self.timeOfActiveUser = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+    }
+    
     
     /*
     NSLog(@"DETECT PROTOCOL");
@@ -367,5 +376,20 @@
      }
  
  }
+
+-(void)actionTimer{
+    if (self.countTimer%2==0) {
+        [[self.tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_on.png"]];
+    }
+    else{
+        [[self.tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
+    }
+    
+    self.countTimer++;
+    if (self.countTimer > 5) {
+        [self.timeOfActiveUser invalidate];
+        self.timeOfActiveUser = nil;
+    }
+}
 
 @end

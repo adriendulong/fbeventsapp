@@ -19,11 +19,14 @@ NSString *const MorePhoto                           = @"com.moment.FbEvents.More
 NSString *const SelectAllPhotosPhone                = @"com.moment.FbEvents.SelectAllPhotosPhone";
 NSString *const SelectAllPhotosFacebook             = @"com.moment.FbEvents.SelectAllPhotosFacebook";
 NSString *const ModifEventsInvitationsAnswers       = @"com.moment.FbEvents.ModifEventsInvitationsAnswers";
+NSString *const LogOutUser                          = @"com.moment.FbEvents.LogOutUser";
+NSString *const LogInUser                           = @"com.moment.FbEvents.LogInUser";
 
 #pragma mark - Facebook
 
 NSString *const FacebookEventAttending           = @"attending";
 NSString *const FacebookEventMaybe               = @"unsure";
+NSString *const FacebookEventMaybeAnswer         = @"maybe";
 NSString *const FacebookEventDeclined            = @"declined";
 NSString *const FacebookEventNotReplied          = @"not_replied";
 

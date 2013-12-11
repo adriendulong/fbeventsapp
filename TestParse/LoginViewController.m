@@ -247,13 +247,15 @@
             }
             
             currentUser[@"pictureURL"] = [pictureURL absoluteString];
+            currentUser[@"is_mail_notif"] = @YES;
             
             [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
+                    [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:self];
+                    /*if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
                     {
                         [self.myDelegate comingFromLogin];
-                    }
+                    }*/
                     
                     [self dismissViewControllerAnimated:NO completion:nil];
                 } else {

@@ -16,6 +16,8 @@
 @property (nonatomic, strong) NSMutableArray *objectsForTable;
 @property (strong, nonatomic) IBOutlet UITableView *invitationsTable;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *listSegmentControll;
+@property (strong, nonatomic) NSTimer *timeOfActiveUser;
+@property (assign, nonatomic) int countTimer;
 
 - (IBAction)settings:(id)sender;
 -(void)loadInvitationFromServer;

@@ -25,6 +25,5 @@
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;
 -(void)retrieveEventsSince:(NSDate *)sinceDate to:(NSDate *)toDate isJoin:(BOOL)joined;
-+(void)emptyForLogOut;
 
 @end

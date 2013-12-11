@@ -31,15 +31,15 @@
     
     //Accept
     if(self.rsvpSegmentedControl.selectedSegmentIndex == 0){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"attending" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     //Maybe
     else if (self.rsvpSegmentedControl.selectedSegmentIndex == 1){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"maybe" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     //No
     else{
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"declined" oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined oldRsvpIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
     }
     
     
@@ -50,11 +50,13 @@
 -(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp oldRsvpIndex:(NSInteger)oldSelected{
     NSLog(@"Change the rsvp on FB : %@", rsvp);
     
+    [self.activityIndicator setHidden:NO];
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:nil HTTPMethod:@"POST"];
     
-    __block NSDictionary *userInfo = [NSDictionary dictionaryWithObject:self.invitation.objectId forKey:@"invitationId"];
+    __block NSDictionary *userInfo = @{@"invitationId": self.invitation.objectId,
+                                       @"rsvp": rsvp};
     
     //@"rsvp_event"
     //If not have permission to rsvp
@@ -104,6 +106,7 @@
                 else{
                     NSLog(@"%@", error);
                     [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
+                    [self.activityIndicator setHidden:YES];
                 }
             }];
          }];
@@ -134,6 +137,7 @@
             else{
                 NSLog(@"%@", error);
                 [self.rsvpSegmentedControl setSelectedSegmentIndex:self.rsvpSegmentedControl.selectedSegmentIndex];
+                [self.activityIndicator setHidden:YES];
             }
         }];
     }

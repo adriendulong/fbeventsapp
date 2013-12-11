@@ -55,6 +55,8 @@
 		E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E765014E1844FD8600B96E47 /* MemorieCell.m */; };
 		E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E76501511845225400B96E47 /* FirstMemorieCell.m */; };
 		E76605A918337563009AABEE /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E76605A818337563009AABEE /* Constants.m */; };
+		E77E1DED18585E1C00EF1F8A /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E77E1DEC18585E1C00EF1F8A /* SettingsViewController.m */; };
+		E77E1DEF185878A800EF1F8A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E77E1DEE185878A800EF1F8A /* MessageUI.framework */; };
 		E77FC7961849071900EDDE86 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E77FC7951849071900EDDE86 /* GoogleMaps.bundle */; };
 		E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C48182293C600DEBBDC /* ListInvitationsController.m */; };
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
@@ -197,6 +199,9 @@
 		E76501511845225400B96E47 /* FirstMemorieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstMemorieCell.m; sourceTree = "<group>"; };
 		E76605A718337563009AABEE /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		E76605A818337563009AABEE /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		E77E1DEB18585E1C00EF1F8A /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		E77E1DEC18585E1C00EF1F8A /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		E77E1DEE185878A800EF1F8A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E77FC7951849071900EDDE86 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = Libraries/GoogleMaps/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		E7896C47182293C600DEBBDC /* ListInvitationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListInvitationsController.h; sourceTree = "<group>"; };
 		E7896C48182293C600DEBBDC /* ListInvitationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListInvitationsController.m; sourceTree = "<group>"; };
@@ -207,7 +212,7 @@
 		E7948A381855D59F004A5351 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E7948A3E185626D4004A5351 /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		E7948A3F185626D4004A5351 /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
-		E7949536185732430014CA36 /* FbEvents 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FbEvents 2.xcdatamodel"; sourceTree = "<group>"; };
+		E7949536185732430014CA36 /* FbEvents 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FbEvents 2.xcdatamodel"; sourceTree = "<group>"; };
 		E794953D18574B2E0014CA36 /* Invitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invitation.h; sourceTree = "<group>"; };
 		E794953E18574B2E0014CA36 /* Invitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invitation.m; sourceTree = "<group>"; };
 		E794954318575F770014CA36 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
@@ -277,6 +282,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E77E1DEF185878A800EF1F8A /* MessageUI.framework in Frameworks */,
 				E7AE14BB180599DE0021F321 /* AudioToolbox.framework in Frameworks */,
 				E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */,
 				E7A053C6182AB84700F43ED0 /* MapKit.framework in Frameworks */,
@@ -493,6 +499,15 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		E77E1DEA18585DF200EF1F8A /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E77E1DEB18585E1C00EF1F8A /* SettingsViewController.h */,
+				E77E1DEC18585E1C00EF1F8A /* SettingsViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		E7896C1D18224D0800DEBBDC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -575,6 +590,7 @@
 		E7AE147E1803F6870021F321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E77E1DEE185878A800EF1F8A /* MessageUI.framework */,
 				3F775D81184CB9A8007E8897 /* FacebookSDK.framework */,
 				3F775D7D184CB973007E8897 /* Parse.framework */,
 				3F775D7B184CB953007E8897 /* SDWebImage.framework */,
@@ -610,9 +626,10 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				3F93AF8D18572C3100865563 /* Main.storyboard */,
+				E77E1DEA18585DF200EF1F8A /* Settings */,
 				3F5385491857846600F24F35 /* Libraries */,
 				3F5385461857574800F24F35 /* Sounds */,
-				3F93AF8D18572C3100865563 /* Main.storyboard */,
 				E7948A3D18562671004A5351 /* Notifications */,
 				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E73F7A7A1844AF4D003BF2B1 /* UIImage */,
@@ -798,6 +815,7 @@
 				E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */,
 				E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */,
 				E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */,
+				E77E1DED18585E1C00EF1F8A /* SettingsViewController.m in Sources */,
 				E74F753E1847ADAF00F42E2A /* PhotosAlbumViewController.m in Sources */,
 				E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */,
 				E73F7A851844AF5B003BF2B1 /* UIImage+ResizeAdditions.m in Sources */,

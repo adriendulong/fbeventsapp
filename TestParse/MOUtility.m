@@ -693,7 +693,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event.start_date >= %@", [NSDate date]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND ((rsvp_status like %@) OR (rsvp_status like %@))", [NSDate date], FacebookEventAttending, FacebookEventMaybe];
     fetchRequest.predicate = predicate;
 
     // fetch all objects

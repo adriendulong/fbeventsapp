@@ -17,11 +17,14 @@ extern NSString *const MorePhoto;
 extern NSString *const SelectAllPhotosPhone;
 extern NSString *const SelectAllPhotosFacebook;
 extern NSString *const ModifEventsInvitationsAnswers;
+extern NSString *const LogOutUser;
+extern NSString *const LogInUser;
 
 
 #pragma mark - Facebook
 extern NSString *const FacebookEventAttending;
 extern NSString *const FacebookEventMaybe;
+extern NSString *const FacebookEventMaybeAnswer;
 extern NSString *const FacebookEventDeclined;
 extern NSString *const FacebookEventNotReplied;
 
