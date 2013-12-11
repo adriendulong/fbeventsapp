@@ -76,7 +76,7 @@
     
     //Init Notif number
     UIButton *buttonNotif = (UIButton *)[[self.navigationController.navigationBar viewWithTag:9] viewWithTag:10];
-    NSString *notifMessage = [NSString stringWithFormat:@"Notifs : %i", [MOUtility nbNewNotifs]];
+    NSString *notifMessage = [NSString stringWithFormat:NSLocalizedString(@"ListEvents_Notifs", nil), [MOUtility nbNewNotifs]];
     [buttonNotif setTitle:notifMessage forState:UIControlStateNormal];
     
     [super viewDidLoad];

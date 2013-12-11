@@ -22,7 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Envoie des photos";
+    self.title = NSLocalizedString(@"UploadFilesAutomaticViewController_Title", nil);
     [self.navigationItem setHidesBackButton:YES animated:YES];
     
     NSLog(@"NOMBre de photos : %i", [self.photosToUpload count]);
@@ -92,7 +92,7 @@
                         self.nbOfPhotosUploaded++;
                         self.photosReallyUploaded ++;
                         
-                        self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                        self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                         [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
                         
                         if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
@@ -128,7 +128,7 @@
                                 self.nbOfPhotosUploaded++;
                                 self.photosReallyUploaded ++;
                                 
-                                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                                 [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
                                 
                                 if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
@@ -167,7 +167,7 @@
                                         self.nbOfPhotosUploaded++;
                                         self.photosReallyUploaded++;
                                         
-                                        self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                        self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                                         [self.progessView setProgress:1];
                                         
                                         if (self.nbOfPhotosUploaded<self.photosToUpload.count) {
@@ -206,7 +206,7 @@
                                                 self.nbOfPhotosUploaded++;
                                                 self.photosReallyUploaded++;
                                                 
-                                                self.nbPhotosLabel.text = [NSString stringWithFormat:@"%i/%i photos", self.nbOfPhotosUploaded, self.photosToUpload.count];
+                                                self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), self.nbOfPhotosUploaded, self.photosToUpload.count];
                                                 [self.progessView setProgress:(float)(self.nbOfPhotosUploaded/self.photosToUpload.count)];
                                                 
                                                 if (self.nbOfPhotosUploaded<self.photosToUpload.count) {

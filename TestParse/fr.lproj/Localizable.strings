@@ -16,11 +16,15 @@
 "UIAlertView_Problem_Title" = "Problème";
 "UIAlertView_Removal_Title" = "Suppression";
 "UIAlertView_ErrorLogin_Title" = "Erreur de connexion";
+"UIAlertView_Notifs_Title" = "Notifications";
 "UIAlertView_Warning" = "Attention";
 "UIAlertView_Problem_Message" = "Il n'était pas possible d'effectuer cette action, s'il vous plaît essayer à nouveau plus tard.";
 "UIAlertView_Problem_Message2" = "Problème pendant la supression de la photo";
+"UIAlertView_Problem_Message3" = "Problème lors de l'importation de l'évènement, veuillez reessayer plus tard";
+"UIAlertView_Problem_Message4" = "Problème lors de l'ouverture de l'email";
 "UIAlertView_Removal_Message" = "Êtes-vous sûr de vouloir suprimer cette photo ?";
 "UIAlertView_ErrorLogin_Message" = "Uh oh. L'utilisateur a annulé la connexion Facebook.";
+"UIAlertView_Notifs_Message" = "Veuillez autoriser les notifications pour cette application en allant dans Paramètres > Centre de notifications.";
 "UIAlertView_Dismiss" = "OK";
 "UIAlertView_Yes" = "Oui";
 "UIAlertView_No" = "Non";
@@ -70,6 +74,7 @@
 
 
 ///// UploadFilesAutomaticViewController /////
+"UploadFilesAutomaticViewController_Title" = "Envoi des photos";
 "UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
 
 
@@ -80,8 +85,13 @@
 
 
 ///// SharePhotoViewController /////
-"SharePhotoViewController_Title" = "Test";
+"SharePhotoViewController_Title_0" = "Test";
+"SharePhotoViewController_Title" = "Postez vos photos";
 "SharePhotoViewController_AddLegend" = "Ajoutez une légende à votre photo";
+"SharePhotoViewController_AddLegend2" = "Ajoutez une légende à vos photos";
+"SharePhotoViewController_SharedPhoto" = "Je viens de rajouter une photo sur xxx, retrouvez les toutes à l'adresse suivante";
+"SharePhotoViewController_SharedPhoto2" = "Je viens de poster %i photos de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
+"SharePhotoViewController_SharedPhoto3" = "Je viens de poster une photo de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
 
 
 ///// PhotoDetailViewController /////
@@ -99,6 +109,15 @@
 "PhotosCollectionViewController_OwnerEvent" = "Evènement organisé par %@";
 "PhotosCollectionViewController_Show_Label" = "Afficher les informations";
 "PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
+"PhotosCollectionViewController_Alert_Title" = "Masquer les informations";
+"PhotosCollectionViewController_NbGuests" = "%i invités";
+"PhotosCollectionViewController_NbGuests_NbMaybe" = "%i présents - %i peut-être";
+"PhotosCollectionViewController_Error" = "Erreur";
+"PhotosCollectionViewController_Error_GMaps" = "Erreur lors de l'ouverture de Google Maps";
+"PhotosCollectionViewController_Error_Maps" = "Erreur lors de l'ouverture de Maps";
+"PhotosCollectionViewController_OK" = "OK";
+"PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
+
 
 
 ///// PhotosAlbumViewController /////
@@ -142,6 +161,10 @@
 
 ///// InvitedListViewController /////
 "InvitedListViewController_Title" = "INVITÉS";
+"InvitedListViewController_Presents" = "Présents";
+"InvitedListViewController_Maybe" = "Peut-être";
+"InvitedListViewController_NoResponse" = "Pas de réponse";
+"InvitedListViewController_Absent" = "Absent";
 
 
 ///// ListInvitationsController /////
@@ -149,6 +172,19 @@
 "ListInvitationsController_SendInvit" = "%@ vous a envoyé une invitation.";
 
 
+///// ListEvents /////
+"ListEvents_Notifs" = "Notifs : %i";
+
+
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";
 "MemoriesImportViewController_Loading" = "Chargement";
+
+
+///// MemoriesViewController /////
+"MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
+
+
+//// SettingsViewController /////
+"SettingsViewController_Title" = "Preférences";
+"SettingsViewController_Mail_Object" = "Un message de";

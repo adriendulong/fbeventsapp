@@ -42,7 +42,7 @@
     
     self.mustDismiss = NO;
     
-    self.title = @"Preférences";
+    self.title = NSLocalizedString(@"SettingsViewController_Title", nil);
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logIn:) name:LogInUser object:nil];
@@ -110,13 +110,13 @@
             {
                 MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
                 mailer.mailComposeDelegate = self;
-                [mailer setSubject:@"A Message from "];
+                [mailer setSubject:NSLocalizedString(@"SettingsViewController_Mail_Object", nil)];
                 NSArray *toRecipients = [NSArray arrayWithObjects:@"adrien@appmoment.fr",nil];
                 [mailer setToRecipients:toRecipients];
                 [self presentViewController:mailer animated:YES completion:NULL];
             }
             else{
-                UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"Problème" message:@"Problème lors de l'ouverture de l'email" delegate:self cancelButtonTitle:@"ok" otherButtonTitles: nil] ;
+                UIAlertView *alert=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message4", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_Dismiss", nil)  otherButtonTitles: nil] ;
                 [alert show];
             }
         }
@@ -200,7 +200,7 @@
         
         if (!currentInstallation.deviceToken) {
             [self.switchNotifTel setOn:NO];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Notifications" message:@"Veuillez autoriser les notification pour cette application en allant dans Paramètres > Centre de notifications."delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Notifs_Title", nil) message:NSLocalizedString(@"UIAlertView_Notifs_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
             [alert show];
         }
         else{

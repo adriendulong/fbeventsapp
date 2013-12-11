@@ -83,9 +83,9 @@
         self.labelPhotosUploaded.text = [NSString stringWithFormat:@"%i/%i", self.nbPhotosUploaded+1, self.photosArray.count];
         
         //Change text in order to match with several photos
-        self.title = @"Postez vos photos";
-        self.titlePhoto.text = @"Ajoutez une légende à vos photos";
-        [self.postButton setTitle:@"Postez vos photos" forState:UIControlStateNormal];
+        self.title = NSLocalizedString(@"SharePhotoViewController_Title", nil);
+        self.titlePhoto.text = NSLocalizedString(@"SharePhotoViewController_AddLegend2", nil);
+        [self.postButton setTitle:NSLocalizedString(@"SharePhotoViewController_Title", nil) forState:UIControlStateNormal];
         
         //Hide element that fit for one photo
         [self.collectionView setHidden:NO];
@@ -188,7 +188,7 @@
                     self.hasCLickOnPost = YES;
                     if (self.hasFInishedUpload) {
                         //Post on facebook event wall
-                        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:@"Je viens de rajouter une photo sur xxx, retrouvez les toutes à l'adresse suivante"];
+                        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:NSLocalizedString(@"SharePhotoViewController_SharedPhoto", nil)];
                         
                         
                         [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
@@ -198,7 +198,7 @@
                 else{
                     NSLog(@"%@", [error userInfo]);
                     NSLog(@"Photo failed to save: %@", error);
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Couldn't post your photo" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Photo_Error", nil) message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                     [alert show];
                 }
             }];
@@ -543,11 +543,11 @@
     NSString *message = [[NSString alloc] init];
     
     if (self.photosArray) {
-        message = [NSString stringWithFormat:@"Je viens de poster %i photos de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante", self.photosArray.count];
+        message = [NSString stringWithFormat:NSLocalizedString(@"SharePhotoViewController_SharedPhoto2", nil), self.photosArray.count];
         [self pushEveryInvited:self.photosArray.count];
     }
     else{
-        message = @"Je viens de poster une photo de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
+        message = NSLocalizedString(@"SharePhotoViewController_SharedPhoto3", nil);
         [self pushEveryInvited:1];
     }
     
