@@ -54,7 +54,7 @@
     
     self.badge.hidden = YES;
     
-    [self activeCameraWithPosition:AVCaptureDevicePositionBack];
+    //[self activeCameraWithPosition:AVCaptureDevicePositionBack];
     
     self.isPictureTaken = NO;
     photosMatched = 0;
@@ -68,8 +68,11 @@
     [self getCountPhotosMatchedWithEventDate];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    if (!self.session.isRunning) {
+-(void)viewDidAppear:(BOOL)animated{
+    if (self.session==nil) {
+        [self activeCameraWithPosition:AVCaptureDevicePositionBack];
+    }
+    else if (!self.session.isRunning) {
         [self.session startRunning];
     }
     NSLog(@"APPEAR COUCOU");

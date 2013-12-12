@@ -300,6 +300,7 @@
             
             self.animating = NO;
             [self.refreshControl endRefreshing];
+            [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
             
             for(PFObject *invitation in objects){
                 [MOUtility saveInvitationWithEvent:invitation];
@@ -395,7 +396,7 @@
 -(void)logOut:(NSNotification *)note{
     self.invitations = nil;
     [self.tableView reloadData];
-    [self performSegueWithIdentifier:@"Login" sender:nil];
+    [self.tabBarController setSelectedIndex:0];
 }
 
 -(void)logIn:(NSNotification *)note{

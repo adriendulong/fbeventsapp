@@ -98,7 +98,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"Section %i", section);
-    if(self.photo[@"comment"]) return 4;
+    if(self.photo[@"comments"]) return 4;
     else return 3;
 }
 
@@ -158,10 +158,10 @@
         
         
         if (self.photo[@"facebookId"]) {
-            [imgView setImageWithURL:self.photo[@"facebook_url_full"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+            [imgView setImageWithURL:self.photo[@"facebook_url_full"]];
         }
         else{
-            imgView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
+            //imgView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
             imgView.file = (PFFile *)self.photo[@"full_image"];
             
             [imgView loadInBackground];

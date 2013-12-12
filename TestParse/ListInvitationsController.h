@@ -18,10 +18,13 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *listSegmentControll;
 @property (strong, nonatomic) NSTimer *timeOfActiveUser;
 @property (assign, nonatomic) int countTimer;
+@property (weak, nonatomic) IBOutlet UIImageView *refreshImage;
+@property (assign, nonatomic) BOOL animating;
 
 - (IBAction)settings:(id)sender;
 -(void)loadInvitationFromServer;
 -(void)invitationChanged:(NSNotification *) notification;
 - (IBAction)listTypeChange:(id)sender;
+- (IBAction)refresh:(id)sender;
 
 @end

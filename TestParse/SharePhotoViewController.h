@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SharePhotoViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
+@interface SharePhotoViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 @property (weak, nonatomic) IBOutlet UIImage *takenPhoto;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;

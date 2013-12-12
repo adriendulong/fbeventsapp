@@ -17,6 +17,7 @@ extern NSString *const MorePhoto;
 extern NSString *const SelectAllPhotosPhone;
 extern NSString *const SelectAllPhotosFacebook;
 extern NSString *const ModifEventsInvitationsAnswers;
+extern NSString *const HaveFinishedRefreshEvents;
 extern NSString *const LogOutUser;
 extern NSString *const LogInUser;
 

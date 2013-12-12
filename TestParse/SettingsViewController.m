@@ -277,8 +277,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"Login"]){
-        UITabBarController *tabBarController = (UITabBarController *)self.parentViewController.parentViewController;
-        [tabBarController setSelectedIndex:0];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LogOutUser object:self];
         [MOUtility logoutApp];
         
     }

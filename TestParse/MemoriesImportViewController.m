@@ -34,6 +34,8 @@
 {
     [super viewDidLoad];
     
+    self.thereIsMore = NO;
+    
     self.title = NSLocalizedString(@"MemoriesImportViewController_Title", nil);
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     
@@ -61,124 +63,62 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.arrayEvents count];
+    if (self.thereIsMore) {
+        return ([self.arrayEvents count]+1);
+    }
+    else{
+        return self.arrayEvents.count;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"Selected %i", indexPath.row);
-    
-    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    self.hud.labelText = NSLocalizedString(@"MemoriesImportViewController_Loading", nil);
-    
-    NSDictionary *eventFacebook = [self.arrayEvents objectAtIndex:indexPath.row];
-    
-    __block PFObject *event;
-    
-    //This event is only on the server ?
-    PFQuery*queryEvent = [PFQuery queryWithClassName:@"Event"];
-    [queryEvent whereKey:@"eventId" equalTo:eventFacebook[@"id"]];
-    [queryEvent getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-        //Event already exists
-        if (!error) {
-            event = object;
-            
-            //See if an invitation exists
-            PFQuery *queryInvit  = [PFQuery queryWithClassName:@"Invitation"];
-            [queryInvit whereKey:@"user" equalTo:[PFUser currentUser]];
-            [queryInvit whereKey:@"event" equalTo:event];
-            [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                //There is an invitation
-                if (!error) {
-                    if (![object[@"is_memory"] boolValue]) {
-                        object[@"is_memory"] = @YES;
-                        [object saveInBackground];
-                    }
-                    
-                    //If end time but not have set type we do it now
-                    if (event[@"end_time"] && !event[@"type"]) {
-                        int type = [MOUtility typeEvent:event];
-                        event[@"type"] = [NSNumber numberWithInt:type];
-                        [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            
-                            ////
-                            // PERFORM SEGUE
-                            ////
-                            self.chosedEvent = event;
-                            [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                            
-                        }];
-                    }
-                    else{
-                        ////
-                        // PERFORM SEGUE
-                        ////
-                        self.chosedEvent = event;
-                        if (event[@"end_time"]) {
-                            [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+
+    if (indexPath.row<self.arrayEvents.count) {
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.hud.labelText = NSLocalizedString(@"MemoriesImportViewController_Loading", nil);
+        
+        NSDictionary *eventFacebook = [self.arrayEvents objectAtIndex:indexPath.row];
+        
+        __block PFObject *event;
+        
+        //This event is only on the server ?
+        PFQuery*queryEvent = [PFQuery queryWithClassName:@"Event"];
+        [queryEvent whereKey:@"eventId" equalTo:eventFacebook[@"id"]];
+        [queryEvent getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            //Event already exists
+            if (!error) {
+                event = object;
+                
+                //See if an invitation exists
+                PFQuery *queryInvit  = [PFQuery queryWithClassName:@"Invitation"];
+                [queryInvit whereKey:@"user" equalTo:[PFUser currentUser]];
+                [queryInvit whereKey:@"event" equalTo:event];
+                [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    //There is an invitation
+                    if (!error) {
+                        if (![object[@"is_memory"] boolValue]) {
+                            object[@"is_memory"] = @YES;
+                            [object saveInBackground];
                         }
-                        else{
-                            [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
-                        }
-                    }
-                }
-                //No Invitation; create one
-                else{
-                    PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
-                    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        if (succeeded) {
-                            ////
-                            // PERFORM SEGUE
-                            ////
-                            
-                            //If end time but not have set type we do it now
-                            if (event[@"end_time"] && !event[@"type"]) {
-                                int type = [MOUtility typeEvent:event];
-                                event[@"type"] = [NSNumber numberWithInt:type];
-                                [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                    
-                                    ////
-                                    // PERFORM SEGUE
-                                    ////
-                                    self.chosedEvent = event;
-                                    [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                    
-                                }];
-                            }
-                            else{
+                        
+                        //If end time but not have set type we do it now
+                        if (event[@"end_time"] && !event[@"type"]) {
+                            int type = [MOUtility typeEvent:event];
+                            event[@"type"] = [NSNumber numberWithInt:type];
+                            [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                
                                 ////
                                 // PERFORM SEGUE
                                 ////
                                 self.chosedEvent = event;
-                                if (event[@"end_time"]) {
-                                    [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                }
-                                else{
-                                    [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
-                                }
-                            }
+                                [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                
+                            }];
                         }
                         else{
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-                            [alert show];
-                        }
-                    }];
-                }
-            }];
-            
-            
-        }
-        //NO event, must create it
-        else if(error && error.code == kPFErrorObjectNotFound){
-            PFObject *event = [MOUtility createEventFromFacebookDict:eventFacebook];
-            [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    //Create invitation
-                    PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
-                    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        if (succeeded) {
-                            /////
+                            ////
                             // PERFORM SEGUE
-                            /////
+                            ////
                             self.chosedEvent = event;
                             if (event[@"end_time"]) {
                                 [self performSegueWithIdentifier:@"DirectImport" sender:nil];
@@ -187,56 +127,153 @@
                                 [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
                             }
                         }
-                        else{
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-                            [alert show];
-                        }
-                    }];
-                }
-                else{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-                    [alert show];
-                }
-            }];
-        }
-    }];
+                    }
+                    //No Invitation; create one
+                    else{
+                        PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
+                        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                            if (succeeded) {
+                                ////
+                                // PERFORM SEGUE
+                                ////
+                                
+                                //If end time but not have set type we do it now
+                                if (event[@"end_time"] && !event[@"type"]) {
+                                    int type = [MOUtility typeEvent:event];
+                                    event[@"type"] = [NSNumber numberWithInt:type];
+                                    [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                        
+                                        ////
+                                        // PERFORM SEGUE
+                                        ////
+                                        self.chosedEvent = event;
+                                        [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                        
+                                    }];
+                                }
+                                else{
+                                    ////
+                                    // PERFORM SEGUE
+                                    ////
+                                    self.chosedEvent = event;
+                                    if (event[@"end_time"]) {
+                                        [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                    }
+                                    else{
+                                        [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
+                                    }
+                                }
+                            }
+                            else{
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                                [alert show];
+                            }
+                        }];
+                    }
+                }];
+                
+                
+            }
+            //NO event, must create it
+            else if(error && error.code == kPFErrorObjectNotFound){
+                PFObject *event = [MOUtility createEventFromFacebookDict:eventFacebook];
+                [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded) {
+                        //Create invitation
+                        PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
+                        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                            if (succeeded) {
+                                /////
+                                // PERFORM SEGUE
+                                /////
+                                self.chosedEvent = event;
+                                if (event[@"end_time"]) {
+                                    [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                }
+                                else{
+                                    [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
+                                }
+                            }
+                            else{
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                                [alert show];
+                            }
+                        }];
+                    }
+                    else{
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                        [alert show];
+                    }
+                }];
+            }
+        }];
+    }
+    //Load More
+    else{
+        [self loadOldFacebookEvents:self.nextPage];
+        UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[[self.tableView cellForRowAtIndexPath:indexPath] viewWithTag:1];
+        [activityIndicator startAnimating];
+        [activityIndicator setHidden:NO];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    
+    
     
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    
-    MemoriesImportCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    if (cell == nil) {
-        cell = [[MemoriesImportCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    if (indexPath.row<self.arrayEvents.count) {
+        static NSString *CellIdentifier = @"Cell";
         
+        MemoriesImportCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell == nil) {
+            cell = [[MemoriesImportCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+        }
+        
+        NSDictionary *event = [self.arrayEvents objectAtIndex:indexPath.row];
+        
+        NSLog(@"Date %@", event[@"start_time"] );
+        NSLog(@"EVENT Detail %@", event);
+        //Date
+        NSDate *start_date = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+        //Formatter for the hour
+        NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
+        [formatterHourMinute setDateFormat:@"HH:mm"];
+        NSDateFormatter *formatterMonth = [NSDateFormatter new];
+        [formatterMonth setDateFormat:@"MMM"];
+        NSDateFormatter *formatterDay = [NSDateFormatter new];
+        [formatterDay setDateFormat:@"d"];
+        
+        //Fill the cell
+        cell.nameLabel.text = event[@"name"];
+        cell.placeLabel.text = [NSString stringWithFormat:@"A %@", event[@"location"]];
+        cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
+        cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
+        cell.peopleLabel.text = [NSString stringWithFormat:@"Par %@", event[@"owner"][@"name"]];
+        
+        return cell;
+    }
+    else{
+        static NSString *CellIdentifier = @"CellLoadMore";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+        }
+        
+        UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:1];
+        [activityIndicator stopAnimating];
+        [activityIndicator setHidden:YES];
+        
+        return cell;
     }
     
-    NSDictionary *event = [self.arrayEvents objectAtIndex:indexPath.row];
-    
-    NSLog(@"Date %@", event[@"start_time"] );
-    NSLog(@"EVENT Detail %@", event);
-    //Date
-    NSDate *start_date = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
-    //Formatter for the hour
-    NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
-    [formatterHourMinute setDateFormat:@"HH:mm"];
-    NSDateFormatter *formatterMonth = [NSDateFormatter new];
-    [formatterMonth setDateFormat:@"MMM"];
-    NSDateFormatter *formatterDay = [NSDateFormatter new];
-    [formatterDay setDateFormat:@"d"];
-    
-    //Fill the cell
-    cell.nameLabel.text = event[@"name"];
-    cell.placeLabel.text = [NSString stringWithFormat:@"A %@", event[@"location"]];
-    cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
-    cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
-    cell.peopleLabel.text = [NSString stringWithFormat:@"Par %@", event[@"owner"][@"name"]];
-    
-    return cell;
 }
 
 -(void)loadOldFacebookEvents:(NSString *)requestFacebook{
@@ -245,7 +282,7 @@
     
     //Request
     if (requestFacebook==nil) {
-        requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@",FacebookEventsFields, stopDate];
+        requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&limit=20",FacebookEventsFields, stopDate];
     }
     
     NSLog(@"Request : %@", requestFacebook);
@@ -263,16 +300,21 @@
             }
             
             if(result[@"paging"][@"next"]){
+                self.thereIsMore = YES;
                 NSURL *previous = [NSURL URLWithString:result[@"paging"][@"next"]];
                 NSString *goodRequest = [NSString stringWithFormat:@"%@?%@", [previous path], [previous query]];
-                [self loadOldFacebookEvents:goodRequest];
+                self.nextPage = goodRequest;
+                //[self loadOldFacebookEvents:goodRequest];
             }
             else{
+                self.thereIsMore = NO;
                 NSLog(@"FINISHED TOTAL : %i", self.nbTotalEvents);
-                [self.activityIndicator stopAnimating];
-                [self.activityIndicator setHidden:YES];
-                [self.tableView reloadData];
+                
             }
+            
+            [self.activityIndicator stopAnimating];
+            [self.activityIndicator setHidden:YES];
+            [self.tableView reloadData];
             
             
         }

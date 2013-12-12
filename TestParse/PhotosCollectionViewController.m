@@ -86,6 +86,7 @@
     NSDate *startDate = self.invitation[@"event"][@"start_time"];
     if ([startDate compare:[NSDate date]]==NSOrderedAscending) {
         self.isDuringOrAfter = YES;
+        self.isShowingDetails = NO;
     }
     else{
         self.isDuringOrAfter = NO;
@@ -187,60 +188,6 @@
         
         
         
-        /*
-        if (![toHideView viewWithTag:3000]) {
-            CLLocationDegrees latitude;
-            CLLocationDegrees longitude;
-            float zoom;
-            if (event[@"venue"][@"latitude"]) {
-                latitude = [event[@"venue"][@"latitude"] doubleValue];
-                longitude = [event[@"venue"][@"longitude"] doubleValue];
-                zoom = 9;
-            }
-            else{
-                latitude = 48;
-                longitude = 2;
-                zoom = 1;
-                
-            }
-            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:latitude
-                                                                    longitude:longitude
-                                                                         zoom:zoom];
-            
-            //When click on map
-            UITapGestureRecognizer *singleFingerTap =
-            [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                    action:@selector(touchedMap:)];
-            
-            headerView.mapView_ = [GMSMapView mapWithFrame:CGRectMake(0, 275, self.view.bounds.size.width, 149) camera:camera];
-            [headerView.mapView_ addGestureRecognizer:singleFingerTap];
-            headerView.mapView_.myLocationEnabled = YES;
-            headerView.mapView_.settings.scrollGestures = NO;
-            headerView.mapView_.settings.zoomGestures = NO;
-            headerView.mapView_.settings.tiltGestures = NO;
-            headerView.mapView_.settings.rotateGestures = NO;
-            [headerView.mapView_ setTag:3000];
-            [toHideView addSubview:headerView.mapView_];
-            
-            // Creates a marker in the center of the map.
-            if (event[@"venue"][@"latitude"]) {
-                GMSMarker *marker = [[GMSMarker alloc] init];
-                marker.position = CLLocationCoordinate2DMake(latitude, longitude);
-                marker.map = headerView.mapView_;
-            }
-            
-            //button map add gesture recognizer
-            UITapGestureRecognizer *singleFingerTapSecond =
-            [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                    action:@selector(touchedMap:)];
-            [headerView.mapButton addGestureRecognizer:singleFingerTapSecond];
-        }
-        
-        */
-        
-        
-        
-        
         
         headerView.invitation = self.invitation;
         headerView.nameEvent.text = event[@"name"];
@@ -290,7 +237,9 @@
         NSLog(@"Center view bottom : %f", headerView.bottomView.center.y);
         
         
-        
+        if (!self.isShowingDetails) {
+            [headerView.viewToHide setHidden:YES];
+        }
         
         self.headerCollectionView = headerView;
         reusableview = headerView;
@@ -305,15 +254,15 @@
     if (section==0) {
         if (self.isDuringOrAfter) {
             if (self.isShowingDetails) {
-                return CGSizeMake(800, 920);
+                return CGSizeMake(800, 845);
             }
             else{
-                return CGSizeMake(800, 368);
+                return CGSizeMake(800, 360);
             }
         }
         else{
             if (self.isShowingDetails) {
-                return CGSizeMake(800, 880);
+                return CGSizeMake(800, 785);
             }
             else{
                 return CGSizeMake(800, 306);
@@ -391,7 +340,7 @@
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
-            [self updateEvent:result compareTo:self.invitation];
+            [self updateEvent:result compareTo:self.invitation[@"event"]];
         }
         else{
             NSLog(@"%@", error);
@@ -472,6 +421,8 @@
         if(event[@"admins"]){
             eventToCompare[@"admins"] = event[@"admins"][@"data"];
         }
+        
+        //eventToCompare[@"updateWithFB"] = [NSDate date];
         
         [eventToCompare saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
@@ -937,6 +888,7 @@
     
     //Do stuff here...
 }
+
 
 -(void)acessMap:(NSNotification *)note{
     

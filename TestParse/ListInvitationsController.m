@@ -29,6 +29,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:HaveFinishedRefreshEvents object:nil];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
@@ -49,13 +53,10 @@
     //Init
     self.declined = [[NSMutableArray alloc] init];
     self.invitations = [[NSMutableArray alloc] init];
-    self.objectsForTable = [[NSMutableArray alloc] init];;
+    self.objectsForTable = [[NSMutableArray alloc] init];
+    self.animating = NO;
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRefresh:) name:HaveFinishedRefreshEvents object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -296,56 +297,6 @@
     }
 }
 
-#pragma mark - Other
-
-- (void) dealloc
-{
-    // If you don't remove yourself as an observer, the Notification Center
-    // will continue to try and send notification objects to the deallocated
-    // object.
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark - Navigation
@@ -365,6 +316,7 @@
     }
      else if ([segue.identifier isEqualToString:@"Login"]){
          NSLog(@"LOGOUT LIST");
+         /*
          UINavigationController *navController = (UINavigationController *)[self.tabBarController.viewControllers objectAtIndex:0];
          ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
          listEvents.invitations = nil;
@@ -372,7 +324,7 @@
          LoginViewController *loginViewController = segue.destinationViewController;
          loginViewController.myDelegate = listEvents;
          
-         [MOUtility logoutApp];
+         [MOUtility logoutApp];*/
      }
  
  }
@@ -391,5 +343,50 @@
         self.timeOfActiveUser = nil;
     }
 }
+
+#pragma mark - Animate Button Refresh
+
+- (void) spinWithOptions: (UIViewAnimationOptions) options {
+    // this spin completes 360 degrees every 2 seconds
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: options
+                     animations: ^{
+                         self.refreshImage.transform = CGAffineTransformRotate(self.refreshImage.transform, M_PI / 2);
+                     }
+                     completion: ^(BOOL finished) {
+                         if (finished) {
+                             if (self.animating) {
+                                 // if flag still set, keep spinning with constant speed
+                                 [self spinWithOptions: UIViewAnimationOptionCurveLinear];
+                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
+                                 // one last spin, with deceleration
+                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut];
+                             }
+                         }
+                     }];
+}
+
+- (void) startSpin {
+    if (!self.animating) {
+        self.animating = YES;
+        [self spinWithOptions: UIViewAnimationOptionCurveEaseIn];
+    }
+}
+
+-(void)stopRefresh:(Notification *)note{
+    self.animating = NO;
+}
+
+- (void) stopSpin {
+    // set the flag to stop spinning after one last 90 degree increment
+    self.animating = NO;
+}
+
+- (IBAction)refresh:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
+    [self startSpin];
+}
+
 
 @end

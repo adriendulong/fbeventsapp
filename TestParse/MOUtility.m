@@ -693,6 +693,9 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:YES selector:nil];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND ((rsvp_status like %@) OR (rsvp_status like %@))", [NSDate date], FacebookEventAttending, FacebookEventMaybe];
     fetchRequest.predicate = predicate;
 
@@ -722,6 +725,9 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:YES selector:nil];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND (rsvp_status like %@) ", [NSDate date], FacebookEventNotReplied];
     fetchRequest.predicate = predicate;
@@ -753,6 +759,9 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:YES selector:nil];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND (rsvp_status like %@) ", [NSDate date], FacebookEventDeclined];
     fetchRequest.predicate = predicate;
     
@@ -781,6 +790,9 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:NO selector:nil];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date < %@) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
     fetchRequest.predicate = predicate;

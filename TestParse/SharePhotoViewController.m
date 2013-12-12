@@ -506,6 +506,13 @@
 
 
 #pragma mark - TextField
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
 
 -(void)keyboardWillShow:(NSNotification *)note{
     NSLog(@"Keyboad Show");
@@ -538,6 +545,8 @@
     NSLog(@"Button index %i", buttonIndex);
 }
 
+#pragma mark - FInish upload
+
 -(void)hasFinishedUpload{
     
     NSString *message = [[NSString alloc] init];
@@ -563,5 +572,7 @@
 -(void)pushEveryInvited:(int)nbPhotos{
     [PFCloud callFunction:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId}];
 }
+
+
 
 @end

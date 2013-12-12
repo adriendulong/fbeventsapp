@@ -160,7 +160,7 @@
     [self.activityIndicator setHidden:NO];
     
     
-    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream"];
+    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"user_groups", @"read_stream"];
     
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user) {
@@ -251,15 +251,42 @@
             
             [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:self];
-                    /*if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
-                    {
-                        [self.myDelegate comingFromLogin];
-                    }*/
-                    
-                    [self dismissViewControllerAnimated:NO completion:nil];
+                    //Update permissions
+                    FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
+                    [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                        PFUser *currentUser =[PFUser currentUser];
+                        
+                        NSArray *permissions = result[@"data"];
+                        if ([[permissions objectAtIndex:0][@"rsvp_event"] intValue] == 1) {
+                            currentUser[@"has_rsvp_perm"] = @YES;
+                        }
+                        else{
+                            currentUser[@"has_rsvp_perm"] = @NO;
+                        }
+                        
+                        if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
+                            currentUser[@"has_publish_perm"] = @YES;
+                        }
+                        else{
+                            currentUser[@"has_publish_perm"] = @NO;
+                        }
+                        
+                        [currentUser saveInBackground];
+                        
+                        
+                        //Go to the first page
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:self];
+                        /*if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
+                         {
+                         [self.myDelegate comingFromLogin];
+                         }*/
+                        
+                        [self dismissViewControllerAnimated:NO completion:nil];
+                    }];
                 } else {
                     NSLog(@"%@",[error userInfo][@"error"]);
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
+                    [alert show];
                 }
             }];
         }

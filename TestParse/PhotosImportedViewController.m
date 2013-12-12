@@ -604,7 +604,8 @@
 - (IBAction)finishImport:(UIBarButtonItem *)sender {
     
     if (self.numberOfPhotosSelectedFB+self.numberOfPhotosSelectedPhone == 0) {
-        
+        //Notif in order to update the root view with the new event
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
         [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:YES];
     } else {
         [self performSegueWithIdentifier:@"UploadPhotos" sender:self];
