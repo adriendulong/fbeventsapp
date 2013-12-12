@@ -384,7 +384,7 @@
     [query whereKey:@"event" equalTo:event];
     [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
         if (!error) {
-            cell.nbPhotosLabel.text = [NSString stringWithFormat:@"%i photos ont été retrouvées", count];
+            cell.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"MemoriesViewController_NbRefoundPhotos", nil), count];
         } else {
             // The request failed
         }

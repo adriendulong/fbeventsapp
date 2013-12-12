@@ -73,16 +73,16 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section ==0) {
-        return @"Présents";
+        return NSLocalizedString(@"InvitedListViewController_Presents", nil);
     }
     else if(section ==1){
-        return @"Peut-être";
+        return NSLocalizedString(@"InvitedListViewController_Maybe", nil);
     }
     else if(section ==2){
-        return @"Pas de réponse";
+        return NSLocalizedString(@"InvitedListViewController_NoResponse", nil);
     }
     else{
-        return @"Absent";
+        return NSLocalizedString(@"InvitedListViewController_Absent", nil);
     }
 }
 

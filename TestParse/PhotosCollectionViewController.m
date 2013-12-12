@@ -798,8 +798,8 @@
     }
 
    //Update labels
-    self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:@"%i invités", self.nbTotal];
-    self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:@"%i présents - %i peut-être", self.nbAttending, self.nbMaybe];
+    self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests", nil), self.nbTotal];
+    self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests_NbMaybe", nil), self.nbAttending, self.nbMaybe];
     
 }
 
@@ -864,7 +864,7 @@
         
         if(![[UIApplication sharedApplication] openURL:
             [NSURL URLWithString:request]]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Erreur" message:@"Erreur lors de l'ouverture de Google Maps" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PhotosCollectionViewController_Error", nil) message:NSLocalizedString(@"PhotosCollectionViewController_Error_GMaps", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"PhotosCollectionViewController_OK", nil), nil];
             [alert show];
         }
     } else {
@@ -880,7 +880,7 @@
         
         if(![[UIApplication sharedApplication] openURL:
              [NSURL URLWithString:request]]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Erreur" message:@"Erreur lors de l'ouverture de Maps" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Dismiss", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PhotosCollectionViewController_Error", nil) message:NSLocalizedString(@"PhotosCollectionViewController_Error_Maps", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"PhotosCollectionViewController_OK", nil), nil];
             [alert show];
         }
     }
