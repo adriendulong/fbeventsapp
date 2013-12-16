@@ -30,9 +30,16 @@
 @property (weak, nonatomic) IBOutlet UIView *viewThree;
 @property (weak, nonatomic) IBOutlet UIView *viewFour;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
+@property (weak, nonatomic) IBOutlet UIButton *buttonModify;
+
+@property (assign,nonatomic) CGPoint centerSelected;
 
 @property (assign, nonatomic) int levelRoot;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstraintRight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstrainLeft;
 
+
+- (IBAction)modifyType:(id)sender;
 - (IBAction)validate:(id)sender;
 - (IBAction)chosedType:(id)sender;
 @end

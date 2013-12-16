@@ -180,7 +180,7 @@
     }
     else{
         [cell.imagePhoto setImageWithURL:[NSURL URLWithString:selectedPhoto.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+                            placeholderImage:[UIImage imageNamed:@"photo_default"]];
     }
     
     if (selectedPhoto.isSelected) {

@@ -277,6 +277,37 @@
     }
 }
 
++(NSArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending{
+    NSMutableArray *eventMutArray = [[NSMutableArray alloc] init];
+    
+    //Create an array with the events
+    for(PFObject *invitation in invitations){
+        [eventMutArray addObject:invitation[@"event"]];
+    }
+    
+    //Then sort array of events
+    NSSortDescriptor *sortDescriptor;
+    sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start_time"
+                                                 ascending:ascending];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    NSArray *sortedEventArray;
+    sortedEventArray = [eventMutArray sortedArrayUsingDescriptors:sortDescriptors];
+    
+    //Then create a mut array with invits sorted
+    NSMutableArray *sortedInvits = [[NSMutableArray alloc] init];
+    
+    for(PFObject *event in sortedEventArray){
+        for(PFObject *invitation in invitations){
+            PFObject *eventTemp = invitation[@"event"];
+            if ([eventTemp.objectId isEqualToString:event.objectId]) {
+                [sortedInvits addObject:invitation];
+            }
+        }
+    }
+    
+    return [sortedInvits copy];
+}
+
 
 #pragma mark - Image
 
@@ -563,16 +594,18 @@
     }
     
     eventBase.objectId = event.objectId;
-    eventBase.name = event[@"name"];
-    eventBase.descrip = event[@"description"];
-    eventBase.eventId = event[@"eventId"];
-    eventBase.cover = event[@"cover"];
-    eventBase.is_date_only = [NSNumber numberWithBool:[event[@"is_date_only"] boolValue]];
-    eventBase.location = event[@"location"];
-    eventBase.start_date = event[@"start_time"];
-    eventBase.end_date = event[@"end_time"];
-    eventBase.owner = event[@"owner"];
-    eventBase.venue = event[@"venue"];
+    if (event[@"name"]) eventBase.name = event[@"name"];
+    if (event[@"description"]) eventBase.descrip = event[@"description"];
+    if (event[@"eventId"]) eventBase.eventId = event[@"eventId"];
+    if (event[@"cover"]){
+        eventBase.cover = event[@"cover"];
+    }
+    if (event[@"is_date_only"]) eventBase.is_date_only = [NSNumber numberWithBool:[event[@"is_date_only"] boolValue]];
+    if (event[@"location"]) eventBase.location = event[@"location"];
+    if (event[@"start_time"]) eventBase.start_date = event[@"start_time"];
+    if (event[@"end_time"]) eventBase.end_date = event[@"end_time"];
+    if (event[@"owner"]) eventBase.owner = event[@"owner"];
+    if (event[@"venue"]) eventBase.venue = event[@"venue"];
     
     NSError *error;
     if (![context save:&error]) {
@@ -696,7 +729,9 @@
     NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:YES selector:nil];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date >= %@) AND ((rsvp_status like %@) OR (rsvp_status like %@))", [NSDate date], FacebookEventAttending, FacebookEventMaybe];
+    NSDate *test =[[NSDate date] dateByAddingTimeInterval:-12*3600];
+    NSLog(@"TEST : %@", test);
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(((event.start_date >= %@) OR (event.end_date >= %@)) AND ((rsvp_status like %@) OR (rsvp_status like %@)))", [[NSDate date] dateByAddingTimeInterval:-12*3600] , [NSDate date],FacebookEventAttending, FacebookEventMaybe];
     fetchRequest.predicate = predicate;
 
     // fetch all objects
@@ -794,7 +829,7 @@
     NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:NO selector:nil];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(event.start_date < %@) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((event.start_date < %@) OR (event.end_date < %@)) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [[NSDate date] dateByAddingTimeInterval:-12*3600], [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
     fetchRequest.predicate = predicate;
     
     // fetch all objects

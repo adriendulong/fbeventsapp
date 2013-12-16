@@ -1,4 +1,3 @@
-
 /* Class = "IBUILabel"; text = "Regroupez tous vos évènements au même endroit"; ObjectID = "0oA-Yx-99e"; */
 "0oA-Yx-99e.text" = "Regroupez tous vos évènements au même endroit";
 
@@ -12,7 +11,7 @@
 "5bD-ir-VaR.text" = "Vacances";
 
 /* Class = "IBUITabBarItem"; title = "Memories"; ObjectID = "68z-aR-BPg"; */
-"68z-aR-BPg.title" = "Memories";
+"68z-aR-BPg.title" = "Souvenirs";
 
 /* Class = "IBUILabel"; text = "OCT"; ObjectID = "6wl-Cr-MT7"; */
 "6wl-Cr-MT7.text" = "OCT";
@@ -132,7 +131,7 @@
 "jAO-yp-XJF.text" = "Rémi Bardoux vous a envoyé une invitation";
 
 /* Class = "IBUILabel"; text = "avec moncul et mabite et je ne sais pas qui"; ObjectID = "kln-HF-h2M"; */
-"kln-HF-h2M.text" = "avec moncul et mabite et je ne sais pas qui";
+"kln-HF-h2M.text" = "avec X et Y et je ne sais pas qui";
 
 /* Class = "IBUILabel"; text = "3j"; ObjectID = "lHs-t3-u6H"; */
 "lHs-t3-u6H.text" = "3j";
@@ -144,7 +143,7 @@
 "nYt-Oh-p93.text" = "Le Star Café";
 
 /* Class = "IBUITextView"; text = "Ajoutez un légende à votre photo"; ObjectID = "p6T-oQ-WEn"; */
-"p6T-oQ-WEn.text" = "Ajoutez un légende à votre photo";
+"p6T-oQ-WEn.text" = "Ajoutez une légende à votre photo";
 
 /* Class = "IBUILabel"; text = "La séance"; ObjectID = "qDS-H3-Nqs"; */
 "qDS-H3-Nqs.text" = "La séance";
@@ -156,7 +155,7 @@
 "r66-mq-oBm.text" = "Rémi Bardoux vous a envoyé une invitation";
 
 /* Class = "IBUITabBarItem"; title = "Evènements"; ObjectID = "rNH-bR-BBY"; */
-"rNH-bR-BBY.title" = "Evènements";
+"rNH-bR-BBY.title" = "A venir";
 
 /* Class = "IBUIButton"; normalTitle = "Valider"; ObjectID = "rUB-qg-eRy"; */
 "rUB-qg-eRy.normalTitle" = "Valider";
@@ -168,7 +167,7 @@
 "tiy-fn-tAM.text" = "1j à 4j";
 
 /* Class = "IBUISegmentedControl"; tyq-mJ-NpV.segmentTitles[0] = "Invitations"; ObjectID = "tyq-mJ-NpV"; */
-"tyq-mJ-NpV.segmentTitles[0]" = "Invitations";
+"tyq-mJ-NpV.segmentTitles[0]" = "En attente";
 
 /* Class = "IBUISegmentedControl"; tyq-mJ-NpV.segmentTitles[1] = "Refusées"; ObjectID = "tyq-mJ-NpV"; */
 "tyq-mJ-NpV.segmentTitles[1]" = "Refusées";
@@ -186,7 +185,7 @@
 "v5z-PH-Mk3.text" = "4j et plus";
 
 /* Class = "IBUITabBarItem"; title = "Invitations"; ObjectID = "wGe-Sg-YeR"; */
-"wGe-Sg-YeR.title" = "Invitations";
+"wGe-Sg-YeR.title" = "En attente";
 
 /* Class = "IBUILabel"; text = "Bordeaux Super Ville"; ObjectID = "wQs-a4-1Fs"; */
 "wQs-a4-1Fs.text" = "Bordeaux Super Ville";

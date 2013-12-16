@@ -61,6 +61,7 @@
 		E7896C49182293C600DEBBDC /* ListInvitationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C48182293C600DEBBDC /* ListInvitationsController.m */; };
 		E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7896C4B182294C400DEBBDC /* InvitationCell.m */; };
 		E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7896C831822ACA600DEBBDC /* ImageIO.framework */; };
+		E78F75B6185B669300817159 /* CGUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E78F75B5185B669300817159 /* CGUViewController.m */; };
 		E7948A391855D59F004A5351 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A381855D59F004A5351 /* Event.m */; };
 		E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7948A3F185626D4004A5351 /* NotificationsViewController.m */; };
 		E794953F18574B2E0014CA36 /* Invitation.m in Sources */ = {isa = PBXBuildFile; fileRef = E794953E18574B2E0014CA36 /* Invitation.m */; };
@@ -208,6 +209,8 @@
 		E7896C4A182294C400DEBBDC /* InvitationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationCell.h; sourceTree = "<group>"; };
 		E7896C4B182294C400DEBBDC /* InvitationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationCell.m; sourceTree = "<group>"; };
 		E7896C831822ACA600DEBBDC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E78F75B4185B669300817159 /* CGUViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGUViewController.h; sourceTree = "<group>"; };
+		E78F75B5185B669300817159 /* CGUViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGUViewController.m; sourceTree = "<group>"; };
 		E7948A371855D59F004A5351 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		E7948A381855D59F004A5351 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E7948A3E185626D4004A5351 /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
@@ -220,18 +223,18 @@
 		E79E5FB1181FCF1D00C8A3AC /* EventUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventUtilities.h; sourceTree = "<group>"; };
 		E79E5FB2181FCF1D00C8A3AC /* EventUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventUtilities.m; sourceTree = "<group>"; };
 		E7A053C5182AB84700F43ED0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		E7AE147C1803F6870021F321 /* FbEvents.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FbEvents.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7AE147C1803F6870021F321 /* Woovent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Woovent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AE147F1803F6870021F321 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E7AE14811803F6870021F321 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		E7AE14831803F6870021F321 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		E7AE14871803F6870021F321 /* FbEvents-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FbEvents-Info.plist"; sourceTree = "<group>"; };
+		E7AE14871803F6870021F321 /* Woovent-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Woovent-Info.plist"; sourceTree = "<group>"; };
 		E7AE148B1803F6870021F321 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E7AE148D1803F6870021F321 /* FbEvents-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FbEvents-Prefix.pch"; sourceTree = "<group>"; };
+		E7AE148D1803F6870021F321 /* Woovent-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Woovent-Prefix.pch"; sourceTree = "<group>"; };
 		E7AE148E1803F6870021F321 /* TestParseAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestParseAppDelegate.h; sourceTree = "<group>"; };
 		E7AE148F1803F6870021F321 /* TestParseAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestParseAppDelegate.m; sourceTree = "<group>"; };
-		E7AE149D1803F6870021F321 /* FbEventsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FbEventsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7AE149D1803F6870021F321 /* WooventTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WooventTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7AE149E1803F6870021F321 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		E7AE14A61803F6870021F321 /* FbEventsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FbEventsTests-Info.plist"; sourceTree = "<group>"; };
+		E7AE14A61803F6870021F321 /* WooventTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WooventTests-Info.plist"; sourceTree = "<group>"; };
 		E7AE14A81803F6870021F321 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E7AE14AA1803F6870021F321 /* TestParseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestParseTests.m; sourceTree = "<group>"; };
 		E7AE14B6180599C70021F321 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
@@ -581,8 +584,8 @@
 		E7AE147D1803F6870021F321 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E7AE147C1803F6870021F321 /* FbEvents.app */,
-				E7AE149D1803F6870021F321 /* FbEventsTests.xctest */,
+				E7AE147C1803F6870021F321 /* Woovent.app */,
+				E7AE149D1803F6870021F321 /* WooventTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -648,6 +651,8 @@
 				E7896C1D18224D0800DEBBDC /* Resources */,
 				E7AE14861803F6870021F321 /* Supporting Files */,
 				E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */,
+				E78F75B4185B669300817159 /* CGUViewController.h */,
+				E78F75B5185B669300817159 /* CGUViewController.m */,
 			);
 			path = TestParse;
 			sourceTree = "<group>";
@@ -655,10 +660,10 @@
 		E7AE14861803F6870021F321 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E7AE14871803F6870021F321 /* FbEvents-Info.plist */,
+				E7AE14871803F6870021F321 /* Woovent-Info.plist */,
 				3F490CD51844F92B00A5811E /* InfoPlist.strings */,
 				E7AE148B1803F6870021F321 /* main.m */,
-				E7AE148D1803F6870021F321 /* FbEvents-Prefix.pch */,
+				E7AE148D1803F6870021F321 /* Woovent-Prefix.pch */,
 				3F490CD11844F86F00A5811E /* Localizable.strings */,
 			);
 			name = "Supporting Files";
@@ -676,7 +681,7 @@
 		E7AE14A51803F6870021F321 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E7AE14A61803F6870021F321 /* FbEventsTests-Info.plist */,
+				E7AE14A61803F6870021F321 /* WooventTests-Info.plist */,
 				E7AE14A71803F6870021F321 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -706,9 +711,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E7AE147B1803F6870021F321 /* FbEvents */ = {
+		E7AE147B1803F6870021F321 /* Woovent */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7AE14AE1803F6870021F321 /* Build configuration list for PBXNativeTarget "FbEvents" */;
+			buildConfigurationList = E7AE14AE1803F6870021F321 /* Build configuration list for PBXNativeTarget "Woovent" */;
 			buildPhases = (
 				E7AE14781803F6870021F321 /* Sources */,
 				E7AE14791803F6870021F321 /* Frameworks */,
@@ -718,14 +723,14 @@
 			);
 			dependencies = (
 			);
-			name = FbEvents;
+			name = Woovent;
 			productName = TestParse;
-			productReference = E7AE147C1803F6870021F321 /* FbEvents.app */;
+			productReference = E7AE147C1803F6870021F321 /* Woovent.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E7AE149C1803F6870021F321 /* FbEventsTests */ = {
+		E7AE149C1803F6870021F321 /* WooventTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E7AE14B11803F6870021F321 /* Build configuration list for PBXNativeTarget "FbEventsTests" */;
+			buildConfigurationList = E7AE14B11803F6870021F321 /* Build configuration list for PBXNativeTarget "WooventTests" */;
 			buildPhases = (
 				E7AE14991803F6870021F321 /* Sources */,
 				E7AE149A1803F6870021F321 /* Frameworks */,
@@ -736,9 +741,9 @@
 			dependencies = (
 				E7AE14A31803F6870021F321 /* PBXTargetDependency */,
 			);
-			name = FbEventsTests;
+			name = WooventTests;
 			productName = TestParseTests;
-			productReference = E7AE149D1803F6870021F321 /* FbEventsTests.xctest */;
+			productReference = E7AE149D1803F6870021F321 /* WooventTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -759,7 +764,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E7AE14771803F6870021F321 /* Build configuration list for PBXProject "FbEvents" */;
+			buildConfigurationList = E7AE14771803F6870021F321 /* Build configuration list for PBXProject "Woovent" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -774,8 +779,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E7AE147B1803F6870021F321 /* FbEvents */,
-				E7AE149C1803F6870021F321 /* FbEventsTests */,
+				E7AE147B1803F6870021F321 /* Woovent */,
+				E7AE149C1803F6870021F321 /* WooventTests */,
 			);
 		};
 /* End PBXProject section */
@@ -848,6 +853,7 @@
 				E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */,
 				E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */,
 				E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */,
+				E78F75B6185B669300817159 /* CGUViewController.m in Sources */,
 				E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */,
 				E7FA244D182CE19E00FFDBE6 /* InfoHeaderCollectionView.m in Sources */,
 				E7BD58B61823E9D200A62F2F /* FbEventsUtilities.m in Sources */,
@@ -882,7 +888,7 @@
 /* Begin PBXTargetDependency section */
 		E7AE14A31803F6870021F321 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E7AE147B1803F6870021F321 /* FbEvents */;
+			target = E7AE147B1803F6870021F321 /* Woovent */;
 			targetProxy = E7AE14A21803F6870021F321 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -936,7 +942,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -955,7 +962,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "517749BA-683A-4B3B-BE90-ED5522FD4D74";
+				PROVISIONING_PROFILE = "189D5A52-3817-43EE-940E-F987B39FE517";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -977,7 +984,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -989,9 +997,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "517749BA-683A-4B3B-BE90-ED5522FD4D74";
+				PROVISIONING_PROFILE = "189D5A52-3817-43EE-940E-F987B39FE517";
 				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
@@ -1001,8 +1009,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1018,8 +1026,8 @@
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/GoogleMaps,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TestParse/FbEvents-Prefix.pch";
-				INFOPLIST_FILE = "TestParse/FbEvents-Info.plist";
+				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
+				INFOPLIST_FILE = "TestParse/Woovent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1027,8 +1035,9 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = FbEvents;
-				PROVISIONING_PROFILE = "517749BA-683A-4B3B-BE90-ED5522FD4D74";
+				PRODUCT_NAME = Woovent;
+				PROVISIONING_PROFILE = "189D5A52-3817-43EE-940E-F987B39FE517";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1039,8 +1048,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1056,8 +1065,8 @@
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/Libraries/GoogleMaps,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "TestParse/FbEvents-Prefix.pch";
-				INFOPLIST_FILE = "TestParse/FbEvents-Info.plist";
+				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
+				INFOPLIST_FILE = "TestParse/Woovent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1065,8 +1074,9 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = FbEvents;
-				PROVISIONING_PROFILE = "517749BA-683A-4B3B-BE90-ED5522FD4D74";
+				PRODUCT_NAME = Woovent;
+				PROVISIONING_PROFILE = "189D5A52-3817-43EE-940E-F987B39FE517";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1087,8 +1097,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "TestParseTests/FbEventsTests-Info.plist";
-				PRODUCT_NAME = FbEventsTests;
+				INFOPLIST_FILE = "TestParseTests/WooventTests-Info.plist";
+				PRODUCT_NAME = WooventTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1106,8 +1116,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/TestParse-Prefix.pch";
-				INFOPLIST_FILE = "TestParseTests/FbEventsTests-Info.plist";
-				PRODUCT_NAME = FbEventsTests;
+				INFOPLIST_FILE = "TestParseTests/WooventTests-Info.plist";
+				PRODUCT_NAME = WooventTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1116,7 +1126,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E7AE14771803F6870021F321 /* Build configuration list for PBXProject "FbEvents" */ = {
+		E7AE14771803F6870021F321 /* Build configuration list for PBXProject "Woovent" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AE14AC1803F6870021F321 /* Debug */,
@@ -1125,7 +1135,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7AE14AE1803F6870021F321 /* Build configuration list for PBXNativeTarget "FbEvents" */ = {
+		E7AE14AE1803F6870021F321 /* Build configuration list for PBXNativeTarget "Woovent" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AE14AF1803F6870021F321 /* Debug */,
@@ -1134,7 +1144,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E7AE14B11803F6870021F321 /* Build configuration list for PBXNativeTarget "FbEventsTests" */ = {
+		E7AE14B11803F6870021F321 /* Build configuration list for PBXNativeTarget "WooventTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E7AE14B21803F6870021F321 /* Debug */,

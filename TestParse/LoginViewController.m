@@ -49,7 +49,7 @@
         viewFrame.size.height -= 100;
     }
     else{
-        viewFrame.size.height -= 50;
+        viewFrame.size.height -= 65;
     }
     
     [[self.pageController view] setFrame:viewFrame];
@@ -292,5 +292,6 @@
         }
     }];
 }
+
 
 @end

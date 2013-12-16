@@ -17,6 +17,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.iconImageView.layer.cornerRadius = 20.0f;
+    self.iconImageView.layer.masksToBounds = YES;
+    
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor clearColor];
     

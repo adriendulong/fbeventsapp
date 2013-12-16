@@ -11,6 +11,8 @@
 #import "Photo.h"
 #import "MOUtility.h"
 
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+
 @interface SharePhotoViewController ()
 
 @end
@@ -36,6 +38,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (!IS_IPHONE_5) {
+        self.verticalConstraintPost.constant = 8.0;
+    }
     
     //Keyboard dismiss
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
@@ -146,113 +152,111 @@
 
 - (IBAction)postPhoto:(id)sender {
     
-    
-    //Facebook share
-    if (self.facebookButton.isSelected) {
-        FBRequest *request = [FBRequest requestWithGraphPath:@"/me/photos" parameters:@{@"source": self.takenPhoto, @"message":@"Test"} HTTPMethod:@"POST"];
-        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            if (!error) {
-                NSLog(@"PHOTO SHARED ON FACEBOOK");
-            }
-        }];
-    }
-    if (self.twitterButton.isSelected) {
-        [MOUtility postImage:self.takenPhoto withStatus:@"test"];
-    }
-    
-    
-    [self.navigationItem setHidesBackButton:YES];
-    //Progress
-    [self.progressView setHidden:NO];
-    
-    if (self.takenPhoto) {
-        if(!self.thumbnailFile || self.imageFile){
-            PFObject *eventPhoto = [PFObject objectWithClassName:@"Photo"];
-            eventPhoto[@"full_image"] = self.imageFile;
-            eventPhoto[@"low_image"] = self.thumbnailFile;
-            eventPhoto[@"user"] = [PFUser currentUser];
-            eventPhoto[@"event"] = self.event;
-            
-            //Add title if has written something
-            if (!self.hintIsWritten) {
-                NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
-                                        @"id": [PFUser currentUser].objectId,
-                                        @"date": [NSDate date],
-                                        @"comment":self.titlePhoto.text};
-                NSArray *comments = [NSArray arrayWithObjects:title, nil];
-                eventPhoto[@"comments"] = comments;
-            }
-            
-            [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    self.hasCLickOnPost = YES;
-                    if (self.hasFInishedUpload) {
-                        //Post on facebook event wall
-                        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:NSLocalizedString(@"SharePhotoViewController_SharedPhoto", nil)];
-                        
-                        
-                        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-                        [self dismissViewControllerAnimated:NO completion:nil];
+    if (!self.hasCLickOnPost) {
+        
+        [self.navigationItem setHidesBackButton:YES];
+        //Progress
+        [self.progressView setHidden:NO];
+        
+        if (self.takenPhoto) {
+            //Facebook share
+            if (self.facebookButton.isSelected) {
+                FBRequest *request = [FBRequest requestWithGraphPath:@"/me/photos" parameters:@{@"source": self.takenPhoto, @"message":@"Test"} HTTPMethod:@"POST"];
+                [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                    if (!error) {
+                        NSLog(@"PHOTO SHARED ON FACEBOOK");
                     }
-                }
-                else{
-                    NSLog(@"%@", [error userInfo]);
-                    NSLog(@"Photo failed to save: %@", error);
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Photo_Error", nil) message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
-                    [alert show];
-                }
-            }];
-        }
-        else{
+                }];
+            }
+            if (self.twitterButton.isSelected) {
+                [MOUtility postImage:self.takenPhoto withStatus:@"test"];
+            }
             
-        }
-    }
-    //Multiple photos
-    else{
-        //Show check photos
-        
-        
-        __block int addedPhotos = 0;
-        self.hasCLickOnPost = YES;
-        [self.labelPhotosUploaded setHidden:NO];
-        
-        for(NSDictionary *info in self.photosUploaded){
-            if (info[@"success"]) {
+            if(!self.thumbnailFile || self.imageFile){
                 PFObject *eventPhoto = [PFObject objectWithClassName:@"Photo"];
-                eventPhoto[@"full_image"] = info[@"file"];
-                eventPhoto[@"low_image"] = info[@"thumbnail"];
+                eventPhoto[@"full_image"] = self.imageFile;
+                eventPhoto[@"low_image"] = self.thumbnailFile;
                 eventPhoto[@"user"] = [PFUser currentUser];
                 eventPhoto[@"event"] = self.event;
-                eventPhoto[@"width"] = info[@"width"];
-                eventPhoto[@"height"] = info[@"height"];
+                
+                //Add title if has written something
+                if (!self.hintIsWritten) {
+                    NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
+                                            @"id": [PFUser currentUser].objectId,
+                                            @"date": [NSDate date],
+                                            @"comment":self.titlePhoto.text};
+                    NSArray *comments = [NSArray arrayWithObjects:title, nil];
+                    eventPhoto[@"comments"] = comments;
+                }
                 
                 [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    //SUIVANTE
                     if (succeeded) {
+                        self.hasCLickOnPost = YES;
+                        if (self.hasFInishedUpload) {
+                            //Post on facebook event wall
+                            [self hasFinishedUpload];
+                        }
                     }
+                    else{
+                        NSLog(@"%@", [error userInfo]);
+                        NSLog(@"Photo failed to save: %@", error);
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Photo_Error", nil) message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
+                        [alert show];
+                    }
+                }];
+            }
+            else{
+                
+            }
+        }
+        //Multiple photos
+        else{
+            //Show check photos
+            
+            
+            __block int addedPhotos = 0;
+            self.hasCLickOnPost = YES;
+            [self.labelPhotosUploaded setHidden:NO];
+            
+            for(NSDictionary *info in self.photosUploaded){
+                if (info[@"success"]) {
+                    PFObject *eventPhoto = [PFObject objectWithClassName:@"Photo"];
+                    eventPhoto[@"full_image"] = info[@"file"];
+                    eventPhoto[@"low_image"] = info[@"thumbnail"];
+                    eventPhoto[@"user"] = [PFUser currentUser];
+                    eventPhoto[@"event"] = self.event;
+                    eventPhoto[@"width"] = info[@"width"];
+                    eventPhoto[@"height"] = info[@"height"];
+                    
+                    [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        //SUIVANTE
+                        if (succeeded) {
+                        }
+                        
+                        addedPhotos++;
+                        //If all the files uploaded
+                        if (addedPhotos == self.photosArray.count) {
+                            [self hasFinishedUpload];
+                        }
+                    }];
+                }
+                else{
                     
                     addedPhotos++;
                     //If all the files uploaded
                     if (addedPhotos == self.photosArray.count) {
                         [self hasFinishedUpload];
                     }
-                }];
-            }
-            else{
-                
-                addedPhotos++;
-                //If all the files uploaded
-                if (addedPhotos == self.photosArray.count) {
-                    [self hasFinishedUpload];
+                    
                 }
-                
             }
+            
+            
+            [self.photosUploaded removeAllObjects];
         }
-        
-        
-        [self.photosUploaded removeAllObjects];
-    }
 
+    }
+    
     
     
 
@@ -561,7 +565,8 @@
     }
     
     
-    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:@"http://appmoment.fr" withMessage:message];
+    NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
     
     [self dismissViewControllerAnimated:NO completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];

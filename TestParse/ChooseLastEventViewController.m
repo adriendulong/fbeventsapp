@@ -13,6 +13,9 @@
 
 @end
 
+
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+
 @implementation ChooseLastEventViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,7 +30,16 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    NSTimer *timer = [NSTimer timerWithTimeInterval:0.7 target:self selector:@selector(animateIfHasAType) userInfo:nil repeats:NO];
+    if (!IS_IPHONE_5) {
+        self.verticalConstrainLeft.constant = 10.0;
+        self.verticalConstraintRight.constant = 10.0;
+    }
+    
+   
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    NSTimer *timer = [NSTimer timerWithTimeInterval:0.2 target:self selector:@selector(animateIfHasAType) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -52,6 +64,8 @@
     self.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
     self.dateLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
+    
+    
     NSMutableString *listInvited = [[NSMutableString alloc] init];
     [listInvited appendFormat:@"%@ ", NSLocalizedString(@"ChooseLastEventViewController_with", nil)];
     //[listInvited appendString:@"avec "];
@@ -74,9 +88,6 @@
     
     self.invitedLabel.text = listInvited;
     
-    //Picker Array
-    //@self.pickerArray = [NSArray arrayWithObjects:@"Bordeaux", @"Paris", @"New York", @"Shangai", @"San Francisco", nil];
-    
     //Validate button not available
     [self.validateButton setEnabled:NO];
     
@@ -88,6 +99,35 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)modifyType:(id)sender {
+    [self.buttonModify setHidden:YES];
+    [self.pickerView setHidden:YES];
+    
+    if (self.selectedType == 1) {
+
+        [UIView animateWithDuration:0.5 animations:^{
+            self.viewOne.center = self.centerSelected;
+        } completion:^(BOOL finished) {[self.validateButton setEnabled:NO]; [self.viewFour setHidden:NO];[self.viewThree setHidden:NO];[self.viewTwo setHidden:NO];}];
+    }
+    else if (self.selectedType == 2) {
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            self.viewTwo.center = self.centerSelected;
+        } completion:^(BOOL finished) {[self.validateButton setEnabled:NO];[self.viewOne setHidden:NO];[self.viewThree setHidden:NO];[self.viewFour setHidden:NO];}];
+    }
+    else if (self.selectedType == 3) {
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            self.viewThree.center = self.centerSelected;
+        } completion:^(BOOL finished) {[self.validateButton setEnabled:NO];[self.viewTwo setHidden:NO];[self.viewOne setHidden:NO];[self.viewFour setHidden:NO];}];
+    }
+    else if (self.selectedType == 4) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.viewFour.center = self.centerSelected;
+        } completion:^(BOOL finished) {[self.validateButton setEnabled:NO];[self.viewTwo setHidden:NO];[self.viewOne setHidden:NO];[self.viewThree setHidden:NO];}];
+    }
 }
 
 - (IBAction)validate:(id)sender {
@@ -142,20 +182,23 @@
     UIButton *clickedButton = (UIButton *)sender;
     NSLog(@"Clicked : %i", clickedButton.tag);
     
-    if (clickedButton.tag == 1) {
-        [self animateElement:1 placePicker:6 animationTime:0.7];
+    if(!self.validateButton.isEnabled){
+        if (clickedButton.tag == 1) {
+            [self animateElement:1 placePicker:6 animationTime:0.7];
+        }
+        else if (clickedButton.tag == 2) {
+            [self animateElement:2 placePicker:6 animationTime:0.7];
+        }
+        else if (clickedButton.tag == 3) {
+            
+            [self animateElement:3 placePicker:2 animationTime:1.0];
+        }
+        else if (clickedButton.tag == 4) {
+            
+            [self animateElement:4 placePicker:4 animationTime:1.0];
+        }
     }
-    else if (clickedButton.tag == 2) {
-        [self animateElement:2 placePicker:6 animationTime:0.7];
-    }
-    else if (clickedButton.tag == 3) {
-        
-        [self animateElement:3 placePicker:2 animationTime:1.0];
-    }
-    else if (clickedButton.tag == 4) {
-        
-        [self animateElement:4 placePicker:4 animationTime:1.0];
-    }
+    
 
     
 }
@@ -334,6 +377,7 @@
     if (position == 1) {
         self.pickerArray = self.elementsForEvening;
         [self.pickerView reloadAllComponents];
+        
         [self.pickerView selectRow:[self positionInArrayForHours:1] inComponent:0 animated:YES];
         
         
@@ -342,10 +386,11 @@
         [self.viewFour setHidden:YES];
         
         self.selectedType = 1;
+        self.centerSelected = self.viewOne.center;
         
         [UIView animateWithDuration:duration animations:^{
             self.viewOne.center = CGPointMake(160, 280);
-        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES];}];
+        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES]; [self.buttonModify setHidden:NO];}];
     }
     else if (position == 2) {
         self.pickerArray = self.elementsForDay;
@@ -357,10 +402,11 @@
         [self.viewFour setHidden:YES];
         
         self.selectedType = 2;
+        self.centerSelected = self.viewTwo.center;
         
         [UIView animateWithDuration:duration animations:^{
             self.viewTwo.center = CGPointMake(160, 280);
-        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES];}];
+        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES]; [self.buttonModify setHidden:NO];}];
     }
     else if (position == 3) {
         self.pickerArray = self.elementsForWE;
@@ -372,11 +418,12 @@
         [self.viewFour setHidden:YES];
         
         self.selectedType = 3;
+        self.centerSelected = self.viewThree.center;
         
         
         [UIView animateWithDuration:duration animations:^{
             self.viewThree.center = CGPointMake(160, 280);
-        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES]; }];
+        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES]; [self.buttonModify setHidden:NO];}];
     }
     else if (position == 4) {
         self.pickerArray = self.elementsForHolidays;
@@ -388,10 +435,11 @@
         [self.viewThree setHidden:YES];
         
         self.selectedType = 4;
+        self.centerSelected = self.viewFour.center;
         
         [UIView animateWithDuration:duration animations:^{
             self.viewFour.center = CGPointMake(160, 280);
-        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES];}];
+        } completion:^(BOOL finished) {[self.pickerView setHidden:NO]; [self.validateButton setEnabled:YES]; [self.buttonModify setHidden:NO];}];
     }
 }
 
@@ -401,8 +449,7 @@
     
     if (type==1) {
         for (int i=0; i<self.elementsForEvening.count; i++) {
-            int lastElement = (int)[self.elementsForEvening objectAtIndex:i][@"last"];
-            if ([self.elementsForEvening objectAtIndex:i][@"last"] == self.event[@"last"]) {
+            if ([[self.elementsForEvening objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -410,7 +457,7 @@
     }
     else if(type == 2){
         for (int i=0; i<self.elementsForDay.count; i++) {
-            if ((int)[self.elementsForDay objectAtIndex:i][@"last"] == [(NSNumber *)self.event[@"last"] intValue]) {
+            if ([[self.elementsForDay objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -418,7 +465,7 @@
     }
     else if(type == 3){
         for (int i=0; i<self.elementsForWE.count; i++) {
-            if ((int)[self.elementsForWE objectAtIndex:i][@"last"] == [(NSNumber *)self.event[@"last"] intValue]) {
+            if ([[self.elementsForWE objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -426,7 +473,7 @@
     }
     else if(type == 4){
         for (int i=0; i<self.elementsForHolidays.count; i++) {
-            if ((int)[self.elementsForHolidays objectAtIndex:i][@"last"] == [(NSNumber *)self.event[@"last"] intValue]) {
+            if ([[self.elementsForHolidays objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
                 position = i;
                 return position;
             }

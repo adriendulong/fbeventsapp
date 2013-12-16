@@ -36,6 +36,10 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [TestFlight passCheckpoint:@"SETTINGS"];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,7 +88,7 @@
         return 2;
     }
     else if (section == 1){
-        return 3;
+        return 2;
     }
     else{
         return 2;
@@ -120,13 +124,12 @@
                 [alert show];
             }
         }
-        //Rank on the app store
-        else if(indexPath.row==1){
-            
-        }
         //Go on facebook page
-        else if (indexPath.row==2){
-            
+        else if (indexPath.row==1){
+            NSURL *url = [NSURL URLWithString:@"fb://page/600308563362702"];
+            if(![[UIApplication sharedApplication] openURL:url]){
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://facebook.com/woovent"]];
+            }
         }
     }
     else if (indexPath.section==2){
@@ -136,58 +139,10 @@
         }
 
     }
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 - (IBAction)finish:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -277,6 +232,8 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"Login"]){
+        [TestFlight passCheckpoint:@"DISCONNECT"];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:LogOutUser object:self];
         [MOUtility logoutApp];
         

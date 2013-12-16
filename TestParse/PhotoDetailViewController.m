@@ -39,8 +39,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = NSLocalizedString(@"PhotoDetailViewController_Title", nil);
+    //self.title = NSLocalizedString(@"PhotoDetailViewController_Title", nil);
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    [self updateOwner];
     
     //Notifs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userClickedLike:) name:ClickLikePhoto object:nil];
@@ -64,6 +65,7 @@
         if (!error) {
             [self.tableView setHidden:NO];
             self.photo = photoObject;
+            [self updateOwner];
             [self.tableView reloadData];
         }
         
@@ -71,17 +73,36 @@
     
 }
 
+-(void)updateOwner{
+    NSURL *pictureURL = [[NSURL alloc] init];
+    
+    if (self.photo[@"user"]) {
+        self.nameOwner.text = self.photo[@"user"][@"name"];
+
+        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", self.photo[@"user"][@"facebookId"]]];
+    }
+    else{
+        self.nameOwner.text = self.photo[@"prospect"][@"name"];
+        
+        pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal&return_ssl_resources=1", self.photo[@"prospect"][@"facebookId"]]];
+    }
+    
+    //corner radius image owner photo
+    self.imageOwner.layer.cornerRadius = 18.0f;
+    self.imageOwner.layer.masksToBounds = YES;
+    [self.imageOwner setImageWithURL:pictureURL
+                    placeholderImage:[UIImage imageNamed:@"profil_default"]];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return 50;
-    } else if (indexPath.row==1) {
+    if (indexPath.row==0) {
         return [self heightForImage];
     }
-    else if (indexPath.row==2){
+    else if (indexPath.row==1){
         return 50;
     }
-    else if(indexPath.row == 3){
+    else if(indexPath.row == 2){
         if (self.photo[@"comments"]) {
             NSString *title = (NSString *)[self.photo[@"comments"] objectAtIndex:0][@"comment"];
             CGFloat heightSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}].height;
@@ -98,14 +119,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"Section %i", section);
-    if(self.photo[@"comments"]) return 4;
-    else return 3;
+    if(self.photo[@"comments"]) return 3;
+    else return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //OwnerPhoto part
-    if (indexPath.row==0) {
+    /*if (indexPath.row==0) {
         static NSString *simpleTableIdentifier = @"OwnerCell";
         
         OwnerPhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -144,8 +165,8 @@
         cell.timeTaken.text = [self lastSincePhotoTaken];
         
         return cell;
-    }
-    else if (indexPath.row==1){
+    }*/
+    if (indexPath.row==0){
         static NSString *simpleTableIdentifier = @"PhotoCell";
         
         PhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -161,7 +182,6 @@
             [imgView setImageWithURL:self.photo[@"facebook_url_full"]];
         }
         else{
-            //imgView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
             imgView.file = (PFFile *)self.photo[@"full_image"];
             
             [imgView loadInBackground];
@@ -174,7 +194,7 @@
         return cell;
         
     }
-    else if(indexPath.row==2) {
+    else if(indexPath.row==1) {
         static NSString *simpleTableIdentifier = @"ActionCell";
         
         ActionPhotoCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];

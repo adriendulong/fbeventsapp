@@ -13,5 +13,6 @@
 @property (strong, nonatomic) NSMutableArray *photosEvent;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 
 @end

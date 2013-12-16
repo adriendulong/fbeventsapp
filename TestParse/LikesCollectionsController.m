@@ -49,9 +49,7 @@
     static NSString *identifier = @"Cell";
     
     UICollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    
-    //UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    //recipeImageView.image = [UIImage imageNamed:@"covertest"];
+
     
     PFImageView *imageViewPhoto = (PFImageView *)[cell viewWithTag:10];
     PFImageView *fbViewPhoto = (PFImageView *)[cell viewWithTag:20];
@@ -60,11 +58,11 @@
     //From server
     if ([self.likers objectAtIndex:indexPath.row][@"facebookId"]) {
         [fbViewPhoto setHidden:YES];
-        [imageViewPhoto setImageWithURL:[MOUtility UrlOfFacebooProfileImage:[self.likers objectAtIndex:indexPath.row][@"facebookId"] withResolution:FacebookLargeProfileImage] placeholderImage:[UIImage imageNamed:@"covertest"]];
+        [imageViewPhoto setImageWithURL:[MOUtility UrlOfFacebooProfileImage:[self.likers objectAtIndex:indexPath.row][@"facebookId"] withResolution:FacebookLargeProfileImage] placeholderImage:[UIImage imageNamed:@"photo_default"]];
     }
     else{
         [fbViewPhoto setHidden:NO];
-        [imageViewPhoto setImageWithURL:[MOUtility UrlOfFacebooProfileImage:[self.likers objectAtIndex:indexPath.row][@"id"] withResolution:FacebookLargeProfileImage] placeholderImage:[UIImage imageNamed:@"covertest"]];
+        [imageViewPhoto setImageWithURL:[MOUtility UrlOfFacebooProfileImage:[self.likers objectAtIndex:indexPath.row][@"id"] withResolution:FacebookLargeProfileImage] placeholderImage:[UIImage imageNamed:@"photo_default"]];
     }
     
     labelName.text = [self.likers objectAtIndex:indexPath.row][@"name"];

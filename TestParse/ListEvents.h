@@ -21,6 +21,8 @@
 @property(nonatomic, assign) bool loadingNotJoinFBEvents;
 @property (nonatomic, assign) BOOL animating;
 @property (weak, nonatomic) IBOutlet UIImageView *refreshImage;
+@property (strong, nonatomic) PFObject *closestInvitation;
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;

@@ -137,19 +137,9 @@
         if(event[@"location"]){
             eventToCompare[@"location"] = event[@"location"];
         }
-        else{
-            if(eventToCompare[@"location"]){
-                eventToCompare[@"location"] = null;
-            }
-        }
         
         if(event[@"venue"]){
             eventToCompare[@"venue"] = event[@"venue"];
-        }
-        else{
-            if(eventToCompare[@"venue"]){
-                eventToCompare[@"venue"] = null;
-            }
         }
         
         
@@ -179,20 +169,10 @@
         if(event[@"description"]){
             eventToCompare[@"description"] = event[@"description"];
         }
-        else{
-            if (eventToCompare[@"description"]) {
-                eventToCompare[@"description"] = null;
-            }
-        }
         
         //COVER
         if(event[@"cover"]){
             eventToCompare[@"cover"] = event[@"cover"][@"source"];
-        }
-        else{
-            if (eventToCompare[@"cover"]) {
-                eventToCompare[@"cover"] = null;
-            }
         }
         
         //OWNER

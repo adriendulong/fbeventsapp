@@ -11,6 +11,7 @@
 #import "PhotosCollectionViewController.h"
 #import "PhotoDetailViewController.h"
 #import "MOUtility.h"
+#import "ListInvitationsController.h"
 
 
 @implementation TestParseAppDelegate
@@ -21,7 +22,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [TestFlight takeOff:@"abb31330-3ffd-4455-ab95-dd07c3381468"];
+    [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
     
     // Override point for customization after application launch.
     [Parse setApplicationId:@"8UT7kL1fmD9Orti3P7obNJyTgSpJpEGvz4HkCrr8"
@@ -138,6 +139,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
+    //Clear Badge
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.badge != 0) {
+        currentInstallation.badge = 0;
+        
+        [currentInstallation saveEventually];
+    }
+    
     if (application.applicationState == UIApplicationStateInactive) {
         // The application was just brought from the background to the foreground,
         // so we consider the app as having been "opened by a push notification."
@@ -161,7 +170,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                 completionHandler(UIBackgroundFetchResultFailed);
             }else if ([PFUser currentUser]) {
                 //Add a notif to the core data
-                NSDictionary *dictionnary;
+               /* NSDictionary *dictionnary;
                 if ([MOUtility getEventForObjectId:eventId]!=nil) {
                    dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
                                     @"type" : @0,
@@ -174,7 +183,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                 }
                 
                 
-                [MOUtility saveNotification:dictionnary];
+                [MOUtility saveNotification:dictionnary];*/
                 
                 PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
                 viewController.invitation = object;
@@ -204,10 +213,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             if (error && error.code == kPFErrorObjectNotFound) {
                 completionHandler(UIBackgroundFetchResultFailed);
             }else if ([PFUser currentUser]) {
-                NSDictionary *dictionnary = @{@"objectId": photoId,
+                /*NSDictionary *dictionnary = @{@"objectId": photoId,
                                               @"type" : @1,
                                               @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
-                [MOUtility saveNotification:dictionnary];
+                [MOUtility saveNotification:dictionnary];*/
                 
                 
                 PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
@@ -225,8 +234,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             
         }];
     }
+    else if([[userInfo valueForKey:@"type"] intValue]==0){
+        
+        UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+        [tabBar setSelectedIndex:1];
+    }
     
     
+    //
     [PFPush handlePush:userInfo];
 }
 

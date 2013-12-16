@@ -16,6 +16,8 @@
 #import "CameraFocusSquare.h"
 #import <AudioToolbox/AudioToolbox.h>
 
+#define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+
 @interface CameraViewController (){
     @private
     int photosMatched;
@@ -54,6 +56,7 @@
     
     self.badge.hidden = YES;
     
+    
     //[self activeCameraWithPosition:AVCaptureDevicePositionBack];
     
     self.isPictureTaken = NO;
@@ -66,6 +69,14 @@
     
     [self setLatestPhotoOnAlbumButton];
     [self getCountPhotosMatchedWithEventDate];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    if (!IS_IPHONE_5) {
+        [self.navigationController setNavigationBarHidden:YES];
+        self.toolboxView.alpha = 1.0;
+    }
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -201,7 +212,7 @@
                          } completion:^(BOOL finished) {
                              
                              [UIView animateWithDuration:0.375f
-                                                   delay:0.5f
+                                                   delay:0.9f
                                                  options:UIViewAnimationOptionTransitionNone
                                               animations:^{
                                                   
@@ -625,7 +636,10 @@
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    [self.navigationController setNavigationBarHidden:NO];
+    
     if ([segue.identifier isEqualToString:@"PhotoValidate"]) {
+        
         
         //Remove image preview from this screen if come back
         [self.previewImage setHidden:YES];

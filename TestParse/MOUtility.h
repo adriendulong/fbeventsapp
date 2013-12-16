@@ -24,6 +24,7 @@
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 +(NSDate *)getEndDateEvent:(PFObject *)event;
++(NSArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 
 #pragma mark - Facebook
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality;

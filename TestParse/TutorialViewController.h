@@ -13,5 +13,6 @@
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *explicationLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
 @end

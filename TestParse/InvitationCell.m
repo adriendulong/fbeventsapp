@@ -28,6 +28,7 @@
 
 - (IBAction)rsvpChanged:(id)sender {
     NSLog(@"Changed : %i", self.rsvpSegmentedControl.selectedSegmentIndex);
+    [TestFlight passCheckpoint:@"CHANGE_RSVP_INVITATIONS"];
     
     //Accept
     if(self.rsvpSegmentedControl.selectedSegmentIndex == 0){

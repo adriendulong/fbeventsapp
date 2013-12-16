@@ -17,6 +17,7 @@
 #import "InvitedListViewController.h"
 #import "PhotosImportedViewController.h"
 #import <MapKit/MapKit.h>
+#import "ListEvents.h"
 
 #define METERS_PER_MILE 1609.344
 
@@ -32,11 +33,63 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AddPhotoToEventNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UpdateInvitedFinished object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UploadPhotoFinished object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UpdateClosestEvent object:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    //We are in the tab Bar
+    if (!self.invitation) {
+        self.mustChangeTitle = NO;
+        
+        [TestFlight passCheckpoint:@"DETAIL_EVENT_TAB_BAR"];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateClosestEvent:) name:UpdateClosestEvent object:nil];
+        
+        ListEvents *listEvents = (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
+        self.invitation = listEvents.closestInvitation;
+        
+        if (self.invitation) {
+            [self setTitle];
+            
+            
+            
+            //Init images
+            NSDate *startDate = self.invitation[@"event"][@"start_time"];
+            if ([startDate compare:[NSDate date]]==NSOrderedAscending) {
+                self.isDuringOrAfter = YES;
+                self.isShowingDetails = NO;
+            }
+            else{
+                self.isDuringOrAfter = NO;
+                self.isShowingDetails = YES;
+            }
+            
+            self.hasUpdatedGuestsFromFB = NO;
+            
+            
+            //Update view
+            [self getInvitedFromServer];
+            [self updateEventFromFB];
+            [self loadPhotos];
+        }
+        else{
+            [self.tabBarController setSelectedIndex:0];
+        }
+        
+    }
+    else{
+        [TestFlight passCheckpoint:@"DETAIL_EVENT"];
+        [self.navigationController setToolbarHidden:YES];
+    }
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.mustChangeTitle = YES;
+    
     
     //Notification to hide details about the event
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideDetails:) name:ShowOrHideDetailsEventNotification object:nil];
@@ -53,11 +106,33 @@
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     //[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]}];
     
-    //Page Title
-    PFObject *event = self.invitation[@"event"];
-    NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
-    double secondsInAnDays = 86400;
-    NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
+    if (self.invitation) {
+        [self setTitle];
+        
+        
+        
+        //Init images
+        NSDate *startDate = self.invitation[@"event"][@"start_time"];
+        if ([startDate compare:[NSDate date]]==NSOrderedAscending) {
+            self.isDuringOrAfter = YES;
+            self.isShowingDetails = NO;
+        }
+        else{
+            self.isDuringOrAfter = NO;
+            self.isShowingDetails = YES;
+        }
+        
+        self.hasUpdatedGuestsFromFB = NO;
+        
+        
+        //Update view
+        [self getInvitedFromServer];
+        [self updateEventFromFB];
+        [self loadPhotos];
+    }
+    //else{
+    //    [self.tabBarController setSelectedIndex:0];
+    //}
     
     /*
      "PhotosCollectionViewController_Title_Future" = "dans %i jours";
@@ -66,40 +141,6 @@
      "PhotosCollectionViewController_Title_Yesterday" = "hier";
      "PhotosCollectionViewController_Title_Today" = "Aujourd'hui";
      */
-    
-    if (daysBetweenDates > 1) {
-        self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Future", nil), daysBetweenDates];
-    } else if (daysBetweenDates == 1) {
-        self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Tomorrow", nil);
-    } else if (daysBetweenDates == 0) {
-        self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Today", nil);
-    } else {
-        if (abs(daysBetweenDates) > 1) {
-            self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Past", nil), abs(daysBetweenDates)];
-        } else {
-            self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Yesterday", nil);
-        }
-    }
-    
-    //Init images
-    //self.photos = [NSArray arrayWithObjects:@"horloge", @"covertest", @"covertest", nil];
-    NSDate *startDate = self.invitation[@"event"][@"start_time"];
-    if ([startDate compare:[NSDate date]]==NSOrderedAscending) {
-        self.isDuringOrAfter = YES;
-        self.isShowingDetails = NO;
-    }
-    else{
-        self.isDuringOrAfter = NO;
-        self.isShowingDetails = YES;
-    }
-    
-    self.hasUpdatedGuestsFromFB = NO;
-    
-    
-    //Update view
-    [self getInvitedFromServer];
-    [self updateEventFromFB];
-    [self loadPhotos];
     
 }
 
@@ -122,15 +163,14 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
     //UIImageView *recipeImageView = (UIImageView *)[cell viewWithTag:100];
-    //recipeImageView.image = [UIImage imageNamed:@"covertest"];
     
     PFImageView *imageView = (PFImageView *)[cell viewWithTag:100];
     
     if ([photos objectAtIndex:indexPath.row][@"facebookId"]) {
-        [imageView setImageWithURL:[photos objectAtIndex:indexPath.row][@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+        [imageView setImageWithURL:[photos objectAtIndex:indexPath.row][@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"photo_default"]];
     }
     else{
-        imageView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
+        imageView.image = [UIImage imageNamed:@"photo_default"]; // placeholder image
         imageView.file = (PFFile *)[photos objectAtIndex:indexPath.row][@"low_image"]; // remote image
         
         [imageView loadInBackground];
@@ -193,7 +233,7 @@
         headerView.nameEvent.text = event[@"name"];
         headerView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
         headerView.eventDescription.text = event[@"description"];
-        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertest"]];
+        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
         if (event[@"location"]) {
             headerView.locationLabel.text = event[@"location"];
         }
@@ -239,6 +279,7 @@
         
         if (!self.isShowingDetails) {
             [headerView.viewToHide setHidden:YES];
+            self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
         }
         
         self.headerCollectionView = headerView;
@@ -363,12 +404,11 @@
         if(event[@"location"]){
             eventToCompare[@"location"] = event[@"location"];
         }
-        else{
-            if(eventToCompare[@"location"]){
-                eventToCompare[@"location"] = null;
-            }
-        }
         
+        
+        if(event[@"venue"]){
+            eventToCompare[@"venue"] = event[@"venue"];
+        }
         
         //START TIME
         if(event[@"start_time"]){
@@ -396,20 +436,10 @@
         if(event[@"description"]){
             eventToCompare[@"description"] = event[@"description"];
         }
-        else{
-            if (eventToCompare[@"description"]) {
-                eventToCompare[@"description"] = null;
-            }
-        }
         
         //COVER
         if(event[@"cover"]){
             eventToCompare[@"cover"] = event[@"cover"][@"source"];
-        }
-        else{
-            if (eventToCompare[@"cover"]) {
-                eventToCompare[@"cover"] = null;
-            }
         }
         
         //OWNER
@@ -711,18 +741,14 @@
     
     PFObject *event = self.invitation[@"event"];
     
-    //Title page
-    NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
-    double secondsInAnDays = 86400;
-    NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
-    self.title = [NSString stringWithFormat:@"dans %i jours", daysBetweenDates];
+    [self setTitle];
     
     
     self.headerCollectionView.invitation = self.invitation;
     self.headerCollectionView.nameEvent.text = event[@"name"];
     self.headerCollectionView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
     self.headerCollectionView.eventDescription.text = event[@"description"];
-    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"covertestinfos"]];
+    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
     
     if ([self.invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
         [self.headerCollectionView.segmentRsvp setSelectedSegmentIndex:0];
@@ -765,7 +791,7 @@
             [guestView setHidden:NO];
             UIImageView *photo = (UIImageView *)[guestView viewWithTag:6];
             [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:guest[@"facebookId"] withResolution:FacebookLargeProfileImage]
-                  placeholderImage:[UIImage imageNamed:@"covertest"]];
+                  placeholderImage:[UIImage imageNamed:@"profil_default"]];
             photo.layer.cornerRadius = 23.0f;
             photo.layer.masksToBounds = YES;
         }
@@ -805,7 +831,13 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
-        
+        [TestFlight passCheckpoint:@"ADD_PHOTO_BUTTON"];
+        UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+        CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
+        cameraViewController.event = self.invitation[@"event"];
+    }
+    else if ([segue.identifier isEqualToString:@"AddPhotoBarItem"]) {
+        [TestFlight passCheckpoint:@"ADD_PHOTO_BAR_ITEM"];
         UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
         CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
         cameraViewController.event = self.invitation[@"event"];
@@ -825,7 +857,14 @@
         ChooseLastEventViewController *chooseLastEvent = (ChooseLastEventViewController *)segue.destinationViewController;
         chooseLastEvent.event = self.invitation[@"event"];
         chooseLastEvent.invited = self.invited;
-        chooseLastEvent.levelRoot = 1;
+        
+        if (!self.mustChangeTitle) {
+            chooseLastEvent.levelRoot = 0;
+        }
+        else{
+            chooseLastEvent.levelRoot = 1;
+        }
+        
     }
     #warning Direct if end time for event (update type ??)
     else if ([segue.identifier isEqualToString:@"DirectImport"]){
@@ -835,10 +874,14 @@
         photoImported.levelRoot = 1;
     }
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){
+        [TestFlight passCheckpoint:@"DESCRIPTION_FROM_DETAIL"];
+        
         DetailDescriptionViewController *detailDescription = (DetailDescriptionViewController *)segue.destinationViewController;
         detailDescription.description = self.invitation[@"event"][@"description"];
     }
     else if([segue.identifier isEqualToString:@"Invited"]){
+        [TestFlight passCheckpoint:@"GUESTS_FROM_DETAIL"];
+        
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;
         invitedController.invited = self.invited;
     }
@@ -848,7 +891,8 @@
 #pragma mark - MAPS
 
 - (void)touchedMap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"MAP !!");
+    [TestFlight passCheckpoint:@"CLICK_OPEN_MAP"];
+    
     if ([[UIApplication sharedApplication] canOpenURL:
               [NSURL URLWithString:@"comgooglemaps://"]]) {
         
@@ -894,14 +938,26 @@
     
 }
 
+- (IBAction)autoImport:(id)sender {
+    NSLog(@"auto Import");
+    if (self.invitation[@"event"][@"end_time"]) {
+        [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+    }
+    else{
+        [self performSegueWithIdentifier:@"EventType" sender:nil];
+    }
+}
+
 - (IBAction)hideViewTap:(id)sender {
-    NSLog(@"TEST TAPPPP");
+    [TestFlight passCheckpoint:@"CHANGE_VISIBILITY_DETAILS"];
     
     if (self.isShowingDetails) {
+        [TestFlight passCheckpoint:@"HIDE_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:YES];
     }
     else{
+        [TestFlight passCheckpoint:@"SHOW_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Hide_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:NO];
     }
@@ -909,5 +965,42 @@
     self.isShowingDetails = !self.isShowingDetails;
     [self.collectionView reloadData];
     //[self.collectionViewLayout invalidateLayout];
+}
+
+
+-(void)setTitle{
+    //Page Title
+    
+    if (self.mustChangeTitle) {
+        PFObject *event = self.invitation[@"event"];
+        NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
+        double secondsInAnDays = 86400;
+        NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
+        
+        if (daysBetweenDates > 1) {
+            self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Future", nil), daysBetweenDates];
+        } else if (daysBetweenDates == 1) {
+            self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Tomorrow", nil);
+        } else if (daysBetweenDates == 0) {
+            self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Today", nil);
+        } else {
+            if (abs(daysBetweenDates) > 1) {
+                self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Past", nil), abs(daysBetweenDates)];
+            } else {
+                self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Yesterday", nil);
+            }
+        }
+    }
+    else{
+        self.title = @"Now !";
+    }
+    
+}
+
+
+-(void)updateClosestEvent:(NSNotification *)note{
+    ListEvents *listEvents = (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
+    self.invitation = listEvents.closestInvitation;
+    [self updateView];
 }
 @end

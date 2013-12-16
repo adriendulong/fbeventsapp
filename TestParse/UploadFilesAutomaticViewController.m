@@ -19,6 +19,10 @@
 @implementation UploadFilesAutomaticViewController
 
 
+-(void)viewDidAppear:(BOOL)animated{
+    [self uploadPhotos];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,7 +41,11 @@
     
     [self.progessView setProgress:0.0f];
     self.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UploadFilesAutomaticViewController_PhotosCount", nil), 0, self.photosToUpload.count];
-    [self uploadPhotos];
+    
+    
+    //Go marmote
+    self.counterTimer = 0;
+    self.marmoteTimer = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,6 +56,7 @@
 
 
 -(void)uploadPhotos{
+    
     
     Photo *photoToUpload = [self.photosToUpload objectAtIndex:self.nbOfPhotosUploaded];
     
@@ -359,7 +368,22 @@
 
 
 -(void)finishedUpload{
+    [self.marmoteTimer invalidate];
+    self.marmoteTimer = nil;
+    
     [self pushEveryInvited:self.photosReallyUploaded];
+    
+    NSString *message;
+    if (self.photosReallyUploaded>1) {
+        message = [NSString stringWithFormat:NSLocalizedString(@"SharePhotoViewController_SharedPhoto2", nil), self.photosReallyUploaded];;
+    }
+    else{
+        message = NSLocalizedString(@"SharePhotoViewController_SharedPhoto3", nil);
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
     [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
 }
@@ -369,6 +393,21 @@
     [PFCloud callFunctionInBackground:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId} block:^(id object, NSError *error) {
         NSLog(@"Push sent");
     }];
+}
+
+-(void)actionTimer{
+    if (self.counterTimer%3==0) {
+        self.marmoteImage.image = [UIImage imageNamed:@"marmote1"];
+    }
+    else if(self.counterTimer%3==1){
+        self.marmoteImage.image = [UIImage imageNamed:@"marmote2"];
+    }
+    else{
+        self.marmoteImage.image = [UIImage imageNamed:@"marmote3"];
+    }
+    
+    self.counterTimer++;
+
 }
 
 

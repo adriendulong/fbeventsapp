@@ -35,6 +35,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [TestFlight passCheckpoint:@"INVITATIONS"];
+    
     
     [self loadInvitationFromServer];
     [self loadDeclinedFromSever];
@@ -43,6 +45,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Top icon
+    self.topImageView.layer.cornerRadius = 16.0f;
+    self.topImageView.layer.masksToBounds = YES;
     
     //Notifications Center
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -117,7 +123,7 @@
     
     //Profile picture
     [cell.profilImageView setImageWithURL:[MOUtility UrlOfFacebooProfileImage:event[@"owner"][@"id"] withResolution:FacebookNormalProfileImage]
-                        placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+                        placeholderImage:[UIImage imageNamed:@"profil_default"]];
     
     //Assign the event Id
     cell.invitation = [self.objectsForTable objectAtIndex:indexPath.row];
@@ -158,14 +164,18 @@
     self.invitations = [[MOUtility getFuturInvitationNotReplied] mutableCopy];
     if(self.listSegmentControll.selectedSegmentIndex==0){
         self.objectsForTable = self.invitations;
+        [self isEmptyTableView];
         [self.tableView reloadData];
     }
     
+    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
+    [queryEvents orderByAscending:@"start_time"];
+    
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query whereKey:@"rsvp_status" equalTo:@"not_replied"];
-    [query whereKey:@"start_time" greaterThan:[NSDate date]];
-    [query orderByAscending:@"start_time"];
+    [query whereKey:@"rsvp_status" equalTo:FacebookEventNotReplied];
+    [query whereKey:@"event" matchesQuery:queryEvents];
     [query includeKey:@"event"];
     
     #warning Modify Cache Policy
@@ -173,7 +183,7 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.invitations = [objects mutableCopy];
+            self.invitations = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
             
             //Save in local database
             for(PFObject *invitation in objects){
@@ -182,6 +192,7 @@
             
             if(self.listSegmentControll.selectedSegmentIndex==0){
                 self.objectsForTable = self.invitations;
+                [self isEmptyTableView];
                 [self.tableView reloadData];
             }
         } else {
@@ -199,15 +210,18 @@
     self.declined = [[MOUtility getFuturInvitationDeclined] mutableCopy];
     if(self.listSegmentControll.selectedSegmentIndex==1){
         self.objectsForTable = self.declined;
+        [self isEmptyTableView];
         [self.tableView reloadData];
     }
     
+    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
+    [queryEvents orderByAscending:@"start_time"];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query whereKey:@"rsvp_status" equalTo:@"declined"];
-    [query whereKey:@"start_time" greaterThan:[NSDate date]];
-    [query orderByAscending:@"start_time"];
+    [query whereKey:@"rsvp_status" equalTo:FacebookEventDeclined];
+    [query whereKey:@"event" matchesQuery:queryEvents];
     [query includeKey:@"event"];
     
     #warning Modify Cache Policy
@@ -215,7 +229,7 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.declined = [objects mutableCopy];;
+            self.declined = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
             
             //Save in local databse
             for(PFObject *invitation in objects){
@@ -224,6 +238,7 @@
             
             if(self.listSegmentControll.selectedSegmentIndex==1){
                 self.objectsForTable = self.declined;
+                [self isEmptyTableView];
                 [self.tableView reloadData];
             }
             else{
@@ -265,6 +280,7 @@
     
     //reload
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self isEmptyTableView];
     
     NSLog(@"RSVP : %@", notification.userInfo[@"rsvp"]);
     if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
@@ -288,11 +304,17 @@
 - (IBAction)listTypeChange:(id)sender {
      NSLog(@"Changed : %i", self.listSegmentControll.selectedSegmentIndex);
     if (self.listSegmentControll.selectedSegmentIndex == 0) {
+        [TestFlight passCheckpoint:@"SEE_NOT_JOINED"];
+        
         self.objectsForTable = self.invitations;
+        [self isEmptyTableView];
         [self.tableView reloadData];
     }
     else{
+        [TestFlight passCheckpoint:@"SEE_DECLINED"];
+        
         self.objectsForTable = self.declined;
+        [self isEmptyTableView];
         [self.tableView reloadData];
     }
 }
@@ -313,6 +335,7 @@
  
          PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
          photosCollectionViewController.invitation = [self.self.objectsForTable objectAtIndex:selectedRowIndex.row];
+         photosCollectionViewController.hidesBottomBarWhenPushed = YES;
     }
      else if ([segue.identifier isEqualToString:@"Login"]){
          NSLog(@"LOGOUT LIST");
@@ -387,6 +410,41 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
     [self startSpin];
 }
+
+
+-(void)isEmptyTableView{
+    
+    if (self.listSegmentControll.selectedSegmentIndex == 0) {
+        UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+        
+        //Image
+        UIImage *image = [UIImage imageNamed:@"marmotte_victoire"];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        [imageView setImage:image];
+        imageView.contentMode = UIViewContentModeCenter;
+        [viewBack addSubview:imageView];
+        
+        //Label
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 370, 285, 60)];
+        [label setTextColor:[UIColor darkGrayColor]];
+        [label setNumberOfLines:2];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.text = @"Yeah !!!\nPlus aucunes invitations en attente !";
+        [viewBack addSubview:label];
+        
+        if (!self.objectsForTable) {
+            self.tableView.backgroundView = viewBack;
+        }
+        else if(self.objectsForTable.count==0){
+            self.tableView.backgroundView = viewBack;
+        }
+        else{
+            self.tableView.backgroundView = nil;
+        }
+    }
+    
+}
+
 
 
 @end

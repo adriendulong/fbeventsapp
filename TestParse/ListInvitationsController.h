@@ -20,6 +20,7 @@
 @property (assign, nonatomic) int countTimer;
 @property (weak, nonatomic) IBOutlet UIImageView *refreshImage;
 @property (assign, nonatomic) BOOL animating;
+@property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 
 - (IBAction)settings:(id)sender;
 -(void)loadInvitationFromServer;

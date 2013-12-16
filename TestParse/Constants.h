@@ -20,6 +20,7 @@ extern NSString *const ModifEventsInvitationsAnswers;
 extern NSString *const HaveFinishedRefreshEvents;
 extern NSString *const LogOutUser;
 extern NSString *const LogInUser;
+extern NSString *const UpdateClosestEvent;
 
 
 #pragma mark - Facebook

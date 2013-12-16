@@ -27,6 +27,8 @@
 @property (nonatomic, assign) int nbMaybe;
 @property (nonatomic, assign) int nbTotal;
 @property (nonatomic, assign) BOOL isMapInit;
+@property (assign, nonatomic) BOOL mustChangeTitle;
 
+- (IBAction)autoImport:(id)sender;
 - (IBAction)hideViewTap:(id)sender;
 @end

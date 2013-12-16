@@ -32,6 +32,7 @@
 @property (assign, nonatomic) int nbPhotosUploaded;
 @property (strong, nonatomic) NSMutableArray *photosUploaded;
 @property (weak, nonatomic) IBOutlet UILabel *labelPhotosUploaded;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstraintPost;
 
 
 

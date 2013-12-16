@@ -22,6 +22,7 @@ NSString *const ModifEventsInvitationsAnswers       = @"com.moment.FbEvents.Modi
 NSString *const HaveFinishedRefreshEvents           = @"com.moment.FbEvents.HaveFinishedRefreshEvents";
 NSString *const LogOutUser                          = @"com.moment.FbEvents.LogOutUser";
 NSString *const LogInUser                           = @"com.moment.FbEvents.LogInUser";
+NSString *const UpdateClosestEvent                  = @"com.moment.FbEvents.UpdateClosestEvent";
 
 #pragma mark - Facebook
 

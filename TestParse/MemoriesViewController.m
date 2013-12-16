@@ -28,6 +28,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Top icon
+    self.topImageView.layer.cornerRadius = 16.0f;
+    self.topImageView.layer.masksToBounds = YES;
+    
     self.memoriesInvitations = [[NSMutableArray alloc] init];
     [self.activityIndicator startAnimating];
     [self.activityIndicator setHidden:NO];
@@ -122,7 +127,6 @@
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
         
-        NSLog(@" NB PHOTOS : %i", [[self.photosEvent objectAtIndex:indexPosition] count]);
         if ([[self.photosEvent objectAtIndex:indexPosition] count]>0) {
             NSMutableArray *arrayPhotos = [[NSMutableArray alloc] init];
             
@@ -157,7 +161,7 @@
                 }
                 
                 
-                [arrayPhotos shuffle];
+                //[arrayPhotos shuffle];
             }
             
             for (int i=0; i<9; i++) {
@@ -170,10 +174,10 @@
                     if ([arrayPhotos objectAtIndex:i][@"photo"]) {
                         PFObject *photo =[arrayPhotos objectAtIndex:i][@"photo"];
                         if (photo[@"facebookId"]) {
-                            [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"covertestinfos.png"]];
+                            [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
                         }
                         else{
-                            imageView.image = [UIImage imageNamed:@"covertest"]; // placeholder image
+                            imageView.image = [UIImage imageNamed:@"cover_default"]; // placeholder image
                             imageView.file = (PFFile *)photo[@"low_image"]; // remote image
                             
                             [imageView loadInBackground];
@@ -192,7 +196,7 @@
         else{
             [cell.coverImage setHidden:NO];
             [cell.coverImage setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                            placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+                            placeholderImage:[UIImage imageNamed:@"cover_default"]];
         }
         
         return cell;
@@ -209,6 +213,10 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+    if (indexPath.row == 0) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -227,6 +235,8 @@
         [self.photosEvent removeObjectAtIndex:(indexPath.row-1)];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
+        [self isEmptyTableView];
+        
         
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -235,49 +245,21 @@
 }
 
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
-
-
 #pragma mark - Parse Events
 
 -(void)loadMemoriesFromSever{
     //From local database
     self.memoriesInvitations = [[MOUtility getPastMemories] mutableCopy];
+    [self isEmptyTableView];
     [self.tableView reloadData];
-    self.photosEvent = [[NSMutableArray alloc] init];
+    /*self.photosEvent = [[NSMutableArray alloc] init];
     int i=0;
     for(PFObject *memorieInvit in self.memoriesInvitations){
         NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
         [self.photosEvent addObject:mutableArrayTemp];
         [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
         i++;
-    }
+    }*/
     
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
@@ -314,6 +296,7 @@
                 i++;
             }
             
+            [self isEmptyTableView];
             [self.tableView reloadData];
         } else {
             // Log details of the failure
@@ -344,6 +327,7 @@
             NSArray *visible = [self.tableView indexPathsForVisibleRows];
             for(NSIndexPath *indexPath in visible){
                 if (position == indexPath.row-1) {
+                    [self isEmptyTableView];
                     [self.tableView reloadData];
                 }
             }
@@ -360,6 +344,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"DetailEvent"]) {
+        [TestFlight passCheckpoint:@"DETAIL_FROM_MEMORIES"];
         
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
@@ -369,6 +354,13 @@
         
         PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
         photosCollectionViewController.invitation = [self.memoriesInvitations objectAtIndex:selectedRowIndex.row-1];
+        photosCollectionViewController.hidesBottomBarWhenPushed = YES;
+    }
+    else if ([segue.identifier isEqualToString:@"ImportButton"]) {
+        [TestFlight passCheckpoint:@"IMPORT_FROM_BUTTON"];
+    }
+    else if ([segue.identifier isEqualToString:@"ImportTopBar"]) {
+        [TestFlight passCheckpoint:@"IMPORT_FROM_TOP_BAR"];
     }
 
 }
@@ -389,6 +381,35 @@
             // The request failed
         }
     }];
+}
+
+-(void)isEmptyTableView{
+    UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+    
+    //Image
+    UIImage *image = [UIImage imageNamed:@"marmotte_sad"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [imageView setImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    [viewBack addSubview:imageView];
+    
+    //Label
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, 280, 60)];
+    [label setTextColor:[UIColor darkGrayColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [label setNumberOfLines:2];
+    label.text = @"Aucun souvenirs :( Importe des évènements !";
+    [viewBack addSubview:label];
+    
+    if (!self.memoriesInvitations) {
+        self.tableView.backgroundView = viewBack;
+    }
+    else if(self.memoriesInvitations.count==0){
+        self.tableView.backgroundView = viewBack;
+    }
+    else{
+        self.tableView.backgroundView = nil;
+    }
 }
 
 @end

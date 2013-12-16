@@ -1,13 +1,3 @@
-/* 
-  Localizable.strings
-  FbEvents
-
-  Created by Jérémy on 26/11/2013.
-  Copyright (c) 2013 Adrien Dulong. All rights reserved.
-*/
-
-
-
 ///// UIButton /////
 "UIButton_Back" = "Retour";
 
@@ -18,9 +8,9 @@
 "UIAlertView_ErrorLogin_Title" = "Erreur de connexion";
 "UIAlertView_Notifs_Title" = "Notifications";
 "UIAlertView_Warning" = "Attention";
-"UIAlertView_Problem_Message" = "Il n'était pas possible d'effectuer cette action, s'il vous plaît essayer à nouveau plus tard.";
-"UIAlertView_Problem_Message2" = "Problème pendant la supression de la photo";
-"UIAlertView_Problem_Message3" = "Problème lors de l'importation de l'évènement, veuillez reessayer plus tard";
+"UIAlertView_Problem_Message" = "Il n'était pas possible d'effectuer cette action, merci d’essayer à nouveau plus tard.";
+"UIAlertView_Problem_Message2" = "Problème lors de la supression de la photo";
+"UIAlertView_Problem_Message3" = "Problème lors de l'importation de l'évènement, veuillez réessayer plus tard";
 "UIAlertView_Problem_Message4" = "Problème lors de l'ouverture de l'email";
 "UIAlertView_Removal_Message" = "Êtes-vous sûr de vouloir suprimer cette photo ?";
 "UIAlertView_ErrorLogin_Message" = "Uh oh. L'utilisateur a annulé la connexion Facebook.";
@@ -36,10 +26,10 @@
 
 
 ///// TutorialViewController /////
-"TutorialViewController_tuto_step_1" = "Regroupez tous vos events au même endroit.";
-"TutorialViewController_tuto_step_2" = "Regroupez tous vos events au même endroit.";
-"TutorialViewController_tuto_step_3" = "Regroupez tous vos events au même endroit.";
-"TutorialViewController_tuto_step_4" = "Regroupez tous vos events au même endroit.";
+"TutorialViewController_tuto_step_1" = "Gérez vos évènements Facebook rapidement et simplement !";
+"TutorialViewController_tuto_step_2" = "Triez vos invitation en 1 clic pour ne plus en rater aucune !";
+"TutorialViewController_tuto_step_3" = "Profitez de vos évènements comme jamais. Tout est à portée de main : Infos / Photos / Message / invités etc.";
+"TutorialViewController_tuto_step_4" = "Retrouvez en un clic toutes les photos prises par vous et vos amis lors de vos évènements";
 
 
 ///// ChooseLastEventViewController /////
@@ -69,7 +59,7 @@
 ///// PhotosImportedViewController /////
 "PhotosImportedViewController_OnFacebook" = "Sur Facebook";
 "PhotosImportedViewController_OnMyiPhone" = "Sur mon iPhone";
-"PhotosImportedViewController_NbPhotoFind" = "%i photos de l'évènement touvées";
+"PhotosImportedViewController_NbPhotoFind" = "%i photos de l'évènement retouvées";
 "PhotosImportedViewController_Finish" = "Terminer";
 
 
@@ -77,6 +67,7 @@
 "UploadFilesAutomaticViewController_Title" = "Envoi des photos";
 "UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
 
+////manque label notre marmotte s’occupe de ranger
 
 ///// CameraViewController /////
 "CameraViewController_Auto" = "Auto";
@@ -89,9 +80,9 @@
 "SharePhotoViewController_Title" = "Postez vos photos";
 "SharePhotoViewController_AddLegend" = "Ajoutez une légende à votre photo";
 "SharePhotoViewController_AddLegend2" = "Ajoutez une légende à vos photos";
-"SharePhotoViewController_SharedPhoto" = "Je viens de rajouter une photo sur xxx, retrouvez les toutes à l'adresse suivante";
-"SharePhotoViewController_SharedPhoto2" = "Je viens de poster %i photos de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
-"SharePhotoViewController_SharedPhoto3" = "Je viens de poster une photo de cet évènement sur xxx, retrouvez les toutes à l'adresse suivante";
+"SharePhotoViewController_SharedPhoto" = "Je viens de rajouter une photo de cet évènement sur Woovent";
+"SharePhotoViewController_SharedPhoto2" = "Je viens de poster %i photos de cet évènement sur Woovent";
+"SharePhotoViewController_SharedPhoto3" = "Je viens de poster une photo de cet évènement sur Woovent";
 
 
 ///// PhotoDetailViewController /////
@@ -106,7 +97,7 @@
 "PhotosCollectionViewController_Title_Today" = "aujourd'hui";
 "PhotosCollectionViewController_Marker_Title" = "Sydney";
 "PhotosCollectionViewController_Marker_snippet" = "Australia";
-"PhotosCollectionViewController_OwnerEvent" = "Evènement organisé par %@";
+"PhotosCollectionViewController_OwnerEvent" = "Organisé par %@";
 "PhotosCollectionViewController_Show_Label" = "Afficher les informations";
 "PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
 "PhotosCollectionViewController_Alert_Title" = "Masquer les informations";
@@ -116,20 +107,20 @@
 "PhotosCollectionViewController_Error_GMaps" = "Erreur lors de l'ouverture de Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Erreur lors de l'ouverture de Maps";
 "PhotosCollectionViewController_OK" = "OK";
-"PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
+
 
 
 
 ///// PhotosAlbumViewController /////
 "PhotosAlbumViewController_Title" = "PHOTOS";
 "PhotosAlbumViewController_NbLimit" = "Le nombre de photos que vous pouvez ajouter en une fois est limité à %i";
-"PhotosAlbumViewController_AutoSelect" = "Sélection automatique";
-"PhotosAlbumViewController_AllAlbum" = "Tout l'album";
+"PhotosAlbumViewController_AutoSelect" = "Pré-Sélection automatique";
+"PhotosAlbumViewController_AllAlbum" = "Album Photo complet";
 "PhotosAlbumViewController_AllDeselect" = "Tout désélectionner";
 "PhotosAlbumViewController_AllSelect" = "Tout sélectionner";
 "PhotosAlbumViewController_Modify" = "Modifier";
 "PhotosAlbumViewController_Alert_Title" = "Information";
-"PhotosAlbumViewController_Alert_Message" = "Aucune photo n'a été sélectionnée";
+"PhotosAlbumViewController_Alert_Message" = "Veuillez sélectionner au moins 1 photos !";
 "PhotosAlbumViewController_OK" = "OK";
 
 
@@ -138,6 +129,7 @@
 "LikesCollectionsController_Title" = "LIKERS";
 
 
+//toujours utilisé ?
 ///// EventDetailViewController /////
 "EventDetailViewController_Title" = "Dans x jours";
 "EventDetailViewController_Marker_Title" = "Sydney";
@@ -146,30 +138,32 @@
 "EventDetailViewController_OwnerEvent" = "Evènement organisé par %@";
 
 
+//idem c’est où ce texte ?
 ///// InfoHeaderCollectionView /////
 "InfoHeaderCollectionView_Details" = "Détails";
 "InfoHeaderCollectionView_Hide" = "Masquer";
 
 
 ///// DetailDescriptionViewController /////
-"DetailDescriptionViewController_Title" = "DESCRIPTION";
+"DetailDescriptionViewController_Title" = "Description";
 
 
+//ca on peut le delete
 ///// MapViewController /////
 "MapViewController_Marker_Snippet" = "Hello World";
 
 
 ///// InvitedListViewController /////
-"InvitedListViewController_Title" = "INVITÉS";
+"InvitedListViewController_Title" = "Invités";
 "InvitedListViewController_Presents" = "Présents";
 "InvitedListViewController_Maybe" = "Peut-être";
-"InvitedListViewController_NoResponse" = "Pas de réponse";
+"InvitedListViewController_NoResponse" = "Pas encore répondu";
 "InvitedListViewController_Absent" = "Absent";
 
 
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ à %@";
-"ListInvitationsController_SendInvit" = "%@ vous a envoyé une invitation.";
+"ListInvitationsController_SendInvit" = "%@ vous a invité à cet évènement";
 
 
 ///// ListEvents /////
@@ -187,4 +181,4 @@
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
-"SettingsViewController_Mail_Object" = "Un message de";
+"SettingsViewController_Mail_Object" = "C’etait juste pour vous dire :";

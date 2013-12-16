@@ -34,37 +34,17 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    //self.title = @"";
-    
-    
-    
-    NSLog(@"WIll Appear");
-    //[self loadFutureEventsFromServer];
-    //[EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
-    
-    /*
-    if(self.comeFromLogin){
-        self.comeFromLogin = NO;
-        NSLog(@"COme from login");
-        
-        #warning If not network load from the last Date of from the core data
-        [self loadFutureEventsFromServer];
-        [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
-        
-        //Sync with FB
-        [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
-        [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
-        
-        
-    }*/
-    
-    //If the events need to be refreshed (something occured in the invitations)
-    //TestParseAppDelegate *delegate = [(TestParseAppDelegate *)[UIApplication sharedApplication] delegate];
+    [TestFlight passCheckpoint:@"MY_EVENTS"];
 }
 
 
 - (void)viewDidLoad
 {
+    
+    //Top icon
+    self.topImageView.layer.cornerRadius = 17.0f;
+    self.topImageView.layer.masksToBounds = YES;
+    
     
     //Refresh view
     self.animating = NO;
@@ -97,6 +77,7 @@
         [[self.tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
         [[self.tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations.png"]];
         [[self.tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
+        [[self.tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
         
     }
     
@@ -110,6 +91,7 @@
         [self performSegueWithIdentifier:@"Login" sender:nil];
     }
     else{
+        [self localClosestInvitation];
         self.comeFromLogin = NO;
         [self loadFutureEventsFromServer];
         [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
@@ -171,7 +153,7 @@
     cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
     [cell.coverImageView setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                   placeholderImage:[UIImage imageNamed:@"covertest.png"]];
+                   placeholderImage:[UIImage imageNamed:@"cover_default"]];
     
     return cell;
 }
@@ -261,6 +243,8 @@
 }
 
 - (IBAction)fbReload:(id)sender {
+    [TestFlight passCheckpoint:@"RELOAD_INVITATIONS_FROM_FB"];
+    
     if (!self.refreshControl.isRefreshing) {
         [self startSpin];
     }
@@ -279,14 +263,24 @@
     
     //Load from database before the server
     self.invitations = [MOUtility getAllFuturInvitations];
+    [self isEmptyTableView];
     [self.tableView reloadData];
+    
+    NSMutableArray *invits = [[NSMutableArray alloc] init];
+    
+    PFQuery *queryEventEndTime = [PFQuery queryWithClassName:@"Event"];
+    [queryEventEndTime whereKeyExists:@"end_time"];
+    [queryEventEndTime whereKey:@"end_time" greaterThanOrEqualTo:[NSDate date]];
+    
+    PFQuery *queryEventStartTime = [PFQuery queryWithClassName:@"Event"];
+    [queryEventStartTime whereKeyDoesNotExist:@"end_time"];
+    [queryEventStartTime whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query whereKey:@"start_time" greaterThan:[NSDate date]];
+     [query whereKey:@"event" matchesQuery:queryEventStartTime];
     [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
     [query includeKey:@"event"];
-    [query orderByAscending:@"start_time"];
     
     //Cache then network
     #warning Modify Cache Policy
@@ -294,23 +288,51 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            NSLog(@"LOADED FUTURE");
-            self.invitations = objects;
-            [self.tableEvents reloadData];
-            
-            self.animating = NO;
-            [self.refreshControl endRefreshing];
-            [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
+            [invits addObjectsFromArray:objects];
             
             for(PFObject *invitation in objects){
                 [MOUtility saveInvitationWithEvent:invitation];
             }
+            
+            //Query event with end time
+            PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
+            [queryEnd whereKey:@"user" equalTo:[PFUser currentUser]];
+            [queryEnd whereKey:@"event" matchesQuery:queryEventEndTime];
+            [queryEnd whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
+            [queryEnd includeKey:@"event"];
+            
+            [queryEnd findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (!error) {
+                    [invits addObjectsFromArray:objects];
+                    
+                    self.invitations = [MOUtility sortByStartDate:invits isAsc:YES];
+                    [self isEmptyTableView];
+                    [self.tableEvents reloadData];
+                    
+                    //Select the closest invit
+                    [self selectClosestInvitation];
+                    
+                    self.animating = NO;
+                    [self.refreshControl endRefreshing];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
+                    
+                    for(PFObject *invitation in objects){
+                        [MOUtility saveInvitationWithEvent:invitation];
+                    }
+                }
+                else{
+                    NSLog(@"Problème de chargement");
+                    [self.refreshControl endRefreshing];
+                }
+            }];
+            
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");
             [self.refreshControl endRefreshing];
         }
     }];
+    
 }
 
 /*
@@ -377,6 +399,7 @@
     
         PhotosCollectionViewController *photosCollectionViewController = segue.destinationViewController;
         photosCollectionViewController.invitation = [self.invitations objectAtIndex:selectedRowIndex.row];
+        photosCollectionViewController.hidesBottomBarWhenPushed = YES;
     }
     
     else if ([segue.identifier isEqualToString:@"Login"]){
@@ -395,11 +418,13 @@
 
 -(void)logOut:(NSNotification *)note{
     self.invitations = nil;
+    [self isEmptyTableView];
     [self.tableView reloadData];
     [self.tabBarController setSelectedIndex:0];
 }
 
 -(void)logIn:(NSNotification *)note{
+    [self localClosestInvitation];
     [self loadFutureEventsFromServer];
     [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
     
@@ -451,6 +476,164 @@
 - (void) stopSpin {
     // set the flag to stop spinning after one last 90 degree increment
     self.animating = NO;
+}
+
+-(void)selectClosestInvitation{
+    __block BOOL haveOlderWithEndTime = NO;
+    
+    if (self.invitations.count>0) {
+        PFObject *actualClosest = [self.invitations objectAtIndex:0];
+        
+        self.closestInvitation = actualClosest;
+        
+        NSDate* dateFutur = actualClosest[@"event"][@"start_time"];
+        NSTimeInterval distanceBetweenDates = [dateFutur timeIntervalSinceDate:[NSDate date]];
+        NSInteger secondsBetweenDate = distanceBetweenDates;
+        NSLog(@"Seconds between = %i", secondsBetweenDate);
+        
+        //Potential max end date for past event
+        __block NSDate *endPotentialDate = [[NSDate date] dateByAddingTimeInterval:-secondsBetweenDate];
+        
+        NSLog(@"Potential max end date %@", endPotentialDate);
+        
+        //Try go get en event with an end date closer
+        PFQuery *queryEvent = [PFQuery queryWithClassName:@"Event"];
+        [queryEvent whereKeyExists:@"end_time"];
+        [queryEvent whereKey:@"end_time" greaterThanOrEqualTo:endPotentialDate];
+        [queryEvent whereKey:@"start_time" lessThan:[NSDate date]];
+        
+        PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
+        [query whereKey:@"user" equalTo:[PFUser currentUser]];
+        [query whereKey:@"event" matchesQuery:queryEvent];
+        [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
+        [query includeKey:@"event"];
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (objects && objects.count>0) {
+                haveOlderWithEndTime = YES;
+                self.closestInvitation = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:NO] objectAtIndex:0];
+            }
+            
+            
+            //Try go get en event with no end date closer
+            if (haveOlderWithEndTime) {
+                endPotentialDate = self.closestInvitation[@"event"][@"end_time"];
+            }
+            
+            PFQuery *queryEventStartMax = [PFQuery queryWithClassName:@"Event"];
+            [queryEventStartMax whereKeyDoesNotExist:@"end_time"];
+            [queryEventStartMax whereKey:@"start_time" lessThan:[NSDate date]];
+            [queryEventStartMax orderByDescending:@"start_time"];
+            
+            
+            PFQuery *queryStart = [PFQuery queryWithClassName:@"Invitation"];
+            [queryStart whereKey:@"user" equalTo:[PFUser currentUser]];
+            [queryStart whereKey:@"event" matchesQuery:queryEventStartMax];
+            [queryStart whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
+            [queryStart includeKey:@"event"];
+            
+            [queryStart getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (!error) {
+                    PFObject *event = object[@"event"];
+                    NSDate *dateEvent = event[@"start_time"];
+                    if ([dateEvent compare:[endPotentialDate dateByAddingTimeInterval:-12*3600]]==NSOrderedDescending) {
+                        self.closestInvitation = object;
+                        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateClosestEvent object:self userInfo:nil];
+                    }
+                }
+                else{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UpdateClosestEvent object:self userInfo:nil]; 
+                }
+                
+            }];
+        }];
+    }
+    
+    
+    
+}
+
+-(void)localClosestInvitation{
+    BOOL isOccuring = NO;
+    NSArray *futurInvites = [MOUtility getAllFuturInvitations];
+    NSArray *pastInvites = [MOUtility getPastMemories];
+    
+    if ((futurInvites.count>0)&&(pastInvites.count > 0) ) {
+        PFObject *futurInvit =  [[MOUtility getAllFuturInvitations] objectAtIndex:0];
+        PFObject *pastInvit =  [[MOUtility getPastMemories] objectAtIndex:0];
+        
+        PFObject *futurEvent = futurInvit[@"event"];
+        PFObject *pastEvent = pastInvit[@"event"];
+        
+        NSDate *futurDate = futurEvent [@"start_time"];
+        NSInteger intervalFutur = [futurDate timeIntervalSinceDate:[NSDate date]];
+        NSDate *pastDate = [[NSDate alloc] init];
+        
+        if (pastEvent[@"end_time"]) {
+            //Is it occuring right now
+            if ([(NSDate *)pastEvent[@"end_time"] compare:[NSDate date]] == NSOrderedDescending ) {
+                isOccuring = YES;
+                self.closestInvitation = pastInvit;
+            }
+            else{
+                pastDate = pastEvent[@"end_time"];
+            }
+        }
+        else{
+            pastDate = [(NSDate *)pastEvent[@"start_time"] dateByAddingTimeInterval:12*3600];
+        }
+        
+        if (!isOccuring) {
+            NSInteger intervalPast = fabs([pastDate timeIntervalSinceDate:[NSDate date]]);
+            
+            if (intervalPast<intervalFutur) {
+                self.closestInvitation = pastInvit;
+            }
+            else{
+                self.closestInvitation = futurInvit;
+            }
+        }
+    }
+    else if(pastInvites.count >0){
+        self.closestInvitation = [pastInvites objectAtIndex:0];
+    }
+    else if (futurInvites.count >0){
+        self.closestInvitation = [futurInvites objectAtIndex:0];
+    }
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UpdateClosestEvent object:self userInfo:nil];
+    
+}
+
+
+-(void)isEmptyTableView{
+    UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+    
+    //Image
+    UIImage *image = [UIImage imageNamed:@"marmotte_pantoufle"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [imageView setImage:image];
+     imageView.contentMode = UIViewContentModeCenter;
+    [viewBack addSubview:imageView];
+    
+    //Label
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, 280, 40)];
+    [label setTextColor:[UIColor darkGrayColor]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    label.text = @"Aucun évènements à venir ...";
+    [viewBack addSubview:label];
+    
+    
+    if (!self.invitations) {
+        self.tableView.backgroundView = viewBack;
+    }
+    else if(self.invitations.count==0){
+        self.tableView.backgroundView = viewBack;
+    }
+    else{
+       self.tableView.backgroundView = nil;
+    }
 }
 
 

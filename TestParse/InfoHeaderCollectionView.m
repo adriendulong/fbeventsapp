@@ -47,7 +47,7 @@
 
 //RSVP to an event
 -(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp{
-    NSLog(@"Change the rsvp on FB : %@", rsvp);
+    [TestFlight passCheckpoint:@"CHANGE_RSVP_FROM_DETAIL"];
     
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
@@ -145,7 +145,10 @@
 }
 
 - (IBAction)hideView:(id)sender {
+    [TestFlight passCheckpoint:@"CHANGE_VISIBILITY_DETAILS"];
+    
     if (self.isShowingDetails) {
+        [TestFlight passCheckpoint:@"HIDE_DETAILS"];
         self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Details", nil);
         self.isShowingDetails = NO;
         [self.viewToHide setHidden:YES];
@@ -153,6 +156,7 @@
         
     }
     else{
+        [TestFlight passCheckpoint:@"SHOW_DETAILS"];
         self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Hide", nil);
         self.isShowingDetails = YES;
         [self.viewToHide setHidden:NO];
@@ -166,13 +170,6 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
-        
-        /*
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Evènements" style:UIBarButtonItemStylePlain target:nil action:nil];*/
-        
-        //Selected row];
-        
-        
         CameraViewController *cameraViewController = segue.destinationViewController;
         cameraViewController.event = self.invitation[@"event"];
     }
