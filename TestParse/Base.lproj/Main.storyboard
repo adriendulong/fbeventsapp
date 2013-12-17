@@ -3432,15 +3432,15 @@ Les Conditions Générales d'Utilisation peuvent être modifiées et/ou complét
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="UCP-iD-Mrv"/>
         <segue reference="pId-s9-PUV"/>
         <segue reference="zHu-yQ-I5R"/>
-        <segue reference="kaB-St-iPu"/>
+        <segue reference="cCH-RC-a7a"/>
+        <segue reference="pYD-9M-pFo"/>
+        <segue reference="H4y-UD-BIY"/>
+        <segue reference="EZZ-yh-I9A"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="Biz-ZH-3yq"/>
         <segue reference="ZWB-wq-JTW"/>
-        <segue reference="EZZ-yh-I9A"/>
         <segue reference="17P-5b-VHW"/>
-        <segue reference="H4y-UD-BIY"/>
     </inferredMetricsTieBreakers>
 </document>
