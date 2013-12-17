@@ -414,33 +414,31 @@
 
 -(void)isEmptyTableView{
     
-    if (self.listSegmentControll.selectedSegmentIndex == 0) {
-        UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
-        
-        //Image
-        UIImage *image = [UIImage imageNamed:@"marmotte_victoire"];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        [imageView setImage:image];
-        imageView.contentMode = UIViewContentModeCenter;
-        [viewBack addSubview:imageView];
-        
-        //Label
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 370, 285, 60)];
-        [label setTextColor:[UIColor darkGrayColor]];
-        [label setNumberOfLines:2];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.text = @"Yeah !!!\nPlus aucunes invitations en attente !";
-        [viewBack addSubview:label];
-        
-        if (!self.objectsForTable) {
-            self.tableView.backgroundView = viewBack;
-        }
-        else if(self.objectsForTable.count==0){
-            self.tableView.backgroundView = viewBack;
-        }
-        else{
-            self.tableView.backgroundView = nil;
-        }
+    self.viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+    
+    //Image
+    UIImage *image = [UIImage imageNamed:@"marmotte_victoire"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [imageView setImage:image];
+    imageView.contentMode = UIViewContentModeCenter;
+    [self.viewBack addSubview:imageView];
+    
+    //Label
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 370, 285, 60)];
+    [label setTextColor:[UIColor darkGrayColor]];
+    [label setNumberOfLines:2];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    label.text = (self.listSegmentControll.selectedSegmentIndex == 0) ? NSLocalizedString(@"ListInvitationsController_NoPendingInvitation", nil) : NSLocalizedString(@"ListInvitationsController_NoRefuseInvitation", nil);
+    [self.viewBack addSubview:label];
+    
+    if (!self.objectsForTable) {
+        self.tableView.backgroundView = self.viewBack;
+    }
+    else if(self.objectsForTable.count==0){
+        self.tableView.backgroundView = self.viewBack;
+    }
+    else{
+        self.tableView.backgroundView = nil;
     }
     
 }

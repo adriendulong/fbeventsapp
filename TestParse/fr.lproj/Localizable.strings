@@ -164,6 +164,8 @@
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ à %@";
 "ListInvitationsController_SendInvit" = "%@ vous a invité à cet évènement";
+"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nPlus aucune invitation en attente !";
+"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
 
 
 ///// ListEvents /////

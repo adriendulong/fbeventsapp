@@ -22,6 +22,8 @@
 @property (assign, nonatomic) BOOL animating;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 
+@property (strong, nonatomic) UIView *viewBack;
+
 - (IBAction)settings:(id)sender;
 -(void)loadInvitationFromServer;
 -(void)invitationChanged:(NSNotification *) notification;
