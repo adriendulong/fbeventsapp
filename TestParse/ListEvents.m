@@ -147,7 +147,8 @@
     
     //Fill the cell
     cell.nameEventLabel.text = event[@"name"];
-    cell.whereWhenLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
+    
+    cell.whereWhenLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
     cell.ownerInvitation.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
     cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
     cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
