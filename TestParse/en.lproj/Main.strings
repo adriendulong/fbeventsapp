@@ -1,12 +1,27 @@
 
+/* Class = "IBUIButton"; normalTitle = "En me connectant j'accepte les CGU"; ObjectID = "0VL-F4-9Hk"; */
+"0VL-F4-9Hk.normalTitle" = "By logging in I accept Terms";
+
 /* Class = "IBUILabel"; text = "Regroupez tous vos évènements au même endroit"; ObjectID = "0oA-Yx-99e"; */
 "0oA-Yx-99e.text" = "Gather all your events in one place";
+
+/* Class = "IBUITextView"; text = "Les présentes conditions générales (\" CGU \"), soumises au droit français, ont vocation à régir l'utilisation du site www.appmoment.fr y compris de tout contenu et toute fonctionnalité accessibles sur le site www.appmoment.fr et l’application mobile moment.
+Moment est un site de gestion des événements entre proches, d'hébergement et de partage de photos, et de discussions entre les participants d’un évènement.
+Le site en ligne est accessible à l'adresse www.appmoment.fr , également disponible sur l’Apple Store et le Google Play. Il est édité par la societé Moment SAS immatriculée au RCS de Bordeaux (792 517 203) .
+Le site en ligne (ci-après le \" Site \") ainsi que l'application mobile (ci-après l' \" Application \") vous permettent de créer :\n\t•\tDes évènements\n\t•\tDes albums photos pour les évènements, mettre en ligne, visualiser et partager sur les réseaux sociaux des images et/ou photos, et de télécharger les photos sur votre appareil\n\t•\tDes discussions instantanées pour les évènements\n\t•\tUn profil\nAvant d'utiliser ou de visiter le Site et/ou l'Application, nous vous demandons de bien vouloir lire et accepter ces Conditions Générales d'Utilisation.\n\nUtilisation du service :\n\n1. Enregistrez-vous, créez et paramétrez votre compte en quelques minutes ;\n2. Créez vos évènements et invitez vos amis à ces évènements. Vous pouvez choisir dans la dernière étape de création d’un événement de l’application le niveau de confidentialité de votre évènement :\n\t•\tSecret : Seules les personnes invitées à cet événement pourront consulter, télécharger, partager et ajouter des photos depuis l’Application. Seules les personnes invitées à cet événement pourront consulter les messages de discussions instantanées de l’événement.\n\t•\tPrivé : Seules les personnes invités et les abonnées des invités à cet événement pourront consulter, télécharger, partager et ajouter des photos\n\t•\tdepuis l’Application. Seules les personnes invités à cet événement pourront consulter les messages de discussions instantanées de l’événement.\n\t•\tPublic : Tous les utilisateurs pourront avoir accès aux photos, aux informations et aux messages de discussions instantanées de l’événement.\n3. Certains membres peuvent vous suivre. A chacune de leur connexion, ils pourront ainsi voir les dernières photos ou messages que vous avez postés à l’intérieur d’événements de type \"Privés\" ou \"Publics\", directement dans leur fil d'actualité. Vous pouvez choisir dans les paramètres de l’application le niveau de confidentialité de votre compte :\n\t•\tSecret : Personne ne peut vous trouver ni s’abonner à votre profil\n\t•\tPrivé : Les utilisateurs peuvent s’abonner à votre profil uniquement si vous validez leur demande. A chaque fois qu'un utilisateur souhaite vous suivre, vous pouvez accepter ou refuser la demande.\n\t•\tPublic : Les utilisateurs peuvent s’abonner à votre profil sans votre accord\n4. Vous pouvez, vous-même, rechercher des utilisateurs et suivre leur actualité ; 5. Ajoutez, consultez, partagez sur les réseaux sociaux, et téléchargez les photos des évènements 6. Participez aux chats de discussions \nToute personne sur le site, enregistrée ou non, a accès aux photos des profils inscrits, aux photos des évènements partagés depuis l’application, ainsi qu’aux informations concernant les évènements partagés. Cependant il est nécessaire d'être enregistré afin de pouvoir:\n\t•\tAjouter une photo\n\t•\tAimer une photo\n\t•\tTélécharger une photo\n\t•\tAjouter un message de discussions instantané\n\t•\tConsulter les messages de discussions instantané\n\t•\tCréer un évènement\n\t•\tS’abonner à des profils\nPour le bon fonctionnement et/ou l'amélioration du Site et de l'Application, nous pouvons être amenés à effectuer des modifications sur le contenu d'un utilisateur (par exemple, réduction du poids ou de la taille d'une photo - cette liste est non exhaustive). De même, pour le bon fonctionnement et/ou l'amélioration des services, le Site et/ou l'Application peuvent parfois être en maintenance, et ce pour une durée indéterminée.\nNous tenons aussi à vous indiquer que le bon fonctionnement du Site et de l'Application dépend, en partie, des différents prestataires externes à Moment. Un dysfonctionnement d'éléments externes à Moment peut entrainer des coupures, des erreurs diverses, un ralentissement, un arrêt momentané ou définitif du service. Moment ne peut être tenu pour responsable des conséquences et de ces dysfonctionnements.\n\nProcédure d’inscription à Moment\n\nL'utilisation de l’application nécessite que l'Utilisateur fournisse des informations personnelles le concernant (Obligatoire : Nom, Prénom, Adresse E-mail, Facultative : Date de naissance, Sexe, Photo de Profil, Numéro de téléphone). A l'issue de la procédure d'inscription (sur la page où l'Utilisateur est invité à enregistrer ses coordonnées), l'Utilisateur s'engage à :\n\t•\tprendre connaissance des informations personnelles le concernant et à les valider ou si nécessaire à apporter les modifications et corrections utiles.\n\t•\tprendre connaissance et accepter les présentes Conditions Générales d’Utilisation.\nL'Utilisateur utilise le service Moment sous son entière responsabilité. Il reconnaît que sa responsabilité peut être engagée, notamment en cas d'usurpation d'identité. L'Utilisateur s'engage à utiliser le service Moment conformément aux Conditions Générales d’Utilisation, et à la réglementation en vigueur.\nL'Utilisateur est responsable de l'utilisation de ses coordonnées et de l'Application stockée sur son appareil. L'Utilisateur est informé que s'il a décidé de s'identifier automatiquement sur cet appareil, tout tiers qui l'utiliserait peut potentiellement utiliser l'Application avec son compte Utilisateur. \nEn conséquence, pour limiter ce risque, l'Utilisateur est invité à sécuriser l'accès à son appareil (code d'accès, etc.). \nL'Utilisateur s'engage à fournir des informations exactes, complètes et mises à jour. Dans le cas où les informations fournies sont inexactes, incomplètes ou obsolètes, l'Utilisateur sera seul responsable de tout défaut dans l'exécution du service Moment.\nEn cas de modification de ses coordonnées personnelles, l'Utilisateur s'engage à les mettre à jour sur l'Application (sur la page où l'Utilisateur est invité à enregistrer ses coordonnées).\nL'Utilisateur accepte de n'utiliser le Service Moment qu'aux seules fins autorisées par les Conditions Générales d’Utilisation, et toute loi, tout règlement ou toute pratique ou directive généralement acceptée dans les juridictions concernées. \nEn conséquence, l'Utilisateur reconnaît être le seul et unique responsable à l'égard de Moment de tous actes effectués à partir de ses données communiquées lors de l'inscription.\nSi l'Utilisateur a connaissance d'une utilisation non autorisée de son compte, il accepte d'en informer Moment sans délai à l’adresse e-mail :hello@appmoment.fr. \nL'Utilisateur autorise Moment par les présentes Conditions Générales d’Utilisation à enregistrer et à utiliser, par traitement informatique, les informations fournies par l'Utilisateur.\nL'Utilisateur reconnait dès lors que Moment pourra ainsi s'adresser à toute personne ayant fourni ses coordonnées, des courriers électroniques. Moment ne pourra être tenue responsable de toute perte ou dommage survenant en cas de manquement aux obligations du présent article.\n\nCouts d’utilisation du service\n\nLe Service est accessible par le réseau Internet. Les frais de connexion sont à la charge de l'Utilisateur.\nIl appartient à l'Utilisateur de s'abonner à Internet et de disposer de la configuration nécessaire à l'utilisation du Service et de disposer d'une adresse électronique de messagerie valide et configurée sur son téléphone mobile.\n\nLoi informatique et libertés\n\nLes informations et données concernant l'Utilisateur sont nécessaires à l’utilisation du service, du site internet et de l’application Moment. Ces informations et ces données sont également conservées à des fins de sécurité, afin de respecter les obligations légales et réglementaires et pour permettre à Moment d'améliorer et personnaliser les services qu'elle adresse à l'Utilisateur.\nConformément aux dispositions de la loi modifiée Informatique et liberté n° 78-17 du 6 Janvier 1978, le traitement des informations recueillies par Moment a fait l'objet d'une déclaration à la Commission Nationale de l'informatique et des libertés (CNIL) (N° 1227247).\nLe membre dispose d'un droit d'accès et de rectification de ses données à caractère personnel, ce droit pouvant être exercé à tout moment par e-mail à hello@appmoment.fr .\n\nQuelques règles à retenir\n\nAfin que tout le monde puisse profiter au mieux des services proposés par Moment, il convient que vous respectiez certaines règles, aussi bien sur le Site que sur L'Application :\n\t•\tIl est formellement interdit de poster ou de partager des photos d'actes de violences ou tortures sur des êtres vivants ;\n\t•\tIl est formellement interdit sur l'ensemble du Site et de l'Application de tenir des propos à caractère raciste ou violent, ainsi que de proférer quelque type de menace que ce soit envers autrui ;\n\t•\tIl est formellement interdit de poster ou partager des photos à caractère pornographique, pédophile, ou de tout autre nature sexuelle impliquant des êtres humains, qu'ils soient totalement ou partiellement nus ;\n\t•\tDe façon générale, vous ne devez faire aucune utilisation illégale du Site et de l'Application. Les utilisateurs de chaque pays affirment avoir pris connaissance et respecter les lois locales en vigueur concernant les services en ligne et de contenus ;\n\t•\tLes mineurs ont accès au Site et à l'Application, cependant il leur est toujours vivement conseillé d'être accompagnés d'une personne majeure lors de l'utilisation du service. L'âge déterminant si vous êtes Mineur ou Majeur est celui conforme aux lois applicables dans votre lieu de résidence ou le lieu d'utilisation du service à un moment donné ;\n\t•\tVous ne devez en aucun cas partager avec qui que ce soit vos identifiants et mots de passe de votre compte. Vous êtes par ailleurs tenus de les conserver dans un endroit, physique ou non, que vous jugez sécurisé et non accessible à une tierce personne.\n\nVos droits, et les nôtres\n\n\n\t•\tVous êtes considéré comme responsable des photos, des discussions postés depuis votre compte utilisateur ainsi que de tout elements constituant un moment que vous avez créé;\n\t•\tVous affirmez que le contenu que vous ajoutez sur le Site ou l'Application ne fait pas l'objet d'un contrat de non diffusion, sous quelque forme que ce soit, entre vous et une tierce partie ;\n\t•\tVous conservez les droits de propriété intellectuelle et/ou artistique et/ou autres que vous déteniez au préalable sur les photos que vous postez sur le Site ou l'Application ;\n\t•\tQue ce soit en les postant sur le Site ou l'Application, en les commentant, en les partageant ou tout autre action depuis ou vers le Site ou l'Application de façon générale, vous n'acquériez aucun nouveau droit que vous n'auriez eu auparavant sur les photos ;\n\t•\tToute marque diffusant de la publicité sous quelque forme que ce soit, et dans un cadre contractuel établi au préalable avec Moment, conserve ses droits sur l'ensemble de son contenu sur le Site et sur l'Application ;\n\t•\tNous demandons à tout visiteur ou utilisateur du site de n'utiliser en aucun cas à des fins commerciales les photos postées par d'autres utilisateurs et/ou marques, et/ou dont il n'a pas les droits ;\n\t•\tNous vous invitons expressément à signaler les photos ou commentaires ou tout autre contenu de nature à heurter la sensibilité des utilisateurs du Site ou de l'Application à l’adresse : hello@appmoment.fr ;\n\t•\tSans toutefois en avoir l'obligation, nous pourrons à tout moment supprimer sans notification préalable une photo, un album, un commentaire, un compte, un profil, un moment ou toute autre donnée, entres autres si un élément nous a été signalé et/ou si un utilisateur enfreint l'une des conditions mentionnées dans les Conditions Générales d'Utilisation. Cette suppression pourra intervenir dans le cadre d'un choix effectué par nos propres services ;\n\t•\tSuite à la demande d'Autorités régissant, entre autres, les droits à l'image, droit à la propriété intellectuelle, droit à la propriété artistique, Copyright, ainsi qu'à la demande de Représentants de la loi, nous pourrons à tout moment supprimer préalable une photo, un album, un commentaire, un compte, un profil, un moment ou toute autre donnée, sans notification préalable ;\n\t•\tNous nous réservons le droit à tout moment de pouvoir refuser et/ou de fermer partiellement ou totalement l'accès au Site et/ou à l'Application à un, plusieurs ou l'ensemble des utilisateurs et visiteurs, sans notification préalable.\nL'Utilisateur est responsable de l'installation, de l'exploitation et de la maintenance des équipements techniques nécessaires pour accéder à Moment ainsi que de leur protection contre toute forme de contamination par des virus ou toute autre logiciel ou code malveillant. Moment ne garantit aucune compatibilité d'aucune sorte avec une quelconque version de navigateur, du téléphone ou configuration du terminal de l'Utilisateur. Des liens hypertextes peuvent renvoyer vers d'autres sites Web, d'autres contenus ou d'autres ressources. La responsabilité de Moment ne saurait être engagée dans le cas où d'autres sites, contenus ou ressources, seraient contraires aux dispositions légales ou réglementaires en vigueur. \n\nActes malveillants\n\nVous n'êtes bien entendu pas autorisés à pirater Moment ou son contenu :\n\t•\tIl est formellement interdit de pirater le Site ou l'Application, ou de diffuser des virus ou tout autre élément malveillant pouvant porter atteinte de quelque façon que ce soit à l'ensemble des services et possessions de Moment, ainsi qu'aux utilisateurs ou visiteurs de Moment ;\n\t•\tVous ne pouvez en aucun cas récupérer ou modifier de façon illégale des éléments du Site, de l'Application en général, ou des comptes utilisateurs en particulier ;\n\t•\tVous ne pouvez pas spammer et/ou envoyer du contenu indésirable sous quelque forme et via quelque média que ce soit aux utilisateurs et visiteurs du Site et de l'Application.\nDe façon générale, nous vous demandons de rester attentif aux contenus des photos que vous serez amenés à poster, commenter ou visionner. Nous vous demandons de nous signaler toute infraction aux lois locales en vigueur, ainsi qu'à toute loi ou règle concernant les droits de propriété quels qu'ils soient à l’adresse e-mail : hello@appmoment.fr. Nous tenons par ailleurs à vous rappeler que la loi applicable est la loi française.\nLes Conditions Générales d'Utilisation peuvent être modifiées et/ou complétées, notamment en fonction des évolutions du Site et de l'Application. Nous vous invitons à les consulter régulièrement. N'hésitez pas à nous contacter pour toute question ou suggestion que vous pourriez avoir sur l'un des points évoqués ci-dessus à l’adresse e-mail : hello@appmoment.fr."; ObjectID = "2w9-Uz-TQX"; */
+"2w9-Uz-TQX.text" = "Les présentes conditions générales (\" CGU \"), soumises au droit français, ont vocation à régir l'utilisation du site www.appmoment.fr y compris de tout contenu et toute fonctionnalité accessibles sur le site www.appmoment.fr et l’application mobile moment.
+Moment est un site de gestion des événements entre proches, d'hébergement et de partage de photos, et de discussions entre les participants d’un évènement.
+Le site en ligne est accessible à l'adresse www.appmoment.fr , également disponible sur l’Apple Store et le Google Play. Il est édité par la societé Moment SAS immatriculée au RCS de Bordeaux (792 517 203) .
+Le site en ligne (ci-après le \" Site \") ainsi que l'application mobile (ci-après l' \" Application \") vous permettent de créer :\n\t•\tDes évènements\n\t•\tDes albums photos pour les évènements, mettre en ligne, visualiser et partager sur les réseaux sociaux des images et/ou photos, et de télécharger les photos sur votre appareil\n\t•\tDes discussions instantanées pour les évènements\n\t•\tUn profil\nAvant d'utiliser ou de visiter le Site et/ou l'Application, nous vous demandons de bien vouloir lire et accepter ces Conditions Générales d'Utilisation.\n\nUtilisation du service :\n\n1. Enregistrez-vous, créez et paramétrez votre compte en quelques minutes ;\n2. Créez vos évènements et invitez vos amis à ces évènements. Vous pouvez choisir dans la dernière étape de création d’un événement de l’application le niveau de confidentialité de votre évènement :\n\t•\tSecret : Seules les personnes invitées à cet événement pourront consulter, télécharger, partager et ajouter des photos depuis l’Application. Seules les personnes invitées à cet événement pourront consulter les messages de discussions instantanées de l’événement.\n\t•\tPrivé : Seules les personnes invités et les abonnées des invités à cet événement pourront consulter, télécharger, partager et ajouter des photos\n\t•\tdepuis l’Application. Seules les personnes invités à cet événement pourront consulter les messages de discussions instantanées de l’événement.\n\t•\tPublic : Tous les utilisateurs pourront avoir accès aux photos, aux informations et aux messages de discussions instantanées de l’événement.\n3. Certains membres peuvent vous suivre. A chacune de leur connexion, ils pourront ainsi voir les dernières photos ou messages que vous avez postés à l’intérieur d’événements de type \"Privés\" ou \"Publics\", directement dans leur fil d'actualité. Vous pouvez choisir dans les paramètres de l’application le niveau de confidentialité de votre compte :\n\t•\tSecret : Personne ne peut vous trouver ni s’abonner à votre profil\n\t•\tPrivé : Les utilisateurs peuvent s’abonner à votre profil uniquement si vous validez leur demande. A chaque fois qu'un utilisateur souhaite vous suivre, vous pouvez accepter ou refuser la demande.\n\t•\tPublic : Les utilisateurs peuvent s’abonner à votre profil sans votre accord\n4. Vous pouvez, vous-même, rechercher des utilisateurs et suivre leur actualité ; 5. Ajoutez, consultez, partagez sur les réseaux sociaux, et téléchargez les photos des évènements 6. Participez aux chats de discussions \nToute personne sur le site, enregistrée ou non, a accès aux photos des profils inscrits, aux photos des évènements partagés depuis l’application, ainsi qu’aux informations concernant les évènements partagés. Cependant il est nécessaire d'être enregistré afin de pouvoir:\n\t•\tAjouter une photo\n\t•\tAimer une photo\n\t•\tTélécharger une photo\n\t•\tAjouter un message de discussions instantané\n\t•\tConsulter les messages de discussions instantané\n\t•\tCréer un évènement\n\t•\tS’abonner à des profils\nPour le bon fonctionnement et/ou l'amélioration du Site et de l'Application, nous pouvons être amenés à effectuer des modifications sur le contenu d'un utilisateur (par exemple, réduction du poids ou de la taille d'une photo - cette liste est non exhaustive). De même, pour le bon fonctionnement et/ou l'amélioration des services, le Site et/ou l'Application peuvent parfois être en maintenance, et ce pour une durée indéterminée.\nNous tenons aussi à vous indiquer que le bon fonctionnement du Site et de l'Application dépend, en partie, des différents prestataires externes à Moment. Un dysfonctionnement d'éléments externes à Moment peut entrainer des coupures, des erreurs diverses, un ralentissement, un arrêt momentané ou définitif du service. Moment ne peut être tenu pour responsable des conséquences et de ces dysfonctionnements.\n\nProcédure d’inscription à Moment\n\nL'utilisation de l’application nécessite que l'Utilisateur fournisse des informations personnelles le concernant (Obligatoire : Nom, Prénom, Adresse E-mail, Facultative : Date de naissance, Sexe, Photo de Profil, Numéro de téléphone). A l'issue de la procédure d'inscription (sur la page où l'Utilisateur est invité à enregistrer ses coordonnées), l'Utilisateur s'engage à :\n\t•\tprendre connaissance des informations personnelles le concernant et à les valider ou si nécessaire à apporter les modifications et corrections utiles.\n\t•\tprendre connaissance et accepter les présentes Conditions Générales d’Utilisation.\nL'Utilisateur utilise le service Moment sous son entière responsabilité. Il reconnaît que sa responsabilité peut être engagée, notamment en cas d'usurpation d'identité. L'Utilisateur s'engage à utiliser le service Moment conformément aux Conditions Générales d’Utilisation, et à la réglementation en vigueur.\nL'Utilisateur est responsable de l'utilisation de ses coordonnées et de l'Application stockée sur son appareil. L'Utilisateur est informé que s'il a décidé de s'identifier automatiquement sur cet appareil, tout tiers qui l'utiliserait peut potentiellement utiliser l'Application avec son compte Utilisateur. \nEn conséquence, pour limiter ce risque, l'Utilisateur est invité à sécuriser l'accès à son appareil (code d'accès, etc.). \nL'Utilisateur s'engage à fournir des informations exactes, complètes et mises à jour. Dans le cas où les informations fournies sont inexactes, incomplètes ou obsolètes, l'Utilisateur sera seul responsable de tout défaut dans l'exécution du service Moment.\nEn cas de modification de ses coordonnées personnelles, l'Utilisateur s'engage à les mettre à jour sur l'Application (sur la page où l'Utilisateur est invité à enregistrer ses coordonnées).\nL'Utilisateur accepte de n'utiliser le Service Moment qu'aux seules fins autorisées par les Conditions Générales d’Utilisation, et toute loi, tout règlement ou toute pratique ou directive généralement acceptée dans les juridictions concernées. \nEn conséquence, l'Utilisateur reconnaît être le seul et unique responsable à l'égard de Moment de tous actes effectués à partir de ses données communiquées lors de l'inscription.\nSi l'Utilisateur a connaissance d'une utilisation non autorisée de son compte, il accepte d'en informer Moment sans délai à l’adresse e-mail :hello@appmoment.fr. \nL'Utilisateur autorise Moment par les présentes Conditions Générales d’Utilisation à enregistrer et à utiliser, par traitement informatique, les informations fournies par l'Utilisateur.\nL'Utilisateur reconnait dès lors que Moment pourra ainsi s'adresser à toute personne ayant fourni ses coordonnées, des courriers électroniques. Moment ne pourra être tenue responsable de toute perte ou dommage survenant en cas de manquement aux obligations du présent article.\n\nCouts d’utilisation du service\n\nLe Service est accessible par le réseau Internet. Les frais de connexion sont à la charge de l'Utilisateur.\nIl appartient à l'Utilisateur de s'abonner à Internet et de disposer de la configuration nécessaire à l'utilisation du Service et de disposer d'une adresse électronique de messagerie valide et configurée sur son téléphone mobile.\n\nLoi informatique et libertés\n\nLes informations et données concernant l'Utilisateur sont nécessaires à l’utilisation du service, du site internet et de l’application Moment. Ces informations et ces données sont également conservées à des fins de sécurité, afin de respecter les obligations légales et réglementaires et pour permettre à Moment d'améliorer et personnaliser les services qu'elle adresse à l'Utilisateur.\nConformément aux dispositions de la loi modifiée Informatique et liberté n° 78-17 du 6 Janvier 1978, le traitement des informations recueillies par Moment a fait l'objet d'une déclaration à la Commission Nationale de l'informatique et des libertés (CNIL) (N° 1227247).\nLe membre dispose d'un droit d'accès et de rectification de ses données à caractère personnel, ce droit pouvant être exercé à tout moment par e-mail à hello@appmoment.fr .\n\nQuelques règles à retenir\n\nAfin que tout le monde puisse profiter au mieux des services proposés par Moment, il convient que vous respectiez certaines règles, aussi bien sur le Site que sur L'Application :\n\t•\tIl est formellement interdit de poster ou de partager des photos d'actes de violences ou tortures sur des êtres vivants ;\n\t•\tIl est formellement interdit sur l'ensemble du Site et de l'Application de tenir des propos à caractère raciste ou violent, ainsi que de proférer quelque type de menace que ce soit envers autrui ;\n\t•\tIl est formellement interdit de poster ou partager des photos à caractère pornographique, pédophile, ou de tout autre nature sexuelle impliquant des êtres humains, qu'ils soient totalement ou partiellement nus ;\n\t•\tDe façon générale, vous ne devez faire aucune utilisation illégale du Site et de l'Application. Les utilisateurs de chaque pays affirment avoir pris connaissance et respecter les lois locales en vigueur concernant les services en ligne et de contenus ;\n\t•\tLes mineurs ont accès au Site et à l'Application, cependant il leur est toujours vivement conseillé d'être accompagnés d'une personne majeure lors de l'utilisation du service. L'âge déterminant si vous êtes Mineur ou Majeur est celui conforme aux lois applicables dans votre lieu de résidence ou le lieu d'utilisation du service à un moment donné ;\n\t•\tVous ne devez en aucun cas partager avec qui que ce soit vos identifiants et mots de passe de votre compte. Vous êtes par ailleurs tenus de les conserver dans un endroit, physique ou non, que vous jugez sécurisé et non accessible à une tierce personne.\n\nVos droits, et les nôtres\n\n\n\t•\tVous êtes considéré comme responsable des photos, des discussions postés depuis votre compte utilisateur ainsi que de tout elements constituant un moment que vous avez créé;\n\t•\tVous affirmez que le contenu que vous ajoutez sur le Site ou l'Application ne fait pas l'objet d'un contrat de non diffusion, sous quelque forme que ce soit, entre vous et une tierce partie ;\n\t•\tVous conservez les droits de propriété intellectuelle et/ou artistique et/ou autres que vous déteniez au préalable sur les photos que vous postez sur le Site ou l'Application ;\n\t•\tQue ce soit en les postant sur le Site ou l'Application, en les commentant, en les partageant ou tout autre action depuis ou vers le Site ou l'Application de façon générale, vous n'acquériez aucun nouveau droit que vous n'auriez eu auparavant sur les photos ;\n\t•\tToute marque diffusant de la publicité sous quelque forme que ce soit, et dans un cadre contractuel établi au préalable avec Moment, conserve ses droits sur l'ensemble de son contenu sur le Site et sur l'Application ;\n\t•\tNous demandons à tout visiteur ou utilisateur du site de n'utiliser en aucun cas à des fins commerciales les photos postées par d'autres utilisateurs et/ou marques, et/ou dont il n'a pas les droits ;\n\t•\tNous vous invitons expressément à signaler les photos ou commentaires ou tout autre contenu de nature à heurter la sensibilité des utilisateurs du Site ou de l'Application à l’adresse : hello@appmoment.fr ;\n\t•\tSans toutefois en avoir l'obligation, nous pourrons à tout moment supprimer sans notification préalable une photo, un album, un commentaire, un compte, un profil, un moment ou toute autre donnée, entres autres si un élément nous a été signalé et/ou si un utilisateur enfreint l'une des conditions mentionnées dans les Conditions Générales d'Utilisation. Cette suppression pourra intervenir dans le cadre d'un choix effectué par nos propres services ;\n\t•\tSuite à la demande d'Autorités régissant, entre autres, les droits à l'image, droit à la propriété intellectuelle, droit à la propriété artistique, Copyright, ainsi qu'à la demande de Représentants de la loi, nous pourrons à tout moment supprimer préalable une photo, un album, un commentaire, un compte, un profil, un moment ou toute autre donnée, sans notification préalable ;\n\t•\tNous nous réservons le droit à tout moment de pouvoir refuser et/ou de fermer partiellement ou totalement l'accès au Site et/ou à l'Application à un, plusieurs ou l'ensemble des utilisateurs et visiteurs, sans notification préalable.\nL'Utilisateur est responsable de l'installation, de l'exploitation et de la maintenance des équipements techniques nécessaires pour accéder à Moment ainsi que de leur protection contre toute forme de contamination par des virus ou toute autre logiciel ou code malveillant. Moment ne garantit aucune compatibilité d'aucune sorte avec une quelconque version de navigateur, du téléphone ou configuration du terminal de l'Utilisateur. Des liens hypertextes peuvent renvoyer vers d'autres sites Web, d'autres contenus ou d'autres ressources. La responsabilité de Moment ne saurait être engagée dans le cas où d'autres sites, contenus ou ressources, seraient contraires aux dispositions légales ou réglementaires en vigueur. \n\nActes malveillants\n\nVous n'êtes bien entendu pas autorisés à pirater Moment ou son contenu :\n\t•\tIl est formellement interdit de pirater le Site ou l'Application, ou de diffuser des virus ou tout autre élément malveillant pouvant porter atteinte de quelque façon que ce soit à l'ensemble des services et possessions de Moment, ainsi qu'aux utilisateurs ou visiteurs de Moment ;\n\t•\tVous ne pouvez en aucun cas récupérer ou modifier de façon illégale des éléments du Site, de l'Application en général, ou des comptes utilisateurs en particulier ;\n\t•\tVous ne pouvez pas spammer et/ou envoyer du contenu indésirable sous quelque forme et via quelque média que ce soit aux utilisateurs et visiteurs du Site et de l'Application.\nDe façon générale, nous vous demandons de rester attentif aux contenus des photos que vous serez amenés à poster, commenter ou visionner. Nous vous demandons de nous signaler toute infraction aux lois locales en vigueur, ainsi qu'à toute loi ou règle concernant les droits de propriété quels qu'ils soient à l’adresse e-mail : hello@appmoment.fr. Nous tenons par ailleurs à vous rappeler que la loi applicable est la loi française.\nLes Conditions Générales d'Utilisation peuvent être modifiées et/ou complétées, notamment en fonction des évolutions du Site et de l'Application. Nous vous invitons à les consulter régulièrement. N'hésitez pas à nous contacter pour toute question ou suggestion que vous pourriez avoir sur l'un des points évoqués ci-dessus à l’adresse e-mail : hello@appmoment.fr.";
 
 /* Class = "IBUILabel"; text = "Soirée"; ObjectID = "3i9-9e-e7e"; */
 "3i9-9e-e7e.text" = "Party";
 
 /* Class = "IBUILabel"; text = "Masquer les informations"; ObjectID = "47d-Kt-YZl"; */
 "47d-Kt-YZl.text" = "Hide information";
+
+/* Class = "IBUILabel"; text = "Charger plus"; ObjectID = "5aG-Xs-TZX"; */
+"5aG-Xs-TZX.text" = "Load more";
 
 /* Class = "IBUILabel"; text = "Vacances"; ObjectID = "5bD-ir-VaR"; */
 "5bD-ir-VaR.text" = "Holiday";
@@ -20,11 +35,14 @@
 /* Class = "IBUILabel"; text = "23"; ObjectID = "75V-xS-Zg7"; */
 "75V-xS-Zg7.text" = "23";
 
-/* Class = "IBUILabel"; text = "Auto"; ObjectID = "7xZ-51-Dae"; */
-"7xZ-51-Dae.text" = "Auto";
+/* Class = "IBUILabel"; text = "avec Adrien Dulong et Remi Bardoux"; ObjectID = "8vZ-n0-Fv3"; */
+"8vZ-n0-Fv3.text" = "with Adrien Dulong and Remi Bardoux";
 
 /* Class = "IBUIButton"; normalTitle = "Importation Automatique"; ObjectID = "9L9-4r-1dN"; */
 "9L9-4r-1dN.normalTitle" = "Automatic import";
+
+/* Class = "IBUIButton"; normalTitle = "0 like"; ObjectID = "AEA-dr-a3r"; */
+"AEA-dr-a3r.normalTitle" = "0 like";
 
 /* Class = "IBUIButton"; normalTitle = "Twitter"; ObjectID = "AeB-fb-maB"; */
 "AeB-fb-maB.normalTitle" = "Twitter";
@@ -32,11 +50,17 @@
 /* Class = "IBUIButton"; selectedTitle = "Twitter"; ObjectID = "AeB-fb-maB"; */
 "AeB-fb-maB.selectedTitle" = "Twitter";
 
-/* Class = "IBUILabel"; text = "8 Nouvelles discussions"; ObjectID = "B81-Fs-mQq"; */
-"B81-Fs-mQq.text" = "8 New discussions";
-
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "EI0-GO-qEf"; */
 "EI0-GO-qEf.text" = "Label";
+
+/* Class = "IBUIBarButtonItem"; title = "Terminer"; ObjectID = "F6v-1Q-xht"; */
+"F6v-1Q-xht.title" = "Finish";
+
+/* Class = "IBUILabel"; text = "Adrien Dulong"; ObjectID = "Fdt-VV-9gQ"; */
+"Fdt-VV-9gQ.text" = "Adrien Dulong";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Pour nous"; ObjectID = "Frb-IJ-ScW"; */
+"Frb-IJ-ScW.headerTitle" = "For us";
 
 /* Class = "IBUILabel"; text = "20 Photos"; ObjectID = "GHo-z7-rPw"; */
 "GHo-z7-rPw.text" = "20 Photos";
@@ -56,26 +80,71 @@
 /* Class = "IBUIBarButtonItem"; title = "Item"; ObjectID = "Hgj-K3-HWG"; */
 "Hgj-K3-HWG.title" = "Item";
 
+/* Class = "IBUIButton"; normalTitle = "Importation automatique"; ObjectID = "IBK-Cm-FjO"; */
+"IBK-Cm-FjO.normalTitle" = "Automatic import";
+
+/* Class = "IBUILabel"; text = "Rémi a liké une de vos photos"; ObjectID = "IT1-Ds-hRt"; */
+"IT1-Ds-hRt.text" = "Rémi a liké une de vos photos";
+
 /* Class = "IBUIButton"; normalTitle = "Facebook"; ObjectID = "IYy-zv-KmS"; */
 "IYy-zv-KmS.normalTitle" = "Facebook";
 
 /* Class = "IBUIButton"; selectedTitle = "Facebook"; ObjectID = "IYy-zv-KmS"; */
 "IYy-zv-KmS.selectedTitle" = "Facebook";
 
-/* Class = "IBUILabel"; text = "80 invités"; ObjectID = "JbC-uX-IpG"; */
-"JbC-uX-IpG.text" = "80 guests";
+/* Class = "IBUILabel"; text = "76 photos ont été retrouvées"; ObjectID = "J93-QQ-u8Z"; */
+"J93-QQ-u8Z.text" = "76 pictures were found";
+
+/* Class = "IBUILabel"; text = "OCT"; ObjectID = "J9x-S9-hMD"; */
+"J9x-S9-hMD.text" = "OCT";
+
+/* Class = "IBUILabel"; text = "? invités"; ObjectID = "JbC-uX-IpG"; */
+"JbC-uX-IpG.text" = "? guests";
+
+/* Class = "IBUIBarButtonItem"; title = "Valider"; ObjectID = "Kcj-ns-0CQ"; */
+"Kcj-ns-0CQ.title" = "Validate";
+
+/* Class = "IBUILabel"; text = "SEP"; ObjectID = "KqK-3U-27h"; */
+"KqK-3U-27h.text" = "SEP";
+
+/* Class = "IBUILabel"; text = "Titre de l'album"; ObjectID = "LFA-Et-nAh"; */
+"LFA-Et-nAh.text" = "Album title";
+
+/* Class = "IBUITableViewSection"; footerTitle = "Woovent v1.0"; ObjectID = "Mfm-yn-LFA"; */
+"Mfm-yn-LFA.footerTitle" = "Woovent v1.0";
+
+/* Class = "IBUITableViewSection"; headerTitle = "ET plus"; ObjectID = "Mfm-yn-LFA"; */
+"Mfm-yn-LFA.headerTitle" = "AND more";
+
+/* Class = "IBUIBarButtonItem"; title = "Terminé"; ObjectID = "MrG-fH-E9i"; */
+"MrG-fH-E9i.title" = "Finish";
 
 /* Class = "IBUILabel"; text = "Label"; ObjectID = "N4T-F6-794"; */
 "N4T-F6-794.text" = "Label";
 
+/* Class = "IBUILabel"; text = "Remarques et preuves d'amour"; ObjectID = "Np7-fl-uGm"; */
+"Np7-fl-uGm.text" = "Remarks and proofs of love";
+
+/* Class = "IBUILabel"; text = "Conditions d'utilisation"; ObjectID = "O9Y-Sx-23T"; */
+"O9Y-Sx-23T.text" = "Terms of Use";
+
+/* Class = "IBUILabel"; text = "Déconnexion"; ObjectID = "ObK-E7-c5e"; */
+"ObK-E7-c5e.text" = "Logout";
+
 /* Class = "IBUILabel"; text = "Samedi 23 Octobre à 20:30"; ObjectID = "Org-wP-Oq5"; */
 "Org-wP-Oq5.text" = "Saturday, October 23 at 20:30";
+
+/* Class = "IBUILabel"; text = "1/10"; ObjectID = "QdS-UU-E26"; */
+"QdS-UU-E26.text" = "1/10";
 
 /* Class = "IBUIBarButtonItem"; title = "Valider"; ObjectID = "QgN-0B-C4d"; */
 "QgN-0B-C4d.title" = "Validate";
 
-/* Class = "IBUILabel"; text = "6h à 24h"; ObjectID = "T0E-ne-KH1"; */
-"T0E-ne-KH1.text" = "6h to 24h";
+/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "R1b-ju-AAD"; */
+"R1b-ju-AAD.normalTitle" = "Button";
+
+/* Class = "IBUILabel"; text = "23"; ObjectID = "STo-1M-XkI"; */
+"STo-1M-XkI.text" = "23";
 
 /* Class = "IBUINavigationItem"; title = "Prenez une photo de l'évènement !"; ObjectID = "TML-IG-DOh"; */
 "TML-IG-DOh.title" = "Take a photo of the event !";
@@ -86,20 +155,26 @@
 /* Class = "IBUILabel"; text = "18:00 à Le Star Café"; ObjectID = "UOz-Be-I0f"; */
 "UOz-Be-I0f.text" = "18:00 to Le Star Café";
 
+/* Class = "IBUILabel"; text = "18"; ObjectID = "VF0-32-pUK"; */
+"VF0-32-pUK.text" = "18";
+
 /* Class = "IBUILabel"; text = "21 photos de l'évènement trouvées"; ObjectID = "Vo8-nF-ayA"; */
 "Vo8-nF-ayA.text" = "21 photos of the event found";
+
+/* Class = "IBUILabel"; text = "Rémi Bardoux"; ObjectID = "XHE-Z3-dr6"; */
+"XHE-Z3-dr6.text" = "Rémi Bardoux";
 
 /* Class = "IBUILabel"; text = "18:00 à Le Star Café"; ObjectID = "ZeB-fw-c8g"; */
 "ZeB-fw-c8g.text" = "18:00 to Le Star Café";
 
-/* Class = "IBUILabel"; text = "1h à 8h"; ObjectID = "Zmt-81-ftr"; */
-"Zmt-81-ftr.text" = "1h to 8h";
-
 /* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "a54-2Z-Vdx"; */
 "a54-2Z-Vdx.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
-/* Class = "IBUIButton"; normalTitle = "FACEBOOK"; ObjectID = "crz-qW-qcK"; */
-"crz-qW-qcK.normalTitle" = "FACEBOOK";
+/* Class = "IBUIButton"; normalTitle = "Tout déselectionner"; ObjectID = "bo6-52-FYX"; */
+"bo6-52-FYX.normalTitle" = "Deselect all";
+
+/* Class = "IBUIButton"; normalTitle = "Auto"; ObjectID = "c9k-wq-Zl1"; */
+"c9k-wq-Zl1.normalTitle" = "Auto";
 
 /* Class = "IBUILabel"; text = "De quel type d'évènement s'agit-il ?"; ObjectID = "d07-Gh-Iyj"; */
 "d07-Gh-Iyj.text" = "What kind of event is it ?";
@@ -110,17 +185,26 @@
 /* Class = "IBUILabel"; text = "Organisé par Emmanuelle Barthou"; ObjectID = "esw-ya-tS8"; */
 "esw-ya-tS8.text" = "Organized by Emmanuelle Barthou";
 
+/* Class = "IBUILabel"; text = "Quel évènement souhaitez vous revivre ?"; ObjectID = "fCK-lQ-cpt"; */
+"fCK-lQ-cpt.text" = "What event would you relive ?";
+
 /* Class = "IBUILabel"; text = "18"; ObjectID = "fFk-r4-7Nd"; */
 "fFk-r4-7Nd.text" = "18";
-
-/* Class = "IBUIViewController"; title = "FirstLaunch"; ObjectID = "gjV-dc-mLQ"; */
-"gjV-dc-mLQ.title" = "FirstLaunch";
 
 /* Class = "IBUIButton"; normalTitle = "Prendre une Photo"; ObjectID = "gzZ-jQ-ykY"; */
 "gzZ-jQ-ykY.normalTitle" = "Take a Photo";
 
-/* Class = "IBUILabel"; text = "23 présents - 12 peut-être"; ObjectID = "hc8-6X-VE4"; */
-"hc8-6X-VE4.text" = "23 present - 12 may";
+/* Class = "IBUIButton"; normalTitle = "Notif"; ObjectID = "h3i-Ku-yWa"; */
+"h3i-Ku-yWa.normalTitle" = "Notif";
+
+/* Class = "IBUILabel"; text = "? présents - ? peut-être"; ObjectID = "hc8-6X-VE4"; */
+"hc8-6X-VE4.text" = "? present - ? may";
+
+/* Class = "IBUILabel"; text = "3h ago"; ObjectID = "hp3-Zd-g5X"; */
+"hp3-Zd-g5X.text" = "3h ago";
+
+/* Class = "IBUILabel"; text = "La séance"; ObjectID = "iDX-Af-BKl"; */
+"iDX-Af-BKl.text" = "The meeting";
 
 /* Class = "IBUINavigationItem"; title = "Postez votre photo"; ObjectID = "iY4-24-MAl"; */
 "iY4-24-MAl.title" = "Post your photo";
@@ -131,8 +215,17 @@
 /* Class = "IBUILabel"; text = "Rémi Bardoux vous a envoyé une invitation"; ObjectID = "jAO-yp-XJF"; */
 "jAO-yp-XJF.text" = "Rémi Bardoux has sent you an invitation";
 
-/* Class = "IBUILabel"; text = "avec moncul et mabite et je ne sais pas qui"; ObjectID = "kln-HF-h2M"; */
-"kln-HF-h2M.text" = "with my ass and my dick and I do not know who";
+/* Class = "IBUILabel"; text = "Aucune Notification"; ObjectID = "jSa-t2-kx9"; */
+"jSa-t2-kx9.text" = "No Notification";
+
+/* Class = "IBUILabel"; text = "Woovent sur Facebook"; ObjectID = "jrj-e6-OBs"; */
+"jrj-e6-OBs.text" = "Woovent on Facebook";
+
+/* Class = "IBUILabel"; text = "Notifications iPhone"; ObjectID = "kDh-7f-4m5"; */
+"kDh-7f-4m5.text" = "iPhone Notifications";
+
+/* Class = "IBUILabel"; text = "avec Adrien Dulong et Remi Bardoux"; ObjectID = "kln-HF-h2M"; */
+"kln-HF-h2M.text" = "with Adrien Dulong and Remi Bardoux";
 
 /* Class = "IBUILabel"; text = "3j"; ObjectID = "lHs-t3-u6H"; */
 "lHs-t3-u6H.text" = "3d";
@@ -143,11 +236,26 @@
 /* Class = "IBUILabel"; text = "Le Star Café"; ObjectID = "nYt-Oh-p93"; */
 "nYt-Oh-p93.text" = "Le Star Café";
 
+/* Class = "IBUILabel"; text = "Notifications Mail"; ObjectID = "na5-DZ-MKk"; */
+"na5-DZ-MKk.text" = "Mail Notifications";
+
+/* Class = "IBUILabel"; text = "Notre marmotte s'occupe de ranger vos photos dans son terrier !"; ObjectID = "o1t-nb-84J"; */
+"o1t-nb-84J.text" = "Our groundhog deals store your photos in its burrow !";
+
+/* Class = "IBUITabBarItem"; title = "Now !"; ObjectID = "oCC-AN-Jqi"; */
+"oCC-AN-Jqi.title" = "Now !";
+
 /* Class = "IBUITextView"; text = "Ajoutez un légende à votre photo"; ObjectID = "p6T-oQ-WEn"; */
 "p6T-oQ-WEn.text" = "Add a caption to your photo";
 
+/* Class = "IBUILabel"; text = "Le Star Café"; ObjectID = "pd5-4A-TU2"; */
+"pd5-4A-TU2.text" = "Le Star Café";
+
 /* Class = "IBUILabel"; text = "La séance"; ObjectID = "qDS-H3-Nqs"; */
 "qDS-H3-Nqs.text" = "The meeting";
+
+/* Class = "IBUINavigationItem"; title = "CGU"; ObjectID = "qLC-lH-9KC"; */
+"qLC-lH-9KC.title" = "Terms";
 
 /* Class = "IBUIBarButtonItem"; title = " "; ObjectID = "qfQ-YQ-gTB"; */
 "qfQ-YQ-gTB.title" = " ";
@@ -158,14 +266,11 @@
 /* Class = "IBUITabBarItem"; title = "Evènements"; ObjectID = "rNH-bR-BBY"; */
 "rNH-bR-BBY.title" = "Events";
 
-/* Class = "IBUIButton"; normalTitle = "Valider"; ObjectID = "rUB-qg-eRy"; */
-"rUB-qg-eRy.normalTitle" = "Validate";
+/* Class = "IBUITableViewSection"; headerTitle = "Notifications"; ObjectID = "sM6-St-bcI"; */
+"sM6-St-bcI.headerTitle" = "Notifications";
 
 /* Class = "IBUILabel"; text = "Adrien Dulong"; ObjectID = "tOE-9d-ZzP"; */
 "tOE-9d-ZzP.text" = "Adrien Dulong";
-
-/* Class = "IBUILabel"; text = "1j à 4j"; ObjectID = "tiy-fn-tAM"; */
-"tiy-fn-tAM.text" = "1d to 4d";
 
 /* Class = "IBUISegmentedControl"; tyq-mJ-NpV.segmentTitles[0] = "Invitations"; ObjectID = "tyq-mJ-NpV"; */
 "tyq-mJ-NpV.segmentTitles[0]" = "Invitations";
@@ -182,14 +287,14 @@
 /* Class = "IBUILabel"; text = "SEP"; ObjectID = "v5N-zU-xix"; */
 "v5N-zU-xix.text" = "SEP";
 
-/* Class = "IBUILabel"; text = "4j et plus"; ObjectID = "v5z-PH-Mk3"; */
-"v5z-PH-Mk3.text" = "4d and more";
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "vHx-Wp-XK6"; */
+"vHx-Wp-XK6.text" = "Label";
 
 /* Class = "IBUITabBarItem"; title = "Invitations"; ObjectID = "wGe-Sg-YeR"; */
 "wGe-Sg-YeR.title" = "Invitations";
 
 /* Class = "IBUILabel"; text = "Bordeaux Super Ville"; ObjectID = "wQs-a4-1Fs"; */
-"wQs-a4-1Fs.text" = "Bordeaux Super City";
+"wQs-a4-1Fs.text" = "Bordeaux Super Ville";
 
 /* Class = "IBUISegmentedControl"; wV8-JR-7sI.segmentTitles[0] = "Accepter"; ObjectID = "wV8-JR-7sI"; */
 "wV8-JR-7sI.segmentTitles[0]" = "Accept";
@@ -200,11 +305,11 @@
 /* Class = "IBUISegmentedControl"; wV8-JR-7sI.segmentTitles[2] = "Refuser"; ObjectID = "wV8-JR-7sI"; */
 "wV8-JR-7sI.segmentTitles[2]" = "Refuse";
 
-/* Class = "IBUIButton"; normalTitle = "Button"; ObjectID = "xbQ-IV-lGV"; */
-"xbQ-IV-lGV.normalTitle" = "Button";
-
 /* Class = "IBUITextView"; text = "Adrien DUlong"; ObjectID = "y0h-To-W5d"; */
-"y0h-To-W5d.text" = "Adrien Dulong";
+"y0h-To-W5d.text" = "Adrien DUlong";
+
+/* Class = "IBUIBarButtonItem"; title = "Terminé"; ObjectID = "y1k-Z2-1Qc"; */
+"y1k-Z2-1Qc.title" = "Finish";
 
 /* Class = "IBUILabel"; text = "Rémi Bardoux"; ObjectID = "yWy-Uv-9b1"; */
 "yWy-Uv-9b1.text" = "Rémi Bardoux";
