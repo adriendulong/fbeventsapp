@@ -599,6 +599,7 @@
                                 <outlet property="detailInvitedLabel" destination="hc8-6X-VE4" id="6xk-t6-ebK"/>
                                 <outlet property="eventDescription" destination="a54-2Z-Vdx" id="G8Y-kv-2UT"/>
                                 <outlet property="labelHide" destination="47d-Kt-YZl" id="ICR-zc-Qnz"/>
+                                <outlet property="leftArrow" destination="Oll-VJ-Mtc" id="WUR-AL-4Mv"/>
                                 <outlet property="locationLabel" destination="wQs-a4-1Fs" id="JG7-Ca-mE4"/>
                                 <outlet property="mapButton" destination="bWU-EA-Eqm" id="PzM-Wd-hC0"/>
                                 <outlet property="mapView" destination="gUO-dY-1k6" id="IQT-on-n2w"/>
@@ -606,6 +607,7 @@
                                 <outlet property="nbPhotosLabel" destination="GHo-z7-rPw" id="FBG-0l-AWu"/>
                                 <outlet property="nbTotalInvitedLabel" destination="JbC-uX-IpG" id="k0k-lr-Ici"/>
                                 <outlet property="ownerEvent" destination="esw-ya-tS8" id="oGe-1Z-4vR"/>
+                                <outlet property="rightArrow" destination="dod-ZD-An8" id="r1Q-ZH-8id"/>
                                 <outlet property="segmentRsvp" destination="Gar-FE-BB9" id="aOU-Z9-lx2"/>
                                 <outlet property="takePhotoButton" destination="gzZ-jQ-ykY" id="ydq-iN-xIt"/>
                                 <outlet property="viewToHide" destination="k7F-jY-8g5" id="svy-qJ-MAP"/>
@@ -664,7 +666,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="sectionIndexTrackingBackgroundColor" red="0.95675223210000004" green="0.95675223210000004" blue="0.95675223210000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="sectionIndexTrackingBackgroundColor" red="0.96862751245498657" green="0.96862751245498657" blue="0.96862751245498657" alpha="1" colorSpace="deviceRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="195" id="HbY-4L-qCd" customClass="EventsCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="195"/>
@@ -3430,15 +3432,15 @@ Les Conditions Générales d'Utilisation peuvent être modifiées et/ou complét
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="zHu-yQ-I5R"/>
-        <segue reference="WWM-2T-ArI"/>
-        <segue reference="85D-2h-GPM"/>
+        <segue reference="UCP-iD-Mrv"/>
         <segue reference="pId-s9-PUV"/>
-        <segue reference="H4y-UD-BIY"/>
+        <segue reference="zHu-yQ-I5R"/>
+        <segue reference="kaB-St-iPu"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="Biz-ZH-3yq"/>
+        <segue reference="ZWB-wq-JTW"/>
+        <segue reference="EZZ-yh-I9A"/>
         <segue reference="17P-5b-VHW"/>
-        <segue reference="ItH-HP-BNq"/>
-        <segue reference="e9E-5w-t1P"/>
+        <segue reference="H4y-UD-BIY"/>
     </inferredMetricsTieBreakers>
 </document>

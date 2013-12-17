@@ -20,6 +20,7 @@
 #import "ListEvents.h"
 
 #define METERS_PER_MILE 1609.344
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 @interface PhotosCollectionViewController ()
 
@@ -280,6 +281,14 @@
         if (!self.isShowingDetails) {
             [headerView.viewToHide setHidden:YES];
             self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
+            
+            CGAffineTransform leftRotationTransform = CGAffineTransformIdentity;
+            leftRotationTransform = CGAffineTransformRotate(leftRotationTransform, DEGREES_TO_RADIANS(270));
+            self.headerCollectionView.leftArrow.transform = leftRotationTransform;
+            
+            CGAffineTransform rightRotationTransform = CGAffineTransformIdentity;
+            rightRotationTransform = CGAffineTransformRotate(rightRotationTransform, DEGREES_TO_RADIANS(90));
+            self.headerCollectionView.rightArrow.transform = rightRotationTransform;
         }
         
         self.headerCollectionView = headerView;
@@ -955,11 +964,27 @@
         [TestFlight passCheckpoint:@"HIDE_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:YES];
+        
+        CGAffineTransform leftRotationTransform = CGAffineTransformIdentity;
+        leftRotationTransform = CGAffineTransformRotate(leftRotationTransform, DEGREES_TO_RADIANS(270));
+        self.headerCollectionView.leftArrow.transform = leftRotationTransform;
+        
+        CGAffineTransform rightRotationTransform = CGAffineTransformIdentity;
+        rightRotationTransform = CGAffineTransformRotate(rightRotationTransform, DEGREES_TO_RADIANS(90));
+        self.headerCollectionView.rightArrow.transform = rightRotationTransform;
     }
     else{
         [TestFlight passCheckpoint:@"SHOW_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Hide_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:NO];
+        
+        CGAffineTransform leftRotationTransform = CGAffineTransformIdentity;
+        leftRotationTransform = CGAffineTransformRotate(leftRotationTransform, DEGREES_TO_RADIANS(0));
+        self.headerCollectionView.leftArrow.transform = leftRotationTransform;
+        
+        CGAffineTransform rightRotationTransform = CGAffineTransformIdentity;
+        rightRotationTransform = CGAffineTransformRotate(rightRotationTransform, DEGREES_TO_RADIANS(0));
+        self.headerCollectionView.rightArrow.transform = rightRotationTransform;
     }
     
     self.isShowingDetails = !self.isShowingDetails;
