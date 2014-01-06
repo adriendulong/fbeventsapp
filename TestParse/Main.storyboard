@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -2836,7 +2836,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="mWi-fW-eK0"/>
                     <connections>
                         <outlet property="descriptionTextView" destination="tY5-K4-jrp" id="0kM-Jc-vEa"/>
@@ -2849,7 +2848,7 @@
         <!--Photo Detail View Controller-->
         <scene sceneID="8kY-Gl-Vpw">
             <objects>
-                <viewController storyboardIdentifier="PhotoDetail" extendedLayoutIncludesOpaqueBars="YES" hidesBottomBarWhenPushed="YES" id="GWE-cV-T3J" customClass="PhotoDetailViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoDetail" hidesBottomBarWhenPushed="YES" id="GWE-cV-T3J" customClass="PhotoDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2dM-J1-SbO"/>
                         <viewControllerLayoutGuide type="bottom" id="6Le-TQ-Hff"/>
@@ -3012,7 +3011,6 @@
                         </subviews>
                         <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="dOY-Bu-mMr">
                         <barButtonItem key="rightBarButtonItem" width="800" style="plain" id="t4g-PJ-WKV">
                             <view key="customView" opaque="NO" alpha="0.0" contentMode="scaleToFill" id="vhf-Fb-dwY">
@@ -3034,8 +3032,6 @@
                             </view>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageOwner" destination="i5H-IU-zUI" id="TwF-hR-8Pr"/>
                         <outlet property="nameOwner" destination="XHE-Z3-dr6" id="2aa-Hm-jWs"/>
@@ -3558,13 +3554,13 @@
     <inferredMetricsTieBreakers>
         <segue reference="pId-s9-PUV"/>
         <segue reference="cCH-RC-a7a"/>
-        <segue reference="Imw-kp-jNA"/>
         <segue reference="H4y-UD-BIY"/>
-        <segue reference="EZZ-yh-I9A"/>
-        <segue reference="WO8-e3-H1i"/>
+        <segue reference="Imw-kp-jNA"/>
         <segue reference="Biz-ZH-3yq"/>
-        <segue reference="ZWB-wq-JTW"/>
+        <segue reference="WO8-e3-H1i"/>
+        <segue reference="EZZ-yh-I9A"/>
         <segue reference="yK3-OH-GQx"/>
-        <segue reference="gQS-Od-x3H"/>
+        <segue reference="ZWB-wq-JTW"/>
+        <segue reference="17P-5b-VHW"/>
     </inferredMetricsTieBreakers>
 </document>
