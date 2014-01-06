@@ -15,6 +15,10 @@
 #import "EventDetailViewController.h"
 #import "PhotosCollectionViewController.h"
 #import "ListInvitationsController.h"
+#import "GAITrackedViewController.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 
 @interface ListEvents ()
@@ -597,7 +601,7 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, 280, 40)];
     [label setTextColor:[UIColor darkGrayColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
-    label.text = @"Aucun évènements à venir ...";
+    label.text = NSLocalizedString(@"ListEvents_NoEvent", nil);
     [viewBack addSubview:label];
     
     

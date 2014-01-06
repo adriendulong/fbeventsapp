@@ -3,11 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "mail.png"
+      "filename" : "covertestinfos.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "covertestinfos@2x.png"
     }
   ],
   "info" : {

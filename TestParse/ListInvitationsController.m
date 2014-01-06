@@ -13,6 +13,10 @@
 #import "PhotosCollectionViewController.h"
 #import "MOUtility.h"
 #import "ListEvents.h"
+#import "GAITrackedViewController.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 @interface ListInvitationsController ()
 

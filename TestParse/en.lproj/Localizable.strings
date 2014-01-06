@@ -193,6 +193,7 @@
 
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
+"ListEvents_NoEvent" = "No upcoming events ...";
 
 
 ///// MemoriesImportViewController /////
