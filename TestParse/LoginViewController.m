@@ -9,6 +9,9 @@
 #import "LoginViewController.h"
 #import "TutorialViewController.h"
 #import "MOUtility.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #define IS_BIG_SCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 

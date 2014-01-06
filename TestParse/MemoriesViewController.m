@@ -13,6 +13,9 @@
 #import "MemoriesImportViewController.h"
 #import "NSMutableArray+Reverse.h"
 #import "MOUtility.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 @interface MemoriesViewController ()
 

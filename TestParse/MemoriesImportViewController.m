@@ -12,6 +12,9 @@
 #import "ChooseLastEventViewController.h"
 #import "PhotosImportedViewController.h"
 #import "MBProgressHUD.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 @interface MemoriesImportViewController ()
 

@@ -15,7 +15,6 @@
 #import "EventDetailViewController.h"
 #import "PhotosCollectionViewController.h"
 #import "ListInvitationsController.h"
-#import "GAITrackedViewController.h"
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"

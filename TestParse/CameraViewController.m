@@ -15,6 +15,9 @@
 #import "PhotosAlbumViewController.h"
 #import "CameraFocusSquare.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 

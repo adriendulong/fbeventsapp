@@ -18,6 +18,9 @@
 #import "PhotosImportedViewController.h"
 #import <MapKit/MapKit.h>
 #import "ListEvents.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #define METERS_PER_MILE 1609.344
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)

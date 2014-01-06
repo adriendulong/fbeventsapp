@@ -10,6 +10,9 @@
 #import "UIImage+ResizeAdditions.h"
 #import "Photo.h"
 #import "MOUtility.h"
+#import "GAI.h"
+#import "GAIDictionaryBuilder.h"
+#import "GAIFields.h"
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
