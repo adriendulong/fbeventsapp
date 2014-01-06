@@ -34,6 +34,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Share Photo View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+}
 
 - (void)viewDidLoad
 {
@@ -81,6 +87,11 @@
     
     //start upload
     if (self.takenPhoto) {
+        self.title = NSLocalizedString(@"SharePhotoViewController_Title_One", nil);
+        self.titlePhoto.text = NSLocalizedString(@"SharePhotoViewController_AddLegend", nil);
+        [self.postButton setTitle:NSLocalizedString(@"SharePhotoViewController_Title_One", nil) forState:UIControlStateNormal];
+        
+        
         [self postFileInBackground];
     }
     else{
@@ -165,11 +176,13 @@
                 [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                     if (!error) {
                         NSLog(@"PHOTO SHARED ON FACEBOOK");
+                        [[Mixpanel sharedInstance] track:@"Share" properties:@{@"Platform": @"Facebook", @"From" : @"ShareView"}];
                     }
                 }];
             }
             if (self.twitterButton.isSelected) {
                 [MOUtility postImage:self.takenPhoto withStatus:@"test"];
+                [[Mixpanel sharedInstance] track:@"Share" properties:@{@"Platform": @"Twitter", @"From" : @"ShareView"}];
             }
             
             if(!self.thumbnailFile || self.imageFile){
@@ -227,6 +240,16 @@
                     eventPhoto[@"event"] = self.event;
                     eventPhoto[@"width"] = info[@"width"];
                     eventPhoto[@"height"] = info[@"height"];
+                    
+                    //Add title if has written something
+                    if (!self.hintIsWritten) {
+                        NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
+                                                @"id": [PFUser currentUser].objectId,
+                                                @"date": [NSDate date],
+                                                @"comment":self.titlePhoto.text};
+                        NSArray *comments = [NSArray arrayWithObjects:title, nil];
+                        eventPhoto[@"comments"] = comments;
+                    }
                     
                     [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         //SUIVANTE
@@ -342,6 +365,16 @@
                             eventPhoto[@"event"] = self.event;
                             eventPhoto[@"width"] = [NSNumber numberWithFloat:width];;
                             eventPhoto[@"height"] = [NSNumber numberWithFloat:height];
+                            
+                            //Add title if has written something
+                            if (!self.hintIsWritten) {
+                                NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
+                                                        @"id": [PFUser currentUser].objectId,
+                                                        @"date": [NSDate date],
+                                                        @"comment":self.titlePhoto.text};
+                                NSArray *comments = [NSArray arrayWithObjects:title, nil];
+                                eventPhoto[@"comments"] = comments;
+                            }
                             
                             [eventPhoto saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                                 if (succeeded) {
@@ -568,6 +601,8 @@
     NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
     [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
     
+    
+    
     [self dismissViewControllerAnimated:NO completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
 }
@@ -575,6 +610,8 @@
 
 //Push notif
 -(void)pushEveryInvited:(int)nbPhotos{
+    [[Mixpanel sharedInstance] track:@"Photos Uploaded" properties:@{@"Nb Photos": [NSNumber numberWithInt:nbPhotos], @"From" : @"Share Photo", @"Twitter Share":[NSNumber numberWithBool:self.twitterButton.isSelected], @"Facebook Share": [NSNumber numberWithBool:self.facebookButton.isSelected], @"Legend" : [NSNumber numberWithInt:self.titlePhoto.text.length]}];
+    
     [PFCloud callFunction:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId}];
 }
 

@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *percentIndicator;
 @property (assign, nonatomic) int levelRoot;
 @property (weak, nonatomic) IBOutlet UIImageView *marmoteImage;
+@property (weak, nonatomic) IBOutlet UILabel *labelMarmotte;
 
 @property (strong, nonatomic) NSTimer *marmoteTimer;
 @property (assign, nonatomic) int counterTimer;

@@ -16,6 +16,7 @@
 #import "PhotosCollectionViewController.h"
 #import "ListInvitationsController.h"
 
+
 @interface ListEvents ()
 
 @end
@@ -34,7 +35,18 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [TestFlight passCheckpoint:@"MY_EVENTS"];
+    
+    
+    if (!self.isBackgroundTask) {
+        [TestFlight passCheckpoint:@"MY_EVENTS"];
+        [[Mixpanel sharedInstance] track:@"Event View Appear"];
+        
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker set:kGAIScreenName
+               value:@"Events View"];
+        [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    }
+    
 }
 
 
@@ -70,8 +82,10 @@
     //init
     self.facebookEventsNbDone = 0;
     self.facebookEventNotRepliedDone = 0;
+    self.isBackgroundTask = NO;
     
     //Customize Tab bar Controller
+    /*
     if ([[self.tabBarController.tabBar.items objectAtIndex:0] respondsToSelector:@selector(setFinishedSelectedImage:withFinishedUnselectedImage:)]) {
         
         [[self.tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
@@ -79,22 +93,23 @@
         [[self.tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
         [[self.tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
         
-    }
+    }*/
     
-    NSLog(@"Did load");
     if (![PFUser currentUser]) {
-        NSLog(@"No current user");
-        
-        #warning TODO : update user info
         //In order to looad events from the server when come back
         self.comeFromLogin = YES;
         [self performSegueWithIdentifier:@"Login" sender:nil];
     }
     else{
+        //Events from local db
+        self.invitations = [MOUtility getAllFuturInvitations];
+        [self.tableView reloadData];
+        [self isEmptyTableView];
+        
         [self localClosestInvitation];
         self.comeFromLogin = NO;
         [self loadFutureEventsFromServer];
-        [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+        [self setBadgeForInvitation:self.tabBarController atIndex:1];
         
         //Sync with FB
         [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
@@ -140,10 +155,14 @@
     //Formatter for the hour
     NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
     [formatterHourMinute setDateFormat:@"HH:mm"];
+    [formatterHourMinute setLocale:[NSLocale currentLocale]];
     NSDateFormatter *formatterMonth = [NSDateFormatter new];
     [formatterMonth setDateFormat:@"MMM"];
+    [formatterHourMinute setLocale:[NSLocale currentLocale]];
     NSDateFormatter *formatterDay = [NSDateFormatter new];
     [formatterDay setDateFormat:@"d"];
+    [formatterDay setLocale:[NSLocale currentLocale]];
+    
     
     //Fill the cell
     cell.nameEventLabel.text = event[@"name"];
@@ -198,6 +217,9 @@
             
             
         }
+        else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) { // Since the request failed, we can check if it was due to an invalid session
+            [self performSegueWithIdentifier:@"Login" sender:nil];
+        }
         else{
             NSLog(@"%@", error);
         }
@@ -220,12 +242,11 @@
         if (self.facebookEventNotRepliedDone == self.facebookEventNotReplied) {
             self.facebookEventNotReplied = 0;
             self.facebookEventNotRepliedDone = 0;
-            [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+            [self setBadgeForInvitation:self.tabBarController atIndex:1];
             //And reload the table view of the invitation
             //We reload the list in the future events
             ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
             if (invitationsController) {
-                NSLog(@"NOT NULLLLLLL");
                 [invitationsController loadInvitationFromServer];
             }
             
@@ -244,7 +265,10 @@
 }
 
 - (IBAction)fbReload:(id)sender {
-    [TestFlight passCheckpoint:@"RELOAD_INVITATIONS_FROM_FB"];
+    if (!self.isBackgroundTask) {
+        [TestFlight passCheckpoint:@"RELOAD_INVITATIONS_FROM_FB"];
+    }
+    
     
     if (!self.refreshControl.isRefreshing) {
         [self startSpin];
@@ -252,6 +276,7 @@
     
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+    
 }
 
 -(void)mustReloadEvents:(NSNotification *)note{
@@ -261,11 +286,6 @@
 
 -(void)loadFutureEventsFromServer{
     NSLog(@"Load Future Events");
-    
-    //Load from database before the server
-    self.invitations = [MOUtility getAllFuturInvitations];
-    [self isEmptyTableView];
-    [self.tableView reloadData];
     
     NSMutableArray *invits = [[NSMutableArray alloc] init];
     
@@ -306,6 +326,8 @@
                 if (!error) {
                     [invits addObjectsFromArray:objects];
                     
+                    [[Mixpanel sharedInstance].people set:@{@"Nb Futur Events": [NSNumber numberWithInt:invits.count]}];
+                    
                     self.invitations = [MOUtility sortByStartDate:invits isAsc:YES];
                     [self isEmptyTableView];
                     [self.tableEvents reloadData];
@@ -316,6 +338,7 @@
                     self.animating = NO;
                     [self.refreshControl endRefreshing];
                     [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
+                    
                     
                     for(PFObject *invitation in objects){
                         [MOUtility saveInvitationWithEvent:invitation];
@@ -336,61 +359,13 @@
     
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 # pragma mark - Prepare Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"DetailEvent"]) {
+        [[Mixpanel sharedInstance] track:@"Detail Event" properties:@{@"From": @"Events View"}];
         
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
@@ -404,11 +379,11 @@
     }
     
     else if ([segue.identifier isEqualToString:@"Login"]){
-        /*
         self.invitations = nil;
+        [self isEmptyTableView];
         [self.tableView reloadData];
-        LoginViewController *loginViewController = segue.destinationViewController;
-        loginViewController.myDelegate = self;*/
+        [self.tabBarController setSelectedIndex:0];
+        [MOUtility logoutApp];
         
         
     }
@@ -427,7 +402,7 @@
 -(void)logIn:(NSNotification *)note{
     [self localClosestInvitation];
     [self loadFutureEventsFromServer];
-    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+    [self setBadgeForInvitation:self.tabBarController atIndex:1];
     
     //Sync with FB
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
@@ -436,7 +411,7 @@
 
 -(void)comingFromLogin{
     [self loadFutureEventsFromServer];
-    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+    [self setBadgeForInvitation:self.tabBarController atIndex:1];
     
     //Sync with FB
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
@@ -638,6 +613,54 @@
 }
 
 
+-(void)setBadgeForInvitation:(UITabBarController *)controller atIndex:(NSUInteger)index{
+    
+    //From local database
+    int countInvit = [MOUtility countFutureInvitations];
+    if(countInvit>0){
+        [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:[NSString stringWithFormat:@"%d", countInvit]];
+    }
+    else{
+        [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:nil];
+    }
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query whereKey:@"rsvp_status" equalTo:@"not_replied"];
+    [query whereKey:@"start_time" greaterThan:[NSDate date]];
+    
+    
+    [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
+        if (!error) {
+            // The count request succeeded. Log the count
+            if(count>0){
+                [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:[NSString stringWithFormat:@"%d", count]];
+            }
+            else{
+                [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:nil];
+            }
+            
+            //Mixpanel
+            //[[Mixpanel sharedInstance] track:@"Invitations Set Badge" properties:@{@"Nb Invitations": [NSNumber numberWithInt:count]}];
+            
+            //If it was a background task, said that it is finished
+            if (self.isBackgroundTask) {
+                self.isBackgroundTask = NO;
+                [[Mixpanel sharedInstance] track:@"Background Fetch"];
+                self.completionHandler(UIBackgroundFetchResultNewData);
+            }
+        } else {
+            // The request failed
+            //If it was a background task, said that it is finished
+            if (self.isBackgroundTask) {
+                self.isBackgroundTask = NO;
+                [[Mixpanel sharedInstance] track:@"Background Fetch"];
+                self.completionHandler(UIBackgroundFetchResultFailed);
+                
+            }
+        }
+    }];
+}
 
 
 @end

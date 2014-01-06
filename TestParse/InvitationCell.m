@@ -80,7 +80,6 @@
                     currentUser[@"has_rsvp_perm"] = @YES;
                     [currentUser saveInBackground];
                 }
-                NSLog(@"TEST");
             }];
             
             
@@ -89,7 +88,6 @@
                     NSLog(@"%@", result);
                     
                     if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
-                        NSLog(@"OK !!");
                         //Save the new rsvp
                         self.invitation[@"rsvp_status"] = rsvp;
                         [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -113,7 +111,6 @@
          }];
     } else {
         // Send request to Facebook
-        NSLog(@"On a la permission");
         
         [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {

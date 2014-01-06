@@ -38,6 +38,17 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [TestFlight passCheckpoint:@"SETTINGS"];
+    
+    //Init
+    self.iPhoneNotifLabel.text = NSLocalizedString(@"SettingsViewController_iPhoneNotifs", nil);
+    self.mailNotifLabel.text = NSLocalizedString(@"SettingsViewController_mailNotifs", nil);
+    self.supportLabel.text = NSLocalizedString(@"SettingsViewController_support", nil);
+    self.facebookLabel.text = NSLocalizedString(@"SettingsViewController_wooventFB", nil);
+    self.cguLabel.text = NSLocalizedString(@"SettingsViewController_CGU", nil);
+    self.disconnectLabel.text = NSLocalizedString(@"SettingsViewController_disconnect", nil);
+    self.thanksLabel.text =  NSLocalizedString(@"SettingsViewController_Thanks", nil);
+    [self.finishLabel setTitle:NSLocalizedString(@"UIBArButtonItem_Terminate", nil)];
+    
 }
 
 - (void)viewDidLoad
@@ -77,7 +88,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 3;
 }
@@ -91,7 +101,7 @@
         return 2;
     }
     else{
-        return 2;
+        return 3;
     }
 }
 
@@ -126,7 +136,7 @@
         }
         //Go on facebook page
         else if (indexPath.row==1){
-            NSURL *url = [NSURL URLWithString:@"fb://page/600308563362702"];
+            NSURL *url = [NSURL URLWithString:@"fb://profile/600308563362702"];
             if(![[UIApplication sharedApplication] openURL:url]){
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://facebook.com/woovent"]];
             }
@@ -184,6 +194,8 @@
     if(self.swithNotifMail.isOn){
         PFUser *currentUser = [PFUser currentUser];
         currentUser[@"is_mail_notif"] = @YES;
+        [[Mixpanel sharedInstance].people set:@{@"is_mail_notif": @YES}];
+        
         [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!succeeded) {
                 [self.swithNotifMail setOn:NO];
@@ -193,6 +205,7 @@
     else{
         PFUser *currentUser = [PFUser currentUser];
         currentUser[@"is_mail_notif"] = @NO;
+        [[Mixpanel sharedInstance].people set:@{@"is_mail_notif": @NO}];
         [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!succeeded) {
                 [self.swithNotifMail setOn:YES];

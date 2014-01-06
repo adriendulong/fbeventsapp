@@ -38,6 +38,11 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Event Detail View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
     //We are in the tab Bar
     if (!self.invitation) {
         self.mustChangeTitle = NO;
@@ -66,8 +71,10 @@
             }
             
             self.hasUpdatedGuestsFromFB = NO;
+            [self.collectionViewLayout invalidateLayout];
             
             
+            [[Mixpanel sharedInstance] track:@"Now Event" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter]}];
             //Update view
             [self getInvitedFromServer];
             [self updateEventFromFB];
@@ -125,6 +132,7 @@
         
         self.hasUpdatedGuestsFromFB = NO;
         
+        [[Mixpanel sharedInstance] track:@"Event" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter]}];
         
         //Update view
         [self getInvitedFromServer];
@@ -191,6 +199,13 @@
         
         InfoHeaderCollectionView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
         
+        //Init labels
+        [headerView.takePhotoButton setTitle:NSLocalizedString(@"PhotosCollectionViewController_TakePhoto", nil) forState:UIControlStateNormal];
+        [headerView.automaticImport setTitle:NSLocalizedString(@"PhotosCollectionViewController_AutoImport", nil) forState:UIControlStateNormal];
+        [headerView.segmentRsvp setTitle:NSLocalizedString(@"UISegmentRSVP_Going", nil) forSegmentAtIndex:0];
+        [headerView.segmentRsvp setTitle:NSLocalizedString(@"UISegmentRSVP_Maybe", nil) forSegmentAtIndex:1];
+        [headerView.segmentRsvp setTitle:NSLocalizedString(@"UISegmentRSVP_Decline", nil) forSegmentAtIndex:2];
+        
         headerView.isShowingDetails = YES;
         
         PFObject *event = self.invitation[@"event"];
@@ -201,10 +216,14 @@
                 zoomLocation.latitude = [event[@"venue"][@"latitude"] doubleValue];
                 zoomLocation.longitude= [event[@"venue"][@"longitude"] doubleValue];
                 
-                MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 1*METERS_PER_MILE, 1*METERS_PER_MILE);
+                MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 2*METERS_PER_MILE, 2*METERS_PER_MILE);
                 
                 [headerView.mapView setRegion:viewRegion animated:NO];
                 
+            }
+            else{
+                [headerView.mapView setHidden:YES];
+                [[headerView viewWithTag:999] setHidden:YES];
             }
             
             [headerView.mapView setZoomEnabled:NO];
@@ -231,6 +250,13 @@
         
         
         headerView.invitation = self.invitation;
+        
+        if (event[@"summary_guests"]) {
+            [self.invitation saveInBackground];
+            self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests", nil), event[@"summary_guests"][@"count"]];
+            self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests_NbMaybe", nil), event[@"summary_guests"][@"attending_count"], event[@"summary_guests"][@"maybe_count"]];
+        }
+        
         headerView.nameEvent.text = event[@"name"];
         headerView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
         headerView.eventDescription.text = event[@"description"];
@@ -255,13 +281,19 @@
         
         //Date
         NSString *dateFormat;
-        NSString *dateComponents = @"EEEEdMMMM";
-        NSLocale *prefredLocale = [NSLocale currentLocale];
-        dateFormat = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:prefredLocale];
+        NSString *dateComponents;
+        if([event[@"is_date_only"] boolValue]) {
+            dateComponents = @"EEEEdMMMM";
+        }
+        else{
+            dateComponents = [NSString stringWithFormat:@"EEEEdMMMM %@ HH:mm", NSLocalizedString(@"PhotosCollectionViewController_TimeConjonction", nil)];
+        }
+        dateFormat = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:[NSLocale currentLocale]];
         NSDateFormatter *dformat = [[NSDateFormatter alloc]init];
         [dformat setDateFormat:dateFormat];
         headerView.dateEvent.text = [NSString stringWithFormat:@"%@", [dformat stringFromDate:event[@"start_time"]]];
         
+        //Adapt position buttons
         if (!self.isDuringOrAfter) {
             [headerView.automaticImport setHidden:YES];
             headerView.constraintButtonPhoto.constant = 35.0f;
@@ -273,11 +305,7 @@
             headerView.constraintViewNbPhotos.constant = 0.0f;
         }
         
-        //Add button
-        //Add import automatic button
-        NSLog(@"Center view bottom : %f", headerView.bottomView.center.y);
-        
-        
+        //Show or not details
         if (!self.isShowingDetails) {
             [headerView.viewToHide setHidden:YES];
             self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
@@ -289,6 +317,9 @@
             CGAffineTransform rightRotationTransform = CGAffineTransformIdentity;
             rightRotationTransform = CGAffineTransformRotate(rightRotationTransform, DEGREES_TO_RADIANS(90));
             self.headerCollectionView.rightArrow.transform = rightRotationTransform;
+        }
+        else{
+            self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Hide_Label", nil);
         }
         
         self.headerCollectionView = headerView;
@@ -304,7 +335,12 @@
     if (section==0) {
         if (self.isDuringOrAfter) {
             if (self.isShowingDetails) {
-                return CGSizeMake(800, 845);
+                if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
+                    return CGSizeMake(800, 580);
+                }
+                else{
+                    return CGSizeMake(800, 845);
+                }
             }
             else{
                 return CGSizeMake(800, 360);
@@ -312,7 +348,12 @@
         }
         else{
             if (self.isShowingDetails) {
-                return CGSizeMake(800, 785);
+                if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
+                    return CGSizeMake(800, 580);
+                }
+                else{
+                    return CGSizeMake(800, 785);
+                }
             }
             else{
                 return CGSizeMake(800, 306);
@@ -335,7 +376,7 @@
     [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
         if (!error) {
             if (self.headerCollectionView) {
-                self.headerCollectionView.nbPhotosLabel.text = [NSString stringWithFormat:@"%i Photos", count];
+                self.headerCollectionView.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbPhotos", nil), count];
             }
         } else {
             // The request failed
@@ -532,18 +573,23 @@
     [query includeKey:@"prospect"];
     
     //Cache then network
-    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    query.cachePolicy = kPFCachePolicyNetworkElseCache;
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            NSLog(@"LOADED INVITED");
             self.invited = objects;
             [self updateGuestsView];
             
             //Get all the invited
-            if (!self.hasUpdatedGuestsFromFB) {
-                [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"]];
+            if (!self.guestViewUpdated) {
+                if (self.invited.count < 5) {
+                    [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"] withLimit:5];
+                }
+                else{
+                    [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"] withLimit:0];
+                }
             }
+            
             
         } else {
             // Log details of the failure
@@ -554,8 +600,8 @@
 }
 
 
--(void)getGuestsFromFacebookEvent:(NSString *)facebookId{
-    NSString *requestString = [NSString stringWithFormat:@"%@?fields=invited.limit(50)", self.invitation[@"event"][@"eventId"]];
+-(void)getGuestsFromFacebookEvent:(NSString *)facebookId withLimit:(int)limit{
+    NSString *requestString = [NSString stringWithFormat:@"%@/invited?limit=%i&summary=1", self.invitation[@"event"][@"eventId"], limit];
     FBRequest *request = [FBRequest requestForGraphPath:requestString];
     
     self.hasUpdatedGuestsFromFB = YES;
@@ -565,14 +611,15 @@
         if (!error) {
             //Get all the invited
             NSLog(@"%@", result);
-            NSArray *guests = result[@"invited"][@"data"];
+            NSArray *guests = result[@"data"];
+            
+            [self setNbGuests:result[@"summary"]];
             
             self.guestViewUpdated = NO;
             self.nbInvitedToAdd = guests.count;
             self.nbInvitedAlreadyAdded = 0;
             
             for (id guest in guests) {
-                NSLog(@"name : %@", guest[@"name"]);
                 [self addOrUpdateInvited:guest];
             }
             
@@ -683,6 +730,10 @@
         if ([EventUtilities isAdminOfEvent:self.invitation[@"event"] forUser:user]) {
             invitation[@"isAdmin"] = @YES;
         }
+        
+        if (self.isDuringOrAfter) {
+            invitation[@"is_memory"] = @NO;
+        }
     }
     else{
         [invitation setObject:prospect forKey:@"prospect"];
@@ -771,7 +822,13 @@
     
     //Date
     NSString *dateFormat;
-    NSString *dateComponents = @"EEEEdMMMM";
+    NSString *dateComponents;
+    if([event[@"is_date_only"] boolValue]) {
+        dateComponents = @"EEEEdMMMM";
+    }
+    else{
+        dateComponents = [NSString stringWithFormat:@"EEEEdMMMM %@ HH:mm", NSLocalizedString(@"PhotosCollectionViewController_TimeConjonction", nil)];
+    }
     NSLocale *prefredLocale = [NSLocale currentLocale];
     dateFormat = [NSDateFormatter dateFormatFromTemplate:dateComponents options:0 locale:prefredLocale];
     NSDateFormatter *dformat = [[NSDateFormatter alloc]init];
@@ -782,7 +839,6 @@
 }
 
 -(void)updateGuestsView{
-    NSLog(@"Update Guest View");
     
     //Update Guests
     for (NSInteger i=1; i<6; i++) {
@@ -803,6 +859,17 @@
                   placeholderImage:[UIImage imageNamed:@"profil_default"]];
             photo.layer.cornerRadius = 23.0f;
             photo.layer.masksToBounds = YES;
+            
+            UIImageView *iconGo = (UIImageView *)[guestView viewWithTag:7];
+            if ([invitation[@"rsvp_status"] isEqualToString:FacebookEventMaybe]) {
+                [iconGo setImage:[UIImage imageNamed:@"maybe"]];
+            }
+            else if ([invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]){
+                [iconGo setImage:[UIImage imageNamed:@"go"]];
+            }
+            else{
+                [iconGo setHidden:YES];
+            }
         }
         else{
             UIView *guestView = [self.headerCollectionView.viewToHide viewWithTag:i];
@@ -813,8 +880,6 @@
         
         //UIImageView *indicator = (UIImageView *)[guestView viewWithTag:2];
     }
-    
-    [self updateNbInvited];
 }
 
 -(void)updateNbInvited{
@@ -841,17 +906,20 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
         [TestFlight passCheckpoint:@"ADD_PHOTO_BUTTON"];
+        [[Mixpanel sharedInstance] track:@"Take Photo" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter], @"Where" : @"Collection View"}];
         UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
         CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
         cameraViewController.event = self.invitation[@"event"];
     }
     else if ([segue.identifier isEqualToString:@"AddPhotoBarItem"]) {
         [TestFlight passCheckpoint:@"ADD_PHOTO_BAR_ITEM"];
+        [[Mixpanel sharedInstance] track:@"Take Photo" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter], @"Where" : @"Top Bar"}];
         UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
         CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
         cameraViewController.event = self.invitation[@"event"];
     }
     else if ([segue.identifier isEqualToString:@"ShowDetailPhoto"]){
+        [[Mixpanel sharedInstance] track:@"Detail Photo"];
         
         NSArray *indexPaths = [self.collectionView indexPathsForSelectedItems];
         NSIndexPath *indexPath = [indexPaths objectAtIndex:0];
@@ -865,7 +933,7 @@
         
         ChooseLastEventViewController *chooseLastEvent = (ChooseLastEventViewController *)segue.destinationViewController;
         chooseLastEvent.event = self.invitation[@"event"];
-        chooseLastEvent.invited = self.invited;
+        chooseLastEvent.invited = [self.invited mutableCopy];
         
         if (!self.mustChangeTitle) {
             chooseLastEvent.levelRoot = 0;
@@ -893,6 +961,7 @@
         
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;
         invitedController.invited = self.invited;
+        invitedController.event = self.invitation[@"event"];
     }
     
 }
@@ -950,10 +1019,13 @@
 - (IBAction)autoImport:(id)sender {
     NSLog(@"auto Import");
     if (self.invitation[@"event"][@"end_time"]) {
+        [[Mixpanel sharedInstance] track:@"Import Photo Auto" properties:@{@"has_end_time": @YES, @"has_started": [NSNumber numberWithBool:self.isDuringOrAfter]}];
         [self performSegueWithIdentifier:@"DirectImport" sender:nil];
     }
     else{
+        [[Mixpanel sharedInstance] track:@"Import Photo Auto" properties:@{@"has_end_time": @NO, @"has_started": [NSNumber numberWithBool:self.isDuringOrAfter]}];
         [self performSegueWithIdentifier:@"EventType" sender:nil];
+        
     }
 }
 
@@ -1017,9 +1089,17 @@
         }
     }
     else{
-        self.title = @"Now !";
+        self.title = NSLocalizedString(@"UITabBar_Title_FourthPosition", nil);
     }
     
+}
+
+-(void)setNbGuests:(NSDictionary *)summary{
+    NSLog(@"Attending : %@", summary[@"attending_count"]);
+    self.invitation[@"event"][@"summary_guests"] = summary;
+    [self.invitation saveInBackground];
+    self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests", nil), (int)summary[@"count"]];
+    self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests_NbMaybe", nil), summary[@"attending_count"], summary[@"maybe_count"]];
 }
 
 

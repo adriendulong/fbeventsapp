@@ -12,10 +12,15 @@
 
 @interface InvitedListViewController : UITableViewController
 
-@property (strong, nonatomic) NSArray *invited;
+@property (strong, nonatomic) NSMutableArray *invited;
 @property (strong, nonatomic) NSMutableArray *attending;
 @property (strong, nonatomic) NSMutableArray *maybe;
 @property (strong, nonatomic) NSMutableArray *no;
 @property (strong, nonatomic) NSMutableArray *notjoined;
+@property (strong, nonatomic) PFObject *event;
+@property (nonatomic, assign) int nbInvitedToAdd;
+@property (nonatomic, assign) int nbInvitedAlreadyAdded;
+@property (nonatomic, assign) BOOL hasNext;
+@property (strong, nonatomic) NSString *afterCursor;
 
 @end

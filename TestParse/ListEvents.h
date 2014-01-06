@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *refreshImage;
 @property (strong, nonatomic) PFObject *closestInvitation;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+@property (copy) void (^completionHandler)(UIBackgroundFetchResult);
+@property (assign, nonatomic) BOOL isBackgroundTask;
 
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;

@@ -38,6 +38,8 @@
     self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    [self.validateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Validate", nil)];
+    [self.selectButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
     
     self.datasourceAutomatic = [NSMutableArray array];
     self.datasourceComplete = [NSMutableArray array];

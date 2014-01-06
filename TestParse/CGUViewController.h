@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface CGUViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *terminateButton;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 - (IBAction)finish:(id)sender;
 @end

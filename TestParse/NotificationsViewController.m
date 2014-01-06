@@ -27,6 +27,10 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self.terminateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Terminate", nil)];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

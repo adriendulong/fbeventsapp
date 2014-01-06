@@ -30,6 +30,15 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Memories To Import View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    self.kindEventsTitle.text = NSLocalizedString(@"MemoriesImportViewController_WhatEventKind", nil);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -74,6 +83,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
     if (indexPath.row<self.arrayEvents.count) {
+        
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.hud.labelText = NSLocalizedString(@"MemoriesImportViewController_Loading", nil);
         
@@ -111,7 +121,9 @@
                                 // PERFORM SEGUE
                                 ////
                                 self.chosedEvent = event;
+                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                 [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                
                                 
                             }];
                         }
@@ -121,10 +133,14 @@
                             ////
                             self.chosedEvent = event;
                             if (event[@"end_time"]) {
+                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
                                 [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                
                             }
                             else{
+                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                 [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
+                                
                             }
                         }
                     }
@@ -147,7 +163,9 @@
                                         // PERFORM SEGUE
                                         ////
                                         self.chosedEvent = event;
+                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                         [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                        
                                         
                                     }];
                                 }
@@ -157,10 +175,14 @@
                                     ////
                                     self.chosedEvent = event;
                                     if (event[@"end_time"]) {
+                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                         [self performSegueWithIdentifier:@"DirectImport" sender:nil];
+                                        
                                     }
                                     else{
+                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
                                         [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
+                                        
                                     }
                                 }
                             }
@@ -188,9 +210,11 @@
                                 /////
                                 self.chosedEvent = event;
                                 if (event[@"end_time"]) {
+                                    [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                     [self performSegueWithIdentifier:@"DirectImport" sender:nil];
                                 }
                                 else{
+                                    [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
                                     [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
                                 }
                             }
@@ -239,8 +263,6 @@
         
         NSDictionary *event = [self.arrayEvents objectAtIndex:indexPath.row];
         
-        NSLog(@"Date %@", event[@"start_time"] );
-        NSLog(@"EVENT Detail %@", event);
         //Date
         NSDate *start_date = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
         //Formatter for the hour
@@ -270,6 +292,10 @@
             
         }
         
+        UILabel *label = (UILabel *)[cell viewWithTag:11];
+        [label setText:NSLocalizedString(@"MemoriesImportViewController_LoadMore", nil)];
+        
+        
         UIActivityIndicatorView *activityIndicator = (UIActivityIndicatorView *)[cell viewWithTag:1];
         [activityIndicator stopAnimating];
         [activityIndicator setHidden:YES];
@@ -287,8 +313,6 @@
     if (requestFacebook==nil) {
         requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&limit=20",FacebookEventsFields, stopDate];
     }
-    
-    NSLog(@"Request : %@", requestFacebook);
     FBRequest *request = [FBRequest requestForGraphPath:requestFacebook];
     
     // Send request to Facebook
@@ -311,7 +335,6 @@
             }
             else{
                 self.thereIsMore = NO;
-                NSLog(@"FINISHED TOTAL : %i", self.nbTotalEvents);
                 
             }
             

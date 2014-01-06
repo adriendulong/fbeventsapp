@@ -56,7 +56,6 @@
     //@"rsvp_event"
     //If not have permission to rsvp
     FBSession *session = [PFFacebookUtils session] ;
-    NSLog(@"Permissions : %@", session.permissions);
     
     BOOL rsvp_perm = [[PFUser currentUser][@"has_rsvp_perm"] boolValue];
     
@@ -75,12 +74,10 @@
                     currentUser[@"has_rsvp_perm"] = @YES;
                     [currentUser saveInBackground];
                 }
-                NSLog(@"TEST");
             }];
             
             
             if (succeeded) {
-                NSLog(@"COOL");
             }
             
             [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

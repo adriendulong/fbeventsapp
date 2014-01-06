@@ -13,6 +13,14 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchNotifTel;
 @property (weak, nonatomic) IBOutlet UISwitch *swithNotifMail;
 @property (assign, nonatomic) BOOL mustDismiss;
+@property (weak, nonatomic) IBOutlet UILabel *iPhoneNotifLabel;
+@property (weak, nonatomic) IBOutlet UILabel *mailNotifLabel;
+@property (weak, nonatomic) IBOutlet UILabel *supportLabel;
+@property (weak, nonatomic) IBOutlet UILabel *facebookLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cguLabel;
+@property (weak, nonatomic) IBOutlet UILabel *disconnectLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *finishLabel;
+@property (weak, nonatomic) IBOutlet UILabel *thanksLabel;
 
 
 - (IBAction)finish:(id)sender;

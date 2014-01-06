@@ -12,6 +12,8 @@
 #import "PhotoDetailViewController.h"
 #import "MOUtility.h"
 #import "ListInvitationsController.h"
+#import "ListEvents.h"
+#import "GAI.h"
 
 
 @implementation TestParseAppDelegate
@@ -20,13 +22,24 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
+    #warning DEVCONFIG
+    [TestFlight takeOff:@"39edfba5-2220-4a06-a22f-ffcc1445b4b8"];
+    
+    //Mixpanel
+    [Mixpanel sharedInstanceWithToken:MixpanelToken];
+    [[Mixpanel sharedInstance].people set:@{@"language": [[NSLocale preferredLanguages] objectAtIndex:0]}];
+    
+    // Initialize tracker.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-46687213-1"];
     
     // Override point for customization after application launch.
-    [Parse setApplicationId:@"8UT7kL1fmD9Orti3P7obNJyTgSpJpEGvz4HkCrr8"
-                  clientKey:@"dT15cWACdZqlNCu0UIb1goDN6KXmTjs9yolq9CVB"];
+#warning DEVCONFIG
+    [Parse setApplicationId:@"FtBRQLsJwozj3G32heaXVfCYALQbAmmJZnnopsrP"
+                  clientKey:@"C2jEPO7tVj5qZC1rk1YvvDqpjJAIhgbB9YKaGVhm"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     //Facebook init
@@ -38,13 +51,24 @@
                             UIRemoteNotificationTypeAlert |
                             UIRemoteNotificationTypeSound];
     
-    //Customize Tab bar Text
+    //Customize Tab bar Text and icons
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]
                                                         } forState:UIControlStateSelected];
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    [[tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
+    [[tabBarController.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"UITabBar_Title_FirstPosition", nil)];
+    [[tabBarController.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"UITabBar_Title_SecondPosition", nil)];
+    [[tabBarController.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"UITabBar_Title_ThirdPosition", nil)];
+    [[tabBarController.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"UITabBar_Title_FourthPosition", nil)];
     
     //Init
     self.needToRefreshEvents = NO;
     self.storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    
+    
     
     
     ////////////////
@@ -81,10 +105,92 @@
         currentInstallation[@"language"] = [[NSLocale preferredLanguages] objectAtIndex:0];
         [currentInstallation saveEventually];
     }
-
-    //[MOUtility removeAllInvitations];
-    //[MOUtility removeAllEvents];
-
+    
+    //Fetch Background
+    self.application = application;
+    
+    [PFPush handlePush:launchOptions];
+    
+    /* PUSH */
+    
+    if ([launchOptions valueForKey:@"e"]!=nil) {
+        //New Photo in event
+        NSString *eventId = [launchOptions objectForKey:@"e"];
+        
+        PFQuery *innerQueryEvent = [PFQuery queryWithClassName:@"Event"];
+        [innerQueryEvent whereKey:@"objectId" equalTo:eventId];
+        
+        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+        [queryInvit whereKey:@"event" matchesQuery:innerQueryEvent];
+        [queryInvit includeKey:@"event"];
+        queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                //completionHandler(UIBackgroundFetchResultFailed);
+            }else if ([PFUser currentUser]) {
+                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                viewController.invitation = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+                
+                //completionHandler(UIBackgroundFetchResultNewData);
+            } else {
+                //completionHandler(UIBackgroundFetchResultNoData);
+            }
+            
+        }];
+    }
+    else if([launchOptions valueForKey:@"p"]!=nil){
+        //New interaction on a photo
+        NSString *photoId = [launchOptions objectForKey:@"p"];
+        
+        PFQuery *queryPhoto = [PFQuery queryWithClassName:@"Photo"];
+        [queryPhoto whereKey:@"objectId" equalTo:photoId];
+        [queryPhoto includeKey:@"user"];
+        [queryPhoto includeKey:@"prospect"];
+        queryPhoto.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                //completionHandler(UIBackgroundFetchResultFailed);
+            }else if ([PFUser currentUser]) {
+                
+                PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
+                viewController.photo = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+                
+                //completionHandler(UIBackgroundFetchResultNewData);
+            } else {
+                //completionHandler(UIBackgroundFetchResultNoData);
+            }
+            
+        }];
+    }
+    else if([launchOptions valueForKey:@"type"]!=nil){
+        if([[launchOptions valueForKey:@"type"] intValue]==0){
+            if ([PFUser currentUser]) {
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                [tabBar setSelectedIndex:1];
+                
+                //completionHandler(UIBackgroundFetchResultNewData);
+            }
+            
+        }
+    }
+    
+    
+    //Update user infos
+    if ([PFUser currentUser]) {
+        [MOUtility updateUserInfos];
+    }
     
     return YES;
 }
@@ -103,6 +209,8 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    NSNumber *seconds = @([[NSDate date] timeIntervalSinceDate:self.startTime]);
+    [[Mixpanel sharedInstance] track:@"Session" properties:@{@"Length": seconds}];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -114,13 +222,32 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    NSLog(@"ENTER FOREGROUND");
+    //reload events
+    if ([PFUser currentUser]) {
+        UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+        UINavigationController *navController = (UINavigationController *)[tabBar.viewControllers objectAtIndex:0];
+        ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
+        [listEvents fbReload:nil];
+    }
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[Mixpanel sharedInstance] track:@"App Open"];
+    [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
     [[FBSession activeSession] handleDidBecomeActive];
+    
+    //Clear Badge
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.badge != 0) {
+        currentInstallation.badge = 0;
+        
+        [currentInstallation saveEventually];
+    }
+    
+    self.startTime = [NSDate date];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -135,17 +262,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     [currentInstallation setDeviceTokenFromData:newDeviceToken];
     currentInstallation[@"is_push_notif"] = @YES;
     [currentInstallation saveInBackground];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel.people addPushDeviceToken:newDeviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    
-    //Clear Badge
-    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    if (currentInstallation.badge != 0) {
-        currentInstallation.badge = 0;
-        
-        [currentInstallation saveEventually];
-    }
     
     if (application.applicationState == UIApplicationStateInactive) {
         // The application was just brought from the background to the foreground,
@@ -153,98 +275,239 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
         [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
     
+    if (application.applicationState == UIApplicationStateActive) {
+        
+        if ([userInfo valueForKey:@"e"]!=nil) {
+            //New Photo in event
+            NSString *eventId = [userInfo objectForKey:@"e"];
+            
+            PFQuery *innerQueryEvent = [PFQuery queryWithClassName:@"Event"];
+            [innerQueryEvent whereKey:@"objectId" equalTo:eventId];
+            
+            PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+            [queryInvit whereKey:@"event" matchesQuery:innerQueryEvent];
+            [queryInvit includeKey:@"event"];
+            queryInvit.cachePolicy  = kPFCachePolicyCacheElseNetwork;
+            
+            [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    //Add a notif to the core data
+                    /* NSDictionary *dictionnary;
+                     if ([MOUtility getEventForObjectId:eventId]!=nil) {
+                     dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
+                     @"type" : @0,
+                     @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                     }
+                     else{
+                     dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
+                     @"type" : @0,
+                     @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                     }
+                     
+                     
+                     [MOUtility saveNotification:dictionnary];*/
+                    
+                    PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                    viewController.invitation = object;
+                    viewController.hidesBottomBarWhenPushed = YES;
+                    
+                    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                    UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                    [navController pushViewController:viewController animated:YES];
+                    
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+        else if([userInfo valueForKey:@"p"]!=nil){
+            //New interaction on a photo
+            NSString *photoId = [userInfo objectForKey:@"p"];
+            
+            PFQuery *queryPhoto = [PFQuery queryWithClassName:@"Photo"];
+            [queryPhoto whereKey:@"objectId" equalTo:photoId];
+            [queryPhoto includeKey:@"user"];
+            [queryPhoto includeKey:@"prospect"];
+            queryPhoto.cachePolicy  = kPFCachePolicyCacheElseNetwork;
+            
+            [queryPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    /*NSDictionary *dictionnary = @{@"objectId": photoId,
+                     @"type" : @1,
+                     @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
+                     [MOUtility saveNotification:dictionnary];*/
+                    
+                    
+                    PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
+                    viewController.photo = object;
+                    viewController.hidesBottomBarWhenPushed = YES;
+                    
+                    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                    UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                    [navController pushViewController:viewController animated:YES];
+                    
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+        else if([[userInfo valueForKey:@"type"] intValue]==0){
+            if ([PFUser currentUser]) {
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                [tabBar setSelectedIndex:1];
+                
+                completionHandler(UIBackgroundFetchResultNewData);
+            }
+            
+        }
+    }
+    else if (application.applicationState == UIApplicationStateBackground){
+        
+        if ([userInfo valueForKey:@"e"]!=nil) {
+            //New Photo in event
+            NSString *eventId = [userInfo objectForKey:@"e"];
+            
+            PFQuery *innerQueryEvent = [PFQuery queryWithClassName:@"Event"];
+            [innerQueryEvent whereKey:@"objectId" equalTo:eventId];
+            
+            PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+            [queryInvit whereKey:@"event" matchesQuery:innerQueryEvent];
+            [queryInvit includeKey:@"event"];
+            
+            [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+        else if([userInfo valueForKey:@"p"]!=nil){
+            //New interaction on a photo
+            NSString *photoId = [userInfo objectForKey:@"p"];
+            
+            PFQuery *queryPhoto = [PFQuery queryWithClassName:@"Photo"];
+            [queryPhoto whereKey:@"objectId" equalTo:photoId];
+            [queryPhoto includeKey:@"user"];
+            [queryPhoto includeKey:@"prospect"];
+            
+            [queryPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+    }
+    else{
+        
+        if ([userInfo valueForKey:@"e"]!=nil) {
+            //New Photo in event
+            NSString *eventId = [userInfo objectForKey:@"e"];
+            
+            PFQuery *innerQueryEvent = [PFQuery queryWithClassName:@"Event"];
+            [innerQueryEvent whereKey:@"objectId" equalTo:eventId];
+            
+            PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+            [queryInvit whereKey:@"event" matchesQuery:innerQueryEvent];
+            [queryInvit includeKey:@"event"];
+            queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+            
+            [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                    viewController.invitation = object;
+                    viewController.hidesBottomBarWhenPushed = YES;
+                    
+                    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                    UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                    [navController pushViewController:viewController animated:YES];
+                    
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+        else if([userInfo valueForKey:@"p"]!=nil){
+            //New interaction on a photo
+            NSString *photoId = [userInfo objectForKey:@"p"];
+            
+            PFQuery *queryPhoto = [PFQuery queryWithClassName:@"Photo"];
+            [queryPhoto whereKey:@"objectId" equalTo:photoId];
+            [queryPhoto includeKey:@"user"];
+            [queryPhoto includeKey:@"prospect"];
+            queryPhoto.cachePolicy = kPFCachePolicyCacheElseNetwork;
+            
+            [queryPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                if (error && error.code == kPFErrorObjectNotFound) {
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }else if ([PFUser currentUser]) {
+                    
+                    PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
+                    viewController.photo = object;
+                    viewController.hidesBottomBarWhenPushed = YES;
+                    
+                    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                    UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                    [navController pushViewController:viewController animated:YES];
+                    
+                    completionHandler(UIBackgroundFetchResultNewData);
+                } else {
+                    completionHandler(UIBackgroundFetchResultNoData);
+                }
+                
+            }];
+        }
+        else if([[userInfo valueForKey:@"type"] intValue]==0){
+            if ([PFUser currentUser]) {
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                [tabBar setSelectedIndex:1];
+                
+                completionHandler(UIBackgroundFetchResultNewData);
+            }
+            
+        }
+    }
     
-    if ([userInfo valueForKey:@"e"]!=nil) {
-        //New Photo in event
-        NSString *eventId = [userInfo objectForKey:@"e"];
-        
-        PFQuery *innerQueryEvent = [PFQuery queryWithClassName:@"Event"];
-        [innerQueryEvent whereKey:@"objectId" equalTo:eventId];
-        
-        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
-        [queryInvit whereKey:@"event" matchesQuery:innerQueryEvent];
-        [queryInvit includeKey:@"event"];
-        
-        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (error && error.code == kPFErrorObjectNotFound) {
-                completionHandler(UIBackgroundFetchResultFailed);
-            }else if ([PFUser currentUser]) {
-                //Add a notif to the core data
-               /* NSDictionary *dictionnary;
-                if ([MOUtility getEventForObjectId:eventId]!=nil) {
-                   dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
-                                    @"type" : @0,
-                                    @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
-                }
-                else{
-                    dictionnary = @{@"invitation": [MOUtility saveInvitationWithEvent:object],
-                                    @"type" : @0,
-                                    @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
-                }
-                
-                
-                [MOUtility saveNotification:dictionnary];*/
-                
-                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
-                viewController.invitation = object;
-                viewController.hidesBottomBarWhenPushed = YES;
-                
-                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
-                [navController pushViewController:viewController animated:YES];
-                
-                completionHandler(UIBackgroundFetchResultNewData);
-            } else {
-                completionHandler(UIBackgroundFetchResultNoData);
-            }
-            
-        }];
-    }
-    else if([userInfo valueForKey:@"p"]!=nil){
-        //New interaction on a photo
-        NSString *photoId = [userInfo objectForKey:@"p"];
-        
-        PFQuery *queryPhoto = [PFQuery queryWithClassName:@"Photo"];
-        [queryPhoto whereKey:@"objectId" equalTo:photoId];
-        [queryPhoto includeKey:@"user"];
-        [queryPhoto includeKey:@"prospect"];
-        
-        [queryPhoto getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            if (error && error.code == kPFErrorObjectNotFound) {
-                completionHandler(UIBackgroundFetchResultFailed);
-            }else if ([PFUser currentUser]) {
-                /*NSDictionary *dictionnary = @{@"objectId": photoId,
-                                              @"type" : @1,
-                                              @"message": [[userInfo valueForKey:@"aps"] valueForKey:@"alert"]};
-                [MOUtility saveNotification:dictionnary];*/
-                
-                
-                PhotoDetailViewController *viewController = (PhotoDetailViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotoDetail"];
-                viewController.photo = object;
-                viewController.hidesBottomBarWhenPushed = YES;
-                
-                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
-                [navController pushViewController:viewController animated:YES];
-                
-                completionHandler(UIBackgroundFetchResultNewData);
-            } else {
-                completionHandler(UIBackgroundFetchResultNoData);
-            }
-            
-        }];
-    }
-    else if([[userInfo valueForKey:@"type"] intValue]==0){
-        
-        UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-        [tabBar setSelectedIndex:1];
-    }
     
     
     //
     [PFPush handlePush:userInfo];
 }
 
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    //[[Mixpanel sharedInstance] track:@"Background Fetch"];
+    
+    if ([PFUser currentUser]) {
+        UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+        UINavigationController *navController = (UINavigationController *)[tabBar.viewControllers objectAtIndex:0];
+        ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
+        listEvents.completionHandler = completionHandler;
+        listEvents.isBackgroundTask = YES;
+        [listEvents fbReload:nil];
+    }
+    
+}
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     if (error.code == 3010) {

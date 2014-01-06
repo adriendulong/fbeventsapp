@@ -309,6 +309,15 @@
 }
 
 
++(NSDate *)birthdayStringToDate:(NSString *)birthdayString{
+    NSDateFormatter* myFormatter = [[NSDateFormatter alloc] init];
+    [myFormatter setDateFormat:@"MM/dd/yyyy"];
+    NSDate* myDate = [myFormatter dateFromString:birthdayString];
+    
+    return myDate;
+}
+
+
 #pragma mark - Image
 
 +(CGSize)newBoundsForMaxSize:(float)max andActualSize:(CGSize)size{
@@ -449,6 +458,45 @@
         NSLog(@"deleted");
     }
     
+    if (![context save:&error]) {
+        NSLog(@"Couldn't save: %@", error);
+    }
+    
+    
+    return YES;
+}
+
++(BOOL)deleteInvitation:(NSString *)objectId{
+    NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    
+    // create a fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Invitation" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    // setup a predicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectId == %@", objectId];
+    fetchRequest.predicate = predicate;
+    
+    // fetch all objects
+    NSError *error = nil;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (fetchedObjects == nil) {
+        NSLog(@"Houston, we have a problem: %@", error);
+    }
+    else{
+        // display all objects
+        for (Invitation *invitation in fetchedObjects) {
+            [context deleteObject:invitation];
+        }
+    }
+    
+    if (![context save:&error]) {
+        NSLog(@"Couldn't save: %@", error);
+    }
+    
+    
+    
     return YES;
 }
 
@@ -474,6 +522,11 @@
         NSLog(@"deleted");
     }
     
+    if (![context save:&error]) {
+        NSLog(@"Couldn't save: %@", error);
+    }
+    
+    
     return YES;
 }
 
@@ -496,6 +549,11 @@
     for (Notification *notif in fetchedObjects) {
         [context deleteObject:notif];
     }
+    
+    if (![context save:&error]) {
+        NSLog(@"Couldn't save: %@", error);
+    }
+    
     
     return YES;
 }
@@ -729,8 +787,6 @@
     NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:YES selector:nil];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
-    NSDate *test =[[NSDate date] dateByAddingTimeInterval:-12*3600];
-    NSLog(@"TEST : %@", test);
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(((event.start_date >= %@) OR (event.end_date >= %@)) AND ((rsvp_status like %@) OR (rsvp_status like %@)))", [[NSDate date] dateByAddingTimeInterval:-12*3600] , [NSDate date],FacebookEventAttending, FacebookEventMaybe];
     fetchRequest.predicate = predicate;
 
@@ -940,6 +996,9 @@
 
 #pragma mark - LogOut
 +(BOOL)logoutApp{
+    UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+    
     [self emptyDatabase];
     
     // Clear all caches
@@ -947,6 +1006,101 @@
     [PFUser logOut];
     
     return YES;
+}
+
+
+#pragma mark - User Infos
++(void)updateUserInfos{
+    
+    FBRequest *request = [FBRequest requestForMe];
+    [[Mixpanel sharedInstance] identify:[PFUser currentUser].objectId];
+    [[Mixpanel sharedInstance].people set:@{@"is_mail_notif": [PFUser currentUser][@"is_mail_notif"]}];
+    
+    
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            // result is a dictionary with the user's Facebook data
+            NSDictionary *userData = (NSDictionary *)result;
+            
+            NSString *facebookID = userData[@"id"];
+            
+            NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
+            
+            PFUser *currentUser = [PFUser currentUser];
+            currentUser.email = userData[@"email"];
+            [[Mixpanel sharedInstance].people set:@{@"$email": currentUser.email}];
+            
+            if(userData[@"id"]){
+                currentUser[@"facebookId"] = userData[@"id"];
+            }
+            
+            if(userData[@"first_name"]){
+                currentUser[@"first_name"] = userData[@"first_name"];
+                [[Mixpanel sharedInstance].people set:@{@"First Name": currentUser[@"first_name"]}];
+            }
+            
+            if(userData[@"last_name"]){
+                currentUser[@"last_name"] = userData[@"last_name"];
+                [[Mixpanel sharedInstance].people set:@{@"Last Name": currentUser[@"last_name"]}];
+            }
+            
+            if(userData[@"name"]){
+                currentUser[@"name"] = userData[@"name"];
+                [[Mixpanel sharedInstance].people set:@{@"$name": currentUser[@"name"]}];
+            }
+            
+            if(userData[@"location"][@"name"]){
+                currentUser[@"location"] = userData[@"location"][@"name"];
+                [[Mixpanel sharedInstance].people set:@{@"Location": currentUser[@"location"]}];
+                [[Mixpanel sharedInstance] registerSuperProperties:@{@"Location": currentUser[@"location"]}];
+            }
+            
+            if(userData[@"gender"]){
+                
+                currentUser[@"gender"] = userData[@"gender"];
+                [[Mixpanel sharedInstance] registerSuperProperties:@{@"Gender": currentUser[@"gender"]}];
+                [[Mixpanel sharedInstance].people set:@{@"Gender": currentUser[@"gender"]}];
+            }
+            
+            if(userData[@"birthday"]){
+                currentUser[@"birthday"] = userData[@"birthday"];
+                [[Mixpanel sharedInstance] registerSuperProperties:@{@"Birthday": [MOUtility birthdayStringToDate:userData[@"birthday"]]}];
+                [[Mixpanel sharedInstance].people set:@{@"Birthday": [MOUtility birthdayStringToDate:userData[@"birthday"]]}];
+            }
+            
+            currentUser[@"pictureURL"] = [pictureURL absoluteString];
+            [[Mixpanel sharedInstance].people set:@{@"$profile_picture": currentUser[@"pictureURL"]}];
+            currentUser[@"is_mail_notif"] = @YES;
+            
+            [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    //Update permissions
+                    FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
+                    [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                        PFUser *currentUser =[PFUser currentUser];
+                        
+                        NSArray *permissions = result[@"data"];
+                        if ([[permissions objectAtIndex:0][@"rsvp_event"] intValue] == 1) {
+                            currentUser[@"has_rsvp_perm"] = @YES;
+                        }
+                        else{
+                            currentUser[@"has_rsvp_perm"] = @NO;
+                        }
+                        
+                        if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
+                            currentUser[@"has_publish_perm"] = @YES;
+                        }
+                        else{
+                            currentUser[@"has_publish_perm"] = @NO;
+                        }
+                        
+                        [currentUser saveInBackground];
+                    }];
+                }
+            }];
+        }
+    }];
 }
 
 

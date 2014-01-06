@@ -21,6 +21,7 @@ extern NSString *const HaveFinishedRefreshEvents;
 extern NSString *const LogOutUser;
 extern NSString *const LogInUser;
 extern NSString *const UpdateClosestEvent;
+extern NSString *const InvitedDetailFinished;
 
 
 #pragma mark - Facebook
@@ -46,5 +47,11 @@ extern int const DefaultNbHoursEvent;
 #pragma mark - Notif Type
 extern int const NewPhotosEvent;
 extern int const NewLikePhoto;
+
+#pragma mark - Fetch Interval
+extern NSTimeInterval const TimeIntervalFetch;
+
+#pragma mark - External Lib Constants
+extern NSString *const MixpanelToken;
 
 

@@ -17,4 +17,9 @@
     #import <Parse/Parse.h>
     #import "Constants.h"
     #import "TestFlight.h"
+    #import "Mixpanel/Mixpanel.h"
+    #import "GAITrackedViewController.h"
+    #import "GAI.h"
+    #import "GAIDictionaryBuilder.h"
+    #import "GAIFields.h"
 #endif

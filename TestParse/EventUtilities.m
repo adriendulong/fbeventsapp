@@ -52,26 +52,7 @@
             [EventUtilities updateInviteUser:user toEvent:event withRsvp:rsvp withInvitation:object];
         }
         else{
-            //Maybe this user was a prospect in the event
-            PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
-            [queryProspect whereKey:@"facebookId" equalTo:user[@"facebookId"]];
-            
-            PFQuery *queryInvitationProsp = [PFQuery queryWithClassName:@"Invitation"];
-            [queryInvitationProsp whereKey:@"prospect" matchesQuery:queryProspect];
-            
-            [queryInvitationProsp getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                if (error && error.code == kPFErrorObjectNotFound) {
-                    NSLog(@"Error retrieving invitations : %@", [error userInfo]);
-                    [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
-                }
-                //Exists invitation where the user is prospect
-                else if(!error){
-                    [object deleteInBackground];
-                    [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
-                }
-            }];
-            
-            
+            [EventUtilities inviteUser:user toEvent:event withRsvp:rsvp];
             
         }
         
@@ -80,12 +61,11 @@
 
 
 +(void)inviteUser:(PFUser *)user toEvent:(PFObject *)event withRsvp:(NSString *)rsvp{
-    NSLog(@"NEW INVIT");
     
     PFObject *invitation = [PFObject objectWithClassName:@"Invitation"];
     [invitation setObject:event forKey:@"event"];
     [invitation setObject:user forKey:@"user"];
-    invitation[@"is_memory"]=@YES;
+    invitation[@"is_memory"] = @YES;
     invitation[@"rsvp_status"] = rsvp;
     invitation[@"start_time"] = event[@"start_time"];
     
@@ -94,7 +74,6 @@
     
     if([EventUtilities isOwnerOfEvent:event forUser:user])
     {
-        NSLog(@"You are the owner !!");
         invitation[@"isOwner"] = @YES;
     }
     
@@ -111,7 +90,6 @@
 
 
 +(void)updateInviteUser:(PFUser *)user toEvent:(PFObject *)event withRsvp:(NSString *)rsvp withInvitation:(PFObject *)invitation{
-    NSLog(@"UPDATE INVITATION IF NEEDED");
     BOOL needToUpdate = NO;
     
     if(![invitation[@"rsvp_status"] isEqualToString:rsvp]){
@@ -146,7 +124,6 @@
     }
     
     if(needToUpdate){
-        NSLog(@"update Invit");
        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
            
            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:rsvp forKey:@"rsvp"];
@@ -186,7 +163,6 @@
     [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
         if (!error) {
             // The count request succeeded. Log the count
-            NSLog(@"Number of invitations : %d", count);
             if(count>0){
                [[[[controller tabBar] items] objectAtIndex:index] setBadgeValue:[NSString stringWithFormat:@"%d", count]];
             }
@@ -195,7 +171,6 @@
             }
         } else {
             // The request failed
-            NSLog(@"FAILED NUMBER");
         }
     }];
 }

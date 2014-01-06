@@ -1,5 +1,16 @@
-///// UIButton /////
-"UIButton_Back" = "Retour";
+/* PUSH Notifications */
+"PushNotifs_LikePhoto" = "%@ a aimé une de vos photos";
+"PushNotifs_NewPhotos" = "%@ nouvelles photos ajoutées à %@";
+"PushNotifs_NewPhotoOne" = "Une nouvelle photo ajoutée à %@";
+"PushNotifs_InvitationsMany" = "%@ invitations à des évènements en attente de réponse";
+"PushNotifs_InvitationsOne" = "Une invitation à un évènement en attente de réponse";
+
+
+/* UITabBar */
+"UITabBar_Title_FirstPosition" = "A venir";
+"UITabBar_Title_SecondPosition" = "En attente";
+"UITabBar_Title_ThirdPosition" = "Souvenirs";
+"UITabBar_Title_FourthPosition" = "Now !";
 
 ///// UIAlertView /////
 "UIAlertView_Title_Photo_Error" = "Impossible d'envoyer la photo";
@@ -18,6 +29,16 @@
 "UIAlertView_Dismiss" = "OK";
 "UIAlertView_Yes" = "Oui";
 "UIAlertView_No" = "Non";
+
+/* UISegment RSVP */
+"UISegmentRSVP_Going" = "Accepter";
+"UISegmentRSVP_Maybe" = "Peut-être";
+"UISegmentRSVP_Decline" = "Refuser";
+
+
+/// UIBarButtonItem ///
+"UIBArButtonItem_Terminate" = "Terminé";
+"UIBArButtonItem_Validate" = "Valider";
 
 
 ///// UIActionSheet /////
@@ -42,7 +63,7 @@
 "ChooseLastEventViewController_Choice" = "Choix";
 "ChooseLastEventViewController_Party" = "Soirée";
 "ChooseLastEventViewController_Journey" = "Journée";
-"ChooseLastEventViewController_Week-End" = "Week-End";
+"ChooseLastEventViewController_WeekEnd" = "Week-End";
 "ChooseLastEventViewController_Holiday" = "Vacances !";
 "ChooseLastEventViewController_OK" = "OK";
 
@@ -55,6 +76,8 @@
 "ChooseLastEventViewController_Month" = "mois";
 "ChooseLastEventViewController_Months" = "mois";
 
+"ChooseLastEventViewController_KindOfEvents" = "De quel type d'évènement s'agit-il ?";
+
 
 ///// PhotosImportedViewController /////
 "PhotosImportedViewController_OnFacebook" = "Sur Facebook";
@@ -66,6 +89,7 @@
 ///// UploadFilesAutomaticViewController /////
 "UploadFilesAutomaticViewController_Title" = "Envoi des photos";
 "UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
+"UploadFilesAutomaticViewController_TextMarmotte" = "Notre marmotte range vos photos dans son terrier !";
 
 ////manque label notre marmotte s’occupe de ranger
 
@@ -73,10 +97,11 @@
 "CameraViewController_Auto" = "Auto";
 "CameraViewController_Yes" = "Oui";
 "CameraViewController_No" = "Non";
+"CameraViewController_Title" = "Prenez une photo de l'évènement !";
 
 
 ///// SharePhotoViewController /////
-"SharePhotoViewController_Title_0" = "Test";
+"SharePhotoViewController_Title_One" = "Postez votre photo";
 "SharePhotoViewController_Title" = "Postez vos photos";
 "SharePhotoViewController_AddLegend" = "Ajoutez une légende à votre photo";
 "SharePhotoViewController_AddLegend2" = "Ajoutez une légende à vos photos";
@@ -87,6 +112,7 @@
 
 ///// PhotoDetailViewController /////
 "PhotoDetailViewController_Title" = "PHOTO";
+"PhotoDetailViewController_DeletePhoto" = "Etes vous sur de vouloir supprimer cette photo ?";
 
 
 ///// PhotosCollectionViewController /////
@@ -101,12 +127,16 @@
 "PhotosCollectionViewController_Show_Label" = "Afficher les informations";
 "PhotosCollectionViewController_Hide_Label" = "Masquer les informations";
 "PhotosCollectionViewController_Alert_Title" = "Masquer les informations";
-"PhotosCollectionViewController_NbGuests" = "%i invités";
-"PhotosCollectionViewController_NbGuests_NbMaybe" = "%i présents - %i peut-être";
+"PhotosCollectionViewController_NbGuests" = "%@ invités";
+"PhotosCollectionViewController_NbGuests_NbMaybe" = "%@ présents - %@ peut-être";
 "PhotosCollectionViewController_Error" = "Erreur";
 "PhotosCollectionViewController_Error_GMaps" = "Erreur lors de l'ouverture de Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Erreur lors de l'ouverture de Maps";
 "PhotosCollectionViewController_OK" = "OK";
+"PhotosCollectionViewController_TakePhoto" = "Prendre une photo";
+"PhotosCollectionViewController_AutoImport" = "Importation Automatique";
+"PhotosCollectionViewController_TimeConjonction" = "à";
+"PhotosCollectionViewController_NbPhotos" = "%i Photos";
 
 
 
@@ -127,15 +157,6 @@
 
 ///// LikesCollectionsController /////
 "LikesCollectionsController_Title" = "LIKERS";
-
-
-//toujours utilisé ?
-///// EventDetailViewController /////
-"EventDetailViewController_Title" = "Dans x jours";
-"EventDetailViewController_Marker_Title" = "Sydney";
-"EventDetailViewController_Marker_snippet" = "Australia";
-"EventDetailViewController_Countdown" = "dans %i jours";
-"EventDetailViewController_OwnerEvent" = "Evènement organisé par %@";
 
 
 //idem c’est où ce texte ?
@@ -166,6 +187,8 @@
 "ListInvitationsController_SendInvit" = "%@ vous a invité à cet évènement";
 "ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nPlus aucune invitation en attente !";
 "ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
+"ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
+"ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
 
 
 ///// ListEvents /////
@@ -175,12 +198,35 @@
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";
 "MemoriesImportViewController_Loading" = "Chargement";
+"MemoriesImportViewController_LoadMore" = "Charger Plus";
+"MemoriesImportViewController_WhatEventKind" = "Quel évènement souhaitez vous revivre ?";
+"MemoriesImportViewController_By" = "Par";
 
 
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
+"MemoriesViewController_AutoImportButton" = "Importation automatique";
 
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
 "SettingsViewController_Mail_Object" = "C’etait juste pour vous dire :";
+"SettingsViewController_iPhoneNotifs" = "Notifications iPhone";
+"SettingsViewController_mailNotifs" = "Notifications Mail";
+"SettingsViewController_support" = "Remarques et preuves d'amour";
+"SettingsViewController_wooventFB" = "Woovent sur Facebook";
+"SettingsViewController_CGU" = "Conditions d'utilisation";
+"SettingsViewController_disconnect" = "Deconnexion";
+"SettingsViewController_Thanks" = "Remerciements";
+
+
+
+//// LoginViewController ///
+"LoginViewController_CGU" = "En me connectant j'accepte les CGU";
+"LoginViewController_ConnectFB" = "Connectez vous avec Facebook";
+
+
+/// CGUViewController ///
+"CGUViewController_title" = "CGU";
+"CGUViewController_body" = "";
+

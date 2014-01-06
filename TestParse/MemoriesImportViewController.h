@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (assign, nonatomic) BOOL thereIsMore;
 @property (strong, nonatomic) NSString *nextPage;
+@property (weak, nonatomic) IBOutlet UILabel *kindEventsTitle;
 
 @end

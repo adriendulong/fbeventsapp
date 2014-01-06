@@ -19,6 +19,7 @@
 @property (nonatomic) int nbAutomaticPhotos;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerConstraint;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
 
 
 - (IBAction)selectPhotos:(id)sender;

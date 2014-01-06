@@ -65,19 +65,15 @@
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user) {
             if (!error) {
-                NSLog(@"Uh oh. The user cancelled the Facebook login.");
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:NSLocalizedString(@"UIAlertView_ErrorLogin_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             } else {
-                NSLog(@"Uh oh. An error occurred: %@", error);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             }
         } else if (user.isNew) {
-            NSLog(@"User signed up and logged in through Facebook!");
             [self updateUserInfos];
         } else {
-            NSLog(@"User logged in through Facebook!");
             [self updateUserInfos];
         }
     }];
@@ -86,7 +82,6 @@
 -(void)updateUserInfos{
     FBRequest *request = [FBRequest requestForMe];
     
-    NSLog(@" Facebook session :%@", [[[PFFacebookUtils session] accessTokenData] expirationDate]);
     
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

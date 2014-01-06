@@ -33,6 +33,10 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [self.validateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Validate", nil)];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SelectAllPhotosPhone object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:SelectAllPhotosFacebook object:nil];
@@ -580,17 +584,23 @@
         
         NSMutableArray *selectedPhotos = [[NSMutableArray alloc] init];
         
+        int photosPhone=0;
         for(Photo *photo in [self.imagesFound objectAtIndex:0]){
             if (photo.isSelected){
                 [selectedPhotos addObject:photo];
+                photosPhone++;
             }
         }
         
+        int photosFB=0;
         for(Photo *photo in [self.imagesFound objectAtIndex:1]){
             if (photo.isSelected){
                 [selectedPhotos addObject:photo];
+                photosFB++;
             }
         }
+        
+        [[Mixpanel sharedInstance] track:@"Upload Auto Photos" properties:@{@"Nb Photos Phone": [NSNumber numberWithInt:photosPhone],@"Nb Photos Facebook": [NSNumber numberWithInt:photosFB] }];
         
         UploadFilesAutomaticViewController *photoCollectionController = (UploadFilesAutomaticViewController *)segue.destinationViewController;
         photoCollectionController.photosToUpload = [selectedPhotos copy];

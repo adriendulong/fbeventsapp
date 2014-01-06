@@ -1,0 +1,230 @@
+/* PUSH Notifications */
+"PushNotifs_LikePhoto" = "%@ has liked one of your photos";
+"PushNotifs_NewPhotos" = "%%@ new photos added to %@";
+"PushNotifs_NewPhotoOne" = "New photo added to %@";
+"PushNotifs_InvitationsMany" = "%@ events invitations awaiting for response";
+"PushNotifs_InvitationsOne" = "One event invitation awaiting for response";
+
+
+/* UITabBar */
+"UITabBar_Title_FirstPosition" = "Coming up";
+"UITabBar_Title_SecondPosition" = "Pending";
+"UITabBar_Title_ThirdPosition" = "Memories";
+"UITabBar_Title_FourthPosition" = "Now !";
+
+///// UIAlertView /////
+"UIAlertView_Title_Photo_Error" = "Cannot send the photo";
+"UIAlertView_Problem_Title" = "Error";
+"UIAlertView_Removal_Title" = "Delete";
+"UIAlertView_ErrorLogin_Title" = "Connection error";
+"UIAlertView_Notifs_Title" = "Notifications";
+"UIAlertView_Warning" = "Warning";
+"UIAlertView_Problem_Message" = "Could not proceed, please try again later.";
+"UIAlertView_Problem_Message2" = "Problem encountered during photo removal";
+"UIAlertView_Problem_Message3" = "Problem encountered during event importation, please try again later";
+"UIAlertView_Problem_Message4" = "Problem encountered whilst opening your email";
+"UIAlertView_Removal_Message" = "Are you sure you want to delete this photo?";
+"UIAlertView_ErrorLogin_Message" = "Uh oh. User has canceled Facebook connection.";
+"UIAlertView_Notifs_Message" = "Please authorize notifications for this application by going into Settings > Notification Center.";
+"UIAlertView_Dismiss" = "OK";
+"UIAlertView_Yes" = "Yes";
+"UIAlertView_No" = "No";
+
+/* UISegment RSVP */
+"UISegmentRSVP_Going" = "Going";
+"UISegmentRSVP_Maybe" = "Maybe";
+"UISegmentRSVP_Decline" = "Not Going";
+
+
+/// UIBarButtonItem ///
+"UIBArButtonItem_Terminate" = "Done";
+"UIBArButtonItem_Validate" = "Save";
+
+
+///// UIActionSheet /////
+"UIActionSheet_Cancel" = "Cancel";
+"UIActionSheet_Delete" = "Delete";
+
+
+///// TutorialViewController /////
+"TutorialViewController_tuto_step_1" = "Manage your Facebook events quickly and simply!";
+"TutorialViewController_tuto_step_2" = "Don’t miss any invitation by filtering them in one click!";
+"TutorialViewController_tuto_step_3" = "Enjoy your events like never before. Everything is reachable: Infos / Photos / Message / Guests etc.";
+"TutorialViewController_tuto_step_4" = "Find back in one click all photos taken by you and your friends during your events";
+
+
+///// ChooseLastEventViewController /////
+"ChooseLastEventViewController_Title" = "Lenght of the event";
+"ChooseLastEventViewController_with" = "with";
+"ChooseLastEventViewController_and" = "and";
+"ChooseLastEventViewController_more_friend" = "other friend";
+"ChooseLastEventViewController_more_friends" = "other friends";
+
+"ChooseLastEventViewController_Choice" = "Choice";
+"ChooseLastEventViewController_Party" = "Party";
+"ChooseLastEventViewController_Journey" = "Daytime";
+"ChooseLastEventViewController_WeekEnd" = "Weekend";
+"ChooseLastEventViewController_Holiday" = "Holiday !";
+"ChooseLastEventViewController_OK" = "OK";
+
+"ChooseLastEventViewController_Hour" = "hour";
+"ChooseLastEventViewController_Hours" = "hours";
+"ChooseLastEventViewController_Day" = "day";
+"ChooseLastEventViewController_Days" = "days";
+"ChooseLastEventViewController_Week" = "week";
+"ChooseLastEventViewController_Weeks" = "weeks";
+"ChooseLastEventViewController_Month" = "month";
+"ChooseLastEventViewController_Months" = "months";
+
+"ChooseLastEventViewController_KindOfEvents" = "What type of event is this about?";
+
+
+///// PhotosImportedViewController /////
+"PhotosImportedViewController_OnFacebook" = "On Facebook";
+"PhotosImportedViewController_OnMyiPhone" = "On my iPhone";
+"PhotosImportedViewController_NbPhotoFind" = "%i event photos recovered";
+"PhotosImportedViewController_Finish" = "Finish";
+
+
+///// UploadFilesAutomaticViewController /////
+"UploadFilesAutomaticViewController_Title" = "Sending photos";
+"UploadFilesAutomaticViewController_PhotosCount" = "%i/%i photos";
+"UploadFilesAutomaticViewController_TextMarmotte" = "Our woodchuck tidies up your photos in its hole";
+
+////manque label notre marmotte s’occupe de ranger
+
+///// CameraViewController /////
+"CameraViewController_Auto" = "Auto";
+"CameraViewController_Yes" = "Yes";
+"CameraViewController_No" = "No";
+"CameraViewController_Title" = "Take a photo of the event!";
+
+
+///// SharePhotoViewController /////
+"SharePhotoViewController_Title_One" = "Post your photo";
+"SharePhotoViewController_Title" = "Post your photos";
+"SharePhotoViewController_AddLegend" = "Add a description to your photo";
+"SharePhotoViewController_AddLegend2" = "Add a description to your photos";
+"SharePhotoViewController_SharedPhoto" = "I just added a photo of this event on Woovent";
+"SharePhotoViewController_SharedPhoto2" = "I just posted %i photos of this event on Woovent";
+"SharePhotoViewController_SharedPhoto3" = "I just posted a photo of this event on Woovent";
+
+
+///// PhotoDetailViewController /////
+"PhotoDetailViewController_Title" = "PHOTO";
+"PhotoDetailViewController_DeletePhoto" = "Are you sure you want to delete this photo?";
+
+
+///// PhotosCollectionViewController /////
+"PhotosCollectionViewController_Title_Future" = "in %i days";
+"PhotosCollectionViewController_Title_Tomorrow" = "tomorrow";
+"PhotosCollectionViewController_Title_Past" = "%i days ago";
+"PhotosCollectionViewController_Title_Yesterday" = "yesterday";
+"PhotosCollectionViewController_Title_Today" = "today";
+"PhotosCollectionViewController_Marker_Title" = "Sydney";
+"PhotosCollectionViewController_Marker_snippet" = "Australia";
+"PhotosCollectionViewController_OwnerEvent" = "By %@";
+"PhotosCollectionViewController_Show_Label" = "Display informations";
+"PhotosCollectionViewController_Hide_Label" = "Hide informations";
+"PhotosCollectionViewController_Alert_Title" = "Hide informations";
+"PhotosCollectionViewController_NbGuests" = "%@ guests";
+"PhotosCollectionViewController_NbGuests_NbMaybe" = "%@ attending - %@ maybe";
+"PhotosCollectionViewController_Error" = "Error";
+"PhotosCollectionViewController_Error_GMaps" = "Error encountered whilst opening Google Maps";
+"PhotosCollectionViewController_Error_Maps" = "Error encountered whilst opening Maps";
+"PhotosCollectionViewController_OK" = "OK";
+"PhotosCollectionViewController_TakePhoto" = "Take a photo";
+"PhotosCollectionViewController_AutoImport" = "Automatic Importation";
+"PhotosCollectionViewController_TimeConjonction" = "at";
+"PhotosCollectionViewController_NbPhotos" = "%i Photos";
+
+
+
+
+///// PhotosAlbumViewController /////
+"PhotosAlbumViewController_Title" = "PHOTOS";
+"PhotosAlbumViewController_NbLimit" = "Photos limited to %i per action";
+"PhotosAlbumViewController_AutoSelect" = "Automatic pre selection";
+"PhotosAlbumViewController_AllAlbum" = "Photo Album full";
+"PhotosAlbumViewController_AllDeselect" = "Unselect all";
+"PhotosAlbumViewController_AllSelect" = "Select all";
+"PhotosAlbumViewController_Modify" = "Modify";
+"PhotosAlbumViewController_Alert_Title" = "Information";
+"PhotosAlbumViewController_Alert_Message" = "Please select at least one photo !";
+"PhotosAlbumViewController_OK" = "OK";
+
+
+
+///// LikesCollectionsController /////
+"LikesCollectionsController_Title" = "LIKERS";
+
+
+//idem c’est où ce texte ?
+///// InfoHeaderCollectionView /////
+"InfoHeaderCollectionView_Details" = "Détails";
+"InfoHeaderCollectionView_Hide" = "Hide";
+
+
+///// DetailDescriptionViewController /////
+"DetailDescriptionViewController_Title" = "Description";
+
+
+//ca on peut le delete
+///// MapViewController /////
+"MapViewController_Marker_Snippet" = "Hello World";
+
+
+///// InvitedListViewController /////
+"InvitedListViewController_Title" = "Guests";
+"InvitedListViewController_Presents" = "Attending";
+"InvitedListViewController_Maybe" = "Maybe";
+"InvitedListViewController_NoResponse" = "Haven’t responded yet";
+"InvitedListViewController_Absent" = "Declined";
+
+
+///// ListInvitationsController /////
+"ListInvitationsController_WhenWhere" = "%@ at %@";
+"ListInvitationsController_SendInvit" = "%@ has invited you to this event";
+"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nNo more invitations left!";
+"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nNo invitations denied!";
+"ListInvitationsController_InvitationsNotJoinedSegment" = "Pending";
+"ListInvitationsController_InvitationsDeclinedSegment" = "Denied";
+
+
+///// ListEvents /////
+"ListEvents_Notifs" = "Notifs : %i";
+
+
+///// MemoriesImportViewController /////
+"MemoriesImportViewController_Title" = "Events";
+"MemoriesImportViewController_Loading" = "Loading";
+"MemoriesImportViewController_LoadMore" = "Load more";
+"MemoriesImportViewController_WhatEventKind" = "Which event would you like to live again?";
+"MemoriesImportViewController_By" = "By";
+
+
+///// MemoriesViewController /////
+"MemoriesViewController_NbRefoundPhotos" = "%i photos have been found";
+"MemoriesViewController_AutoImportButton" = "Automatic importation";
+
+
+//// SettingsViewController /////
+"SettingsViewController_Title" = "Settings";
+"SettingsViewController_Mail_Object" = "I thought I’d mention :";
+"SettingsViewController_iPhoneNotifs" = "iPhone notifications";
+"SettingsViewController_mailNotifs" = "Email notifications";
+"SettingsViewController_support" = "Comments and proofs of love";
+"SettingsViewController_wooventFB" = "Woovent on Facebook";
+"SettingsViewController_CGU" = "Terms of service";
+"SettingsViewController_disconnect" = "Logout";
+"SettingsViewController_Thanks" = "Thanks";
+
+
+
+//// LoginViewController ///
+"LoginViewController_CGU" = "By connecting myself I accept Terms of Service";
+"LoginViewController_ConnectFB" = "Login with Facebook";
+
+
+/// CGUViewController ///
+"CGUViewController_title" = "Terms of service";

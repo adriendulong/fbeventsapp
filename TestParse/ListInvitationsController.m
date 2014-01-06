@@ -36,6 +36,16 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [TestFlight passCheckpoint:@"INVITATIONS"];
+    [[Mixpanel sharedInstance] track:@"Invitations View Appear"];
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Invitations View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    //Init
+    [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsNotJoinedSegment", nil) forSegmentAtIndex:0];
+    [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsDeclinedSegment", nil) forSegmentAtIndex:1];
     
     
     [self loadInvitationFromServer];
@@ -96,6 +106,11 @@
                 reuseIdentifier:CellIdentifier];
     }
     
+    //init label
+    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Going", nil) forSegmentAtIndex:0];
+    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Maybe", nil) forSegmentAtIndex:1];
+    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Decline", nil) forSegmentAtIndex:2];
+    
     //Get the event object.
     PFObject *event = [self.objectsForTable objectAtIndex:indexPath.row][@"event"];
     PFObject *invitation = [self.objectsForTable objectAtIndex:indexPath.row];
@@ -104,18 +119,13 @@
     NSDate *start_date = event[@"start_time"];
     //Formatter for the hour
     NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
-    [formatterHourMinute setDateFormat:@"HH:mm"];
-    NSDateFormatter *formatterMonth = [NSDateFormatter new];
-    [formatterMonth setDateFormat:@"MMM"];
-    NSDateFormatter *formatterDay = [NSDateFormatter new];
-    [formatterDay setDateFormat:@"d"];
+    [formatterHourMinute setDateFormat:@"d MMM - HH:mm"];
+    [formatterHourMinute setLocale:[NSLocale currentLocale]];
     
     //Fill the cell
     cell.nameLabel.text = event[@"name"];
     cell.whenWhereLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
     cell.ownerInvitationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
-    //cell.monthLabel.text = [NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]];
-    //cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
     // Add a nice corner radius to the image
     cell.profilImageView.layer.cornerRadius = 24.0f;
@@ -273,16 +283,17 @@
     //[self.objectsForTable removeObjectAtIndex:positionToRemove];
     if (self.listSegmentControll.selectedSegmentIndex == 0) {
         [self.invitations removeObjectAtIndex:positionToRemove];
+        [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
     }
     else{
         [self.declined removeObjectAtIndex:positionToRemove];
+        [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
     }
     
     //reload
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     [self isEmptyTableView];
     
-    NSLog(@"RSVP : %@", notification.userInfo[@"rsvp"]);
     if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
         //Animation tab Evenements
         self.countTimer = 0;
@@ -302,9 +313,9 @@
 }
 
 - (IBAction)listTypeChange:(id)sender {
-     NSLog(@"Changed : %i", self.listSegmentControll.selectedSegmentIndex);
     if (self.listSegmentControll.selectedSegmentIndex == 0) {
         [TestFlight passCheckpoint:@"SEE_NOT_JOINED"];
+        [[Mixpanel sharedInstance] track:@"Click Segement Invitations"];
         
         self.objectsForTable = self.invitations;
         [self isEmptyTableView];
@@ -312,6 +323,7 @@
     }
     else{
         [TestFlight passCheckpoint:@"SEE_DECLINED"];
+        [[Mixpanel sharedInstance] track:@"Click Segement Declined"];
         
         self.objectsForTable = self.declined;
         [self isEmptyTableView];
@@ -326,7 +338,8 @@
  
  -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
      if ([segue.identifier isEqualToString:@"DetailEvent"]) {
- 
+         [[Mixpanel sharedInstance] track:@"Click Detail Event" properties:@{@"From": @"Invitations View"}];
+         
          self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
  
          //Selected row
@@ -338,16 +351,7 @@
          photosCollectionViewController.hidesBottomBarWhenPushed = YES;
     }
      else if ([segue.identifier isEqualToString:@"Login"]){
-         NSLog(@"LOGOUT LIST");
-         /*
-         UINavigationController *navController = (UINavigationController *)[self.tabBarController.viewControllers objectAtIndex:0];
-         ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
-         listEvents.invitations = nil;
-         [listEvents.tableView reloadData];
-         LoginViewController *loginViewController = segue.destinationViewController;
-         loginViewController.myDelegate = listEvents;
-         
-         [MOUtility logoutApp];*/
+
      }
  
  }

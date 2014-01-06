@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) PFObject *selectedInvitation;
 @property (strong, nonatomic) PFObject *selectedPhoto;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *terminateButton;
 
 - (IBAction)finish:(id)sender;
 @end

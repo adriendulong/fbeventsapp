@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Mixpanel/Mixpanel.h"
 
 @interface TestParseAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -18,6 +19,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic) UIApplication *application;
+@property (strong, nonatomic) NSDate *startTime;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

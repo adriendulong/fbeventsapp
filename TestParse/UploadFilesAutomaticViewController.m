@@ -18,6 +18,9 @@
 
 @implementation UploadFilesAutomaticViewController
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.labelMarmotte.text = NSLocalizedString(@"UploadFilesAutomaticViewController_TextMarmotte", nil);
+}
 
 -(void)viewDidAppear:(BOOL)animated{
     [self uploadPhotos];
@@ -390,6 +393,7 @@
 
 //Push notif
 -(void)pushEveryInvited:(int)nbPhotos{
+    [[Mixpanel sharedInstance] track:@"Photos Uploaded" properties:@{@"Nb Photos": [NSNumber numberWithInt:nbPhotos], @"From" : @"Auto Import"}];
     [PFCloud callFunctionInBackground:@"pushnewphotos" withParameters:@{@"nbphotos": [NSNumber numberWithInt:nbPhotos], @"eventid" : self.event.objectId} block:^(id object, NSError *error) {
         NSLog(@"Push sent");
     }];

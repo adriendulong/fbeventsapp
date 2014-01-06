@@ -50,7 +50,6 @@
         requestFacebook = [NSString stringWithFormat:@"/me/events?fields=owner.fields(id,name,picture),name,location,start_time,end_time,rsvp_status,cover,updated_time,description,is_date_only,admins.fields(id,name,picture)&until=%@", stopDate];
     }
 
-    NSLog(@"Request : %@", requestFacebook);
     FBRequest *request = [FBRequest requestForGraphPath:requestFacebook];
     
     // Send request to Facebook
@@ -59,7 +58,6 @@
             //NSLog(@"%@", result);
             
             for(id event in result[@"data"]){
-                NSLog(@"EVENT FROM FBBBB");
                 self.nbTotalEvents++;
             }
             
@@ -67,9 +65,6 @@
                 NSURL *previous = [NSURL URLWithString:result[@"paging"][@"next"]];
                 NSString *goodRequest = [NSString stringWithFormat:@"%@?%@", [previous path], [previous query]];
                 [self loadOldFacebookEvents:goodRequest];
-            }
-            else{
-                NSLog(@"FINISHED TOTAL : %i", self.nbTotalEvents);
             }
             
             

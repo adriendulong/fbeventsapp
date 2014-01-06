@@ -52,12 +52,9 @@
 
 - (void)viewDidLoad
 {
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
     
     self.badge.hidden = YES;
-    
-    
-    //[self activeCameraWithPosition:AVCaptureDevicePositionBack];
+
     
     self.isPictureTaken = NO;
     photosMatched = 0;
@@ -72,10 +69,18 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Camera View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
     if (!IS_IPHONE_5) {
         [self.navigationController setNavigationBarHidden:YES];
         self.toolboxView.alpha = 1.0;
     }
+    
+    //init
+    self.title = NSLocalizedString(@"CameraViewController_Title", nil);
     
 }
 
@@ -86,7 +91,6 @@
     else if (!self.session.isRunning) {
         [self.session startRunning];
     }
-    NSLog(@"APPEAR COUCOU");
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -105,7 +109,6 @@
 #pragma mark - Camera 
 - (void)activeCameraWithPosition:(AVCaptureDevicePosition)position
 {
-    NSLog(@"CREATE FLUX");
     self.session = [[AVCaptureSession alloc] init];
     //session.sessionPreset = AVCaptureSessionPresetMedium;
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -126,7 +129,6 @@
     CGRect bounds = [view bounds];
     [captureVideoPreviewLayer setFrame:bounds];
     
-    NSLog(@"Position = %d", position);
     
     self.device = (position == AVCaptureDevicePositionBack) ? [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo] : [self frontCamera];
     /*if ([self.device hasFlash]){
@@ -239,7 +241,6 @@
         {
             for (AVCaptureInputPort *port in [connection inputPorts])
             {
-                //NSLog(@"port = %@", port.mediaType);
                 if ([[port mediaType] isEqual:AVMediaTypeVideo] )
                 {
                     videoConnection = connection;
@@ -249,24 +250,13 @@
             if (videoConnection) { break; }
         }
         
-        NSLog(@"about to request a capture from: %@", self.stillImageOutput);
         [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
          {
-             /*CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-              if (exifAttachments)
-              {
-              // Do something with the attachments.
-              NSLog(@"attachements: %@", exifAttachments);
-              }
-              else
-              NSLog(@"no attachments");*/
              
              
              
              NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
              UIImage *image = [[UIImage alloc] initWithData:imageData];
-             
-             NSLog(@"Width %f, Height %f", image.size.width, image.size.height);
              
              UIGraphicsBeginImageContext(CGSizeMake(960, 1278));
              [image drawInRect: CGRectMake(0, 0, 960, 1278)];
@@ -283,40 +273,6 @@
              
              
              
-             /*
-              imageData = nil;
-              
-              UIImage *tempImage = nil;
-              CGSize targetSize = CGSizeMake(600,600);
-              UIGraphicsBeginImageContext(targetSize);
-              
-              CGRect thumbnailRect = CGRectMake(0, 0, 0, 0);
-              thumbnailRect.origin = CGPointMake(0.0,0.0);
-              thumbnailRect.size.width  = targetSize.width;
-              thumbnailRect.size.height = targetSize.height;
-              
-              [image drawInRect:thumbnailRect];
-              
-              tempImage = UIGraphicsGetImageFromCurrentImageContext();
-              
-              UIGraphicsEndImageContext();*/
-             
-             /*if (exifAttachments)
-              exifAttachments = nil;*/
-             
-             // Resize the image from the camera
-             /*UIImage *scaledImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill
-              bounds:CGSizeMake(600, 600)
-              interpolationQuality:kCGInterpolationHigh];*/
-             // Crop the image to a square (yikes, fancy!)
-             //UIImage *croppedImage = [scaledImage croppedImage:CGRectMake((scaledImage.size.width -photo.frame.size.width)/2, (scaledImage.size.height -photo.frame.size.height)/2, photo.frame.size.width, photo.frame.size.height)];
-             //UIImage *croppedImage = [image croppedImage:CGRectMake((scaledImage.size.width - self.frame.size.width)/2, (scaledImage.size.height - photo.frame.size.height)/2, photo.frame.size.width, photo.frame.size.height)];
-             
-             /*self.pictureShowing = [[UIImageView alloc] initWithImage:tempImage];
-              self.pictureShowing.frame = self.cameraView.frame;
-              [self.cameraView addSubview:self.pictureShowing];*/
-             //self.previewImage.image = tempImage;
-             
              //Graphical modifs
              [self.previewImage setHidden:NO];
              [self.takePhoto setImage:[UIImage imageNamed:@"validate_photo"] forState:UIControlStateNormal];
@@ -324,23 +280,7 @@
              self.isPictureTaken = YES;
              //Save locally
              self.takenImage = finalImage;
-             
-             NSLog(@"Image rotation %d", [finalImage imageOrientation]);
-             
-             /*
-             ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-             [library writeImageToSavedPhotosAlbum:imageRef
-                                       orientation:(ALAssetOrientation)[finalImage imageOrientation]
-                                   completionBlock:^(NSURL *assetURL, NSError *error) {
-                                       if (error) {
-                                           //[self displayErrorOnMainQueue:error withMessage:@"Save to camera roll failed"];
-                                           
-                                       } else {
-                                           
-                                           self.assetUrl = assetURL;
-                                           NSLog(@"self.assetUrl = %@", self.assetUrl.absoluteString);
-                                       }
-                                   }];*/
+
              CGImageRelease(imageRef);
              
              
@@ -403,12 +343,6 @@
 
 - (void)closeFlashMenu
 {
-    NSLog(@"closeFlashMenu");
-    // ANIMATION
-    /*[UIView beginAnimations:@"CloseFlashMenu" context:nil];
-     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-     [UIView setAnimationDuration:0.2f];
-     [UIView commitAnimations];*/
     
     [UIView animateWithDuration:0.16f
                      animations:^{
@@ -494,10 +428,8 @@
         case AVCaptureDevicePositionBack:
             if( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront ])
             {
-                NSLog(@"On est avec celle de derrière. On active celle de devant !");
                 
                 if (flashMenuOpen) {
-                    NSLog(@"On ferme le menu du flash !");
                     [self closeFlashMenu];
                 }
                 
@@ -529,7 +461,6 @@
         case AVCaptureDevicePositionFront:
             if( [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear ])
             {
-                NSLog(@"On est avec celle de devant. On active celle de derrière !");
                 
                 [UIView animateWithDuration:0.16f
                                  animations:^{
@@ -589,7 +520,6 @@
             }];
         }
     } failureBlock: ^(NSError *error) {
-        NSLog(@"No groups");
     }];
 }
 
@@ -630,7 +560,6 @@
         }
         
     } failureBlock:^(NSError *error) {
-        NSLog(@"Failed.");
     }];
 }
 

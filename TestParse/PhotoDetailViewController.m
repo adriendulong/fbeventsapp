@@ -118,7 +118,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"Section %i", section);
     if(self.photo[@"comments"]) return 3;
     else return 2;
 }
@@ -273,9 +272,14 @@
             //Save the new version
             [self.photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error) {
+                    NSArray *likes = self.photo[@"likes"];
                     if (hasLiked) {
                         //Push
                         [self pushOwnerPhotoLiked];
+                        [[Mixpanel sharedInstance] track:@"Like" properties:@{@"is_liked": @YES, @"Nb Likes" : [NSNumber numberWithInt:likes.count]}];
+                    }
+                    else{
+                        [[Mixpanel sharedInstance] track:@"Like" properties:@{@"is_liked": @NO, @"Nb Likes" : [NSNumber numberWithInt:likes.count]}];
                     }
                     [self.tableView reloadData];
                 }
@@ -378,8 +382,18 @@
 }
 
 
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if  ([buttonTitle isEqualToString:NSLocalizedString(@"UIActionSheet_Delete", nil)]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIActionSheet_Delete", nil) message:NSLocalizedString(@"PhotoDetailViewController_DeletePhoto", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_No", nil) otherButtonTitles:NSLocalizedString(@"UIAlertView_Yes", nil), nil];
+        [alert show];
+    }
+}
+
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
 	if (buttonIndex == 1) {
 		[self.photo deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
@@ -391,7 +405,6 @@
                 [alert show];
             }
         }];
-	} else {
 	}
 }
 

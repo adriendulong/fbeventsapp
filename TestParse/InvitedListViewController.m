@@ -9,6 +9,8 @@
 #import "InvitedListViewController.h"
 #import "InvitedCell.h"
 #import "MOUtility.h"
+#import "EventUtilities.h"
+#import "FbEventsUtilities.h"
 
 @interface InvitedListViewController ()
 
@@ -25,10 +27,17 @@
     return self;
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:InvitedDetailFinished object:nil];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"InvitedListViewController_Title", nil);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(greatMomentToUpdateInvited:) name:InvitedDetailFinished object:nil];
     
     self.attending = [[NSMutableArray alloc] init];
     self.maybe = [[NSMutableArray alloc] init];
@@ -50,11 +59,7 @@
         }
     }
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self getGuestsFromFacebookEvent:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -199,5 +204,213 @@
 }
 
  */
+
+-(void)getGuestsFromFacebookEvent:(NSString *)next{
+    NSString *requestString;
+    if (next) {
+        requestString = [NSString stringWithFormat:@"%@/invited?limit=20&after=%@", self.event[@"eventId"], next];
+    }
+    else{
+        requestString = [NSString stringWithFormat:@"%@/invited?limit=20", self.event[@"eventId"]];
+    }
+    
+    FBRequest *request = [FBRequest requestForGraphPath:requestString];
+
+    
+    
+    
+    // Send request to Facebook
+    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            NSLog(@"result : %@", result);
+            //Get all the invited
+            NSArray *guests = result[@"data"];
+            
+            self.nbInvitedToAdd = guests.count;
+            self.nbInvitedAlreadyAdded = 0;
+            
+            if(result[@"paging"][@"cursors"][@"after"]){
+                self.hasNext = YES;
+                self.afterCursor = result[@"paging"][@"cursors"][@"after"];
+            }
+            else{
+                self.hasNext = NO;
+            }
+            
+            for (id guest in guests) {
+                [self addOrUpdateInvited:guest];
+            }
+            
+        }
+        else{
+            NSLog(@"%@", error);
+        }
+    }];
+}
+
+-(void)addOrUpdateInvited:(NSDictionary *)invited{
+    PFObject *guest;
+    PFObject *invitation;
+    
+    //We see if there is an invitation for this user
+    for(id invit in self.invited){
+        PFObject *tempGuests = [FbEventsUtilities getProspectOrUserFromInvitation:invit];
+        if ([tempGuests[@"facebookId"] isEqualToString:invited[@"id"]]) {
+            guest = tempGuests;
+            invitation = invit;
+        }
+    }
+    
+    //We already have an invitation and a guest we just update the invitation
+    if (guest) {
+        //Update guest or user
+        if (![guest[@"name"] isEqualToString:invited[@"name"]]) {
+            guest[@"name"] = invited[@"name"];
+            [guest saveEventually];
+        }
+        
+        //Update invitation
+        if (![invitation[@"rsvp_status"] isEqualToString:invited[@"rsvp_status"]]) {
+            invitation[@"rsvp_status"] = invited[@"rsvp_status"];
+            [invitation saveEventually];
+        }
+        
+        //We have finished with this user
+        [[NSNotificationCenter defaultCenter] postNotificationName:InvitedDetailFinished object:self userInfo:nil];
+    }
+    
+    //The invitation does not exist
+    else{
+        //See if a user or a prospect exist
+        PFQuery *query = [PFUser query];
+        [query whereKey:@"facebookId" equalTo:invited[@"id"]];
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject *userFound, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                ///////
+                // PROSPECT EXISTS ??
+                //////
+                PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
+                [queryProspect whereKey:@"facebookId" equalTo:invited[@"id"]];
+                [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    
+                    //If there is no prospect
+                    if (error && error.code == kPFErrorObjectNotFound) {
+                        //We create a prospect
+                        PFObject *prospectObject = [PFObject objectWithClassName:@"Prospect"];
+                        prospectObject[@"facebookId"] = invited[@"id"];
+                        prospectObject[@"name"] = invited[@"name"];
+                        [prospectObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                            //And create invitation
+                            [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:prospectObject];
+                        }];
+                    }
+                    //A prospect already exist, add invitation
+                    else if(!error){
+                        [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:object];
+                    }
+                }];
+            }
+            else if(!error){
+                //Invitation exists ?
+                PFQuery *invitationUser = [PFQuery queryWithClassName:@"Invitation"];
+                [invitationUser whereKey:@"user" equalTo:userFound];
+                [invitationUser whereKey:@"event" equalTo:self.event];
+                [invitationUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+                    if (error && error.code == kPFErrorObjectNotFound) {
+                        [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)userFound forProspect:nil];
+                    }
+                }];
+                
+                
+            }
+        }];
+        
+    }
+    
+}
+
+
+-(void)createInvitation:(NSString *)rsvp forUser:(PFUser *)user forProspect:(PFObject *)prospect{
+    PFObject *invitation = [PFObject objectWithClassName:@"Invitation"];
+    [invitation setObject:self.event forKey:@"event"];
+    
+    invitation[@"isOwner"] = @NO;
+    invitation[@"isAdmin"] = @NO;
+    
+    if (user) {
+        [invitation setObject:user forKey:@"user"];
+        if([EventUtilities isOwnerOfEvent:self.event forUser:user])
+        {
+            NSLog(@"You are the owner !!");
+            invitation[@"isOwner"] = @YES;
+        }
+        
+        if ([EventUtilities isAdminOfEvent:self.event  forUser:user]) {
+            invitation[@"isAdmin"] = @YES;
+        }
+        
+        invitation[@"is_memory"] = @NO;
+    }
+    else{
+        [invitation setObject:prospect forKey:@"prospect"];
+        if([EventUtilities isOwnerOfEvent:self.event  forUser:prospect])
+        {
+            NSLog(@"You are the owner !!");
+            invitation[@"isOwner"] = @YES;
+        }
+        
+        if ([EventUtilities isAdminOfEvent:self.event forUser:prospect]) {
+            invitation[@"isAdmin"] = @YES;
+        }
+    }
+    
+    invitation[@"rsvp_status"] = rsvp;
+    invitation[@"start_time"] = self.event[@"start_time"];
+    
+    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        [self.invited addObject:invitation];
+        [[NSNotificationCenter defaultCenter] postNotificationName:InvitedDetailFinished object:self userInfo:nil];
+    }];
+    
+}
+
+-(void)newDataTable{
+    self.attending = [[NSMutableArray alloc] init];
+    self.maybe = [[NSMutableArray alloc] init];
+    self.no = [[NSMutableArray alloc] init];
+    self.notjoined = [[NSMutableArray alloc] init];
+    
+    for(PFObject *invit in self.invited){
+        if ([invit[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
+            [self.attending addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventMaybe]) {
+            [self.maybe addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventNotReplied]) {
+            [self.notjoined addObject:invit];
+        }
+        else if ([invit[@"rsvp_status"] isEqualToString:FacebookEventDeclined]) {
+            [self.no addObject:invit];
+        }
+    }
+    
+    [self.tableView reloadData];
+    
+}
+
+-(void)greatMomentToUpdateInvited:(NSNotification *)note{
+    self.nbInvitedAlreadyAdded++;
+    
+    
+    if (self.nbInvitedAlreadyAdded==self.nbInvitedToAdd) {
+        if (self.hasNext) {
+            [self getGuestsFromFacebookEvent:self.afterCursor];
+        }
+        [self newDataTable];
+    }
+    
+    
+}
 
 @end

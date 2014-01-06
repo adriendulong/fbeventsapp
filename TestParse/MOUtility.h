@@ -25,6 +25,7 @@
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 +(NSDate *)getEndDateEvent:(PFObject *)event;
 +(NSArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
++(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
 
 #pragma mark - Facebook
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality;
@@ -50,6 +51,7 @@
 
 #pragma mark - Database Local
 +(BOOL)removeAllInvitations;
++(BOOL)deleteInvitation:(NSString *)objectId;
 +(BOOL)removeAllEvents;
 +(Invitation *)getInvitationForObjectId:(NSString *)objectId;
 +(Event *)getEventForObjectId:(NSString *)objectId;
@@ -74,5 +76,8 @@
 
 #pragma mark - LogOut
 +(BOOL)logoutApp;
+
+#pragma mark - User Infos
++(void)updateUserInfos;
 
 @end

@@ -30,10 +30,23 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Type Event View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
     if (!IS_IPHONE_5) {
         self.verticalConstrainLeft.constant = 10.0;
         self.verticalConstraintRight.constant = 10.0;
     }
+    
+    //Init
+    self.kindEventsLabel.text = NSLocalizedString(@"ChooseLastEventViewController_KindOfEvents", nil);
+    [self.validateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Validate", nil)];
+    self.eveningLabel.text = NSLocalizedString(@"ChooseLastEventViewController_Party", nil);
+    self.dayLabel.text = NSLocalizedString(@"ChooseLastEventViewController_Journey", nil);
+    self.weekendLabel.text = NSLocalizedString(@"ChooseLastEventViewController_WeekEnd", nil);
+    self.holidaysLabel.text = NSLocalizedString(@"ChooseLastEventViewController_Holiday", nil);
     
    
 }
@@ -167,7 +180,6 @@
     
     [self.event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            NSLog(@"OK");
         }
         else{
             NSLog(@"%@", [error userInfo]);
@@ -180,7 +192,6 @@
 
 - (IBAction)chosedType:(id)sender {
     UIButton *clickedButton = (UIButton *)sender;
-    NSLog(@"Clicked : %i", clickedButton.tag);
     
     if(!self.validateButton.isEnabled){
         if (clickedButton.tag == 1) {
@@ -318,7 +329,6 @@
             
             self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
             self.event[@"last"] = [self.elementsForEvening objectAtIndex:rowSelected][@"last"];
-            NSLog(@"LAST %@", [self.elementsForEvening objectAtIndex:rowSelected][@"last"]);
             
         }
         else if (self.selectedType == 2) {

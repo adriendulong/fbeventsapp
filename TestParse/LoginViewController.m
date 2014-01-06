@@ -29,9 +29,23 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.mixpanel = [Mixpanel sharedInstance];
+    [self.mixpanel track:@"LoginView Show"];
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Login View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Init label
+    [self.cguButton setTitle:NSLocalizedString(@"LoginViewController_CGU", nil) forState:UIControlStateNormal];
+    [self.facebookButton setTitle:NSLocalizedString(@"LoginViewController_ConnectFB", nil) forState:UIControlStateNormal];
     
     [self.activityIndicator setHidden:YES];
     
@@ -156,6 +170,9 @@
 #pragma mark Facebook Login & Sign Up
 
 - (IBAction)facebook:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Click Login Button"];
+    
+    
     //LOADER
     [self.activityIndicator setHidden:NO];
     
@@ -164,16 +181,24 @@
     
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (!user) {
+            [[Mixpanel sharedInstance] track:@"Error Login"];
             if (!error) {
-                NSLog(@"Uh oh. The user cancelled the Facebook login.");
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:NSLocalizedString(@"UIAlertView_ErrorLogin_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             } else {
-                NSLog(@"Uh oh. An error occurred: %@", error);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             }
         } else if (user.isNew) {
+            //Mixpanel
+            [self.mixpanel createAlias:user.objectId
+                    forDistinctID:[Mixpanel sharedInstance].distinctId];
+            [self.mixpanel identify:user.objectId];
+            [self.mixpanel track:@"New User"];
+            [[Mixpanel sharedInstance].people set:@{@"$created": [NSDate date]}];
+
+            UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
+            [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
             
             //Attach this user to this device
             PFInstallation *currentInstallation = [PFInstallation currentInstallation];
@@ -182,6 +207,13 @@
             
             [self updateUserInfos];
         } else {
+            //Mixpanel
+            [self.mixpanel identify:user.objectId];
+            [self.mixpanel track:@"Login Existing User"];
+            
+            UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
+            [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
+            
             //Attach this user to this device
             PFInstallation *currentInstallation = [PFInstallation currentInstallation];
             currentInstallation[@"owner"] = user;
@@ -194,8 +226,10 @@
 
 -(void)updateUserInfos{
     FBRequest *request = [FBRequest requestForMe];
+    [self.mixpanel identify:[PFUser currentUser].objectId];
     
-    NSLog(@" Facebook session :%@", [[[PFFacebookUtils session] accessTokenData] expirationDate]);
+    //[self.mixpanel.people set:@{@"is_mail_notif": [PFUser currentUser][@"is_mail_notif"]}];
+    
     
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -209,44 +243,48 @@
             
             PFUser *currentUser = [PFUser currentUser];
             currentUser.email = userData[@"email"];
+            [self.mixpanel.people set:@{@"$email": currentUser.email}];
             
             if(userData[@"id"]){
                 currentUser[@"facebookId"] = userData[@"id"];
-                
-                if ([MOUtility isATestUser:currentUser[@"facebookId"]]) {
-                    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-                    [currentInstallation addUniqueObject:@"Testers" forKey:@"channels"];
-                    [currentInstallation saveInBackground];
-                }
-                
-
             }
             
             if(userData[@"first_name"]){
                 currentUser[@"first_name"] = userData[@"first_name"];
+                [self.mixpanel.people set:@{@"First Name": currentUser[@"first_name"]}];
             }
             
             if(userData[@"last_name"]){
                 currentUser[@"last_name"] = userData[@"last_name"];
+                [self.mixpanel.people set:@{@"Last Name": currentUser[@"last_name"]}];
             }
             
             if(userData[@"name"]){
                 currentUser[@"name"] = userData[@"name"];
+                [[Mixpanel sharedInstance].people set:@{@"$name": currentUser[@"name"]}];
             }
             
             if(userData[@"location"][@"name"]){
                 currentUser[@"location"] = userData[@"location"][@"name"];
+                [self.mixpanel.people set:@{@"Location": currentUser[@"location"]}];
+                [self.mixpanel registerSuperProperties:@{@"Location": currentUser[@"location"]}];
             }
             
             if(userData[@"gender"]){
+                
                 currentUser[@"gender"] = userData[@"gender"];
+                [self.mixpanel registerSuperProperties:@{@"Gender": currentUser[@"gender"]}];
+                [self.mixpanel.people set:@{@"Gender": currentUser[@"gender"]}];
             }
             
             if(userData[@"birthday"]){
                 currentUser[@"birthday"] = userData[@"birthday"];
+                [self.mixpanel registerSuperProperties:@{@"Birthday": [MOUtility birthdayStringToDate:userData[@"birthday"]]}];
+                [self.mixpanel.people set:@{@"Birthday": [MOUtility birthdayStringToDate:userData[@"birthday"]]}];
             }
             
             currentUser[@"pictureURL"] = [pictureURL absoluteString];
+            [self.mixpanel.people set:@{@"$profile_picture": currentUser[@"pictureURL"]}];
             currentUser[@"is_mail_notif"] = @YES;
             
             [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -284,7 +322,6 @@
                         [self dismissViewControllerAnimated:NO completion:nil];
                     }];
                 } else {
-                    NSLog(@"%@",[error userInfo][@"error"]);
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
                     [alert show];
                 }

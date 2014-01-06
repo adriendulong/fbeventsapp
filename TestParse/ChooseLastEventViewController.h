@@ -37,6 +37,11 @@
 @property (assign, nonatomic) int levelRoot;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstraintRight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstrainLeft;
+@property (weak, nonatomic) IBOutlet UILabel *kindEventsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *eveningLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dayLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weekendLabel;
+@property (weak, nonatomic) IBOutlet UILabel *holidaysLabel;
 
 
 - (IBAction)modifyType:(id)sender;

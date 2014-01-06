@@ -25,6 +25,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UploadPhotoFinished object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [[Mixpanel sharedInstance] track:@"Memories View Loaded"];
+    
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName
+           value:@"Memories View"];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -93,6 +102,9 @@
             cell = [[FirstMemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         
+        UIButton *buttonImport = (UIButton *)[cell viewWithTag:100];
+        [buttonImport setTitle:NSLocalizedString(@"MemoriesViewController_AutoImportButton", nil) forState:UIControlStateNormal];
+        
         return cell;
     }
     else{
@@ -116,10 +128,13 @@
         //Formatter for the hour
         NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
         [formatterHourMinute setDateFormat:@"HH:mm"];
+        [formatterHourMinute setLocale:[NSLocale currentLocale]];
         NSDateFormatter *formatterMonth = [NSDateFormatter new];
         [formatterMonth setDateFormat:@"MMM"];
+        [formatterHourMinute setLocale:[NSLocale currentLocale]];
         NSDateFormatter *formatterDay = [NSDateFormatter new];
         [formatterDay setDateFormat:@"d"];
+        [formatterDay setLocale:[NSLocale currentLocale]];
         
         //Fill the cell
         cell.nameLabel.text = event[@"name"];
@@ -127,77 +142,80 @@
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
         
-        if ([[self.photosEvent objectAtIndex:indexPosition] count]>0) {
-            NSMutableArray *arrayPhotos = [[NSMutableArray alloc] init];
-            
-            for(PFObject *photo in [self.photosEvent objectAtIndex:indexPosition]){
-                NSDictionary *dict = @{@"type": @0,
-                                       @"photo": photo};
-                [arrayPhotos addObject:dict];
+        if (self.photosEvent.count >indexPosition) {
+            if ([[self.photosEvent objectAtIndex:indexPosition] count]>0) {
+                NSMutableArray *arrayPhotos = [[NSMutableArray alloc] init];
                 
-            }
-            
-            [cell.coverImage setHidden:YES];
-            
-            if (arrayPhotos.count < 9) {
-                int diff = 9 - arrayPhotos.count;
-                UIImage *image = [[UIImage alloc] init];
-                for(int i=0;i<diff;i++){
-                    if ((i%4)==0) {
-                        image = [UIImage imageNamed:@"img1"];
-                    }
-                    else if((i%4)==1){
-                        image = [UIImage imageNamed:@"img2"];
-                    }
-                    else if((i%4)==2){
-                        image = [UIImage imageNamed:@"img3"];
-                    }
-                    else if((i%4)==3){
-                        image = [UIImage imageNamed:@"img4"];
-                    }
-                    NSDictionary *dict = @{@"type": @1,
-                                           @"image": image};
+                for(PFObject *photo in [self.photosEvent objectAtIndex:indexPosition]){
+                    NSDictionary *dict = @{@"type": @0,
+                                           @"photo": photo};
                     [arrayPhotos addObject:dict];
+                    
                 }
                 
+                [cell.coverImage setHidden:YES];
                 
-                //[arrayPhotos shuffle];
-            }
-            
-            for (int i=0; i<9; i++) {
-                PFImageView *imageView = (PFImageView *)[cell viewWithTag:i+1];
-                
-                if (i<[arrayPhotos count]) {
+                if (arrayPhotos.count < 9) {
+                    int diff = 9 - arrayPhotos.count;
+                    UIImage *image = [[UIImage alloc] init];
+                    for(int i=0;i<diff;i++){
+                        if ((i%4)==0) {
+                            image = [UIImage imageNamed:@"img1"];
+                        }
+                        else if((i%4)==1){
+                            image = [UIImage imageNamed:@"img2"];
+                        }
+                        else if((i%4)==2){
+                            image = [UIImage imageNamed:@"img3"];
+                        }
+                        else if((i%4)==3){
+                            image = [UIImage imageNamed:@"img4"];
+                        }
+                        NSDictionary *dict = @{@"type": @1,
+                                               @"image": image};
+                        [arrayPhotos addObject:dict];
+                    }
                     
                     
-                    [imageView setHidden:NO];
-                    if ([arrayPhotos objectAtIndex:i][@"photo"]) {
-                        PFObject *photo =[arrayPhotos objectAtIndex:i][@"photo"];
-                        if (photo[@"facebookId"]) {
-                            [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
+                    //[arrayPhotos shuffle];
+                }
+                
+                for (int i=0; i<9; i++) {
+                    PFImageView *imageView = (PFImageView *)[cell viewWithTag:i+1];
+                    
+                    if (i<[arrayPhotos count]) {
+                        
+                        
+                        [imageView setHidden:NO];
+                        if ([arrayPhotos objectAtIndex:i][@"photo"]) {
+                            PFObject *photo =[arrayPhotos objectAtIndex:i][@"photo"];
+                            if (photo[@"facebookId"]) {
+                                [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
+                            }
+                            else{
+                                imageView.image = [UIImage imageNamed:@"cover_default"]; // placeholder image
+                                imageView.file = (PFFile *)photo[@"low_image"]; // remote image
+                                
+                                [imageView loadInBackground];
+                            }
                         }
                         else{
-                            imageView.image = [UIImage imageNamed:@"cover_default"]; // placeholder image
-                            imageView.file = (PFFile *)photo[@"low_image"]; // remote image
-                            
-                            [imageView loadInBackground];
+                            imageView.image = (UIImage *)[arrayPhotos objectAtIndex:i][@"image"];
                         }
+                        
                     }
                     else{
-                        imageView.image = (UIImage *)[arrayPhotos objectAtIndex:i][@"image"];
+                        [imageView setHidden:YES];
                     }
-                    
-                }
-                else{
-                    [imageView setHidden:YES];
                 }
             }
+            else{
+                [cell.coverImage setHidden:NO];
+                [cell.coverImage setImageWithURL:[NSURL URLWithString:event[@"cover"]]
+                                placeholderImage:[UIImage imageNamed:@"cover_default"]];
+            }
         }
-        else{
-            [cell.coverImage setHidden:NO];
-            [cell.coverImage setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                            placeholderImage:[UIImage imageNamed:@"cover_default"]];
-        }
+        
         
         return cell;
     }
@@ -234,6 +252,9 @@
         [self.memoriesInvitations removeObjectAtIndex:(indexPath.row-1)];
         [self.photosEvent removeObjectAtIndex:(indexPath.row-1)];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        //Remove from database
+        [MOUtility deleteInvitation:invitation.objectId];
         
         [self isEmptyTableView];
         
@@ -296,6 +317,8 @@
                 i++;
             }
             
+            [[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInt:self.memoriesInvitations.count]}];
+            
             [self isEmptyTableView];
             [self.tableView reloadData];
         } else {
@@ -345,6 +368,7 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"DetailEvent"]) {
         [TestFlight passCheckpoint:@"DETAIL_FROM_MEMORIES"];
+        [[Mixpanel sharedInstance] track:@"Detail Event" properties:@{@"From": @"Memories View"}];
         
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
@@ -358,8 +382,10 @@
     }
     else if ([segue.identifier isEqualToString:@"ImportButton"]) {
         [TestFlight passCheckpoint:@"IMPORT_FROM_BUTTON"];
+        [[Mixpanel sharedInstance] track:@"Click Import" properties:@{@"From": @"Table View"}];
     }
     else if ([segue.identifier isEqualToString:@"ImportTopBar"]) {
+        [[Mixpanel sharedInstance] track:@"Click Import" properties:@{@"From": @"Top bar"}];
         [TestFlight passCheckpoint:@"IMPORT_FROM_TOP_BAR"];
     }
 

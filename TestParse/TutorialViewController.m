@@ -28,6 +28,7 @@
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_1", nil);
     }
     else if(self.index==1){
+        [[Mixpanel sharedInstance] track:@"Use Tutoriel"];
         self.imageView.image = [UIImage imageNamed:@"tuto_step_2"];
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_2", nil);
     }
