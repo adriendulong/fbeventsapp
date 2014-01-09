@@ -14,6 +14,7 @@
 #import "ListInvitationsController.h"
 #import "ListEvents.h"
 #import "GAI.h"
+#import <Crashlytics/Crashlytics.h>
 
 
 @implementation TestParseAppDelegate
@@ -44,6 +45,9 @@
     
     //Facebook init
     [PFFacebookUtils initializeFacebook];
+    
+    //Crashlytics
+    [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
     
     // Register for push notifications
     [application registerForRemoteNotificationTypes:

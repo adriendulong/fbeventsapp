@@ -120,6 +120,7 @@
 		E7D09A9718533EE400BBCAB6 /* FbEvents.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */; };
 		E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193731840CC24008FD530 /* NSMutableArray+Reverse.m */; };
 		E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193761840F016008FD530 /* MemoriesViewController.m */; };
+		E7D98814187E9AA800BC8826 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7D98813187E9AA800BC8826 /* Crashlytics.framework */; };
 		E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */; };
 		E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */; };
 		E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F97183F6C950061350A /* PhotosImportedViewController.m */; };
@@ -323,6 +324,7 @@
 		E7D193731840CC24008FD530 /* NSMutableArray+Reverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Reverse.m"; sourceTree = "<group>"; };
 		E7D193751840F016008FD530 /* MemoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesViewController.h; sourceTree = "<group>"; };
 		E7D193761840F016008FD530 /* MemoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesViewController.m; sourceTree = "<group>"; };
+		E7D98813187E9AA800BC8826 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		E7DA1B56183A9563000527A0 /* PhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailViewController.h; sourceTree = "<group>"; };
 		E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
 		E7EA949F18759AB7009EEF31 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */,
 				E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */,
 				E73DF7A4182AEB0D00E560FF /* libz.dylib in Frameworks */,
+				E7D98814187E9AA800BC8826 /* Crashlytics.framework in Frameworks */,
 				E7AE14C718059A070021F321 /* SystemConfiguration.framework in Frameworks */,
 				3F64B640187AB2A7004603C7 /* libGoogleAnalyticsServices.a in Frameworks */,
 				E7AE14C418059A070021F321 /* QuartzCore.framework in Frameworks */,
@@ -710,6 +713,7 @@
 		E7AE147E1803F6870021F321 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E7D98813187E9AA800BC8826 /* Crashlytics.framework */,
 				3F64B638187AB29D004603C7 /* GoogleAnalytics */,
 				E7719B681864BC7A002E4A1B /* Accelerate.framework */,
 				E7719B661864BC70002E4A1B /* AdSupport.framework */,
@@ -841,6 +845,7 @@
 				E7AE14781803F6870021F321 /* Sources */,
 				E7AE14791803F6870021F321 /* Frameworks */,
 				E7AE147A1803F6870021F321 /* Resources */,
+				E7D98812187E9A5600BC8826 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -944,6 +949,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E7D98812187E9A5600BC8826 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 9e1ac2698261626f408a06299471b1f9ca65f65e";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E7AE14781803F6870021F321 /* Sources */ = {
@@ -1148,6 +1169,7 @@
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/GoogleMaps,
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Parse,
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/SDWebImage,
+					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
@@ -1187,6 +1209,7 @@
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/GoogleMaps,
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Parse,
 					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/SDWebImage,
+					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
