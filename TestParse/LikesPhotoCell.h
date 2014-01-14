@@ -11,6 +11,6 @@
 @interface LikesPhotoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UITextView *likers;
 @property (weak, nonatomic) IBOutlet UITextView *titleComment;
-
+@property (weak, nonatomic) IBOutlet UIButton *allCommentsButton;
 
 @end

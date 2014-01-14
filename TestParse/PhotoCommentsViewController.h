@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoCommentsViewController : UITableViewController
+@interface PhotoCommentsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextFieldDelegate>
 
-@property (strong, nonatomic) NSArray *commentsArray;
+@property (strong, nonatomic) PFObject *photo;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) IBOutlet UIToolbar *writtingToolbar;
+@property (weak, nonatomic) IBOutlet UITextField *writeComment;
+@property (weak, nonatomic) IBOutlet UIButton *sendComment;
+
+@property (nonatomic) CGFloat initialTVHeight;
+
+- (IBAction)sendComment:(id)sender;
 
 @end

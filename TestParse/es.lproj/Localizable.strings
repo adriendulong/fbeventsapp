@@ -113,6 +113,17 @@
 ///// PhotoDetailViewController /////
 "PhotoDetailViewController_Title" = "FOTO";
 "PhotoDetailViewController_DeletePhoto" = "¿Seguro que quieres eliminar esta foto?";
+"PhotoDetailViewController_ShowNbComments" = "Mostrar los %i comentarios";
+
+
+///// PhotoCommentsViewController /////
+"PhotoDetailViewController_SendComment_Placeholder" = "¿Qué piensa usted?";
+"PhotoDetailViewController_Time_Ago" = "hace %i%@";
+"PhotoDetailViewController_Time_Day" = "d";
+"PhotoDetailViewController_Time_Hour" = "h";
+"PhotoDetailViewController_Time_Minute" = "min";
+"PhotoDetailViewController_Time_Second" = "seg";
+"PhotoDetailViewController_Time_Now" = "ahora";
 
 
 ///// PhotosCollectionViewController /////

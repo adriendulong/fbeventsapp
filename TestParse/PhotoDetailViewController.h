@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageOwner;
 @property (weak, nonatomic) IBOutlet UILabel *nameOwner;
 
+- (IBAction)pushToAllComments:(UIButton *)sender;
 
 @end

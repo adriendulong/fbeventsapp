@@ -104,49 +104,59 @@
         return 50;
     }
     else if(indexPath.row == 2){
-        if (self.photo[@"comments"]) {
+        
+        //NSLog(@"[self.photo[@\"comments\"] count] = %i", [self.photo[@"comments"] count]);
+        
+        if ([self.photo[@"comments"] count] > 0) {
+            
+            int nbCommentLimit = ([self.photo[@"comments"] count] > 4) ? 4 : [self.photo[@"comments"] count];
             
             int heightSizeTot = 0;
-            
-            for (NSDictionary *comsDict in self.photo[@"comments"]) {
-                NSString *name = (NSString *)comsDict[@"name"];
-                NSString *text = (NSString *)comsDict[@"comment"];
-                
-                NSString *sentence = [NSString stringWithFormat:@"%@ %@\n", name, text];
-                
-                //NSLog(@"sentence = %@", sentence);
-                
-                //CGFloat heightSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}].height;
-                //CGSize size = [sentence sizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:CGSizeMake(203, 99999) lineBreakMode:NSLineBreakByTruncatingTail];
-                
-                NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-                [style setLineBreakMode:NSLineBreakByWordWrapping];
-                
-                NSDictionary *attributes = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:14.0f],
-                                             NSParagraphStyleAttributeName: style};
-                // NSString class method: boundingRectWithSize:options:attributes:context is
-                // available only on ios7.0 sdk.
-                CGRect rect = [sentence boundingRectWithSize:CGSizeMake(305, MAXFLOAT)
-                                                          options:NSStringDrawingUsesLineFragmentOrigin
-                                                       attributes:attributes
-                                                          context:nil];
-                
-                //NSLog(@"rect.size.height = %f", rect.size.height);
-                
-                // Set default size if needed
-                //CGFloat height = (size.height > 20)? size.height  : CHAT_CELL_DEFAULT_HEIGHT - CHAT_CELL_OFFSET_HEIGHT;
-                
-                heightSizeTot += floor(rect.size.height);
+            switch ([self.photo[@"comments"] count]) {
+                case 1:
+                    heightSizeTot += 30;
+                    break;
+                    
+                case 2:
+                    heightSizeTot += 35;
+                    break;
+                    
+                case 3:
+                    heightSizeTot += 50;
+                    break;
+                    
+                default:
+                    break;
             }
             
-            NSLog(@"heightSizeTot = %i", heightSizeTot);
+            //[self.photo[@"comments"] count]+4;
             
-            /*for (int i = 0; i < 4; i++) {
-                NSString *title = (NSString *)[self.photo[@"comments"] objectAtIndex:i][@"comment"];
-                CGFloat heightSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}].height;
+            for (int c = 0; c < nbCommentLimit; c++) {
+                NSDictionary *comment = self.photo[@"comments"][c];
                 
-                heightSizeTot = heightSizeTot+heightSize;
-            }*/
+                NSString *name = comment[@"name"];
+                NSString *text = (comment[@"comment"] == nil) ? @"" : comment[@"comment"];
+                
+                const char *jsonString = [text UTF8String];
+                NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
+                NSString *goodMsg = [[NSString alloc] initWithData:jsonData encoding:NSNonLossyASCIIStringEncoding];
+                
+                //NSString *sentence = [NSString stringWithFormat:@"%@ %@\n\n", name, text];
+                NSString *sentence = [NSString stringWithFormat:@"%@ %@", name, goodMsg];
+                
+                NSMutableAttributedString *sentenceStr = [[NSMutableAttributedString alloc] initWithString:sentence];
+                NSInteger nameLenght = [name length];
+                
+                [sentenceStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:110/255.0f green:111/255.0f blue:116/255.0f alpha:1.0f] range:NSMakeRange(0, sentence.length)];
+                [sentenceStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:252/255.0f green:157/255.0f blue:44/255.0f alpha:1.0f] range:NSMakeRange(0, nameLenght)];
+                [sentenceStr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue" size:14.0f] range:NSMakeRange(0, sentence.length)];
+                [sentenceStr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f] range:NSMakeRange(0, nameLenght)];
+                
+                CGFloat sentenceHeight = [self textViewHeightForAttributedText:sentenceStr andWidth:305];
+                
+                heightSizeTot += sentenceHeight;
+            }
+            
             
             return heightSizeTot;
         }
@@ -159,7 +169,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(self.photo[@"comments"]) return 3;
+    if ([self.photo[@"comments"] count] > 0) return 3;
     else return 2;
 }
 
@@ -279,30 +289,46 @@
         //[cell.likers sizeToFit];
         //[cell.likers setNumberOfLines:0];
         
-        if (self.photo[@"comments"]) {
+        if ([self.photo[@"comments"] count] > 0) {
+            
+            int nbCommentLimit = ([self.photo[@"comments"] count] > 4) ? 4 : [self.photo[@"comments"] count];
             
             NSMutableAttributedString *allSentences = [[NSMutableAttributedString alloc] init];
             
-            [self.photo[@"comments"] enumerateObjectsUsingBlock:^(NSDictionary *comment, NSUInteger idx, BOOL *stop)
-            {
-                 
+            for (int c = 0; c < nbCommentLimit; c++) {
+                NSDictionary *comment = self.photo[@"comments"][c];
+                
                 NSString *name = comment[@"name"];
-                NSString *text = comment[@"comment"];
-                 
-                NSString *sentence = [NSString stringWithFormat:@"%@ %@\n", name, text];
-                 
+                NSString *text = (comment[@"comment"] == nil) ? @"" : comment[@"comment"];
+                
+                const char *jsonString = [text UTF8String];
+                NSData *jsonData = [NSData dataWithBytes:jsonString length:strlen(jsonString)];
+                NSString *goodMsg = [[NSString alloc] initWithData:jsonData encoding:NSNonLossyASCIIStringEncoding];
+                
+                NSString *sentence = [NSString stringWithFormat:@"%@ %@\n\n", name, goodMsg];
+                
                 NSMutableAttributedString *sentenceStr = [[NSMutableAttributedString alloc] initWithString:sentence];
                 NSInteger nameLenght = [name length];
-                 
-                //UIColor *orangeMoment = [UIColor colorWithRed:253/255 green:146/255 blue:38/255 alpha:1.0f];
-                [sentenceStr addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(0, nameLenght)];
+                
+                [sentenceStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:110/255.0f green:111/255.0f blue:116/255.0f alpha:1.0f] range:NSMakeRange(0, sentence.length)];
+                [sentenceStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:252/255.0f green:157/255.0f blue:44/255.0f alpha:1.0f] range:NSMakeRange(0, nameLenght)];
+                [sentenceStr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue" size:14.0f] range:NSMakeRange(0, sentence.length)];
+                [sentenceStr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14.0f] range:NSMakeRange(0, nameLenght)];
                 
                 [allSentences appendAttributedString:sentenceStr];
+            }
+            
+            cell.titleComment.attributedText = allSentences;
+            
+            cell.titleComment.scrollEnabled = NO;
+            
+            if ([self.photo[@"comments"] count] < 4) {
+                cell.allCommentsButton.hidden = YES;
+            } else {
                 
-                if (stop) {
-                    cell.titleComment.attributedText = allSentences;
-                }
-            }];
+                NSString *titleCommentsButton = [NSString stringWithFormat:NSLocalizedString(@"PhotoDetailViewController_ShowNbComments", nil), [self.photo[@"comments"] count]];
+                [cell.allCommentsButton setTitle:titleCommentsButton forState:UIControlStateNormal];
+            }
         }
         
         
@@ -310,6 +336,16 @@
     }
     
     
+}
+
+- (CGFloat)textViewHeightForAttributedText:(NSAttributedString *)text andWidth:(CGFloat)width
+{
+    UITextView *textView = [[UITextView alloc] init];
+    [textView setAttributedText:text];
+    CGSize size = [textView sizeThatFits:CGSizeMake(width, FLT_MAX)];
+    //NSLog(@"size.height = %f", size.height);
+    
+    return size.height;
 }
 
 -(void)userClickedLike:(NSNotification *)note{
@@ -429,7 +465,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Cancel", nil)
                                                    destructiveButtonTitle:NSLocalizedString(@"UIActionSheet_Delete", nil)
-                                                        otherButtonTitles:@"Ajouter FAKE commentaire"];
+                                                        otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
     else{
@@ -450,27 +486,6 @@
     if  ([buttonTitle isEqualToString:NSLocalizedString(@"UIActionSheet_Delete", nil)]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIActionSheet_Delete", nil) message:NSLocalizedString(@"PhotoDetailViewController_DeletePhoto", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_No", nil) otherButtonTitles:NSLocalizedString(@"UIAlertView_Yes", nil), nil];
         [alert show];
-    } else if  ([buttonTitle isEqualToString:@"Ajouter FAKE commentaire"]) {
-        
-        NSMutableArray *comments = [self.photo[@"comments"] mutableCopy];
-        
-        NSDictionary *comment = @{@"name": [PFUser currentUser][@"name"],
-                                @"id": [PFUser currentUser].objectId,
-                                @"date": [NSDate date],
-                                  @"comment":@"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut"};/* labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."};*/
-        
-        
-        [comments addObject:comment];
-        self.photo[@"comments"] = [comments copy];
-        
-        [self.photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                NSLog(@"Commentaire ajouté !");
-                
-                
-                NSLog(@"self.photo[@\"comments\"] = %@", self.photo[@"comments"]);
-            }
-        }];
     }
 }
 
@@ -593,10 +608,10 @@
         
         LikesCollectionsController *likesCollection = segue.destinationViewController;
         likesCollection.likers = likers;
-    } else if ([segue.identifier isEqualToString:@"Comments"]) {
+    } else if ([segue.identifier isEqualToString:@"AllComments"]) {
         
         PhotoCommentsViewController *commentsController = segue.destinationViewController;
-        commentsController.commentsArray = [NSArray arrayWithArray:self.photo[@"comments"]];
+        commentsController.photo = self.photo;
         
     }
 }
@@ -622,5 +637,9 @@
     
 }
 
+
+- (IBAction)pushToAllComments:(UIButton *)sender {
+    [self performSegueWithIdentifier:@"AllComments" sender:self];
+}
 
 @end
