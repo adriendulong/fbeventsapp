@@ -34,6 +34,8 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:HaveFinishedRefreshEvents object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:fakeAnswerEvents object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ModifEventsInvitationsAnswers object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -50,9 +52,6 @@
     [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsNotJoinedSegment", nil) forSegmentAtIndex:0];
     [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsDeclinedSegment", nil) forSegmentAtIndex:1];
     
-    
-    [self loadInvitationFromServer];
-    [self loadDeclinedFromSever];
 }
 
 - (void)viewDidLoad
@@ -74,8 +73,13 @@
     self.invitations = [[NSMutableArray alloc] init];
     self.objectsForTable = [[NSMutableArray alloc] init];
     self.animating = NO;
+    
+    //[self loadInvitationFromServer];
+    //[self loadDeclinedFromSever];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRefresh:) name:HaveFinishedRefreshEvents object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fakeInvitationChanged:) name:fakeAnswerEvents object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDeclinedFromSever) name:ModifEventsInvitationsAnswers object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -196,6 +200,8 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            [self.invitations removeAllObjects];
+            
             self.invitations = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
             
             //Save in local database
@@ -254,12 +260,6 @@
                 [self isEmptyTableView];
                 [self.tableView reloadData];
             }
-            else{
-                if([self.invitations count] == 0){
-                    //[self.listSegmentControll setSelectedSegmentIndex:1];
-                    self.objectsForTable = self.declined;
-                }
-            }
         } else {
             // Log details of the failure
             NSLog(@"Problème de chargement");
@@ -271,7 +271,41 @@
 # pragma mark Segment results
 
 -(void)invitationChanged:(NSNotification *) notification{
-    //find position invitation
+    BOOL isSuccess = [notification.userInfo[@"isSuccess"] boolValue];
+    
+    
+    if (!isSuccess) {
+        //find position invitation
+        for(PFObject *invitation in self.objectsForTable){
+            if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                break;
+            }
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"ListInvitationsController_ProblemChangingInvitation", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
+        [alert show];
+    }
+    else{
+        if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
+            //Animation tab Evenements
+            self.countTimer = 0;
+            self.timeOfActiveUser = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+        }
+    }
+    
+    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+    
+    //We reload the list in the future events
+    ListEvents *eventsController =  (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
+    [eventsController loadFutureEventsFromServer];
+}
+
+
+-(void)fakeInvitationChanged:(NSNotification *)notification{
+    
+    [self postReponseMessage:notification];
+    
     int i=0;
     int positionToRemove = 0;
     for(PFObject *invitation in self.objectsForTable){
@@ -287,6 +321,7 @@
     if (self.listSegmentControll.selectedSegmentIndex == 0) {
         [self.invitations removeObjectAtIndex:positionToRemove];
         [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
+        [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
     }
     else{
         [self.declined removeObjectAtIndex:positionToRemove];
@@ -297,22 +332,7 @@
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     [self isEmptyTableView];
     
-    if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
-        //Animation tab Evenements
-        self.countTimer = 0;
-        self.timeOfActiveUser = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
-    }
     
-    
-    /*
-    NSLog(@"DETECT PROTOCOL");
-    [self loadInvitationFromServer];
-    [self loadDeclinedFromSever];*/
-    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
-    
-    //We reload the list in the future events
-    ListEvents *eventsController =  (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
-    [eventsController loadFutureEventsFromServer];
 }
 
 - (IBAction)listTypeChange:(id)sender {
@@ -448,6 +468,55 @@
         self.tableView.backgroundView = nil;
     }
     
+}
+
+-(void)postReponseMessage:(NSNotification *)notification{
+    NSString *title;
+    NSString *messageOne;
+    NSString *messageTwo;
+    NSString *messageThree;
+    NSString *messageFour;
+    
+    self.answerOccuringId = notification.userInfo[@"eventId"];
+    
+    if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending]) {
+        title = NSLocalizedString(@"ListInvitationsController_TitleActionSheetPositive", nil);
+        messageOne = NSLocalizedString(@"ListInvitationsController_BodyAttendingMessage1", nil);
+        messageTwo = NSLocalizedString(@"ListInvitationsController_BodyAttendingMessage2", nil);
+        messageThree = NSLocalizedString(@"ListInvitationsController_BodyAttendingMessage3", nil);
+        messageFour = NSLocalizedString(@"ListInvitationsController_BodyAttendingMessage4", nil);
+    }
+    else if([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]){
+        title = NSLocalizedString(@"ListInvitationsController_TitleActionSheetMaybe", nil);
+        messageOne = NSLocalizedString(@"ListInvitationsController_BodyMaybeMessage1", nil);
+        messageTwo = NSLocalizedString(@"ListInvitationsController_BodyMaybeMessage2", nil);
+        messageThree = NSLocalizedString(@"ListInvitationsController_BodyMaybeMessage3", nil);
+        messageFour = NSLocalizedString(@"ListInvitationsController_BodyMaybeMessage4", nil);
+    }
+    else{
+        title = NSLocalizedString(@"ListInvitationsController_TitleActionSheetDeclined", nil);
+        messageOne = NSLocalizedString(@"ListInvitationsController_BodyDeclinedMessage1", nil);
+        messageTwo = NSLocalizedString(@"ListInvitationsController_BodyDeclinedMessage2", nil);
+        messageThree = NSLocalizedString(@"ListInvitationsController_BodyDeclinedMessage3", nil);
+        messageFour = NSLocalizedString(@"ListInvitationsController_BodyDeclinedMessage4", nil);
+    }
+    
+    
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Skip", nil)
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:messageOne, messageTwo, messageThree, messageFour, nil];
+    [actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if (buttonIndex!=4) {
+        [MOUtility postRSVP:self.answerOccuringId withMessage:buttonTitle];
+    }
 }
 
 

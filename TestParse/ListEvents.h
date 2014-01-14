@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 @property (copy) void (^completionHandler)(UIBackgroundFetchResult);
 @property (assign, nonatomic) BOOL isBackgroundTask;
+@property (assign, nonatomic) BOOL isNewUser;
 
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;

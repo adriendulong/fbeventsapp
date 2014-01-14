@@ -254,6 +254,9 @@
 }
 
 -(void)logIn:(NSNotification *)note{
+    NSString *b = note.userInfo[@"is_new"];
+    NSLog(@"%@", b);
+
     self.mustDismiss = YES;
 }
 

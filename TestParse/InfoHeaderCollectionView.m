@@ -8,6 +8,7 @@
 
 #import "InfoHeaderCollectionView.h"
 #import "CameraViewController.h"
+#import "MOUtility.h"
 
 @implementation InfoHeaderCollectionView
 
@@ -33,15 +34,15 @@
 - (IBAction)rsvpChanged:(id)sender {
     //Accept
     if(self.segmentRsvp.selectedSegmentIndex == 0){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"attending"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending];
     }
     //Maybe
     else if (self.segmentRsvp.selectedSegmentIndex == 1){
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"maybe"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer];
     }
     //No
     else{
-        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:@"declined"];
+        [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined];
     }
 }
 
@@ -85,55 +86,53 @@
                     NSLog(@"%@", result);
                     
                     if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
-                        NSLog(@"OK !!");
                         //Save the new rsvp
+                        NSString *oldRsvp = self.invitation[@"rsvp_status"];
                         self.invitation[@"rsvp_status"] = rsvp;
                         [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                             if(!error){
-                                //Warn the table view controller
+                                [MOUtility setRsvp:rsvp forInvitation:self.invitation.objectId];
                                 [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
                             }
                             else{
-                                [self.segmentRsvp setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                                self.invitation[@"rsvp_status"] = oldRsvp;
+                                [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
                             }
                         }];
                     }
                     
                 }
                 else{
-                    NSLog(@"%@", error);
-                    [self.segmentRsvp setSelected:NO];
+                    [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
                 }
             }];
         }];
 
     } else {
-        // Send request to Facebook
-        NSLog(@"On a la permission");
         
         [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {
-                NSLog(@"%@", result);
                 
                 if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
-                    NSLog(@"OK !!");
                     //Save the new rsvp
+                    NSString *oldRsvp = self.invitation[@"rsvp_status"];
                     self.invitation[@"rsvp_status"] = rsvp;
                     [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if(!error){
                             //Warn the table view controller
+                            [MOUtility setRsvp:rsvp forInvitation:self.invitation.objectId];
                             [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
                         }
                         else{
-                            [self.segmentRsvp setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                            self.invitation[@"rsvp_status"] = oldRsvp;
+                            [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
                         }
                     }];
                 }
                 
             }
             else{
-                NSLog(@"%@", error);
-                [self.segmentRsvp setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
             }
         }];
     }
@@ -169,6 +168,19 @@
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
         CameraViewController *cameraViewController = segue.destinationViewController;
         cameraViewController.event = self.invitation[@"event"];
+    }
+}
+
+
+-(NSInteger)segmentPositionForRsvp:(NSString *)rsvp{
+    if ([rsvp isEqualToString:FacebookEventAttending]) {
+        return 0;
+    }
+    else if([rsvp isEqualToString:FacebookEventMaybeAnswer]){
+        return 1;
+    }
+    else{
+        return 2;
     }
 }
 @end

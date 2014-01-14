@@ -44,6 +44,7 @@
 ///// UIActionSheet /////
 "UIActionSheet_Cancel" = "Annuler";
 "UIActionSheet_Delete" = "Supprimer";
+"UIActionSheet_Skip" = "Ignorer";
 
 
 ///// TutorialViewController /////
@@ -169,21 +170,15 @@
 ///// LikesCollectionsController /////
 "LikesCollectionsController_Title" = "LIKERS";
 
-
-//idem c’est où ce texte ?
 ///// InfoHeaderCollectionView /////
 "InfoHeaderCollectionView_Details" = "Détails";
 "InfoHeaderCollectionView_Hide" = "Masquer";
 
-
 ///// DetailDescriptionViewController /////
 "DetailDescriptionViewController_Title" = "Description";
 
-
-//ca on peut le delete
 ///// MapViewController /////
 "MapViewController_Marker_Snippet" = "Hello World";
-
 
 ///// InvitedListViewController /////
 "InvitedListViewController_Title" = "Invités";
@@ -200,6 +195,25 @@
 "ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
+"ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'évènement. Veuillez reessayer.";
+"ListInvitationsController_TitleActionSheetPositive" = "Super ! Tiens au courant les autres invités !";
+"ListInvitationsController_TitleActionSheetMaybe" = "Encore indécis ? Tu veux détailler un peu ?";
+"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Laisse une explication ?";
+//Messages for attending
+"ListInvitationsController_BodyAttendingMessage1" = "Super ! Je serai là avec plaisir !";
+"ListInvitationsController_BodyAttendingMessage2" = "Je serai présent, merci.";
+"ListInvitationsController_BodyAttendingMessage3" = "Vous pouvez compter sur moi !";
+"ListInvitationsController_BodyAttendingMessage4" = "J'ai annulé le Poney !";
+//Messages for Maybe
+"ListInvitationsController_BodyMaybeMessage1" = "Désolé, je ne sais pas encore.";
+"ListInvitationsController_BodyMaybeMessage2" = "Je vous tiens au courant.";
+"ListInvitationsController_BodyMaybeMessage3" = "J'essaye d'être là !";
+"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui !";
+//Messsage for Declined
+"ListInvitationsController_BodyDeclinedMessage1" = "Je ne pourrai pas être présent.";
+"ListInvitationsController_BodyDeclinedMessage2" = "Je serai là la prochaine fois !";
+"ListInvitationsController_BodyDeclinedMessage3" = "Amusez vous bien !";
+"ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai piscine !";
 
 
 ///// ListEvents /////

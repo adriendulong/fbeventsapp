@@ -209,6 +209,61 @@
     
 }
 
++(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message{
+    NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
+    NSString *messageToPost = [NSString stringWithFormat:@"%@ \n\n via Woovent", message];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"message":messageToPost, @"link":@"https://apps.facebook.com/woovent"} HTTPMethod:@"POST"];
+    
+    FBSession *session = [PFFacebookUtils session] ;
+    
+    NSArray *permissions =
+    [NSArray arrayWithObjects:@"publish_actions",@"publish_stream", nil];
+    
+    NSLog(@"Permissions : %@", session.permissions );
+    
+    BOOL publish_perm = [[PFUser currentUser][@"has_publish_perm"] boolValue];
+    
+    if (([session.permissions indexOfObject:@"publish_stream"] == NSNotFound) && !publish_perm) {
+        [PFFacebookUtils reauthorizeUser:[PFUser currentUser] withPublishPermissions:permissions audience:FBSessionDefaultAudienceFriends block:^(BOOL succeeded, NSError *error) {
+            
+            
+            //Add permission rsvp to user
+            FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
+            [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                
+                NSArray *permissions = result[@"data"];
+                if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
+                    PFUser *currentUser =[PFUser currentUser];
+                    currentUser[@"has_publish_perm"] = @YES;
+                    [currentUser saveInBackground];
+                }
+                NSLog(@"TEST");
+            }];
+            
+            
+            
+            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    NSLog(@"Message posted");
+                }
+                else{
+                    NSLog(@"%@", [error userInfo]);
+                }
+            }];
+        }];
+    }
+    else{
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSLog(@"Message posted");
+            }
+            else{
+                NSLog(@"%@", [error userInfo]);
+            }
+        }];
+    }
+}
+
 
 #pragma mark - Colors
 
@@ -277,7 +332,7 @@
     }
 }
 
-+(NSArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending{
++(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending{
     NSMutableArray *eventMutArray = [[NSMutableArray alloc] init];
     
     //Create an array with the events
@@ -301,11 +356,12 @@
             PFObject *eventTemp = invitation[@"event"];
             if ([eventTemp.objectId isEqualToString:event.objectId]) {
                 [sortedInvits addObject:invitation];
+                break;
             }
         }
     }
     
-    return [sortedInvits copy];
+    return sortedInvits;
 }
 
 
@@ -696,6 +752,20 @@
     }
     
     else return notif;
+}
+
++(void)setRsvp:(NSString *)rsvp forInvitation:(NSString *)invitationId{
+     NSManagedObjectContext *context = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).managedObjectContext;
+    Invitation *invitation = [self getInvitationForObjectId:invitationId];
+    
+    if (invitation != nil) {
+        invitation.rsvp_status = rsvp;
+        
+        NSError *error;
+        if (![context save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+    }
 }
 
 

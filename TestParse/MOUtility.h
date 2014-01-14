@@ -24,7 +24,7 @@
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 +(NSDate *)getEndDateEvent:(PFObject *)event;
-+(NSArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
++(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 +(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
 
 #pragma mark - Facebook
@@ -33,6 +33,7 @@
 +(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
 +(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;
 +(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message;
++(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message;
 
 #pragma mark - Colors
 +(UIColor*)colorWithHexString:(NSString*)hex;
@@ -58,6 +59,7 @@
 +(Invitation *)saveInvitationWithEvent:(PFObject *)invitation;
 +(Event *)saveEvent:(PFObject *)event;
 +(Notification *)saveNotification:(NSDictionary *)infos;
++(void)setRsvp:(NSString *)rsvp forInvitation:(NSString *)invitationId;
 
 #pragma mark - Model to Parse Object
 +(PFObject *)invitationToParseInvitation:(Invitation *)invitation;
