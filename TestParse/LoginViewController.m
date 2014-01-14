@@ -40,6 +40,8 @@
     [tracker set:kGAIScreenName
            value:@"Login View"];
     [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    self.isNewUser = NO;
 }
 
 - (void)viewDidLoad
@@ -193,6 +195,7 @@
                 [alert show];
             }
         } else if (user.isNew) {
+            self.isNewUser = YES;
             //Mixpanel
             [self.mixpanel createAlias:user.objectId
                     forDistinctID:[Mixpanel sharedInstance].distinctId];
@@ -314,9 +317,9 @@
                         
                         [currentUser saveInBackground];
                         
-                        
-                        //Go to the first page
-                        [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:self];
+
+                       
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:nil userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:self.isNewUser] forKey:@"is_new"]];
                         /*if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
                          {
                          [self.myDelegate comingFromLogin];
@@ -325,8 +328,15 @@
                         [self dismissViewControllerAnimated:NO completion:nil];
                     }];
                 } else {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Party", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
-                    [alert show];
+                    
+                    NSDictionary *userInfo = @{@"is_new": [NSNumber numberWithBool:self.isNewUser]};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:LogInUser object:userInfo];
+                    /*if([self.myDelegate respondsToSelector:@selector(comingFromLogin)])
+                     {
+                     [self.myDelegate comingFromLogin];
+                     }*/
+                    
+                    [self dismissViewControllerAnimated:NO completion:nil];
                 }
             }];
         }

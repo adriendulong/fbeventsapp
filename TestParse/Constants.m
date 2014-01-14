@@ -20,6 +20,7 @@ NSString *const SelectAllPhotosPhone                = @"com.moment.FbEvents.Sele
 NSString *const SelectAllPhotosFacebook             = @"com.moment.FbEvents.SelectAllPhotosFacebook";
 NSString *const ModifEventsInvitationsAnswers       = @"com.moment.FbEvents.ModifEventsInvitationsAnswers";
 NSString *const HaveFinishedRefreshEvents           = @"com.moment.FbEvents.HaveFinishedRefreshEvents";
+NSString *const fakeAnswerEvents                    = @"com.moment.FbEvents.fakeAnswerEvents";
 NSString *const LogOutUser                          = @"com.moment.FbEvents.LogOutUser";
 NSString *const LogInUser                           = @"com.moment.FbEvents.LogInUser";
 NSString *const UpdateClosestEvent                  = @"com.moment.FbEvents.UpdateClosestEvent";

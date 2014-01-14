@@ -40,6 +40,7 @@
     [super viewWillAppear:animated];
     
     
+    
     if (!self.isBackgroundTask) {
         [TestFlight passCheckpoint:@"MY_EVENTS"];
         [[Mixpanel sharedInstance] track:@"Event View Appear"];
@@ -50,6 +51,12 @@
         [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     }
     
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    if (self.isNewUser) {
+        [self performSegueWithIdentifier:@"CountEvents" sender:nil];
+    }
 }
 
 
@@ -78,7 +85,7 @@
     
     //Init badge of invitations
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneFacebookEventUpdated:) name:@"FacebookEventUploaded" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fbReload:) name:ModifEventsInvitationsAnswers object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadFutureEventsFromServer) name:ModifEventsInvitationsAnswers object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logOut:) name:LogOutUser object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logIn:) name:LogInUser object:nil];
     
@@ -251,6 +258,7 @@
             ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
             if (invitationsController) {
                 [invitationsController loadInvitationFromServer];
+                [invitationsController loadDeclinedFromSever];
             }
             
         }
@@ -403,6 +411,15 @@
 }
 
 -(void)logIn:(NSNotification *)note{
+    BOOL b = [note.userInfo[@"is_new"] boolValue];
+    NSLog(@"%hhd", b);
+    if ([note.userInfo[@"is_new"] boolValue]) {
+        self.isNewUser = YES;
+    }
+    else{
+        self.isNewUser = NO;
+    }
+    
     [self localClosestInvitation];
     [self loadFutureEventsFromServer];
     [self setBadgeForInvitation:self.tabBarController atIndex:1];
