@@ -129,7 +129,7 @@
     NSString *goodMsg = [[NSString alloc] initWithData:jsonData encoding:NSNonLossyASCIIStringEncoding];
     
     NSString *sentence = [NSString stringWithFormat:@"%@ %@", name, goodMsg];
-    NSLog(@"sentence = %@", sentence);
+    //NSLog(@"sentence = %@", sentence);
     
     NSMutableAttributedString *sentenceStr = [[NSMutableAttributedString alloc] initWithString:sentence];
     NSInteger nameLenght = [name length];
