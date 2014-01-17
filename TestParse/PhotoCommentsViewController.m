@@ -327,6 +327,8 @@
         [self.photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"Commentaire ajouté !");
+                [self pushOwnerPhotoCommented:goodMsg];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NewCommentAdded object:self];
                 
                 //NSLog(@"self.photo[@\"comments\"] = %@", self.photo[@"comments"]);
             } else {
@@ -344,6 +346,17 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Title_Comment_Error", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message5", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
         [alert show];
     }*/
+}
+
+
+-(void)pushOwnerPhotoCommented:(NSString *)comment{
+    
+    //We push only if the owner is a user of the app
+    if (self.photo[@"user"]) {
+        [PFCloud callFunction:@"pushnewcomment" withParameters:@{@"photoid" : self.photo.objectId, @"comment": comment}];
+        
+    }
+    
 }
 
 @end

@@ -25,6 +25,7 @@
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
 		E70115DD183B92F90077EAB7 /* ActionPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115DC183B92F90077EAB7 /* ActionPhotoCell.m */; };
+		E70BC5541887D582008C1462 /* LandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70BC5531887D582008C1462 /* LandingViewController.m */; };
 		E70D4977184367A1007A0445 /* UploadFilesAutomaticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70D4976184367A1007A0445 /* UploadFilesAutomaticViewController.m */; };
 		E70D497A1843BEE4007A0445 /* DetailDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70D49791843BEE4007A0445 /* DetailDescriptionViewController.m */; };
 		E70D49801843CDE8007A0445 /* InvitedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70D497F1843CDE8007A0445 /* InvitedListViewController.m */; };
@@ -54,6 +55,7 @@
 		E74F53BA182962D000B1C1AF /* MemoriesController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F53B9182962D000B1C1AF /* MemoriesController.m */; };
 		E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F753A1847A4A900F42E2A /* CustomBadge.m */; };
 		E74F753E1847ADAF00F42E2A /* PhotosAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */; };
+		E755FFAB18885505007F735A /* UIView-JTViewToImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E755FFAA18885505007F735A /* UIView-JTViewToImage.m */; };
 		E75A0395181EB71600A26EF3 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E75A0394181EB71600A26EF3 /* EventsCell.m */; };
 		E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E765014E1844FD8600B96E47 /* MemorieCell.m */; };
 		E76501521845225400B96E47 /* FirstMemorieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E76501511845225400B96E47 /* FirstMemorieCell.m */; };
@@ -178,6 +180,8 @@
 		E70115D9183B88800077EAB7 /* LikesPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikesPhotoCell.m; sourceTree = "<group>"; };
 		E70115DB183B92F90077EAB7 /* ActionPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionPhotoCell.h; sourceTree = "<group>"; };
 		E70115DC183B92F90077EAB7 /* ActionPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPhotoCell.m; sourceTree = "<group>"; };
+		E70BC5521887D582008C1462 /* LandingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandingViewController.h; sourceTree = "<group>"; };
+		E70BC5531887D582008C1462 /* LandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandingViewController.m; sourceTree = "<group>"; };
 		E70D4975184367A1007A0445 /* UploadFilesAutomaticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFilesAutomaticViewController.h; sourceTree = "<group>"; };
 		E70D4976184367A1007A0445 /* UploadFilesAutomaticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFilesAutomaticViewController.m; sourceTree = "<group>"; };
 		E70D49781843BEE4007A0445 /* DetailDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailDescriptionViewController.h; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 		E74F753A1847A4A900F42E2A /* CustomBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomBadge.m; sourceTree = "<group>"; };
 		E74F753C1847ADAF00F42E2A /* PhotosAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosAlbumViewController.h; sourceTree = "<group>"; };
 		E74F753D1847ADAF00F42E2A /* PhotosAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosAlbumViewController.m; sourceTree = "<group>"; };
+		E755FFA918885505007F735A /* UIView-JTViewToImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView-JTViewToImage.h"; sourceTree = "<group>"; };
+		E755FFAA18885505007F735A /* UIView-JTViewToImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView-JTViewToImage.m"; sourceTree = "<group>"; };
 		E75A0393181EB71600A26EF3 /* EventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsCell.h; sourceTree = "<group>"; };
 		E75A0394181EB71600A26EF3 /* EventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsCell.m; sourceTree = "<group>"; };
 		E765014D1844FD8600B96E47 /* MemorieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemorieCell.h; sourceTree = "<group>"; };
@@ -500,6 +506,15 @@
 			name = "Events Details";
 			sourceTree = "<group>";
 		};
+		E70BC5511887D54E008C1462 /* Landing */ = {
+			isa = PBXGroup;
+			children = (
+				E70BC5521887D582008C1462 /* LandingViewController.h */,
+				E70BC5531887D582008C1462 /* LandingViewController.m */,
+			);
+			name = Landing;
+			sourceTree = "<group>";
+		};
 		E70D49811843CDFD007A0445 /* Invited Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -590,6 +605,8 @@
 		E75A0397181EE63D00A26EF3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E755FFA918885505007F735A /* UIView-JTViewToImage.h */,
+				E755FFAA18885505007F735A /* UIView-JTViewToImage.m */,
 				E76605A718337563009AABEE /* Constants.h */,
 				E76605A818337563009AABEE /* Constants.m */,
 				E724E57C180F02E800741528 /* MOUtility.h */,
@@ -772,6 +789,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E70BC5511887D54E008C1462 /* Landing */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
 				E7719B321864BC32002E4A1B /* Mixpanel */,
 				E77E1DEA18585DF200EF1F8A /* Settings */,
@@ -1027,12 +1045,14 @@
 				E7719B5B1864BC32002E4A1B /* MPSurvey.m in Sources */,
 				E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */,
 				E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */,
+				E70BC5541887D582008C1462 /* LandingViewController.m in Sources */,
 				E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */,
 				E73F7A861844AF5B003BF2B1 /* UIImage+RoundedCornerAdditions.m in Sources */,
 				E7719B631864BC32002E4A1B /* UIView+MPSnapshotImage.m in Sources */,
 				E74F753B1847A4A900F42E2A /* CustomBadge.m in Sources */,
 				E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */,
 				E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */,
+				E755FFAB18885505007F735A /* UIView-JTViewToImage.m in Sources */,
 				E7719B5D1864BC32002E4A1B /* MPSurveyNavigationController.m in Sources */,
 				E78F75B6185B669300817159 /* CGUViewController.m in Sources */,
 				E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */,
@@ -1108,8 +1128,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1128,7 +1148,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1150,8 +1170,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1163,7 +1183,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1175,8 +1195,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1203,7 +1223,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1215,8 +1235,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1243,7 +1263,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

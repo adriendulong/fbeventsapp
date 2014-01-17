@@ -276,6 +276,11 @@
 }
 
 - (IBAction)fbReload:(id)sender {
+    [self performSegueWithIdentifier:@"CountEvents" sender:nil];
+    /*if (self.isNewUser) {
+        [self performSegueWithIdentifier:@"CountEvents" sender:nil];
+    }*/
+    
     if (!self.isBackgroundTask) {
         [TestFlight passCheckpoint:@"RELOAD_INVITATIONS_FROM_FB"];
     }

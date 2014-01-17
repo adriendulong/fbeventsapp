@@ -416,6 +416,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                 
             }];
         }
+        
+        [PFPush handlePush:userInfo];
     }
     else{
         
@@ -489,12 +491,14 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
             }
             
         }
+        
+        [PFPush handlePush:userInfo];
     }
     
     
     
     //
-    [PFPush handlePush:userInfo];
+    
 }
 
 

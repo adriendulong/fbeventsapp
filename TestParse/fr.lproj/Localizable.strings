@@ -4,6 +4,7 @@
 "PushNotifs_NewPhotoOne" = "Une nouvelle photo ajoutée à %@";
 "PushNotifs_InvitationsMany" = "%@ invitations à des évènements en attente de réponse";
 "PushNotifs_InvitationsOne" = "Une invitation à un évènement en attente de réponse";
+"PushNotifs_NewComment" = "%@ a commenté une de vos photos";
 
 
 /* UITabBar */
@@ -145,7 +146,7 @@
 "PhotosCollectionViewController_Error_GMaps" = "Erreur lors de l'ouverture de Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Erreur lors de l'ouverture de Maps";
 "PhotosCollectionViewController_OK" = "OK";
-"PhotosCollectionViewController_TakePhoto" = "Prendre une photo";
+"PhotosCollectionViewController_TakePhoto" = "Prendre/Ajouter une photo";
 "PhotosCollectionViewController_AutoImport" = "Importation Automatique";
 "PhotosCollectionViewController_TimeConjonction" = "à";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
@@ -196,24 +197,24 @@
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
 "ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'évènement. Veuillez reessayer.";
-"ListInvitationsController_TitleActionSheetPositive" = "Super ! Tiens au courant les autres invités !";
-"ListInvitationsController_TitleActionSheetMaybe" = "Encore indécis ? Tu veux détailler un peu ?";
-"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Laisse une explication ?";
+"ListInvitationsController_TitleActionSheetPositive" = "Super, laisse un message à l’hôte !";
+"ListInvitationsController_TitleActionSheetMaybe" = "Hmmm, veux tu expliquer la raison à l’hôte  ?";
+"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Veux tu expliquer la raison à l’hôte ?";
 //Messages for attending
 "ListInvitationsController_BodyAttendingMessage1" = "Super ! Je serai là avec plaisir !";
 "ListInvitationsController_BodyAttendingMessage2" = "Je serai présent, merci.";
 "ListInvitationsController_BodyAttendingMessage3" = "Vous pouvez compter sur moi !";
-"ListInvitationsController_BodyAttendingMessage4" = "J'ai annulé le Poney !";
+"ListInvitationsController_BodyAttendingMessage4" = "J'ai annulé le Poney, je serais là !";
 //Messages for Maybe
 "ListInvitationsController_BodyMaybeMessage1" = "Désolé, je ne sais pas encore.";
 "ListInvitationsController_BodyMaybeMessage2" = "Je vous tiens au courant.";
 "ListInvitationsController_BodyMaybeMessage3" = "J'essaye d'être là !";
-"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui !";
+"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui je viendrais !";
 //Messsage for Declined
 "ListInvitationsController_BodyDeclinedMessage1" = "Je ne pourrai pas être présent.";
-"ListInvitationsController_BodyDeclinedMessage2" = "Je serai là la prochaine fois !";
-"ListInvitationsController_BodyDeclinedMessage3" = "Amusez vous bien !";
-"ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai piscine !";
+"ListInvitationsController_BodyDeclinedMessage2" = "Peut être une prochaine fois ?";
+"ListInvitationsController_BodyDeclinedMessage3" = "Ce sera sans moi mais Amusez vous bien !";
+"ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai aquabike !";
 
 
 ///// ListEvents /////
@@ -231,7 +232,7 @@
 
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
-"MemoriesViewController_AutoImportButton" = "Importation automatique";
+"MemoriesViewController_AutoImportButton" = "Créer un souvenir";
 
 
 //// SettingsViewController /////
@@ -255,4 +256,18 @@
 /// CGUViewController ///
 "CGUViewController_title" = "CGU";
 "CGUViewController_body" = "";
+
+
+/// LandingViewController ///
+"LandingViewController_analyzeLoading" = "Analyse de votre activité évènementielle en cours...";
+"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! viens tester sur l'application Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_congratsLabel1" = "Magnifique !";
+"LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
+"LandingViewControllerWinner_congratsLabel3" = "Peut mieux faire !";
+"LandingViewControllerWinner_totalInvitationsLabel" = "invitations au total !";
+"LandingViewControllerWinner_participateEventsLabel" = "Participations à des évènements";
+"LandingViewControllerWinner_notAnsweredText" = "Evènements nons répondus ! (J'avais pas Woovent !)";
+"LandingViewControllerWinner_youBeatLabel" = "Tu bas";
+"LandingViewControllerWinner_peopleLabel" = "personnes";
+
 

@@ -30,9 +30,15 @@
     return self;
 }
 
+-(BOOL)hidesBottomBarWhenPushed
+{
+    return YES;
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ClickLikePhoto object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:MorePhoto object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NewCommentAdded object:nil];
 
 }
 
@@ -47,6 +53,7 @@
     //Notifs
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userClickedLike:) name:ClickLikePhoto object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(morePhoto:) name:MorePhoto object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateComments:) name:NewCommentAdded object:nil];
     
     if (self.photo[@"width"]) {
         NSLog(@"Width %@, Height %@", self.photo[@"width"], self.photo[@"height"]);
@@ -109,10 +116,10 @@
         
         if ([self.photo[@"comments"] count] > 0) {
             
-            int nbCommentLimit = ([self.photo[@"comments"] count] > 4) ? 4 : [self.photo[@"comments"] count];
+            int nbCommentLimit = ([self.photo[@"comments"] count] > 3) ? 3 : [self.photo[@"comments"] count];
             
             int heightSizeTot = 0;
-            switch ([self.photo[@"comments"] count]) {
+            switch (nbCommentLimit) {
                 case 1:
                     heightSizeTot += 30;
                     break;
@@ -291,7 +298,7 @@
         
         if ([self.photo[@"comments"] count] > 0) {
             
-            int nbCommentLimit = ([self.photo[@"comments"] count] > 4) ? 4 : [self.photo[@"comments"] count];
+            int nbCommentLimit = ([self.photo[@"comments"] count] > 3) ? 3 : [self.photo[@"comments"] count];
             
             NSMutableAttributedString *allSentences = [[NSMutableAttributedString alloc] init];
             
@@ -325,7 +332,7 @@
             if ([self.photo[@"comments"] count] < 4) {
                 cell.allCommentsButton.hidden = YES;
             } else {
-                
+                cell.allCommentsButton.hidden = NO;
                 NSString *titleCommentsButton = [NSString stringWithFormat:NSLocalizedString(@"PhotoDetailViewController_ShowNbComments", nil), [self.photo[@"comments"] count]];
                 [cell.allCommentsButton setTitle:titleCommentsButton forState:UIControlStateNormal];
             }
@@ -640,6 +647,19 @@
 
 - (IBAction)pushToAllComments:(UIButton *)sender {
     [self performSegueWithIdentifier:@"AllComments" sender:self];
+}
+
+-(void)updateComments:(NSNotification *)notification{
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query includeKey:@"user"];
+    [query includeKey:@"prospect"];
+    [query getObjectInBackgroundWithId:self.photo.objectId block:^(PFObject *photoObject, NSError *error) {
+        if (!error) {
+            self.photo = photoObject;
+            [self.tableView reloadData];
+            
+        }
+    }];
 }
 
 @end

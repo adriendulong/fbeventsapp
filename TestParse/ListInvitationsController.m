@@ -203,6 +203,7 @@
             [self.invitations removeAllObjects];
             
             self.invitations = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
+            [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
             
             //Save in local database
             for(PFObject *invitation in objects){

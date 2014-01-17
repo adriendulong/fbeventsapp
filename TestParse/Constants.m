@@ -25,6 +25,7 @@ NSString *const LogOutUser                          = @"com.moment.FbEvents.LogO
 NSString *const LogInUser                           = @"com.moment.FbEvents.LogInUser";
 NSString *const UpdateClosestEvent                  = @"com.moment.FbEvents.UpdateClosestEvent";
 NSString *const InvitedDetailFinished               = @"com.moment.FbEvents.InvitedDetailFinished";
+NSString *const NewCommentAdded                     = @"com.moment.FbEvents.NewCommentAdded";
 
 #pragma mark - Facebook
 
@@ -56,7 +57,7 @@ int const NewPhotosEvent                         = 0;
 int const NewLikePhoto                           = 1;
 
 #pragma mark - Fetch Interval
-NSTimeInterval const TimeIntervalFetch           = 7200;
+NSTimeInterval const TimeIntervalFetch           = 3600;
 
 #pragma mark - External Lib Constants
 extern NSString *const MixpanelToken             = @"0ccc812dd7bb0ed7cf52a7225558803e";

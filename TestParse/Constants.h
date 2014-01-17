@@ -23,6 +23,7 @@ extern NSString *const LogOutUser;
 extern NSString *const LogInUser;
 extern NSString *const UpdateClosestEvent;
 extern NSString *const InvitedDetailFinished;
+extern NSString *const NewCommentAdded;
 
 
 #pragma mark - Facebook

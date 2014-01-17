@@ -4,6 +4,7 @@
 "PushNotifs_NewPhotoOne" = "Una nueva foto añadida a %@";
 "PushNotifs_InvitationsMany" = "%@ invitaciones a eventos pendientes de respuesta";
 "PushNotifs_InvitationsOne" = "Una invitación a un evento pendiente de respuesta";
+"PushNotifs_NewComment" = "%@ a commenté une de vos photos";
 
 
 /* UITabBar */
@@ -44,7 +45,7 @@
 ///// UIActionSheet /////
 "UIActionSheet_Cancel" = "Cancelar";
 "UIActionSheet_Delete" = "Eliminar";
-"UIActionSheet_Skip" = "Ignorer";
+"UIActionSheet_Skip" = "Ignorar";
 
 
 ///// TutorialViewController /////
@@ -118,7 +119,7 @@
 
 
 ///// PhotoCommentsViewController /////
-"PhotoDetailViewController_SendComment_Placeholder" = "¿Qué piensa usted?";
+"PhotoDetailViewController_SendComment_Placeholder" = "¿Qué piensas?";
 "PhotoDetailViewController_Time_Ago" = "hace %i%@";
 "PhotoDetailViewController_Time_Day" = "d";
 "PhotoDetailViewController_Time_Hour" = "h";
@@ -145,7 +146,7 @@
 "PhotosCollectionViewController_Error_GMaps" = "Error abriendo Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Error abriendo el mapa";
 "PhotosCollectionViewController_OK" = "Vale";
-"PhotosCollectionViewController_TakePhoto" = "Saca une foto";
+"PhotosCollectionViewController_TakePhoto" = "Saca/añadir une foto";
 "PhotosCollectionViewController_AutoImport" = "Recuperación automática";
 "PhotosCollectionViewController_TimeConjonction" = "a";
 "PhotosCollectionViewController_NbPhotos" = "%i Fotos";

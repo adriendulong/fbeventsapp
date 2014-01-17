@@ -4,6 +4,7 @@
 "PushNotifs_NewPhotoOne" = "New photo added to %@";
 "PushNotifs_InvitationsMany" = "%@ events invitations awaiting for response";
 "PushNotifs_InvitationsOne" = "One event invitation awaiting for response";
+"PushNotifs_NewComment" = "%@ commented one of your photos";
 
 
 /* UITabBar */
@@ -145,7 +146,7 @@
 "PhotosCollectionViewController_Error_GMaps" = "Error encountered whilst opening Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Error encountered whilst opening Maps";
 "PhotosCollectionViewController_OK" = "OK";
-"PhotosCollectionViewController_TakePhoto" = "Take a photo";
+"PhotosCollectionViewController_TakePhoto" = "Take/Add a photo";
 "PhotosCollectionViewController_AutoImport" = "Automatic Importation";
 "PhotosCollectionViewController_TimeConjonction" = "at";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
@@ -170,7 +171,6 @@
 ///// LikesCollectionsController /////
 "LikesCollectionsController_Title" = "LIKERS";
 
-
 ///// InfoHeaderCollectionView /////
 "InfoHeaderCollectionView_Details" = "Détails";
 "InfoHeaderCollectionView_Hide" = "Hide";
@@ -180,7 +180,6 @@
 
 ///// MapViewController /////
 "MapViewController_Marker_Snippet" = "Hello World";
-
 
 ///// InvitedListViewController /////
 "InvitedListViewController_Title" = "Guests";
@@ -218,7 +217,6 @@
 "ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai piscine !";
 
 
-
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "No upcoming events ...";
@@ -234,7 +232,7 @@
 
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos have been found";
-"MemoriesViewController_AutoImportButton" = "Automatic importation";
+"MemoriesViewController_AutoImportButton" = "Create a memorie";
 
 
 //// SettingsViewController /////

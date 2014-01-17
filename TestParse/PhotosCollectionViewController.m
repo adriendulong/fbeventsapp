@@ -339,7 +339,7 @@
         if (self.isDuringOrAfter) {
             if (self.isShowingDetails) {
                 if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
-                    return CGSizeMake(800, 580);
+                    return CGSizeMake(800, 620);
                 }
                 else{
                     return CGSizeMake(800, 845);
@@ -922,6 +922,7 @@
         cameraViewController.event = self.invitation[@"event"];
     }
     else if ([segue.identifier isEqualToString:@"ShowDetailPhoto"]){
+        
         [[Mixpanel sharedInstance] track:@"Detail Photo"];
         
         NSArray *indexPaths = [self.collectionView indexPathsForSelectedItems];
