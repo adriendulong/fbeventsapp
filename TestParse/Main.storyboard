@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C39" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -2927,16 +2927,13 @@
                         <viewControllerLayoutGuide type="bottom" id="Zw0-mB-Ill"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bOL-t0-Beh">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="484"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="51" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qi8-zV-d8t">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="440"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="524" id="rby-rg-h1f"/>
-                                </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="commentCell" rowHeight="80" id="55f-6Q-Eeq" customClass="CommentCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="80"/>
@@ -2990,7 +2987,7 @@
                                 </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBo-Lq-6Gg">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="440" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.87058830259999997" green="0.87058830259999997" blue="0.87058830259999997" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
@@ -3022,13 +3019,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="qi8-zV-d8t" firstAttribute="bottom" secondItem="FBo-Lq-6Gg" secondAttribute="top" id="CVX-T1-mzk"/>
-                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="top" secondItem="qi8-zV-d8t" secondAttribute="bottom" id="Fhf-qz-tza"/>
-                            <constraint firstItem="qi8-zV-d8t" firstAttribute="trailing" secondItem="FBo-Lq-6Gg" secondAttribute="trailing" id="GNs-wM-wsX"/>
-                            <constraint firstAttribute="trailing" secondItem="qi8-zV-d8t" secondAttribute="trailing" id="Tnh-wd-D9L"/>
-                            <constraint firstItem="qi8-zV-d8t" firstAttribute="leading" secondItem="bOL-t0-Beh" secondAttribute="leading" id="apq-pu-Jgz"/>
-                            <constraint firstItem="qi8-zV-d8t" firstAttribute="top" secondItem="bOL-t0-Beh" secondAttribute="top" id="l7R-cP-CAG"/>
-                            <constraint firstItem="qi8-zV-d8t" firstAttribute="leading" secondItem="FBo-Lq-6Gg" secondAttribute="leading" id="q2c-cu-jC4"/>
+                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="leading" secondItem="bOL-t0-Beh" secondAttribute="leading" id="8aI-K9-4xp"/>
+                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="top" secondItem="qi8-zV-d8t" secondAttribute="bottom" id="9MA-md-WXh"/>
+                            <constraint firstAttribute="trailing" secondItem="FBo-Lq-6Gg" secondAttribute="trailing" id="Gq6-oC-yEH"/>
+                            <constraint firstItem="qi8-zV-d8t" firstAttribute="top" secondItem="bOL-t0-Beh" secondAttribute="top" id="Oh4-Zl-6wx"/>
+                            <constraint firstItem="Zw0-mB-Ill" firstAttribute="top" secondItem="FBo-Lq-6Gg" secondAttribute="bottom" id="Vxj-zT-yzc"/>
+                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="leading" secondItem="qi8-zV-d8t" secondAttribute="leading" id="gbh-dz-HPq"/>
+                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="trailing" secondItem="qi8-zV-d8t" secondAttribute="trailing" id="vMA-qJ-t9d"/>
+                            <constraint firstItem="FBo-Lq-6Gg" firstAttribute="top" secondItem="qi8-zV-d8t" secondAttribute="bottom" id="yDi-OJ-GG8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Commentaires" id="tsg-EX-w9l"/>
@@ -3249,16 +3247,16 @@
                         <viewControllerLayoutGuide type="bottom" id="6Le-TQ-Hff"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="Sf5-bq-1FI">
-                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4oa-DN-GKx">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4oa-DN-GKx">
                                 <rect key="frame" x="150" y="242" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             </activityIndicatorView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="psj-8a-cSq">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="psj-8a-cSq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <prototypes>
@@ -3443,7 +3441,14 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstItem="4oa-DN-GKx" firstAttribute="top" secondItem="2dM-J1-SbO" secondAttribute="bottom" constant="242" id="8uC-6w-tvb"/>
+                            <constraint firstItem="psj-8a-cSq" firstAttribute="leading" secondItem="Sf5-bq-1FI" secondAttribute="leading" id="IH8-fS-bYN"/>
+                            <constraint firstItem="psj-8a-cSq" firstAttribute="top" secondItem="2dM-J1-SbO" secondAttribute="bottom" id="JDE-Fi-V3r"/>
+                            <constraint firstAttribute="trailing" secondItem="psj-8a-cSq" secondAttribute="trailing" id="MZf-QL-fDn"/>
+                            <constraint firstItem="psj-8a-cSq" firstAttribute="centerX" secondItem="4oa-DN-GKx" secondAttribute="centerX" id="a3q-UK-ViV"/>
+                            <constraint firstAttribute="bottom" secondItem="psj-8a-cSq" secondAttribute="bottom" id="yIc-5l-eRs"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dOY-Bu-mMr">
                         <barButtonItem key="rightBarButtonItem" width="800" style="plain" id="t4g-PJ-WKV">
@@ -3484,7 +3489,7 @@
             <objects>
                 <collectionViewController autoresizesArchivedViewToFullSize="NO" id="t2e-aH-S4i" customClass="LikesCollectionsController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="mbb-Rb-3T0">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="484"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XbV-cb-LIS">
