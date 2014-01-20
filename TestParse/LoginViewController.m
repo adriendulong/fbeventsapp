@@ -182,10 +182,14 @@
     [self.activityIndicator setHidden:NO];
     
     
-    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"user_groups", @"read_stream"];
+    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream"];
     
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
-        if (!user) {
+        if (error) {
+            [self.activityIndicator setHidden:YES];
+            [self handleAuthError:error];
+        }
+        /*if (!user) {
             [[Mixpanel sharedInstance] track:@"Error Login"];
             if (!error) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:NSLocalizedString(@"UIAlertView_ErrorLogin_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
@@ -194,7 +198,7 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
                 [alert show];
             }
-        } else if (user.isNew) {
+        } */else if (user.isNew) {
             self.isNewUser = YES;
             //Mixpanel
             [self.mixpanel createAlias:user.objectId
@@ -341,6 +345,43 @@
             }];
         }
     }];
+}
+
+- (void)handleAuthError:(NSError *)error
+{
+    NSString *alertText;
+    NSString *alertTitle;
+    if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
+        // Error requires people using you app to make an action outside your app to recover
+        alertTitle = @"Something went wrong";
+        alertText = [FBErrorUtility userMessageForError:error];
+        [self showMessage:alertText withTitle:alertTitle];
+        
+    } else {
+        // You need to find more information to handle the error within your app
+        if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+            //The user refused to log in into your app, either ignore or...
+            alertTitle = @"Login cancelled";
+            alertText = @"You need to login to access this part of the app";
+            [self showMessage:alertText withTitle:alertTitle];
+            
+        } else {
+            // All other errors that can happen need retries
+            // Show the user a generic error message
+            alertTitle = @"Something went wrong";
+            alertText = @"Please retry";
+            [self showMessage:alertText withTitle:alertTitle];
+        }
+    }
+}
+
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
 }
 
 

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *disconnectLabel;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *finishLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thanksLabel;
+@property (weak, nonatomic) IBOutlet UILabel *myStatsLabel;
 
 
 - (IBAction)finish:(id)sender;

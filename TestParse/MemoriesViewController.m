@@ -416,7 +416,7 @@
     UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_sad"];
+    UIImage *image = [UIImage imageNamed:@"marmotte_memories_empty"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeCenter;
@@ -427,7 +427,7 @@
     [label setTextColor:[UIColor darkGrayColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setNumberOfLines:2];
-    label.text = @"Aucun souvenirs :( Importe des évènements !";
+    label.text = NSLocalizedString(@"MemoriesViewController_Empty", nil);
     [viewBack addSubview:label];
     
     if (!self.memoriesInvitations) {

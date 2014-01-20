@@ -17,6 +17,7 @@
 "UIAlertView_Title_Photo_Error" = "Impossible d'envoyer la photo";
 "UIAlertView_Problem_Title" = "Problème";
 "UIAlertView_Removal_Title" = "Suppression";
+"UIAlertView_Auth_Title" = "Pas d'inquietude !";
 "UIAlertView_ErrorLogin_Title" = "Erreur de connexion";
 "UIAlertView_Notifs_Title" = "Notifications";
 "UIAlertView_Warning" = "Attention";
@@ -28,8 +29,14 @@
 "UIAlertView_ErrorLogin_Message" = "Uh oh. L'utilisateur a annulé la connexion Facebook.";
 "UIAlertView_Notifs_Message" = "Veuillez autoriser les notifications pour cette application en allant dans Paramètres > Centre de notifications.";
 "UIAlertView_Dismiss" = "OK";
+"UIAlertView_Cancel" = "Annuler";
 "UIAlertView_Yes" = "Oui";
 "UIAlertView_No" = "Non";
+"UIAlertView_StartApp" = "Lancez l'app";
+"UIAlertView_TryAgain" = "Reessayer !";
+"UIAlertView_StatisticsProblem" = "Un problème a eu lieu pendant le scan de vos évènements. Voulez vous essayer encore ? Ou commencez à utiliser l'application ?";
+"UIAlertView_postMessageFacebok" = "Nous allons uniquement indiquer sur le mur de l’évènement Facebook votre réponse. Facebook va donc vous demander d’autoriser Woovent à poster en votre nom.";
+"UIAlertView_postPhotoFacebook" = "Nous voulons déposer sur le mur de l’évènement un lien vers l’ensemble des photos ajoutées à cet évènement. Facebook va donc vous demander d’autoriser Woovent à poster en votre nom.";
 
 /* UISegment RSVP */
 "UISegmentRSVP_Going" = "Accepter";
@@ -196,10 +203,10 @@
 "ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
-"ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'évènement. Veuillez reessayer.";
+"ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'invitation. Veuillez reessayer.";
 "ListInvitationsController_TitleActionSheetPositive" = "Super, laisse un message à l’hôte !";
-"ListInvitationsController_TitleActionSheetMaybe" = "Hmmm, veux tu expliquer la raison à l’hôte  ?";
-"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Veux tu expliquer la raison à l’hôte ?";
+"ListInvitationsController_TitleActionSheetMaybe" = "Hmmm, veux tu expliquer la raison à l’organisateur ?";
+"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Veux tu expliquer la raison à l’organisateur ?";
 //Messages for attending
 "ListInvitationsController_BodyAttendingMessage1" = "Super ! Je serai là avec plaisir !";
 "ListInvitationsController_BodyAttendingMessage2" = "Je serai présent, merci.";
@@ -209,18 +216,16 @@
 "ListInvitationsController_BodyMaybeMessage1" = "Désolé, je ne sais pas encore.";
 "ListInvitationsController_BodyMaybeMessage2" = "Je vous tiens au courant.";
 "ListInvitationsController_BodyMaybeMessage3" = "J'essaye d'être là !";
-"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui je viendrais !";
+"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui je serai là !";
 //Messsage for Declined
 "ListInvitationsController_BodyDeclinedMessage1" = "Je ne pourrai pas être présent.";
 "ListInvitationsController_BodyDeclinedMessage2" = "Peut être une prochaine fois ?";
-"ListInvitationsController_BodyDeclinedMessage3" = "Ce sera sans moi mais Amusez vous bien !";
-"ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai aquabike !";
-
+"ListInvitationsController_BodyDeclinedMessage3" = "Ce sera sans moi mais, amusez vous bien !";
+"ListInvitationsController_BodyDeclinedMessage4" = "Désolé, j'ai aquabike !";
 
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "Aucun évènement à venir ...";
-
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";
@@ -229,11 +234,10 @@
 "MemoriesImportViewController_WhatEventKind" = "Quel évènement souhaitez vous revivre ?";
 "MemoriesImportViewController_By" = "Par";
 
-
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
-
+"MemoriesViewController_Empty" = "Aucun souvenirs :(\n en un en cliquant en haut !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
@@ -245,29 +249,29 @@
 "SettingsViewController_CGU" = "Conditions d'utilisation";
 "SettingsViewController_disconnect" = "Deconnexion";
 "SettingsViewController_Thanks" = "Remerciements";
-
-
+"SettingsViewController_myStats" = "Mes Statistiques";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "En me connectant j'accepte les CGU";
 "LoginViewController_ConnectFB" = "Connectez vous avec Facebook";
 
-
 /// CGUViewController ///
 "CGUViewController_title" = "CGU";
 "CGUViewController_body" = "";
 
-
 /// LandingViewController ///
-"LandingViewController_analyzeLoading" = "Analyse de votre activité évènementielle en cours...";
-"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! viens tester sur l'application Woovent : http://www.woovent.com";
-"LandingViewControllerWinner_congratsLabel1" = "Magnifique !";
+"LandingViewController_analyzeLoading" = "Nous analysons tes évènements Facebook...";
+"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_congratsLabel1" = "Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
 "LandingViewControllerWinner_congratsLabel3" = "Peut mieux faire !";
-"LandingViewControllerWinner_totalInvitationsLabel" = "invitations au total !";
-"LandingViewControllerWinner_participateEventsLabel" = "Participations à des évènements";
-"LandingViewControllerWinner_notAnsweredText" = "Evènements nons répondus ! (J'avais pas Woovent !)";
-"LandingViewControllerWinner_youBeatLabel" = "Tu bas";
-"LandingViewControllerWinner_peopleLabel" = "personnes";
+"LandingViewControllerWinner_totalInvitationsLabel" = "invitations à des évènements";
+"LandingViewControllerWinner_participateEventsLabel" = "Participations ";
+"LandingViewControllerWinner_notAnsweredText" = "En attente ! \n (Tu n'avais pas Woovent !)";
+"LandingViewControllerWinner_youBeatLabel" = "Mieux que";
+"LandingViewControllerWinner_peopleLabel" = "des utilisateurs !";
+"LandingViewControllerWinner_easilyManage" = "Avec Woovent, gère facilement tes évènements Facebook !";
+"LandingViewControllerWinner_start" = "Démarrer !";
+"LandingViewControllerWinner_challenge" = "Défis tes amis !";
 
 

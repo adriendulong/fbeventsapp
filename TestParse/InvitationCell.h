@@ -19,7 +19,6 @@
 @property(strong, nonatomic) PFObject *invitation;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
-
 - (IBAction)rsvpChanged:(id)sender;
 
 @end

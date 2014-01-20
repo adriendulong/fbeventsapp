@@ -30,5 +30,7 @@
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;
 -(void)retrieveEventsSince:(NSDate *)sinceDate to:(NSDate *)toDate isJoin:(BOOL)joined;
+@property (weak, nonatomic) IBOutlet UIButton *fbReloadButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end

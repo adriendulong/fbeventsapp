@@ -55,6 +55,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     if (self.isNewUser) {
+        self.isNewUser = NO;
         [self performSegueWithIdentifier:@"CountEvents" sender:nil];
     }
 }
@@ -216,7 +217,14 @@
                 self.facebookEventsNb = [result[@"data"] count];
             }
             else{
-                self.facebookEventNotReplied = [result[@"data"] count];;
+                self.facebookEventNotReplied = [result[@"data"] count];
+                if (self.facebookEventNotReplied==0) {
+                    ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
+                    if (invitationsController) {
+                        [invitationsController loadInvitationFromServer];
+                        [invitationsController loadDeclinedFromSever];
+                    }
+                }
             }
             
             
@@ -232,6 +240,12 @@
         }
         else{
             NSLog(@"%@", error);
+            ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
+            if (invitationsController) {
+                [invitationsController loadInvitationFromServer];
+                [invitationsController loadDeclinedFromSever];
+            }
+            [self stopRefresh];
         }
     }];
 
@@ -276,7 +290,7 @@
 }
 
 - (IBAction)fbReload:(id)sender {
-    [self performSegueWithIdentifier:@"CountEvents" sender:nil];
+    //[self performSegueWithIdentifier:@"CountEvents" sender:nil];
     /*if (self.isNewUser) {
         [self performSegueWithIdentifier:@"CountEvents" sender:nil];
     }*/
@@ -287,8 +301,12 @@
     
     
     if (!self.refreshControl.isRefreshing) {
-        [self startSpin];
+        [self.activityIndicator setHidden:NO];
+        [self.refreshImage setHidden:YES];
+        
     }
+    
+    [self.fbReloadButton setEnabled:NO];
     
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
@@ -351,9 +369,7 @@
                     //Select the closest invit
                     [self selectClosestInvitation];
                     
-                    self.animating = NO;
-                    [self.refreshControl endRefreshing];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
+                    [self stopRefresh];
                     
                     
                     for(PFObject *invitation in objects){
@@ -362,7 +378,7 @@
                 }
                 else{
                     NSLog(@"Problème de chargement");
-                    [self.refreshControl endRefreshing];
+                    [self stopRefresh];
                 }
             }];
             
@@ -443,41 +459,6 @@
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
 }
 
-
-#pragma mark - Animate Button Refresh
-
-- (void) spinWithOptions: (UIViewAnimationOptions) options {
-    // this spin completes 360 degrees every 2 seconds
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: options
-                     animations: ^{
-                         self.refreshImage.transform = CGAffineTransformRotate(self.refreshImage.transform, M_PI / 2);
-                     }
-                     completion: ^(BOOL finished) {
-                         if (finished) {
-                             if (self.animating) {
-                                 // if flag still set, keep spinning with constant speed
-                                 [self spinWithOptions: UIViewAnimationOptionCurveLinear];
-                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
-                                 // one last spin, with deceleration
-                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut];
-                             }
-                         }
-                     }];
-}
-
-- (void) startSpin {
-    if (!self.animating) {
-        self.animating = YES;
-        [self spinWithOptions: UIViewAnimationOptionCurveEaseIn];
-    }
-}
-
-- (void) stopSpin {
-    // set the flag to stop spinning after one last 90 degree increment
-    self.animating = NO;
-}
 
 -(void)selectClosestInvitation{
     __block BOOL haveOlderWithEndTime = NO;
@@ -612,7 +593,7 @@
     UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_pantoufle"];
+    UIImage *image = [UIImage imageNamed:@"marmotte_event_empty"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
      imageView.contentMode = UIViewContentModeCenter;
@@ -685,6 +666,14 @@
             }
         }
     }];
+}
+
+-(void)stopRefresh{
+    [self.activityIndicator setHidden:YES];
+    [self.refreshImage setHidden:NO];
+    [self.fbReloadButton setEnabled:YES];
+    [self.refreshControl endRefreshing];
+    [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
 }
 
 

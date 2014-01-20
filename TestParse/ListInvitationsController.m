@@ -36,6 +36,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:HaveFinishedRefreshEvents object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:fakeAnswerEvents object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:ModifEventsInvitationsAnswers object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RsvpChanged" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -51,6 +52,8 @@
     //Init
     [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsNotJoinedSegment", nil) forSegmentAtIndex:0];
     [self.listSegmentControll setTitle:NSLocalizedString(@"ListInvitationsController_InvitationsDeclinedSegment", nil) forSegmentAtIndex:1];
+    
+    [self isEmptyTableView];
     
 }
 
@@ -77,7 +80,7 @@
     //[self loadInvitationFromServer];
     //[self loadDeclinedFromSever];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRefresh:) name:HaveFinishedRefreshEvents object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRefresh) name:HaveFinishedRefreshEvents object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fakeInvitationChanged:) name:fakeAnswerEvents object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDeclinedFromSever) name:ModifEventsInvitationsAnswers object:nil];
 }
@@ -275,6 +278,7 @@
     BOOL isSuccess = [notification.userInfo[@"isSuccess"] boolValue];
     
     
+    
     if (!isSuccess) {
         //find position invitation
         for(PFObject *invitation in self.objectsForTable){
@@ -288,10 +292,41 @@
         [alert show];
     }
     else{
+        int i=0;
+        int positionToRemove = 0;
+        BOOL stillHere = NO;
+        for(PFObject *invitation in self.objectsForTable){
+            if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                positionToRemove = i;
+                stillHere = YES;
+                break;
+            }
+            i++;
+        }
+        
+        if (stillHere) {
+            if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                [self.invitations removeObjectAtIndex:positionToRemove];
+                [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
+                [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
+            }
+            else{
+                [self.declined removeObjectAtIndex:positionToRemove];
+                [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
+            }
+            
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            [self isEmptyTableView];
+        }
+        
+        
         if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
             //Animation tab Evenements
             self.countTimer = 0;
             self.timeOfActiveUser = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+        }
+        else{
+            [self loadDeclinedFromSever];
         }
     }
     
@@ -395,48 +430,12 @@
     }
 }
 
-#pragma mark - Animate Button Refresh
-
-- (void) spinWithOptions: (UIViewAnimationOptions) options {
-    // this spin completes 360 degrees every 2 seconds
-    [UIView animateWithDuration: 0.5f
-                          delay: 0.0f
-                        options: options
-                     animations: ^{
-                         self.refreshImage.transform = CGAffineTransformRotate(self.refreshImage.transform, M_PI / 2);
-                     }
-                     completion: ^(BOOL finished) {
-                         if (finished) {
-                             if (self.animating) {
-                                 // if flag still set, keep spinning with constant speed
-                                 [self spinWithOptions: UIViewAnimationOptionCurveLinear];
-                             } else if (options != UIViewAnimationOptionCurveEaseOut) {
-                                 // one last spin, with deceleration
-                                 [self spinWithOptions: UIViewAnimationOptionCurveEaseOut];
-                             }
-                         }
-                     }];
-}
-
-- (void) startSpin {
-    if (!self.animating) {
-        self.animating = YES;
-        [self spinWithOptions: UIViewAnimationOptionCurveEaseIn];
-    }
-}
-
--(void)stopRefresh:(Notification *)note{
-    self.animating = NO;
-}
-
-- (void) stopSpin {
-    // set the flag to stop spinning after one last 90 degree increment
-    self.animating = NO;
-}
 
 - (IBAction)refresh:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
-    [self startSpin];
+    [self.activityIndicator setHidden:NO];
+    [self.refreshImage setHidden:YES];
+    [self.fbReloadButton setEnabled:NO];
 }
 
 
@@ -445,7 +444,7 @@
     self.viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_victoire"];
+    UIImage *image = [UIImage imageNamed:@"marmotte_invit_empty"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeCenter;
@@ -516,7 +515,34 @@
     
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     if (buttonIndex!=4) {
-        [MOUtility postRSVP:self.answerOccuringId withMessage:buttonTitle];
+        if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+            self.buttonAnswerTitle = buttonTitle;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Auth_Title", nil)
+                                                                message:NSLocalizedString(@"UIAlertView_postMessageFacebok", nil)
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"UIAlertView_Cancel", nil)
+                                                      otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
+            [alertView show];
+        }
+        else{
+            [MOUtility postRSVP:self.answerOccuringId withMessage:buttonTitle];
+        }
+        
+        
+    }
+}
+
+-(void)stopRefresh{
+    [self.activityIndicator setHidden:YES];
+    [self.refreshImage setHidden:NO];
+    [self.fbReloadButton setEnabled:YES];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        
+    }else{
+        [MOUtility postRSVP:self.answerOccuringId withMessage:self.buttonAnswerTitle];
     }
 }
 

@@ -10,7 +10,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 
-@interface ListInvitationsController : UITableViewController <UIActionSheetDelegate>
+@interface ListInvitationsController : UITableViewController <UIActionSheetDelegate, UIAlertViewDelegate>
 @property (nonatomic, strong) NSMutableArray *invitations;
 @property (nonatomic, strong) NSMutableArray *declined;
 @property (nonatomic, strong) NSMutableArray *objectsForTable;
@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 @property (weak, nonatomic) NSMutableArray *eventWaitingForAnswer;
 @property (weak, nonatomic) NSString *answerOccuringId;
+@property (weak, nonatomic) NSString *buttonAnswerTitle;
 
 @property (strong, nonatomic) UIView *viewBack;
 
@@ -32,5 +33,7 @@
 -(void)invitationChanged:(NSNotification *) notification;
 - (IBAction)listTypeChange:(id)sender;
 - (IBAction)refresh:(id)sender;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *fbReloadButton;
 
 @end

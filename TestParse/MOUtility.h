@@ -15,7 +15,7 @@
 #import "Event.h"
 #import "TestParseAppDelegate.h"
 
-@interface MOUtility : NSObject
+@interface MOUtility : NSObject <UIAlertViewDelegate>
 
 #pragma mark - Email
 +(BOOL)isValidEmailAddress:(NSString *)emailaddress;

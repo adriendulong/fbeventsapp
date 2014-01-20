@@ -47,6 +47,7 @@
     self.cguLabel.text = NSLocalizedString(@"SettingsViewController_CGU", nil);
     self.disconnectLabel.text = NSLocalizedString(@"SettingsViewController_disconnect", nil);
     self.thanksLabel.text =  NSLocalizedString(@"SettingsViewController_Thanks", nil);
+    self.myStatsLabel.text = NSLocalizedString(@"SettingsViewController_myStats", nil);
     [self.finishLabel setTitle:NSLocalizedString(@"UIBArButtonItem_Terminate", nil)];
     
 }
@@ -95,7 +96,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 2;
+        return 3;
     }
     else if (section == 1){
         return 2;
@@ -116,7 +117,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section==1) {
+    if (indexPath.section==0) {
+        if (indexPath.row==2) {
+            [self performSegueWithIdentifier:@"CountEvents" sender:nil];
+        }
+    }
+    else if (indexPath.section==1) {
         
         //Remarques et preuves d'amour
         if (indexPath.row==0) {
@@ -125,11 +131,11 @@
                 MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
                 mailer.mailComposeDelegate = self;
                 [mailer setSubject:NSLocalizedString(@"SettingsViewController_Mail_Object", nil)];
-                NSArray *toRecipients = [NSArray arrayWithObjects:@"adrien@appmoment.fr",nil];
+                NSArray *toRecipients = [NSArray arrayWithObjects:@"adrien@woovent.com",nil];
                 [mailer setToRecipients:toRecipients];
                 [self presentViewController:mailer animated:YES completion:NULL];
             }
-            else{
+            else if(indexPath.row==1){
                 UIAlertView *alert=[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message4", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_Dismiss", nil)  otherButtonTitles: nil] ;
                 [alert show];
             }

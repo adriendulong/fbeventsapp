@@ -384,11 +384,23 @@
         message = NSLocalizedString(@"SharePhotoViewController_SharedPhoto3", nil);
     }
     
-    NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
-    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
-    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
+    if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Auth_Title", nil)
+                                                            message:NSLocalizedString(@"UIAlertView_postPhotoFacebook", nil)
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"UIAlertView_Cancel", nil)
+                                                  otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
+        [alertView show];
+    }
+    else{
+        NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
+    }
 }
 
 //Push notif
@@ -412,6 +424,28 @@
     
     self.counterTimer++;
 
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
+    }else{
+        NSString *message;
+        if (self.photosReallyUploaded>1) {
+            message = [NSString stringWithFormat:NSLocalizedString(@"SharePhotoViewController_SharedPhoto2", nil), self.photosReallyUploaded];;
+        }
+        else{
+            message = NSLocalizedString(@"SharePhotoViewController_SharedPhoto3", nil);
+        }
+        
+        NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.levelRoot] animated:NO];
+    }
 }
 
 

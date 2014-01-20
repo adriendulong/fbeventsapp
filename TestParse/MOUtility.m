@@ -158,43 +158,30 @@
     NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"link": url, @"message":message} HTTPMethod:@"POST"];
     
-    FBSession *session = [PFFacebookUtils session] ;
     
-    NSArray *permissions =
-    [NSArray arrayWithObjects:@"publish_actions",@"publish_stream", nil];
-    
-    NSLog(@"Permissions : %@", session.permissions );
-
-    BOOL publish_perm = [[PFUser currentUser][@"has_publish_perm"] boolValue];
-
-    if (([session.permissions indexOfObject:@"publish_stream"] == NSNotFound) && !publish_perm) {
-        [PFFacebookUtils reauthorizeUser:[PFUser currentUser] withPublishPermissions:permissions audience:FBSessionDefaultAudienceFriends block:^(BOOL succeeded, NSError *error) {
-            
-            
-            //Add permission rsvp to user
-            FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
-            [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                
-                NSArray *permissions = result[@"data"];
-                if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
-                    PFUser *currentUser =[PFUser currentUser];
-                    currentUser[@"has_publish_perm"] = @YES;
-                    [currentUser saveInBackground];
-                }
-                NSLog(@"TEST");
-            }];
-            
-            
-            
-            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    NSLog(@"Message posted");
-                }
-                else{
-                    NSLog(@"%@", [error userInfo]);
-                }
-            }];
-        }];
+    if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+        [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions", @"publish_stream"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                if (!error) {
+                                                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                        if (!error) {
+                                                            NSLog(@"Message posted");
+                                                        }
+                                                        else{
+                                                            NSLog(@"%@", [error userInfo]);
+                                                        }
+                                                    }];
+                                                } else if (error.fberrorCategory != FBErrorCategoryUserCancelled){
+                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission denied"
+                                                                                                        message:@"Unable to get permission to post"
+                                                                                                       delegate:nil
+                                                                                              cancelButtonTitle:@"OK"
+                                                                                              otherButtonTitles:nil];
+                                                    [alertView show];
+                                                    
+                                                }
+                                            }];
     }
     else{
         [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -206,7 +193,7 @@
             }
         }];
     }
-    
+
 }
 
 +(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message{
@@ -214,43 +201,30 @@
     NSString *messageToPost = [NSString stringWithFormat:@"%@ \n\n via Woovent", message];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"message":messageToPost, @"link":@"https://apps.facebook.com/woovent"} HTTPMethod:@"POST"];
     
-    FBSession *session = [PFFacebookUtils session] ;
-    
-    NSArray *permissions =
-    [NSArray arrayWithObjects:@"publish_actions",@"publish_stream", nil];
-    
-    NSLog(@"Permissions : %@", session.permissions );
-    
-    BOOL publish_perm = [[PFUser currentUser][@"has_publish_perm"] boolValue];
-    
-    if (([session.permissions indexOfObject:@"publish_stream"] == NSNotFound) && !publish_perm) {
-        [PFFacebookUtils reauthorizeUser:[PFUser currentUser] withPublishPermissions:permissions audience:FBSessionDefaultAudienceFriends block:^(BOOL succeeded, NSError *error) {
-            
-            
-            //Add permission rsvp to user
-            FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
-            [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                
-                NSArray *permissions = result[@"data"];
-                if ([[permissions objectAtIndex:0][@"publish_stream"] intValue] == 1) {
-                    PFUser *currentUser =[PFUser currentUser];
-                    currentUser[@"has_publish_perm"] = @YES;
-                    [currentUser saveInBackground];
-                }
-                NSLog(@"TEST");
-            }];
-            
-            
-            
-            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    NSLog(@"Message posted");
-                }
-                else{
-                    NSLog(@"%@", [error userInfo]);
-                }
-            }];
-        }];
+    if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+
+        [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions", @"publish_stream"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                if (!error) {
+                                                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                        if (!error) {
+                                                            NSLog(@"Message posted");
+                                                        }
+                                                        else{
+                                                            NSLog(@"%@", [error userInfo]);
+                                                        }
+                                                    }];
+                                                } else if (error.fberrorCategory != FBErrorCategoryUserCancelled){
+                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission denied"
+                                                                                                        message:@"Unable to get permission to post"
+                                                                                                       delegate:nil
+                                                                                              cancelButtonTitle:@"OK"
+                                                                                              otherButtonTitles:nil];
+                                                    [alertView show];
+                                                    
+                                                }
+                                            }];
     }
     else{
         [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -1171,6 +1145,14 @@
             }];
         }
     }];
+}
+
+
+#pragma mark - AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+    }else{
+    }
 }
 
 

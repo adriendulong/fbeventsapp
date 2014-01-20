@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface UploadFilesAutomaticViewController : UIViewController
+@interface UploadFilesAutomaticViewController : UIViewController <UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSArray *photosToUpload;
 @property (strong, nonatomic) PFObject *event;

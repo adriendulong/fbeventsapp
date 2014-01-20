@@ -789,8 +789,8 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
-				E70BC5511887D54E008C1462 /* Landing */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
+				E70BC5511887D54E008C1462 /* Landing */,
 				E7719B321864BC32002E4A1B /* Mixpanel */,
 				E77E1DEA18585DF200EF1F8A /* Settings */,
 				3F5385491857846600F24F35 /* Libraries */,

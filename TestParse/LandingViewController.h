@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LandingViewController : UIViewController
+@interface LandingViewController : UIViewController <UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIView *winnerView;
 @property (weak, nonatomic) IBOutlet UIView *looserView;
@@ -22,6 +22,13 @@
 
 //Label Loading
 @property (weak, nonatomic) IBOutlet UILabel *analyseLoading;
+@property (weak, nonatomic) IBOutlet UIImageView *facebookOne;
+@property (weak, nonatomic) IBOutlet UIImageView *facebookTwo;
+@property (weak, nonatomic) IBOutlet UIImageView *facebookThree;
+@property (weak, nonatomic) IBOutlet UIImageView *facebookFour;
+@property (strong, nonatomic) NSTimer *facebookTimer;
+@property (assign, nonatomic) int counterTimer;
+
 
 //Labels Winner
 @property (weak, nonatomic) IBOutlet UILabel *totalInvitationsNumber;
@@ -36,7 +43,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonChallengeWinner;
 @property (weak, nonatomic) IBOutlet UILabel *notAnsweredNumber;
 @property (weak, nonatomic) IBOutlet UILabel *notAnsweredText;
+@property (weak, nonatomic) IBOutlet UILabel *easilyManageFBEvents;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintViewCup;
 
 
 

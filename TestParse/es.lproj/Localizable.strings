@@ -17,6 +17,7 @@
 "UIAlertView_Title_Photo_Error" = "Imposible de enviar la foto";
 "UIAlertView_Problem_Title" = "Problema";
 "UIAlertView_Removal_Title" = "Eliminando";
+"UIAlertView_Auth_Title" = "¡Sin preocupaciones!";
 "UIAlertView_ErrorLogin_Title" = "Problema de conexión";
 "UIAlertView_Notifs_Title" = "Notificaciones";
 "UIAlertView_Warning" = "Atención";
@@ -28,8 +29,14 @@
 "UIAlertView_ErrorLogin_Message" = "¡ Oh ! El usador ha cancelado la conexión Facebook.";
 "UIAlertView_Notifs_Message" = "Por favor, autoriza las notificaciones para esta aplicación en el panel de ajustes > centro de notificaciones";
 "UIAlertView_Dismiss" = "Vale";
+"UIAlertView_Cancel" = "Cancelar";
 "UIAlertView_Yes" = "Si";
 "UIAlertView_No" = "No";
+"UIAlertView_StartApp" = "Start the app";
+"UIAlertView_TryAgain" = "Try again !";
+"UIAlertView_StatisticsProblem" = "A problem occured while scanning your events, we can't generate your stats. Do you want to try again ? Or start to use the app now ?";
+"UIAlertView_postMessageFacebok" = "Indicamos sólo en el muro del evento Facebook tu respuesta. Facebook preguntará una autorización por Woovent para subir en tu nombre.";
+"UIAlertView_postPhotoFacebook" = "Queremos poner sobre el muro del evento un enlace de las fotos subidas a este evento. Facebook preguntará una autorización por Woovent para subir en tu nombre.";
 
 /* UISegment RSVP */
 "UISegmentRSVP_Going" = "Asistiré";
@@ -147,7 +154,7 @@
 "PhotosCollectionViewController_Error_Maps" = "Error abriendo el mapa";
 "PhotosCollectionViewController_OK" = "Vale";
 "PhotosCollectionViewController_TakePhoto" = "Saca/añadir une foto";
-"PhotosCollectionViewController_AutoImport" = "Recuperación automática";
+"PhotosCollectionViewController_AutoImport" = "Crear un recuerdo";
 "PhotosCollectionViewController_TimeConjonction" = "a";
 "PhotosCollectionViewController_NbPhotos" = "%i Fotos";
 
@@ -196,31 +203,29 @@
 "ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nNinguna invitación rechazada";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En espera";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Rechazadas";
-"ListInvitationsController_ProblemChangingInvitation" = "";
-"ListInvitationsController_TitleActionSheetPositive" = "Super ! Tiens au courant les autres invités !";
-"ListInvitationsController_TitleActionSheetMaybe" = "Encore indécis ? Tu veux détailler un peu ?";
-"ListInvitationsController_TitleActionSheetDeclined" = "Dommage ! Laisse une explication ?";
+"ListInvitationsController_ProblemChangingInvitation" = "Un error se ha ocurrido para responder al invitación. Por favor prueba de nuevo.";
+"ListInvitationsController_TitleActionSheetPositive" = "¡ Súper, deja un mensaje al organizador !";
+"ListInvitationsController_TitleActionSheetMaybe" = "¿ Hmmm, quieres explicar porque no sabes ?";
+"ListInvitationsController_TitleActionSheetDeclined" = "¡ Que lastima ! ¿ Quieres decir porque no vienes ?";
 //Messages for attending
-"ListInvitationsController_BodyAttendingMessage1" = "Super ! Je serai là avec plaisir !";
-"ListInvitationsController_BodyAttendingMessage2" = "Je serai présent, merci.";
-"ListInvitationsController_BodyAttendingMessage3" = "Vous pouvez compter sur moi !";
-"ListInvitationsController_BodyAttendingMessage4" = "J'ai annulé le Poney !";
+"ListInvitationsController_BodyAttendingMessage1" = "¡ Súper ! Vendré con alegría !";
+"ListInvitationsController_BodyAttendingMessage2" = "Estaré presente, gracias";
+"ListInvitationsController_BodyAttendingMessage3" = "Puedes contar en mi !";
+"ListInvitationsController_BodyAttendingMessage4" = "¡ He cancelado el pony, vendré !";
 //Messages for Maybe
-"ListInvitationsController_BodyMaybeMessage1" = "Désolé, je ne sais pas encore.";
-"ListInvitationsController_BodyMaybeMessage2" = "Je vous tiens au courant.";
-"ListInvitationsController_BodyMaybeMessage3" = "J'essaye d'être là !";
-"ListInvitationsController_BodyMaybeMessage4" = "Si maman dit oui !";
+"ListInvitationsController_BodyMaybeMessage1" = "Lo siento, no sé todavía";
+"ListInvitationsController_BodyMaybeMessage2" = "Te lo digo pronto";
+"ListInvitationsController_BodyMaybeMessage3" = "Intento de venir !";
+"ListInvitationsController_BodyMaybeMessage4" = "¡ Si la mama acepta, vendré !";
 //Messsage for Declined
-"ListInvitationsController_BodyDeclinedMessage1" = "Je ne pourrai pas être présent.";
-"ListInvitationsController_BodyDeclinedMessage2" = "Je serai là la prochaine fois !";
-"ListInvitationsController_BodyDeclinedMessage3" = "Amusez vous bien !";
-"ListInvitationsController_BodyDeclinedMessage4" = "Désole, j'ai piscine !";
-
+"ListInvitationsController_BodyDeclinedMessage1" = "No puedo venir";
+"ListInvitationsController_BodyDeclinedMessage2" = "¿ Quizás la próxima vez ?";
+"ListInvitationsController_BodyDeclinedMessage3" = "¡ Sin mi, pero disfrutas al máximo !";
+"ListInvitationsController_BodyDeclinedMessage4" = "¡ Lo siento, tengo aquabike !";
 
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notificaciones  : %i";
 "ListEvents_NoEvent" = "No hay próximos eventos ...";
-
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Eventos";
@@ -229,11 +234,10 @@
 "MemoriesImportViewController_WhatEventKind" = "¿ Que evento te gustaria volver a vivir ? ";
 "MemoriesImportViewController_By" = "De";
 
-
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i fotos han sido encontradas";
 "MemoriesViewController_AutoImportButton" = "Recuperación automática";
-
+"MemoriesViewController_Empty" = "No hay recuerdos: (\nCrear uno tocando el botón de arriba!";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Ajustes";
@@ -245,13 +249,26 @@
 "SettingsViewController_CGU" = "Condiciones y políticas";
 "SettingsViewController_disconnect" = "Salir";
 "SettingsViewController_Thanks" = "Agradecimientos";
-
-
+"SettingsViewController_myStats" = "Mis Estadísticas";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "Conectándome acepto las condiciones";
 "LoginViewController_ConnectFB" = "Conéctate con Facebook";
 
-
 /// CGUViewController ///
 "CGUViewController_title" = "Las condiciones";
+
+/// LandingViewController ///
+"LandingViewController_analyzeLoading" = " Estamos analizando tus eventos ... ";
+"LandingViewControllerWinner_messageForFacebook" = "¡ %i invitaciones a eventos ! ¿ Tienes mas ? Prueba en la aplicación Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_congratsLabel1" = "¡ Wooow !";
+"LandingViewControllerWinner_congratsLabel2" = " ¡ Bien!";
+"LandingViewControllerWinner_congratsLabel3" = "¡ Puedes hacer mejor !";
+"LandingViewControllerWinner_totalInvitationsLabel" = "invitaciones a eventos ";
+"LandingViewControllerWinner_participateEventsLabel" = "Participación ";
+"LandingViewControllerWinner_notAnsweredText" = "¡ Esperando ! \n (¡ No tenía Woovent!)";
+"LandingViewControllerWinner_youBeatLabel" = "Mejor que";
+"LandingViewControllerWinner_peopleLabel" = "¡ de usuarios !";
+"LandingViewControllerWinner_easilyManage" = "Con Woovent, administra fácilmente tus eventos Facebook !";
+"LandingViewControllerWinner_start" = "Go !";
+"LandingViewControllerWinner_challenge" = "Desafía tus amigos!";

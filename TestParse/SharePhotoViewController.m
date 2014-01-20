@@ -586,7 +586,29 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button index %i", buttonIndex);
+    if (buttonIndex == [alertView cancelButtonIndex]) {
+        [self dismissViewControllerAnimated:NO completion:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+    }else{
+        NSString *message = [[NSString alloc] init];
+        
+        if (self.photosArray) {
+            message = [NSString stringWithFormat:NSLocalizedString(@"SharePhotoViewController_SharedPhoto2", nil), self.photosArray.count];
+            [self pushEveryInvited:self.photosArray.count];
+        }
+        else{
+            message = NSLocalizedString(@"SharePhotoViewController_SharedPhoto3", nil);
+            [self pushEveryInvited:1];
+        }
+        
+        NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
+        
+        
+        
+        [self dismissViewControllerAnimated:NO completion:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+    }
 }
 
 #pragma mark - FInish upload
@@ -604,14 +626,27 @@
         [self pushEveryInvited:1];
     }
     
+    if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Auth_Title", nil)
+                                                            message:NSLocalizedString(@"UIAlertView_postPhotoFacebook", nil)
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"UIAlertView_Cancel", nil)
+                                                  otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
+        [alertView show];
+    }
+    else{
+        NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
+        [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
+        
+        
+        
+        [self dismissViewControllerAnimated:NO completion:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
+    }
     
-    NSString *url = [NSString stringWithFormat:@"http://www.woovent.com/e/%@", self.event.objectId];
-    [MOUtility postLinkOnFacebookEventWall:self.event[@"eventId"] withUrl:url withMessage:message];
     
     
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:UploadPhotoFinished object:self userInfo:nil];
 }
 
 

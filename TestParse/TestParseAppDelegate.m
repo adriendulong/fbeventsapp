@@ -195,18 +195,29 @@
         [MOUtility updateUserInfos];
     }
     
+    //Use to say we come back after a facebook auth
+    self.comeFromFB = NO;
+    
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [PFFacebookUtils handleOpenURL:url];
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    /*return [FBAppCall handleOpenUrl:url
+                  sourceApplication:sourceApplication
+                        withSession:[PFFacebookUtils session]];*/
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:sourceApplication
+                    fallbackHandler:^(FBAppCall *call) {
+                        NSLog(@"In fallback handler");
+                    }];
 }
 
 //Handle Single Sign On FB
+/*
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [PFFacebookUtils handleOpenURL:url];
-}
+}*/
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -227,10 +238,15 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     //reload events
     if ([PFUser currentUser]) {
-        UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-        UINavigationController *navController = (UINavigationController *)[tabBar.viewControllers objectAtIndex:0];
-        ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
-        [listEvents fbReload:nil];
+        if (!self.comeFromFB) {
+            UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+            UINavigationController *navController = (UINavigationController *)[tabBar.viewControllers objectAtIndex:0];
+            ListEvents *listEvents = (ListEvents *)[navController.viewControllers objectAtIndex:0];
+            [listEvents fbReload:nil];
+        }
+        else{
+            self.comeFromFB = NO;
+        }
     }
     
 }
@@ -512,6 +528,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
         listEvents.completionHandler = completionHandler;
         listEvents.isBackgroundTask = YES;
         [listEvents fbReload:nil];
+        
     }
     
 }

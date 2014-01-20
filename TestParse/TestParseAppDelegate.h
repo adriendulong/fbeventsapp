@@ -21,6 +21,7 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) UIApplication *application;
 @property (strong, nonatomic) NSDate *startTime;
+@property (assign, nonatomic) BOOL comeFromFB;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
