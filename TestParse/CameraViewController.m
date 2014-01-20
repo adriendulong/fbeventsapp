@@ -19,6 +19,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 #import <Crashlytics/Crashlytics.h>
+#import <float.h>
 
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
