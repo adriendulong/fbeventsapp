@@ -182,7 +182,7 @@
     [self.activityIndicator setHidden:NO];
     
     
-    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream"];
+    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream",@"user_groups"];
     
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
         if (error) {

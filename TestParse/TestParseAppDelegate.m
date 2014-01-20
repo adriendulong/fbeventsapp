@@ -27,7 +27,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     #warning DEVCONFIG
-    [TestFlight takeOff:@"39edfba5-2220-4a06-a22f-ffcc1445b4b8"];
+    [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
     
     //Mixpanel
     [Mixpanel sharedInstanceWithToken:MixpanelToken];
@@ -39,8 +39,8 @@
     
     // Override point for customization after application launch.
 #warning DEVCONFIG
-    [Parse setApplicationId:@"FtBRQLsJwozj3G32heaXVfCYALQbAmmJZnnopsrP"
-                  clientKey:@"C2jEPO7tVj5qZC1rk1YvvDqpjJAIhgbB9YKaGVhm"];
+    [Parse setApplicationId:@"8UT7kL1fmD9Orti3P7obNJyTgSpJpEGvz4HkCrr8"
+                  clientKey:@"dT15cWACdZqlNCu0UIb1goDN6KXmTjs9yolq9CVB"];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     //Facebook init

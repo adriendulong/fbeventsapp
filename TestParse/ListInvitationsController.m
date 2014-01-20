@@ -188,15 +188,16 @@
         [self.tableView reloadData];
     }
     
-    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
     [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
-    [queryEvents orderByAscending:@"start_time"];
+    [queryEvents orderByAscending:@"start_time"];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:FacebookEventNotReplied];
-    [query whereKey:@"event" matchesQuery:queryEvents];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
     [query includeKey:@"event"];
+    [query orderByDescending:@"start_time"];
     
     #warning Modify Cache Policy
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
@@ -205,7 +206,7 @@
         if (!error) {
             [self.invitations removeAllObjects];
             
-            self.invitations = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
+            self.invitations = [objects mutableCopy];
             [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
             
             //Save in local database
@@ -237,22 +238,24 @@
         [self.tableView reloadData];
     }
     
-    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
     [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
-    [queryEvents orderByAscending:@"start_time"];
+    [queryEvents orderByAscending:@"start_time"];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:FacebookEventDeclined];
-    [query whereKey:@"event" matchesQuery:queryEvents];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
     [query includeKey:@"event"];
+    [query orderByDescending:@"start_time"];
+    
     
     #warning Modify Cache Policy
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.declined = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
+            self.declined = [objects mutableCopy];
             
             //Save in local databse
             for(PFObject *invitation in objects){

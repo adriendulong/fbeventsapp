@@ -237,7 +237,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
-"MemoriesViewController_Empty" = "Aucun souvenirs :(\n en un en cliquant en haut !";
+"MemoriesViewController_Empty" = "Aucun souvenir :(\nCrée en un en cliquant en haut !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";

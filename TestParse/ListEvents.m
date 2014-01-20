@@ -323,19 +323,21 @@
     
     NSMutableArray *invits = [[NSMutableArray alloc] init];
     
-    PFQuery *queryEventEndTime = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEventEndTime = [PFQuery queryWithClassName:@"Event"];
     [queryEventEndTime whereKeyExists:@"end_time"];
     [queryEventEndTime whereKey:@"end_time" greaterThanOrEqualTo:[NSDate date]];
     
     PFQuery *queryEventStartTime = [PFQuery queryWithClassName:@"Event"];
     [queryEventStartTime whereKeyDoesNotExist:@"end_time"];
-    [queryEventStartTime whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
+    [queryEventStartTime whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-     [query whereKey:@"event" matchesQuery:queryEventStartTime];
+    //[query whereKey:@"event" matchesQuery:queryEventStartTime];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
     [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
     [query includeKey:@"event"];
+    [query orderByDescending:@"start_time"];
     
     //Cache then network
     #warning Modify Cache Policy
@@ -349,8 +351,19 @@
                 [MOUtility saveInvitationWithEvent:invitation];
             }
             
+            [[Mixpanel sharedInstance].people set:@{@"Nb Futur Events": [NSNumber numberWithInt:invits.count]}];
+            
+            self.invitations = invits;
+            [self isEmptyTableView];
+            [self.tableEvents reloadData];
+            
+            //Select the closest invit
+            [self selectClosestInvitation];
+            
+            [self stopRefresh];
+            
             //Query event with end time
-            PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
+            /*PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
             [queryEnd whereKey:@"user" equalTo:[PFUser currentUser]];
             [queryEnd whereKey:@"event" matchesQuery:queryEventEndTime];
             [queryEnd whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
@@ -380,7 +393,7 @@
                     NSLog(@"Problème de chargement");
                     [self stopRefresh];
                 }
-            }];
+            }];*/
             
         } else {
             // Log details of the failure
