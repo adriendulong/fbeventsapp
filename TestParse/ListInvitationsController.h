@@ -24,6 +24,8 @@
 @property (weak, nonatomic) NSMutableArray *eventWaitingForAnswer;
 @property (weak, nonatomic) NSString *answerOccuringId;
 @property (weak, nonatomic) NSString *buttonAnswerTitle;
+@property (strong, nonatomic) NSMutableArray *removingDeclined;
+@property (strong, nonatomic) NSMutableArray *removingInvits;
 
 @property (strong, nonatomic) UIView *viewBack;
 

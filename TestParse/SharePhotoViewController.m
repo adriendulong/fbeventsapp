@@ -175,7 +175,7 @@
         if (self.takenPhoto) {
             //Facebook share
             if (self.facebookButton.isSelected) {
-                FBRequest *request = [FBRequest requestWithGraphPath:@"/me/photos" parameters:@{@"source": self.takenPhoto, @"message":@"Test"} HTTPMethod:@"POST"];
+                FBRequest *request = [FBRequest requestWithGraphPath:@"/me/photos" parameters:@{@"source": self.takenPhoto, @"message":self.labelPhotosUploaded.text, @"ref":@"photoshare"} HTTPMethod:@"POST"];
                 [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                     if (!error) {
                         NSLog(@"PHOTO SHARED ON FACEBOOK");

@@ -327,7 +327,7 @@
         [self.photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"Commentaire ajouté !");
-                [self pushOwnerPhotoCommented:goodMsg];
+                [self pushOwnerPhotoCommented:uniText];
                 [[NSNotificationCenter defaultCenter] postNotificationName:NewCommentAdded object:self];
                 
                 //NSLog(@"self.photo[@\"comments\"] = %@", self.photo[@"comments"]);

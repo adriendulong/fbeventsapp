@@ -37,6 +37,7 @@
 		E724E57E180F02E800741528 /* MOUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = E724E57D180F02E800741528 /* MOUtility.m */; };
 		E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B941845F5360087719E /* MemoriesImportCell.m */; };
 		E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B971845F5590087719E /* MemoriesImportViewController.m */; };
+		E72F86FA188ED3140057F83E /* PDGestureTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E72F86F9188ED3140057F83E /* PDGestureTableView.m */; };
 		E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF797182AEAB400E560FF /* AVFoundation.framework */; };
 		E73DF79A182AEABD00E560FF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF799182AEABD00E560FF /* CoreData.framework */; };
 		E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E73DF79B182AEAD700E560FF /* CoreText.framework */; };
@@ -203,6 +204,8 @@
 		E7294B941845F5360087719E /* MemoriesImportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesImportCell.m; sourceTree = "<group>"; };
 		E7294B961845F5590087719E /* MemoriesImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesImportViewController.h; sourceTree = "<group>"; };
 		E7294B971845F5590087719E /* MemoriesImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesImportViewController.m; sourceTree = "<group>"; };
+		E72F86F8188ED3140057F83E /* PDGestureTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDGestureTableView.h; sourceTree = "<group>"; };
+		E72F86F9188ED3140057F83E /* PDGestureTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDGestureTableView.m; sourceTree = "<group>"; };
 		E73DF797182AEAB400E560FF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E73DF799182AEABD00E560FF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		E73DF79B182AEAD700E560FF /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -576,6 +579,15 @@
 			name = Connection;
 			sourceTree = "<group>";
 		};
+		E72F86F7188ED2F80057F83E /* SlideGesture */ = {
+			isa = PBXGroup;
+			children = (
+				E72F86F8188ED3140057F83E /* PDGestureTableView.h */,
+				E72F86F9188ED3140057F83E /* PDGestureTableView.m */,
+			);
+			name = SlideGesture;
+			sourceTree = "<group>";
+		};
 		E73F7A7A1844AF4D003BF2B1 /* UIImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -789,6 +801,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E72F86F7188ED2F80057F83E /* SlideGesture */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
 				E70BC5511887D54E008C1462 /* Landing */,
 				E7719B321864BC32002E4A1B /* Mixpanel */,
@@ -1072,6 +1085,7 @@
 				E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */,
 				3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */,
 				E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */,
+				E72F86FA188ED3140057F83E /* PDGestureTableView.m in Sources */,
 				E794954518575F770014CA36 /* Notification.m in Sources */,
 				E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */,
 				E79E5FB3181FCF1D00C8A3AC /* EventUtilities.m in Sources */,
@@ -1148,7 +1162,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1183,7 +1197,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "64600BA2-4EE2-4895-8F66-C1E3E5692B08";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1195,8 +1209,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1223,7 +1237,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1235,8 +1249,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1263,7 +1277,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

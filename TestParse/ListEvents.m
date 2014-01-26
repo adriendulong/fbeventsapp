@@ -68,6 +68,9 @@
     self.topImageView.layer.cornerRadius = 17.0f;
     self.topImageView.layer.masksToBounds = YES;
     
+    UIColor *greyColor = [UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1];
+    [self.tableView setBackgroundColor:greyColor];
+    
     
     //Refresh view
     self.animating = NO;
@@ -202,7 +205,7 @@
         requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@",FacebookEventsFields, startDate];
     }
     else{
-        requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@&type=not_replied",FacebookEventsFields, startDate];
+        requestString = [NSString stringWithFormat:@"me/events?fields=%@&type=not_replied",FacebookEventsFields];
     }
    
     NSLog(@"Request : %@", requestString);
@@ -337,7 +340,7 @@
     [query whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
     [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
     [query includeKey:@"event"];
-    [query orderByDescending:@"start_time"];
+    [query orderByAscending:@"start_time"];
     
     //Cache then network
     #warning Modify Cache Policy
@@ -502,6 +505,7 @@
         [query whereKey:@"event" matchesQuery:queryEvent];
         [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
         [query includeKey:@"event"];
+        [query orderByDescending:@"start_time"];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects && objects.count>0) {
@@ -668,6 +672,13 @@
                 [[Mixpanel sharedInstance] track:@"Background Fetch"];
                 self.completionHandler(UIBackgroundFetchResultNewData);
             }
+            
+            PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+            currentInstallation.badge = count;
+            [currentInstallation saveEventually];
+            
+            
         } else {
             // The request failed
             //If it was a background task, said that it is finished

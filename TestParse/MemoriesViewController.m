@@ -41,6 +41,9 @@
 {
     [super viewDidLoad];
     
+    UIColor *greyColor = [UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1];
+    [self.tableView setBackgroundColor:greyColor];
+    
     //Top icon
     self.topImageView.layer.cornerRadius = 16.0f;
     self.topImageView.layer.masksToBounds = YES;
@@ -395,9 +398,6 @@
 }
 
 -(void)getNbPhotosAtIndex:(NSIndexPath *)index forCell:(MemorieCell *)cell{
-    NSLog(@"ROW COUNT IMAGES %i", index.row);
-    
-    
     PFObject *event = [self.memoriesInvitations objectAtIndex:index.row-1][@"event"];
     
     PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
