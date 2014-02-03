@@ -53,6 +53,7 @@
 "UIActionSheet_Cancel" = "Cancel";
 "UIActionSheet_Delete" = "Delete";
 "UIActionSheet_Skip" = "Skip";
+"UIActionSheet_Save" = "Save";
 
 
 ///// TutorialViewController /////
@@ -237,7 +238,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos have been found";
 "MemoriesViewController_AutoImportButton" = "Create a memorie";
-"MemoriesViewController_Empty" = "No memories :(\n Create one touching the button above !";
+"MemoriesViewController_Empty" = "No memories :(\nCreate one touching the button above !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Settings";

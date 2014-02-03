@@ -69,6 +69,9 @@
     self.topImageView.layer.cornerRadius = 17.0f;
     self.topImageView.layer.masksToBounds = YES;
     
+    UIColor *greyColor = [UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1];
+    [self.tableView setBackgroundColor:greyColor];
+    
     
     //Refresh view
     self.animating = NO;
@@ -203,7 +206,7 @@
         requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@",FacebookEventsFields, startDate];
     }
     else{
-        requestString = [NSString stringWithFormat:@"me/events?fields=%@&since=%@&type=not_replied",FacebookEventsFields, startDate];
+        requestString = [NSString stringWithFormat:@"me/events?fields=%@&type=not_replied",FacebookEventsFields];
     }
    
     NSLog(@"Request : %@", requestString);
@@ -324,19 +327,21 @@
     
     NSMutableArray *invits = [[NSMutableArray alloc] init];
     
-    PFQuery *queryEventEndTime = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEventEndTime = [PFQuery queryWithClassName:@"Event"];
     [queryEventEndTime whereKeyExists:@"end_time"];
     [queryEventEndTime whereKey:@"end_time" greaterThanOrEqualTo:[NSDate date]];
     
     PFQuery *queryEventStartTime = [PFQuery queryWithClassName:@"Event"];
     [queryEventStartTime whereKeyDoesNotExist:@"end_time"];
-    [queryEventStartTime whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
+    [queryEventStartTime whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-     [query whereKey:@"event" matchesQuery:queryEventStartTime];
+    //[query whereKey:@"event" matchesQuery:queryEventStartTime];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[[NSDate date] dateByAddingTimeInterval:-12*3600]];
     [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
     [query includeKey:@"event"];
+    [query orderByAscending:@"start_time"];
     
     //Cache then network
     #warning Modify Cache Policy
@@ -350,8 +355,19 @@
                 [MOUtility saveInvitationWithEvent:invitation];
             }
             
+            [[Mixpanel sharedInstance].people set:@{@"Nb Futur Events": [NSNumber numberWithInt:invits.count]}];
+            
+            self.invitations = invits;
+            [self isEmptyTableView];
+            [self.tableEvents reloadData];
+            
+            //Select the closest invit
+            [self selectClosestInvitation];
+            
+            [self stopRefresh];
+            
             //Query event with end time
-            PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
+            /*PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
             [queryEnd whereKey:@"user" equalTo:[PFUser currentUser]];
             [queryEnd whereKey:@"event" matchesQuery:queryEventEndTime];
             [queryEnd whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
@@ -381,7 +397,7 @@
                     NSLog(@"Problème de chargement");
                     [self stopRefresh];
                 }
-            }];
+            }];*/
             
         } else {
             // Log details of the failure
@@ -467,14 +483,15 @@
 
 
 -(void)selectClosestInvitation{
-    __block BOOL haveOlderWithEndTime = NO;
+    //__block BOOL haveOlderWithEndTime = NO;
     
     if (self.invitations.count>0) {
         PFObject *actualClosest = [self.invitations objectAtIndex:0];
         
         self.closestInvitation = actualClosest;
+        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateClosestEvent object:self userInfo:nil]; 
         
-        NSDate* dateFutur = actualClosest[@"event"][@"start_time"];
+        /*NSDate* dateFutur = actualClosest[@"event"][@"start_time"];
         NSTimeInterval distanceBetweenDates = [dateFutur timeIntervalSinceDate:[NSDate date]];
         NSInteger secondsBetweenDate = distanceBetweenDates;
         NSLog(@"Seconds between = %i", secondsBetweenDate);
@@ -495,6 +512,7 @@
         [query whereKey:@"event" matchesQuery:queryEvent];
         [query whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
         [query includeKey:@"event"];
+        [query orderByDescending:@"start_time"];
         
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (objects && objects.count>0) {
@@ -534,7 +552,7 @@
                 }
                 
             }];
-        }];
+        }];*/
     }
     
     
@@ -661,6 +679,13 @@
                 [[Mixpanel sharedInstance] track:@"Background Fetch"];
                 self.completionHandler(UIBackgroundFetchResultNewData);
             }
+            
+            PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+            currentInstallation.badge = count;
+            [currentInstallation saveEventually];
+            
+            
         } else {
             // The request failed
             //If it was a background task, said that it is finished

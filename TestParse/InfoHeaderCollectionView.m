@@ -148,6 +148,7 @@
                                               defaultAudience:FBSessionDefaultAudienceFriends
                                             completionHandler:^(FBSession *session, NSError *error) {
                                                 if (!error) {
+                                                    ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).comeFromFB = NO;
                                                     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                                         if (!error) {
                                                             NSLog(@"%@", result);
@@ -174,6 +175,7 @@
                                                         }
                                                     }];
                                                 } else if (error.fberrorCategory != FBErrorCategoryUserCancelled){
+                                                     ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).comeFromFB = NO;
                                                     [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
                                                 }
                                             }];

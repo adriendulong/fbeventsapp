@@ -182,23 +182,20 @@
     [self.activityIndicator setHidden:NO];
     
     
-    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream"];
+    NSArray *permissionsArray = @[@"user_about_me", @"user_birthday", @"user_location", @"email", @"user_events", @"read_stream",@"user_groups"];
     
     [PFFacebookUtils logInWithPermissions:permissionsArray block:^(PFUser *user, NSError *error) {
+        NSLog(@"error :%@", error);
         if (error) {
+            [[Mixpanel sharedInstance] track:@"Error Login"];
             [self.activityIndicator setHidden:YES];
             [self handleAuthError:error];
         }
-        /*if (!user) {
+        else if (!user) {
             [[Mixpanel sharedInstance] track:@"Error Login"];
-            if (!error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:NSLocalizedString(@"UIAlertView_ErrorLogin_Message", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
-                [alert show];
-            } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_ErrorLogin_Title", nil) message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
-                [alert show];
-            }
-        } */else if (user.isNew) {
+            [self.activityIndicator setHidden:YES];
+            [self handleAuthError:error];
+        } else if (user.isNew) {
             self.isNewUser = YES;
             //Mixpanel
             [self.mixpanel createAlias:user.objectId

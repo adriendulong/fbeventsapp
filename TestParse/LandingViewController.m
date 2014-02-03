@@ -142,16 +142,16 @@
     if (requestFacebook==nil) {
         //Attending and maybe
         if (self.step == 0) {
-            requestFacebook = [NSString stringWithFormat:@"/me/events?until=%@", stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&limit=500", stopDate];
         }
         else if(self.step == 1){
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&type=declined",FacebookEventsFields, stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=declined&limit=1500", stopDate];
         }
         else if(self.step == 2){
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&&type=not_replied",FacebookEventsFields, stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=not_replied&limit=1500",stopDate];
         }
         else{
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&type=created",FacebookEventsFields, stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=created&limit=500", stopDate];
         }
         
     }
@@ -185,6 +185,7 @@
             }
             
             if(result[@"paging"][@"next"]){
+                NSLog(@"Paging next :%@",[NSURL URLWithString:result[@"paging"][@"next"]]);
                 NSURL *previous = [NSURL URLWithString:result[@"paging"][@"next"]];
                 NSLog(@"NEXT");
                 NSString *goodRequest = [NSString stringWithFormat:@"%@?%@", [previous path], [previous query]];
@@ -273,6 +274,7 @@
             
         }
         else{
+            NSLog(@"error : %@", error);
             self.step = 0;
             self.nbAttending = 0;
             self.nbMaybe = 0;

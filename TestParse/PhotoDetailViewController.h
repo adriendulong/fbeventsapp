@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray *fbLikers;
 @property (weak, nonatomic) IBOutlet UIImageView *imageOwner;
 @property (weak, nonatomic) IBOutlet UILabel *nameOwner;
+@property (strong, nonatomic) UIImageView *maineImageView;
 
 - (IBAction)pushToAllComments:(UIButton *)sender;
 

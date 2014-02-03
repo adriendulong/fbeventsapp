@@ -157,7 +157,7 @@
 +(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message{
     
     NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
-    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"link": url, @"message":message} HTTPMethod:@"POST"];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"link": url, @"message":message, @"ref":@"photolink"} HTTPMethod:@"POST"];
     
     
     if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
@@ -200,7 +200,7 @@
 +(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message{
     NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
     NSString *messageToPost = [NSString stringWithFormat:@"%@ \n\n via Woovent", message];
-    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"message":messageToPost, @"link":@"https://apps.facebook.com/woovent"} HTTPMethod:@"POST"];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:@{@"message":messageToPost, @"link":@"https://apps.facebook.com/woovent", @"ref":@"rsvppost"} HTTPMethod:@"POST"];
     
     if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
 

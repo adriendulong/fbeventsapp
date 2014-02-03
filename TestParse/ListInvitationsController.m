@@ -16,6 +16,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "PDGestureTableView.h"
 
 @interface ListInvitationsController ()
 
@@ -64,6 +65,9 @@
     //Top icon
     self.topImageView.layer.cornerRadius = 16.0f;
     self.topImageView.layer.masksToBounds = YES;
+
+    UIColor *greyColor = [UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1];
+    [self.tableView setBackgroundColor:greyColor];
     
     //Notifications Center
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -75,6 +79,8 @@
     self.declined = [[NSMutableArray alloc] init];
     self.invitations = [[NSMutableArray alloc] init];
     self.objectsForTable = [[NSMutableArray alloc] init];
+    self.removingDeclined = [[NSMutableArray alloc] init];
+    self.removingInvits = [[NSMutableArray alloc] init];
     self.animating = NO;
     
     //[self loadInvitationFromServer];
@@ -115,15 +121,148 @@
                 initWithStyle:UITableViewCellStyleDefault
                 reuseIdentifier:CellIdentifier];
     }
+
+    //Get the event object.
+    PFObject *event = [self.objectsForTable objectAtIndex:indexPath.row][@"event"];
+    PFObject *invitation = [self.objectsForTable objectAtIndex:indexPath.row];
+    
+    //Init the segment controll if declined
+    if ([invitation[@"rsvp_status"] isEqualToString:@"declined"]) {
+        [cell.rsvpSegmentedControl setSelectedSegmentIndex:2];
+    }
+    else{
+        [cell.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    }
+    
+    UIColor *greenColor = [UIColor colorWithRed:130.0/255.0 green:197.0/255.0 blue:56.0/255.0 alpha:1];
+    UIColor *blueColor = [UIColor colorWithRed:41.0/255.0 green:128.0/255.0 blue:185.0/255.0 alpha:1];
+    UIColor *redColor = [UIColor colorWithRed:192.0/255.0 green:57.0/255.0 blue:43.0/255.0 alpha:1];
+    
+    cell.firstLeftAction = [PDGestureTableViewCellAction
+                            actionWithIcon:[UIImage imageNamed:@"check_little"]
+                            color:greenColor
+                            fraction:0.20
+                            didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
+                                // Action for first left action triggering.
+                                
+                                PFObject *invitation;
+                                if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                    invitation = self.invitations[indexPath.row];
+                                    [self.removingInvits addObject:self.invitations[indexPath.row]];
+                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    
+                                }
+                                else{
+                                    invitation = self.declined[indexPath.row];
+                                    NSLog(@"IndexPath %i",indexPath.row);
+                                    [self.removingDeclined addObject:self.declined[indexPath.row]];
+                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    
+                                }
+                                
+                                
+                                NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
+                                                           @"rsvp": FacebookEventAttending, @"eventId" : invitation[@"event"][@"eventId"]};
+                                
+
+                                
+                                [gestureTableView removeCell:cell completion:^{
+                                    NSLog(@"Cell removed!");
+                                    [self.tableView reloadData];
+                                    
+                                    //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
+                                    [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending withInvitation:invitation];
+                                    
+                                    [self isEmptyTableView];
+                                }];
+                                
+                            }];
+    
+    cell.secondLeftAction = [PDGestureTableViewCellAction
+                            actionWithIcon:[UIImage imageNamed:@"question"]
+                            color:blueColor
+                            fraction:0.65
+                            didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
+                                // Action for first left action triggering.
+                                
+                                
+                                PFObject *invitation;
+                                if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                    invitation = self.invitations[indexPath.row];
+                                    [self.removingInvits addObject:self.invitations[indexPath.row]];
+                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    
+                                }
+                                else{
+                                    invitation = self.declined[indexPath.row];
+                                    NSLog(@"IndexPath %i",indexPath.row);
+                                    [self.removingDeclined addObject:self.declined[indexPath.row]];
+                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    
+                                }
+                                
+                                
+                                NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
+                                                           @"rsvp": FacebookEventMaybeAnswer, @"eventId" : invitation[@"event"][@"eventId"]};
+
+                                
+                                [gestureTableView removeCell:cell completion:^{
+                                    NSLog(@"Cell removed!");
+                                    [self.tableView reloadData];
+                                    
+                                    //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
+                                    [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer withInvitation:invitation];
+                                    
+                                    [self isEmptyTableView];
+                                }];
+                                
+                            }];
+    
+    if (self.listSegmentControll.selectedSegmentIndex == 0) {
+        cell.firstRightAction = [PDGestureTableViewCellAction
+                                 actionWithIcon:[UIImage imageNamed:@"cross"]
+                                 color:redColor
+                                 fraction:0.25
+                                 didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
+                                     // Action for first left action triggering.
+                                     
+                                     PFObject *invitation;
+                                     invitation = self.invitations[indexPath.row];
+                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
+                                     [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                     
+                                     
+                                     
+                                     NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
+                                                                @"rsvp": FacebookEventDeclined, @"eventId" : invitation[@"event"][@"eventId"]};
+                                     
+                                     [gestureTableView removeCell:cell completion:^{
+                                         NSLog(@"Cell removed!");
+                                         [self.tableView reloadData];
+                                         
+                                         //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
+                                         [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined withInvitation:invitation];
+                                         
+                                         [self isEmptyTableView];
+                                     }];
+                                     
+                                     
+                                 }];
+    }
+    else{
+        cell.firstRightAction = nil;
+    }
+    
+
+    
+    
     
     //init label
     [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Going", nil) forSegmentAtIndex:0];
     [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Maybe", nil) forSegmentAtIndex:1];
     [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Decline", nil) forSegmentAtIndex:2];
     
-    //Get the event object.
-    PFObject *event = [self.objectsForTable objectAtIndex:indexPath.row][@"event"];
-    PFObject *invitation = [self.objectsForTable objectAtIndex:indexPath.row];
+    
     
     //Date
     NSDate *start_date = event[@"start_time"];
@@ -148,13 +287,7 @@
     //Assign the event Id
     cell.invitation = [self.objectsForTable objectAtIndex:indexPath.row];
     
-    //Init the segment controll if declined
-    if ([invitation[@"rsvp_status"] isEqualToString:@"declined"]) {
-        [cell.rsvpSegmentedControl setSelectedSegmentIndex:2];
-    }
-    else{
-        [cell.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
-    }
+   
     
     [cell.activityIndicator setHidden:YES];
     
@@ -188,15 +321,16 @@
         [self.tableView reloadData];
     }
     
-    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
     [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
-    [queryEvents orderByAscending:@"start_time"];
+    [queryEvents orderByAscending:@"start_time"];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:FacebookEventNotReplied];
-    [query whereKey:@"event" matchesQuery:queryEvents];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
     [query includeKey:@"event"];
+    [query orderByAscending:@"start_time"];
     
     #warning Modify Cache Policy
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
@@ -205,7 +339,7 @@
         if (!error) {
             [self.invitations removeAllObjects];
             
-            self.invitations = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
+            self.invitations = [objects mutableCopy];
             [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
             
             //Save in local database
@@ -237,22 +371,24 @@
         [self.tableView reloadData];
     }
     
-    PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
+    /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
     [queryEvents whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
-    [queryEvents orderByAscending:@"start_time"];
+    [queryEvents orderByAscending:@"start_time"];*/
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
     [query whereKey:@"rsvp_status" equalTo:FacebookEventDeclined];
-    [query whereKey:@"event" matchesQuery:queryEvents];
+    [query whereKey:@"start_time" greaterThanOrEqualTo:[NSDate date]];
     [query includeKey:@"event"];
+    [query orderByAscending:@"start_time"];
+    
     
     #warning Modify Cache Policy
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            self.declined = [[MOUtility sortByStartDate:[objects mutableCopy] isAsc:YES] mutableCopy];
+            self.declined = [objects mutableCopy];
             
             //Save in local databse
             for(PFObject *invitation in objects){
@@ -277,48 +413,84 @@
 -(void)invitationChanged:(NSNotification *) notification{
     BOOL isSuccess = [notification.userInfo[@"isSuccess"] boolValue];
     
+    BOOL isInDeclined = NO;
     
     
+    
+    //If not success we put back the row
     if (!isSuccess) {
-        //find position invitation
-        for(PFObject *invitation in self.objectsForTable){
-            if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
-                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                break;
-            }
-        }
-        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"ListInvitationsController_ProblemChangingInvitation", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Dismiss", nil), nil];
         [alert show];
-    }
-    else{
-        int i=0;
-        int positionToRemove = 0;
-        BOOL stillHere = NO;
-        for(PFObject *invitation in self.objectsForTable){
-            if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
-                positionToRemove = i;
-                stillHere = YES;
+        
+        
+        //It was in declined or invits ?
+        for (int i=0; i<self.removingDeclined.count; i++) {
+            PFObject *declinedInvit = self.removingDeclined[i];
+            if ([declinedInvit.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                isInDeclined = YES;
+                [self.declined addObject:declinedInvit];
+                //[self.objectsForTable addObject:declinedInvit];
+                
+                if (self.listSegmentControll.selectedSegmentIndex == 1) {
+                    //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                }
+                
                 break;
             }
-            i++;
         }
         
-        if (stillHere) {
-            if (self.listSegmentControll.selectedSegmentIndex == 0) {
-                [self.invitations removeObjectAtIndex:positionToRemove];
-                [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
-                [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
+        if (!isInDeclined) {
+            for (int i=0; i<self.removingInvits.count; i++) {
+                PFObject *invit = self.removingInvits[i];
+                if ([invit.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                    [self.invitations addObject:invit];
+                    //[self.objectsForTable addObject:invit];
+                    
+                    if (self.listSegmentControll.selectedSegmentIndex == 1) {
+                        //[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    
+                    break;
+                }
             }
-            else{
-                [self.declined removeObjectAtIndex:positionToRemove];
-                [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
-            }
-            
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            [self isEmptyTableView];
         }
         
+        
+        
+    }
+    //else we remove the element from the good array
+    else{
+        PFObject *invitation;
+        
+        for (int i=0; i<self.removingDeclined.count; i++) {
+            PFObject *declinedInvit = self.removingDeclined[i];
+            if ([declinedInvit.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                isInDeclined = YES;
+                invitation = declinedInvit;
+                
+                break;
+            }
+        }
+        
+        
+        if (!isInDeclined) {
+            for (int i=0; i<self.removingInvits.count; i++) {
+                PFObject *invit = self.removingInvits[i];
+                if ([invit.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                    invitation = invit;
+                    
+                    break;
+                }
+                
+            }
+            [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
+            [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
+            [self.removingInvits removeObject:invitation];
+        }
+        else{
+            [self.removingDeclined removeObject:invitation];
+            [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
+        }
         
         if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
             //Animation tab Evenements
@@ -339,33 +511,25 @@
 
 
 -(void)fakeInvitationChanged:(NSNotification *)notification{
+    PFObject *invitation;
+    NSLog(@"%@",notification.userInfo[@"invitationId"]);
+    BOOL hasToDelete = NO;
     
-    [self postReponseMessage:notification];
-    
-    int i=0;
-    int positionToRemove = 0;
-    for(PFObject *invitation in self.objectsForTable){
-        if ([invitation.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
-            positionToRemove = i;
+    for(PFObject *invitationLoop in self.objectsForTable){
+        if ([invitationLoop.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+            invitation = invitationLoop;
+            hasToDelete = YES;
             break;
         }
-        i++;
     }
     
-    //Remove it
-    //[self.objectsForTable removeObjectAtIndex:positionToRemove];
-    if (self.listSegmentControll.selectedSegmentIndex == 0) {
-        [self.invitations removeObjectAtIndex:positionToRemove];
-        [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
-        [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
-    }
-    else{
-        [self.declined removeObjectAtIndex:positionToRemove];
-        [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
+    if (hasToDelete) {
+        [self.objectsForTable removeObject:invitation];
+        [self postReponseMessage:notification];
+        [self.tableView reloadData];
     }
     
-    //reload
-    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:positionToRemove inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    
     [self isEmptyTableView];
     
     
@@ -395,7 +559,7 @@
 #pragma mark - Navigation
 
  
- -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
      if ([segue.identifier isEqualToString:@"DetailEvent"]) {
          [[Mixpanel sharedInstance] track:@"Click Detail Event" properties:@{@"From": @"Invitations View"}];
          
@@ -526,6 +690,7 @@
         }
         else{
             [MOUtility postRSVP:self.answerOccuringId withMessage:buttonTitle];
+            [[Mixpanel sharedInstance] track:@"Post Answer" properties:@{@"Answer": buttonTitle}];
         }
         
         
@@ -543,6 +708,107 @@
         
     }else{
         [MOUtility postRSVP:self.answerOccuringId withMessage:self.buttonAnswerTitle];
+        [[Mixpanel sharedInstance] track:@"Post Answer" properties:@{@"Answer": self.buttonAnswerTitle}];
+    }
+}
+
+
+
+////////
+// RSVP To Fb Events
+///////
+
+-(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp withInvitation:(PFObject *)invitation{
+    
+    
+    NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:nil HTTPMethod:@"POST"];
+    
+    __block NSMutableDictionary *userInfo = [[NSMutableDictionary alloc]initWithCapacity:3];
+    [userInfo setObject:invitation.objectId forKey:@"invitationId"];
+    [userInfo setObject:rsvp forKey:@"rsvp"];
+    
+    
+    if ([FBSession.activeSession.permissions indexOfObject:@"rsvp_event"] == NSNotFound) {
+         ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).comeFromFB = YES;
+        [FBSession.activeSession requestNewPublishPermissions:@[@"rsvp_event"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                if (!error) {
+                                                     ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).comeFromFB = NO;
+                                                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                        if (!error) {
+                                                            NSLog(@"%@", result);
+                                                            
+                                                            if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
+                                                                NSLog(@"OK !!");
+                                                                //Save the new rsvp
+                                                                NSString *oldRsvp = invitation[@"rsvp_status"];
+                                                                invitation[@"rsvp_status"] = rsvp;
+                                                                [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                                                    if(!error){
+                                                                        //Warn the table view controller
+                                                                        [MOUtility setRsvp:rsvp forInvitation:invitation.objectId];
+                                                                        [userInfo setObject:@YES forKey:@"isSuccess"];
+                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+                                                                    }
+                                                                    else{
+                                                                        invitation[@"rsvp_status"] = oldRsvp;
+                                                                        [userInfo setObject:@NO forKey:@"isSuccess"];
+                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+                                                                    }
+                                                                }];
+                                                            }
+                                                            
+                                                        }
+                                                        else{
+                                                            [userInfo setObject:@NO forKey:@"isSuccess"];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+                                                        }
+                                                    }];
+                                                } else if (error.fberrorCategory != FBErrorCategoryUserCancelled){
+                                                     ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).comeFromFB = NO;
+                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission denied"
+                                                                                                        message:@"Unable to get permission to post"
+                                                                                                       delegate:nil
+                                                                                              cancelButtonTitle:@"OK"
+                                                                                              otherButtonTitles:nil];
+                                                    [alertView show];
+                                                    
+                                                }
+                                            }];
+    }
+    else{
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSLog(@"%@", result);
+                
+                if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
+                    NSLog(@"OK !!");
+                    //Save the new rsvp
+                    NSString *oldRsvp = invitation[@"rsvp_status"];
+                    invitation[@"rsvp_status"] = rsvp;
+                    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        if(!error){
+                            //Warn the table view controller
+                            [MOUtility setRsvp:rsvp forInvitation:invitation.objectId];
+                            [userInfo setObject:@YES forKey:@"isSuccess"];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+                        }
+                        else{
+                            invitation[@"rsvp_status"] = oldRsvp;
+                            [userInfo setObject:@NO forKey:@"isSuccess"];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+                        }
+                    }];
+                }
+                
+            }
+            else{
+                [userInfo setObject:@NO forKey:@"isSuccess"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
+            }
+        }];
     }
 }
 

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PDGestureTableView.h"
 
 
-@interface InvitationCell : UITableViewCell
+@interface InvitationCell : PDGestureTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *labelTest;
 @property (weak, nonatomic) IBOutlet UIImageView *profilImageView;
 @property (weak, nonatomic) IBOutlet UILabel *ownerInvitationLabel;
@@ -20,5 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)rsvpChanged:(id)sender;
+-(void)segmentValueChanged;
 
 @end

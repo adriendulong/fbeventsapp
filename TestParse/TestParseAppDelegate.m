@@ -207,6 +207,7 @@
                         withSession:[PFFacebookUtils session]];*/
     return [FBAppCall handleOpenURL:url
                   sourceApplication:sourceApplication
+            withSession:[PFFacebookUtils session]
                     fallbackHandler:^(FBAppCall *call) {
                         NSLog(@"In fallback handler");
                     }];
@@ -256,7 +257,7 @@
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [[Mixpanel sharedInstance] track:@"App Open"];
     [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
-    [[FBSession activeSession] handleDidBecomeActive];
+    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
     
     //Clear Badge
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
