@@ -21,6 +21,8 @@
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
+		3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CE8189FE6840080680F /* WYPopoverController.m */; };
+		3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -173,6 +175,10 @@
 		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
+		3FEE1CE7189FE6840080680F /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
+		3FEE1CE8189FE6840080680F /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
+		3FEE1CE9189FE6840080680F /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
+		3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYStoryboardPopoverSegue.m; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -447,6 +453,7 @@
 		3F5385491857846600F24F35 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3FEE1CE6189FE6560080680F /* WYPopoverController */,
 				3F53854A1857847F00F24F35 /* MBProgressHUD */,
 			);
 			path = Libraries;
@@ -474,6 +481,17 @@
 			);
 			name = GoogleAnalytics;
 			path = Libraries/GoogleAnalytics;
+			sourceTree = "<group>";
+		};
+		3FEE1CE6189FE6560080680F /* WYPopoverController */ = {
+			isa = PBXGroup;
+			children = (
+				3FEE1CE7189FE6840080680F /* WYPopoverController.h */,
+				3FEE1CE8189FE6840080680F /* WYPopoverController.m */,
+				3FEE1CE9189FE6840080680F /* WYStoryboardPopoverSegue.h */,
+				3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */,
+			);
+			path = WYPopoverController;
 			sourceTree = "<group>";
 		};
 		E70115D1183B88300077EAB7 /* CellsPhotoDetail */ = {
@@ -1020,6 +1038,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */,
 				E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */,
 				E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */,
 				E765014F1844FD8600B96E47 /* MemorieCell.m in Sources */,
@@ -1045,6 +1064,7 @@
 				E794953F18574B2E0014CA36 /* Invitation.m in Sources */,
 				E7D193741840CC24008FD530 /* NSMutableArray+Reverse.m in Sources */,
 				E7719B611864BC32002E4A1B /* UIImage+MPAverageColor.m in Sources */,
+				3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */,
 				E7FA244A182CD26C00FFDBE6 /* PhotosCollectionViewController.m in Sources */,
 				E7719B601864BC32002E4A1B /* NSData+MPBase64.m in Sources */,
 				E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */,
