@@ -366,6 +366,8 @@
             
             [self stopRefresh];
             
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            
             //Query event with end time
             /*PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
             [queryEnd whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -451,7 +453,7 @@
 -(void)logIn:(NSNotification *)note{
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Chargement des évènements...";
+    hud.labelText = NSLocalizedString(@"ListEvents_Searching", nil);
     
     
     BOOL b = [note.userInfo[@"is_new"] boolValue];

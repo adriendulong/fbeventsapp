@@ -227,6 +227,7 @@
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "Aucun évènement à venir ...";
+"ListEvents_Searching" = "Recherche d'évènements...";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";
