@@ -12,6 +12,7 @@
 #import "NSMutableArray+Reverse.h"
 #import "MOUtility.h"
 #import "SharePhotoViewController.h"
+#import "MBProgressHUD.h"
 
 #define MAX_PHOTOS_UPLOAD (int)20
 
@@ -33,6 +34,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"ListEvents_Searching", nil);
     
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);

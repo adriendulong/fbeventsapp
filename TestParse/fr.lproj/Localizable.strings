@@ -173,6 +173,7 @@
 "PhotosAlbumViewController_Alert_Title" = "Information";
 "PhotosAlbumViewController_Alert_Message" = "Veuillez sélectionner au moins 1 photos !";
 "PhotosAlbumViewController_OK" = "OK";
+"PhotosAlbumViewController_LoadingPhotos" = "Chargement des photos...";
 
 
 
