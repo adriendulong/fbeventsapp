@@ -7,17 +7,30 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "WYStoryboardPopoverSegue.h"
+#import "WYPopoverController.h"
+#import "PhotosDatasourceViewController.h"
 
-@interface PhotosAlbumViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface PhotosAlbumViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, WYPopoverControllerDelegate, PhotosDatasourceViewControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 
+//@property (nonatomic) ALAssetsGroupType assetsGroupType;
+@property (nonatomic) NSString *selectedGroupPersistentID;
+@property (nonatomic, strong) NSMutableArray *assetsGroupList;
+
 @property (nonatomic, strong) NSMutableArray *datasourceAutomatic;
 @property (nonatomic, strong) NSMutableArray *datasourceComplete;
-@property (nonatomic, strong) NSMutableArray *photosHash;
+//@property (nonatomic, strong) NSMutableArray *photosHash;
 @property (strong, nonatomic) PFObject *event;
 
 @property (nonatomic) int nbAutomaticPhotos;
+
+@property (nonatomic, strong) WYPopoverController *photosDatasourcePopoverController;
+//@property (nonatomic) NSInteger selectedDatasource;
+@property (nonatomic, strong) UIButton *titleViewButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerConstraint;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;

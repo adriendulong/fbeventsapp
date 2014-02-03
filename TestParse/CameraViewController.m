@@ -513,7 +513,9 @@
         
         if (group.numberOfAssets > 0) {
             
-            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets-1] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+            [self.albumButton setImage:[UIImage imageWithCGImage:group.posterImage] forState:UIControlStateNormal];
+            
+            /*[group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets-1] options:0 usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                 
                 if (result) {
                     CGImageRef representation = [result thumbnail];
@@ -523,7 +525,7 @@
                     
                     latestPhoto = nil;
                 }
-            }];
+            }];*/
         }
     } failureBlock: ^(NSError *error) {
     }];

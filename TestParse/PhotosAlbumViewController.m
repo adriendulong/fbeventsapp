@@ -8,7 +8,6 @@
 
 #import "PhotosAlbumViewController.h"
 #import "Photo.h"
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "NSMutableArray+Reverse.h"
 #import "MOUtility.h"
 #import "SharePhotoViewController.h"
@@ -35,20 +34,20 @@
 {
     [super viewDidLoad];
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"ListEvents_Searching", nil);
-    
     self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self.validateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Validate", nil)];
     [self.selectButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
+    [self initTitlePopover];
     
-    self.photosHash = [NSMutableArray array];
+    self.assetsGroupList = [NSMutableArray array];
     self.datasourceAutomatic = [NSMutableArray array];
     self.datasourceComplete = [NSMutableArray array];
 	// Do any additional setup after loading the view.
+    
+    [self getAllAssetsGroupType];
     
     [self loadPhotos];
 }
@@ -59,6 +58,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark - Init Title for Popover
+- (void)initTitlePopover
+{
+    self.titleViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //self.titleViewButton.backgroundColor = [UIColor orangeColor];
+    [self.titleViewButton setTitle:@"Pellicule ▾" forState:UIControlStateNormal];
+    self.titleViewButton.frame = CGRectMake(0, 0, 200, 44);
+    self.titleViewButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    [self.titleViewButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.titleViewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.titleViewButton addTarget:self action:@selector(titleTap) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.titleView = self.titleViewButton;
+}
+
+- (void)titleTap
+{
+    [self performSegueWithIdentifier:@"ShowPhotosDatasource" sender:self];
+}
 
 
 #pragma mark - UICollectionView delegate
@@ -122,7 +141,7 @@
     return cell;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *selectedCell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     UIImageView *checkView = (UIImageView *)[selectedCell viewWithTag:2];
@@ -146,12 +165,6 @@
     }
     else{
         if ([self nbSelectedPhotos] < MAX_PHOTOS_UPLOAD) {
-            CGDataProviderRef provider = CGImageGetDataProvider(photo.thumbnail.CGImage);
-            NSData *data = (id)CFBridgingRelease(CGDataProviderCopyData(provider));
-            NSString *hashFromPhoto = [MOUtility hashFromData:data];
-            
-            NSLog(@"hash: %@", hashFromPhoto);
-            
             photo.isSelected = YES;
             checkView.image = [UIImage imageNamed:@"check"];
         }
@@ -173,30 +186,30 @@
     }
     
     /*
-    if ([self.photosToUpload containsObject:selectedCell.photo]) {
-        //NSLog(@"La photo est sélectionnée. On la supprime !");
-        [self.photosToUpload removeObject:selectedCell.photo];
-        selectedCell.circleCheck.image = [UIImage imageNamed:@"picto_uncheck.png"];
-        //[self.delegate removePhotoToUpload:selectedCell.photo];
-        
-    } else {
-        
-        if (self.photosToUpload.count < MAX_PHOTOS_UPLOAD) {
-            //NSLog(@"La photo n'est pas sélectionnée. On l'ajoute !");
-            [self.photosToUpload addObject:selectedCell.photo];
-            selectedCell.circleCheck.image = [UIImage imageNamed:@"picto_check.png"];
-            //[self.delegate addPhotoToUpload:selectedCell.photo];
-            
-        } else {
-            
-            UIAlertView *limitAlert = [[UIAlertView alloc] initWithTitle:@"Attention" message:@"La limite d'upload est fixée à 15 photos." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [limitAlert show];
-            
-        }
-        
-        
-    }*/
+     if ([self.photosToUpload containsObject:selectedCell.photo]) {
+     //NSLog(@"La photo est sélectionnée. On la supprime !");
+     [self.photosToUpload removeObject:selectedCell.photo];
+     selectedCell.circleCheck.image = [UIImage imageNamed:@"picto_uncheck.png"];
+     //[self.delegate removePhotoToUpload:selectedCell.photo];
+     
+     } else {
+     
+     if (self.photosToUpload.count < MAX_PHOTOS_UPLOAD) {
+     //NSLog(@"La photo n'est pas sélectionnée. On l'ajoute !");
+     [self.photosToUpload addObject:selectedCell.photo];
+     selectedCell.circleCheck.image = [UIImage imageNamed:@"picto_check.png"];
+     //[self.delegate addPhotoToUpload:selectedCell.photo];
+     
+     } else {
+     
+     UIAlertView *limitAlert = [[UIAlertView alloc] initWithTitle:@"Attention" message:@"La limite d'upload est fixée à 15 photos." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     
+     [limitAlert show];
+     
+     }
+     
+     
+     }*/
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -300,10 +313,13 @@
     
     if (self.datasourceAutomatic.count == 0) {
         
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
             @autoreleasepool {
                 if (group) {
+                    self.selectedGroupPersistentID = (NSString *)[group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                    //NSLog(@"datasourceAutomatic | groupName = %@", self.selectedGroupPersistentID);
+                    
                     [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                     [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                         if (result) {
@@ -320,12 +336,20 @@
                                     photo.date = photoDate;
                                     photo.isSelected = YES;
                                     
-                                    NSString *hashFromPhoto = [MOUtility hashFromData:[NSKeyedArchiver archivedDataWithRootObject:result.defaultRepresentation.metadata]];
                                     
-                                    if (![self.photosHash containsObject:hashFromPhoto]) {
-                                        //NSLog(@"hash: %@", hashFromPhoto);
-                                        [self.photosHash addObject:hashFromPhoto];
+                                    
+                                    if (![self.datasourceAutomatic containsObject:photo]) {
+                                        
                                         [self.datasourceAutomatic addObject:photo];
+                                        //[self.delegate addPhotoToUpload:photo];
+                                        
+                                        /*if (![self.photosToUpload containsObject:photo]) {
+                                         [self.photosToUpload addObject:photo];
+                                         
+                                         //if (self.photosToUpload.count < MAX_PHOTOS_UPLOAD) {
+                                         //    [self.photosToUpload addObject:photo];
+                                         //}
+                                         }*/
                                     }
                                 }
                                 
@@ -363,11 +387,13 @@
     
     if (self.datasourceComplete.count == 0) {
         
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
             @autoreleasepool {
                 if (group) {
-                    NSLog(@"Group name: %@", [group valueForProperty:ALAssetsGroupPropertyName]);
+                    self.selectedGroupPersistentID = (NSString *)[group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                    //NSLog(@"datasourceComplete | groupName = %@", self.selectedGroupPersistentID);
+                    
                     [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                     [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                         if (result) {
@@ -384,15 +410,10 @@
                                     photo.date = photoDate;
                                     photo.isSelected = NO;
                                     
-                                    NSString *hashFromPhoto = [MOUtility hashFromData:[NSKeyedArchiver archivedDataWithRootObject:result.defaultRepresentation.metadata]];
-                                    
-                                    if (![self.photosHash containsObject:hashFromPhoto]) {
-                                        //NSLog(@"hash: %@", hashFromPhoto);
-                                        [self.photosHash addObject:hashFromPhoto];
+                                    if (![self.datasourceComplete containsObject:photo]) {
+                                        
                                         [self.datasourceComplete addObject:photo];
-                                    } /*else {
-                                        NSLog(@"Hash existant: %@ - On n'ajoute pas cette photo.", hashFromPhoto);
-                                    }*/
+                                    }
                                 }
                                 
                             }
@@ -405,7 +426,146 @@
             
             [self.collectionView reloadData];
             //[self updateNavBar];
+        } failureBlock:^(NSError *error) {
+            NSLog(@"Failed.");
+        }];
+    }
+}
+
+-(void)loadPhotosFromAssetsGroupPersistentID:(NSString *)persistentID
+{
+    
+    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    [self.datasourceAutomatic removeAllObjects];
+    [self.datasourceComplete removeAllObjects];
+    
+    if (self.datasourceAutomatic.count == 0) {
+        
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
+            @autoreleasepool {
+                if (group) {
+                    
+                    if ([[group valueForProperty:ALAssetsGroupPropertyPersistentID] isEqualToString:persistentID]) {
+                        
+                        self.selectedGroupPersistentID = (NSString *)[group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                        //NSLog(@"datasourceAutomatic | groupName = %@", self.selectedGroupPersistentID);
+                        
+                        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                            if (result) {
+                                
+                                NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                                
+                                if (startDate && endDate) {
+                                    
+                                    if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
+                                        
+                                        Photo *photo = [[Photo alloc] init];
+                                        photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                        photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
+                                        photo.date = photoDate;
+                                        photo.isSelected = YES;
+                                        
+                                        
+                                        
+                                        if (![self.datasourceAutomatic containsObject:photo]) {
+                                            
+                                            [self.datasourceAutomatic addObject:photo];
+                                            //[self.delegate addPhotoToUpload:photo];
+                                            
+                                            /*if (![self.photosToUpload containsObject:photo]) {
+                                             [self.photosToUpload addObject:photo];
+                                             
+                                             //if (self.photosToUpload.count < MAX_PHOTOS_UPLOAD) {
+                                             //    [self.photosToUpload addObject:photo];
+                                             //}
+                                             }*/
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }];
+                        
+                        [self.datasourceAutomatic reverse];
+                        
+                        if (self.datasourceAutomatic.count > MAX_PHOTOS_UPLOAD) {
+                            for(Photo *photo in self.datasourceAutomatic){
+                                photo.isSelected = NO;
+                            }
+                            for (int i=0; i< MAX_PHOTOS_UPLOAD; i++) {
+                                Photo *photo = [self.datasourceAutomatic objectAtIndex:i];
+                                photo .isSelected = YES;
+                            }
+                        }
+                        
+                        if (self.datasourceAutomatic.count == 0) {
+                            [self.selectButton removeFromSuperview];
+                            self.headerConstraint.constant = 0;
+                        } else {
+                            self.navigationItem.rightBarButtonItem.enabled = YES;
+                        }
+                    }
+                }
+            }
+            
+            [self.collectionView reloadData];
+            //[self updateNavBar];
+        } failureBlock:^(NSError *error) {
+            NSLog(@"Failed.");
+        }];
+    }
+    
+    if (self.datasourceComplete.count == 0) {
+        
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            
+            @autoreleasepool {
+                if (group) {
+                    
+                    if ([[group valueForProperty:ALAssetsGroupPropertyPersistentID] isEqualToString:persistentID]) {
+                        
+                        self.selectedGroupPersistentID = (NSString *)[group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                        //NSLog(@"datasourceComplete | groupName = %@", self.selectedGroupPersistentID);
+                        
+                        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                            if (result) {
+                                
+                                NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                                
+                                if (startDate && endDate) {
+                                    
+                                    if (![MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
+                                        
+                                        Photo *photo = [[Photo alloc] init];
+                                        photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                        photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
+                                        photo.date = photoDate;
+                                        photo.isSelected = NO;
+                                        
+                                        if (![self.datasourceComplete containsObject:photo]) {
+                                            
+                                            [self.datasourceComplete addObject:photo];
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }];
+                        
+                        [self.datasourceComplete reverse];
+                    }
+                }
+            }
+            
+            [self.collectionView reloadData];
+            //[self updateNavBar];
         } failureBlock:^(NSError *error) {
             NSLog(@"Failed.");
         }];
@@ -435,7 +595,120 @@
         SharePhotoViewController *photosCollectionViewController = segue.destinationViewController;
         photosCollectionViewController.photosArray = [photosSelected copy];
         photosCollectionViewController.event = self.event;
+        
+        
+    } else if ([segue.identifier isEqualToString:@"ShowPhotosDatasource"]) {
+        
+        WYStoryboardPopoverSegue *popoverSegue = (WYStoryboardPopoverSegue*)segue;
+        
+        PhotosDatasourceViewController *photosDatasourceViewController = (PhotosDatasourceViewController *)popoverSegue.destinationViewController;
+        
+        
+        
+        photosDatasourceViewController.preferredContentSize = CGSizeMake(320, self.assetsGroupList.count * 75);
+        photosDatasourceViewController.delegate = self;
+        photosDatasourceViewController.selectedGroupPersistentID = self.selectedGroupPersistentID;
+        photosDatasourceViewController.assetsGroupList = self.assetsGroupList;
+        
+        
+        WYPopoverBackgroundView* popoverAppearance = [WYPopoverBackgroundView appearance];
+        
+        [popoverAppearance setOverlayColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+        
+        [popoverAppearance setOuterCornerRadius:10];
+        [popoverAppearance setOuterShadowBlurRadius:0];
+        [popoverAppearance setOuterShadowColor:[UIColor clearColor]];
+        [popoverAppearance setOuterShadowOffset:CGSizeMake(0, 0)];
+        
+        [popoverAppearance setGlossShadowColor:[UIColor clearColor]];
+        [popoverAppearance setGlossShadowOffset:CGSizeMake(0, 0)];
+        
+        [popoverAppearance setBorderWidth:0];
+        [popoverAppearance setArrowHeight:7];
+        [popoverAppearance setArrowBase:15];
+        
+        [popoverAppearance setInnerCornerRadius:10];
+        [popoverAppearance setInnerShadowBlurRadius:0];
+        [popoverAppearance setInnerShadowColor:[UIColor clearColor]];
+        [popoverAppearance setInnerShadowOffset:CGSizeMake(0, 0)];
+        
+        [popoverAppearance setFillTopColor:[UIColor whiteColor]];
+        [popoverAppearance setFillBottomColor:[UIColor whiteColor]];
+        [popoverAppearance setOuterStrokeColor:[UIColor clearColor]];
+        [popoverAppearance setInnerStrokeColor:[UIColor clearColor]];
+        
+        
+        self.photosDatasourcePopoverController = [popoverSegue popoverControllerWithSender:self.navigationItem.titleView
+                                                                  permittedArrowDirections:WYPopoverArrowDirectionUp
+                                                                                  animated:YES
+                                                                                   options:WYPopoverAnimationOptionFadeWithScale];
+        
+        self.photosDatasourcePopoverController.popoverLayoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+        
+        self.photosDatasourcePopoverController.delegate = self;
     }
+}
+
+
+#pragma mark - Assets library management
+
++ (ALAssetsLibrary *)defaultAssetsLibrary {
+    static dispatch_once_t pred = 0;
+    static ALAssetsLibrary *library = nil;
+    dispatch_once(&pred, ^{
+        library = [[ALAssetsLibrary alloc] init];
+    });
+    return library;
+}
+
+- (void)getAllAssetsGroupType {
+    
+    [[PhotosAlbumViewController defaultAssetsLibrary] enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        if (group) {
+            
+            if (![self.assetsGroupList containsObject:group]) {
+                [self.assetsGroupList addObject:group];
+                
+                /*NSString *groupName = [group valueForProperty:ALAssetsGroupPropertyName];
+                NSString *groupType = [group valueForProperty:ALAssetsGroupPropertyType];
+                NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                NSString *groupURL = [group valueForProperty:ALAssetsGroupPropertyURL];
+                 
+                NSLog(@"groupName = %@", groupName);
+                NSLog(@"groupType = %@", groupType);
+                NSLog(@"groupID = %@", groupID);
+                NSLog(@"groupURL = %@", groupURL);*/
+            }
+        }
+    } failureBlock:^(NSError *error) {
+        if (error) {
+            NSLog(@"error = %@", error.localizedDescription);
+        }
+    }];
+}
+
+
+#pragma mark - WYPhotosDatasourceViewControllerDelegate
+
+- (void)photosDatasourceViewControllerDidCancel:(PhotosDatasourceViewController *)controller
+{
+    controller.delegate = nil;
+    [self.photosDatasourcePopoverController dismissPopoverAnimated:YES];
+    self.photosDatasourcePopoverController.delegate = nil;
+    self.photosDatasourcePopoverController = nil;
+}
+
+- (void)photosDatasourceViewController:(PhotosDatasourceViewController *)controller
+                 didSelectedDatasource:(NSString *)selectedDatasource
+                     andDatasourceName:(NSString *)datasourceName
+{
+	self.selectedGroupPersistentID  = selectedDatasource;
+    NSString *newTitle = [NSString stringWithFormat:@"%@ ▾", datasourceName];
+    [self.titleViewButton setTitle:newTitle forState:UIControlStateNormal];
+    
+    [self loadPhotosFromAssetsGroupPersistentID:self.selectedGroupPersistentID];
+    
+    [self photosDatasourceViewControllerDidCancel:controller];
 }
 
 @end

@@ -32,7 +32,8 @@
 #endif
 
 #ifdef DEBUG
-    #define WY_LOG(fmt, ...)		NSLog((@"%s (%d) : " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+    //#define WY_LOG(fmt, ...)		NSLog((@"%s (%d) : " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+    #define WY_LOG(...)
 #else
     #define WY_LOG(...)
 #endif
