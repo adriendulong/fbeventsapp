@@ -3998,16 +3998,16 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="WWM-2T-ArI"/>
         <segue reference="zHu-yQ-I5R"/>
-        <segue reference="Wlq-vB-X1o"/>
-        <segue reference="pId-s9-PUV"/>
         <segue reference="85D-2h-GPM"/>
-        <segue reference="ItH-HP-BNq"/>
-        <segue reference="e9E-5w-t1P"/>
+        <segue reference="WWM-2T-ArI"/>
+        <segue reference="pId-s9-PUV"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="gQS-Od-x3H"/>
         <segue reference="H4y-UD-BIY"/>
+        <segue reference="ItH-HP-BNq"/>
+        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="Wlq-vB-X1o"/>
         <segue reference="eIZ-rP-uPU"/>
     </inferredMetricsTieBreakers>
 </document>

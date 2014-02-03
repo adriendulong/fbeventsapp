@@ -477,14 +477,15 @@
 
 
 -(void)selectClosestInvitation{
-    __block BOOL haveOlderWithEndTime = NO;
+    //__block BOOL haveOlderWithEndTime = NO;
     
     if (self.invitations.count>0) {
         PFObject *actualClosest = [self.invitations objectAtIndex:0];
         
         self.closestInvitation = actualClosest;
+        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateClosestEvent object:self userInfo:nil]; 
         
-        NSDate* dateFutur = actualClosest[@"event"][@"start_time"];
+        /*NSDate* dateFutur = actualClosest[@"event"][@"start_time"];
         NSTimeInterval distanceBetweenDates = [dateFutur timeIntervalSinceDate:[NSDate date]];
         NSInteger secondsBetweenDate = distanceBetweenDates;
         NSLog(@"Seconds between = %i", secondsBetweenDate);
@@ -545,7 +546,7 @@
                 }
                 
             }];
-        }];
+        }];*/
     }
     
     

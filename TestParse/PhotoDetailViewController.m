@@ -244,6 +244,8 @@
             [imgView loadInBackground];
         }
         
+        self.maineImageView = imgView;
+        
         [cell addSubview:imgView];
         
         
@@ -472,7 +474,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Cancel", nil)
                                                    destructiveButtonTitle:NSLocalizedString(@"UIActionSheet_Delete", nil)
-                                                        otherButtonTitles:nil];
+                                                        otherButtonTitles:NSLocalizedString(@"UIActionSheet_Save", nil), nil];
         [actionSheet showInView:self.view];
     }
     else{
@@ -480,7 +482,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:NSLocalizedString(@"UIActionSheet_Cancel", nil)
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:nil];
+                                                        otherButtonTitles:NSLocalizedString(@"UIActionSheet_Save", nil), nil];
         [actionSheet showInView:self.view];
     }
     
@@ -493,6 +495,9 @@
     if  ([buttonTitle isEqualToString:NSLocalizedString(@"UIActionSheet_Delete", nil)]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIActionSheet_Delete", nil) message:NSLocalizedString(@"PhotoDetailViewController_DeletePhoto", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"UIAlertView_No", nil) otherButtonTitles:NSLocalizedString(@"UIAlertView_Yes", nil), nil];
         [alert show];
+    }
+    else if ([buttonTitle isEqualToString:NSLocalizedString(@"UIActionSheet_Save", nil)]){
+        UIImageWriteToSavedPhotosAlbum(self.maineImageView.image, nil, nil, nil);
     }
 }
 

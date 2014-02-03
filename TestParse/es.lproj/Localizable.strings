@@ -53,6 +53,7 @@
 "UIActionSheet_Cancel" = "Cancelar";
 "UIActionSheet_Delete" = "Eliminar";
 "UIActionSheet_Skip" = "Ignorar";
+"UIActionSheet_Save" = "Save";
 
 
 ///// TutorialViewController /////
