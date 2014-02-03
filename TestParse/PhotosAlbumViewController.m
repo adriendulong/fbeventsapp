@@ -41,6 +41,7 @@
     [self.validateButton setTitle:NSLocalizedString(@"UIBArButtonItem_Validate", nil)];
     [self.selectButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_AllDeselect", nil) forState:UIControlStateNormal];
     
+    self.photosHash = [NSMutableArray array];
     self.datasourceAutomatic = [NSMutableArray array];
     self.datasourceComplete = [NSMutableArray array];
 	// Do any additional setup after loading the view.
@@ -141,6 +142,12 @@
     }
     else{
         if ([self nbSelectedPhotos] < MAX_PHOTOS_UPLOAD) {
+            CGDataProviderRef provider = CGImageGetDataProvider(photo.thumbnail.CGImage);
+            NSData *data = (id)CFBridgingRelease(CGDataProviderCopyData(provider));
+            NSString *hashFromPhoto = [MOUtility hashFromData:data];
+            
+            NSLog(@"hash: %@", hashFromPhoto);
+            
             photo.isSelected = YES;
             checkView.image = [UIImage imageNamed:@"check"];
         }
@@ -289,7 +296,7 @@
     
     if (self.datasourceAutomatic.count == 0) {
         
-        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
             @autoreleasepool {
                 if (group) {
@@ -309,20 +316,12 @@
                                     photo.date = photoDate;
                                     photo.isSelected = YES;
                                     
+                                    NSString *hashFromPhoto = [MOUtility hashFromData:[NSKeyedArchiver archivedDataWithRootObject:result.defaultRepresentation.metadata]];
                                     
-                                    
-                                    if (![self.datasourceAutomatic containsObject:photo]) {
-                                        
+                                    if (![self.photosHash containsObject:hashFromPhoto]) {
+                                        //NSLog(@"hash: %@", hashFromPhoto);
+                                        [self.photosHash addObject:hashFromPhoto];
                                         [self.datasourceAutomatic addObject:photo];
-                                        //[self.delegate addPhotoToUpload:photo];
-                                        
-                                        /*if (![self.photosToUpload containsObject:photo]) {
-                                         [self.photosToUpload addObject:photo];
-                                         
-                                         //if (self.photosToUpload.count < MAX_PHOTOS_UPLOAD) {
-                                         //    [self.photosToUpload addObject:photo];
-                                         //}
-                                         }*/
                                     }
                                 }
                                 
@@ -360,10 +359,11 @@
     
     if (self.datasourceComplete.count == 0) {
         
-        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             
             @autoreleasepool {
                 if (group) {
+                    NSLog(@"Group name: %@", [group valueForProperty:ALAssetsGroupPropertyName]);
                     [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                     [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                         if (result) {
@@ -380,10 +380,15 @@
                                     photo.date = photoDate;
                                     photo.isSelected = NO;
                                     
-                                    if (![self.datasourceComplete containsObject:photo]) {
-                                        
+                                    NSString *hashFromPhoto = [MOUtility hashFromData:[NSKeyedArchiver archivedDataWithRootObject:result.defaultRepresentation.metadata]];
+                                    
+                                    if (![self.photosHash containsObject:hashFromPhoto]) {
+                                        //NSLog(@"hash: %@", hashFromPhoto);
+                                        [self.photosHash addObject:hashFromPhoto];
                                         [self.datasourceComplete addObject:photo];
-                                    }
+                                    } /*else {
+                                        NSLog(@"Hash existant: %@ - On n'ajoute pas cette photo.", hashFromPhoto);
+                                    }*/
                                 }
                                 
                             }
@@ -396,6 +401,7 @@
             
             [self.collectionView reloadData];
             //[self updateNavBar];
+            
         } failureBlock:^(NSError *error) {
             NSLog(@"Failed.");
         }];
