@@ -18,6 +18,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "MBProgressHUD.h"
 
 
 @interface ListEvents ()
@@ -432,6 +433,11 @@
 }
 
 -(void)logIn:(NSNotification *)note{
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Chargement des évènements...";
+    
+    
     BOOL b = [note.userInfo[@"is_new"] boolValue];
     NSLog(@"%hhd", b);
     if ([note.userInfo[@"is_new"] boolValue]) {

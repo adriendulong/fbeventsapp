@@ -8,6 +8,7 @@
 
 #import "MOUtility.h"
 #import "EventUtilities.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation MOUtility
 
@@ -377,9 +378,35 @@
             return size;
         }
     }
+}
+
++ (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2
+{
+    NSData *data1 = UIImagePNGRepresentation(image1);
+    NSData *data2 = UIImagePNGRepresentation(image2);
     
+    return [data1 isEqual:data2];
+}
+
+#pragma mark - Data manipulation
+
++ (NSString *)hashFromImage:(UIImage *)image
+{
+    CGDataProviderRef provider = CGImageGetDataProvider(image.CGImage);
+    NSData *data = (id)CFBridgingRelease(CGDataProviderCopyData(provider));
+    NSString *hashFromPhoto = [self hashFromData:data];
     
+    return hashFromPhoto;
+}
+
++ (NSString *)hashFromData:(NSData *)data {
+    unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(data.bytes, data.length, md5Buffer);
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x",md5Buffer[i]];
     
+    return output;
 }
 
 #pragma mark - Twitter

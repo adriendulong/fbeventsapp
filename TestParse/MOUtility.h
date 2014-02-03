@@ -40,6 +40,11 @@
 
 #pragma mark - Image
 +(CGSize)newBoundsForMaxSize:(float)max andActualSize:(CGSize)size;
++(BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2;
+
+#pragma mark - Data manipulation
++(NSString *)hashFromImage:(UIImage *)image;
++(NSString *)hashFromData:(NSData *)data;
 
 #pragma mark - Type Event
 +(int)typeEvent:(PFObject *)event;
@@ -49,6 +54,7 @@
 
 #pragma mark - IOS Resources
 //- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;
+
 
 #pragma mark - Database Local
 +(BOOL)removeAllInvitations;

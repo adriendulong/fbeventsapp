@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableArray *datasourceAutomatic;
 @property (nonatomic, strong) NSMutableArray *datasourceComplete;
+@property (nonatomic, strong) NSMutableArray *photosHash;
 @property (strong, nonatomic) PFObject *event;
 
 @property (nonatomic) int nbAutomaticPhotos;
