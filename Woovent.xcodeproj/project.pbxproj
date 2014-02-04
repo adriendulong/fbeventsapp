@@ -21,6 +21,7 @@
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
+		3F8D4B4618A0F6FE00611DAC /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */; };
 		3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CE8189FE6840080680F /* WYPopoverController.m */; };
 		3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */; };
 		3FEE1CF0189FE7560080680F /* PhotosDatasourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEF189FE7560080680F /* PhotosDatasourceCell.m */; };
@@ -131,7 +132,6 @@
 		E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193761840F016008FD530 /* MemoriesViewController.m */; };
 		E7D98814187E9AA800BC8826 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7D98813187E9AA800BC8826 /* Crashlytics.framework */; };
 		E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */; };
-		E7F00342189FE1C200315EC2 /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */; };
 		E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */; };
 		E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F97183F6C950061350A /* PhotosImportedViewController.m */; };
 		E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F10F99183F81E70061350A /* AssetsLibrary.framework */; };
@@ -178,6 +178,7 @@
 		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
+		3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
 		3FEE1CE7189FE6840080680F /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		3FEE1CE8189FE6840080680F /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		3FEE1CE9189FE6840080680F /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -359,7 +360,6 @@
 		E7EA94A018759ABF009EEF31 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7F0033F189FE1C200315EC2 /* KeenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeenClient.h; sourceTree = "<group>"; };
 		E7F00340189FE1C200315EC2 /* KeenProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeenProperties.h; sourceTree = "<group>"; };
-		E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
 		E7F10F93183F6C0A0061350A /* HeaderSectionsCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderSectionsCollectionView.h; sourceTree = "<group>"; };
 		E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderSectionsCollectionView.m; sourceTree = "<group>"; };
 		E7F10F96183F6C950061350A /* PhotosImportedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosImportedViewController.h; sourceTree = "<group>"; };
@@ -403,7 +403,7 @@
 				E73DF79E182AEAE200E560FF /* GLKit.framework in Frameworks */,
 				E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */,
 				3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */,
-				E7F00342189FE1C200315EC2 /* libKeenClient-Aggregate.a in Frameworks */,
+				3F8D4B4618A0F6FE00611DAC /* libKeenClient-Aggregate.a in Frameworks */,
 				E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */,
 				3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */,
 				E7AE14C318059A070021F321 /* MobileCoreServices.framework in Frameworks */,
@@ -908,9 +908,9 @@
 		E7F0033E189FE1AE00315EC2 /* KeenClient */ = {
 			isa = PBXGroup;
 			children = (
+				3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */,
 				E7F0033F189FE1C200315EC2 /* KeenClient.h */,
 				E7F00340189FE1C200315EC2 /* KeenProperties.h */,
-				E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */,
 			);
 			name = KeenClient;
 			sourceTree = "<group>";
@@ -1198,8 +1198,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1218,7 +1218,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1240,8 +1240,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1253,7 +1253,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1291,10 +1291,11 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
+					/Users/Jeremy/Dropbox/iOS/fbeventsapp/TestParse,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1332,10 +1333,11 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
 					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
+					/Users/Jeremy/Dropbox/iOS/fbeventsapp/TestParse,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
