@@ -9,6 +9,7 @@
 #import "InfoHeaderCollectionView.h"
 #import "CameraViewController.h"
 #import "MOUtility.h"
+#import "KeenClient.h"
 
 @implementation InfoHeaderCollectionView
 
@@ -32,18 +33,24 @@
 
 
 - (IBAction)rsvpChanged:(id)sender {
+    NSDictionary *event;
+    
     //Accept
     if(self.segmentRsvp.selectedSegmentIndex == 0){
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventAttending, @"answer", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending];
     }
     //Maybe
     else if (self.segmentRsvp.selectedSegmentIndex == 1){
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventMaybeAnswer, @"answer", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer];
     }
     //No
     else{
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventDeclined, @"answer", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined];
     }
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
 }
 
 //RSVP to an event
@@ -53,91 +60,6 @@
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:nil HTTPMethod:@"POST"];
-    
-    //@"rsvp_event"
-    //If not have permission to rsvp
-    /*
-    FBSession *session = [PFFacebookUtils session] ;
-    
-    BOOL rsvp_perm = [[PFUser currentUser][@"has_rsvp_perm"] boolValue];
-    
-    if (([session.permissions indexOfObject:@"rsvp_event"] == NSNotFound) && !rsvp_perm) {
-        // if we don't already have the permission, then we request it now
-        [PFFacebookUtils reauthorizeUser:[PFUser currentUser] withPublishPermissions:@[@"rsvp_event"] audience:FBSessionDefaultAudienceFriends block:^(BOOL succeeded, NSError *error) {
-            
-            
-            //Add permission rsvp to user
-            FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
-            [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                
-                NSArray *permissions = result[@"data"];
-                if ([[permissions objectAtIndex:0][@"rsvp_event"] intValue] == 1) {
-                    PFUser *currentUser =[PFUser currentUser];
-                    currentUser[@"has_rsvp_perm"] = @YES;
-                    [currentUser saveInBackground];
-                }
-            }];
-            
-            
-            if (succeeded) {
-            }
-            
-            [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    NSLog(@"%@", result);
-                    
-                    if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
-                        //Save the new rsvp
-                        NSString *oldRsvp = self.invitation[@"rsvp_status"];
-                        self.invitation[@"rsvp_status"] = rsvp;
-                        [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            if(!error){
-                                [MOUtility setRsvp:rsvp forInvitation:self.invitation.objectId];
-                                [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
-                            }
-                            else{
-                                self.invitation[@"rsvp_status"] = oldRsvp;
-                                [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
-                            }
-                        }];
-                    }
-                    
-                }
-                else{
-                    [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
-                }
-            }];
-        }];
-
-    } else {
-        
-        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            if (!error) {
-                
-                if (result[@"FACEBOOK_NON_JSON_RESULT"]) {
-                    //Save the new rsvp
-                    NSString *oldRsvp = self.invitation[@"rsvp_status"];
-                    self.invitation[@"rsvp_status"] = rsvp;
-                    [self.invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                        if(!error){
-                            //Warn the table view controller
-                            [MOUtility setRsvp:rsvp forInvitation:self.invitation.objectId];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:ModifEventsInvitationsAnswers object:self];
-                        }
-                        else{
-                            self.invitation[@"rsvp_status"] = oldRsvp;
-                            [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
-                        }
-                    }];
-                }
-                
-            }
-            else{
-                [self.segmentRsvp setSelectedSegmentIndex:[self segmentPositionForRsvp:self.invitation[@"rsvp"]]];
-            }
-        }];
-    }
-    */
     
     
     

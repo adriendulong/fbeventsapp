@@ -17,6 +17,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 #import "PDGestureTableView.h"
+#import "KeenClient.h"
 
 @interface ListInvitationsController ()
 
@@ -138,21 +139,29 @@
     UIColor *blueColor = [UIColor colorWithRed:41.0/255.0 green:128.0/255.0 blue:185.0/255.0 alpha:1];
     UIColor *redColor = [UIColor colorWithRed:192.0/255.0 green:57.0/255.0 blue:43.0/255.0 alpha:1];
     
+    
+    
     cell.firstLeftAction = [PDGestureTableViewCellAction
                             actionWithIcon:[UIImage imageNamed:@"check_little"]
                             color:greenColor
                             fraction:0.20
                             didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
                                 // Action for first left action triggering.
+                                //Keen
+                                NSDictionary *event;
                                 
                                 PFObject *invitation;
                                 if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", nil];
+                                    
                                     invitation = self.invitations[indexPath.row];
                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
                                     [self.objectsForTable removeObjectAtIndex:indexPath.row];
                                     
                                 }
                                 else{
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventAttending, @"answer", nil];
+                                    
                                     invitation = self.declined[indexPath.row];
                                     NSLog(@"IndexPath %i",indexPath.row);
                                     [self.removingDeclined addObject:self.declined[indexPath.row]];
@@ -161,8 +170,8 @@
                                 }
                                 
                                 
-                                NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
-                                                           @"rsvp": FacebookEventAttending, @"eventId" : invitation[@"event"][@"eventId"]};
+                                //KEEN
+                                [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
                                 
 
                                 
@@ -184,16 +193,20 @@
                             fraction:0.65
                             didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
                                 // Action for first left action triggering.
-                                
+                                //Keen
+                                NSDictionary *event;
                                 
                                 PFObject *invitation;
                                 if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", nil];
+                                    
                                     invitation = self.invitations[indexPath.row];
                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
                                     [self.objectsForTable removeObjectAtIndex:indexPath.row];
                                     
                                 }
                                 else{
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventMaybeAnswer, @"answer", nil];
                                     invitation = self.declined[indexPath.row];
                                     NSLog(@"IndexPath %i",indexPath.row);
                                     [self.removingDeclined addObject:self.declined[indexPath.row]];
@@ -201,9 +214,7 @@
                                     
                                 }
                                 
-                                
-                                NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
-                                                           @"rsvp": FacebookEventMaybeAnswer, @"eventId" : invitation[@"event"][@"eventId"]};
+                                [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
 
                                 
                                 [gestureTableView removeCell:cell completion:^{
@@ -226,6 +237,11 @@
                                  didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
                                      // Action for first left action triggering.
                                      
+                                     //KEEN
+                                     //Keen
+                                     NSDictionary *event;
+                                     event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", nil];
+                                     
                                      PFObject *invitation;
                                      invitation = self.invitations[indexPath.row];
                                      [self.removingInvits addObject:self.invitations[indexPath.row]];
@@ -233,8 +249,7 @@
                                      
                                      
                                      
-                                     NSDictionary *userInfo = @{@"invitationId": invitation.objectId,
-                                                                @"rsvp": FacebookEventDeclined, @"eventId" : invitation[@"event"][@"eventId"]};
+                                     [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
                                      
                                      [gestureTableView removeCell:cell completion:^{
                                          NSLog(@"Cell removed!");

@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UIApplication *application;
 @property (strong, nonatomic) NSDate *startTime;
 @property (assign, nonatomic) BOOL comeFromFB;
+@property (assign, nonatomic) BOOL isProdApp;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

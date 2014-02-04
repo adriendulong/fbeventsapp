@@ -88,4 +88,15 @@
 #pragma mark - User Infos
 +(void)updateUserInfos;
 
+#pragma mark - Device Type
++ (NSString *)platformRawString;
++ (NSString *)platformNiceString;
+
+#pragma mark - Return API KEYS
++(NSString *)getKeenProjectId;
++(NSString *)getKeenWriteKey;
++(NSString *)getKeenReadKey;
++(NSString *)getParseAppId;
++(NSString *)getParseClientKey;
+
 @end

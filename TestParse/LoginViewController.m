@@ -12,6 +12,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "KeenClient.h"
 
 #define IS_BIG_SCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
@@ -203,6 +204,8 @@
             [self.mixpanel identify:user.objectId];
             [self.mixpanel track:@"New User"];
             [[Mixpanel sharedInstance].people set:@{@"$created": [NSDate date]}];
+            
+            
 
             UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
             [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
@@ -296,6 +299,13 @@
             
             [currentUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
+                    if (self.isNewUser) {
+                        //KEEN
+                        NSDictionary *event= [NSDictionary dictionaryWithObjectsAndKeys: currentUser[@"name"], @"name", nil];
+                        [[KeenClient sharedClient] addEvent:event toEventCollection:@"new_user" error:nil];
+                    }
+                    
+                    
                     //Update permissions
                     FBRequest *requestPerms = [FBRequest requestForGraphPath:@"me/permissions"];
                     [requestPerms startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

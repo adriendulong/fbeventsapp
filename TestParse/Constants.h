@@ -56,4 +56,17 @@ extern NSTimeInterval const TimeIntervalFetch;
 #pragma mark - External Lib Constants
 extern NSString *const MixpanelToken;
 
+#pragma mark - API Keys DEV
+extern NSString *const KeenProjectIdDev;
+extern NSString *const KeenWriteKeyDev;
+extern NSString *const KeenReadKeyDev;
+extern NSString *const ParseApplicationIDDev;
+extern NSString *const ParseClientKeyDev;
+
+#pragma mark - API Keys PROD
+extern NSString *const KeenProjectIdProd;
+extern NSString *const KeenWriteKeyProd;
+extern NSString *const KeenReadKeyProd;
+extern NSString *const ParseApplicationIDProd;
+extern NSString *const ParseClientKeyProd;
 

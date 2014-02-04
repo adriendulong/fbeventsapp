@@ -15,6 +15,7 @@
 #import "ListEvents.h"
 #import "GAI.h"
 #import <Crashlytics/Crashlytics.h>
+#import "KeenClient.h"
 
 
 @implementation TestParseAppDelegate
@@ -26,6 +27,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    //Prod or Dev
+    self.isProdApp = NO;
+    
     #warning DEVCONFIG
     [TestFlight takeOff:@"39edfba5-2220-4a06-a22f-ffcc1445b4b8"];
     
@@ -39,8 +44,8 @@
     
     // Override point for customization after application launch.
 #warning DEVCONFIG
-    [Parse setApplicationId:@"FtBRQLsJwozj3G32heaXVfCYALQbAmmJZnnopsrP"
-                  clientKey:@"C2jEPO7tVj5qZC1rk1YvvDqpjJAIhgbB9YKaGVhm"];
+    [Parse setApplicationId:[MOUtility getParseAppId]
+                  clientKey:[MOUtility getParseClientKey]];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     //Facebook init
@@ -232,6 +237,15 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    UIBackgroundTaskIdentifier taskId = [application beginBackgroundTaskWithExpirationHandler:^(void) {
+        NSLog(@"Background task is being expired.");
+    }];
+    
+    [[KeenClient sharedClient] uploadWithFinishedBlock:^(void) {
+        [application endBackgroundTask:taskId];
+    }];
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -268,6 +282,22 @@
     }
     
     self.startTime = [NSDate date];
+    
+    [KeenClient sharedClientWithProjectId:[MOUtility getKeenProjectId]
+                              andWriteKey:[MOUtility getKeenWriteKey]
+                               andReadKey:[MOUtility getKeenReadKey]];
+    
+    KeenClient *client = [KeenClient sharedClient];
+    [KeenClient disableGeoLocation];
+    client.globalPropertiesBlock = ^NSDictionary *(NSString *eventCollection) {
+        if ([PFUser currentUser]){
+            PFUser *user = [PFUser currentUser];
+            return @{@"id": user.objectId, @"name" : user[@"name"], @"location" : user[@"location"], @"facebookId" : user[@"facebookId"], @"email" : user[@"email"], @"device" : [[UIDevice currentDevice] model], @"device_type" : [MOUtility platformNiceString]};
+        }
+        else{
+            return nil;
+        }
+    };
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

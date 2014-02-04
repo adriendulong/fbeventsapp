@@ -127,6 +127,7 @@
 		E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193761840F016008FD530 /* MemoriesViewController.m */; };
 		E7D98814187E9AA800BC8826 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7D98813187E9AA800BC8826 /* Crashlytics.framework */; };
 		E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */; };
+		E7F00342189FE1C200315EC2 /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */; };
 		E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */; };
 		E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F97183F6C950061350A /* PhotosImportedViewController.m */; };
 		E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F10F99183F81E70061350A /* AssetsLibrary.framework */; };
@@ -344,6 +345,9 @@
 		E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
 		E7EA949F18759AB7009EEF31 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7EA94A018759ABF009EEF31 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E7F0033F189FE1C200315EC2 /* KeenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeenClient.h; sourceTree = "<group>"; };
+		E7F00340189FE1C200315EC2 /* KeenProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeenProperties.h; sourceTree = "<group>"; };
+		E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
 		E7F10F93183F6C0A0061350A /* HeaderSectionsCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeaderSectionsCollectionView.h; sourceTree = "<group>"; };
 		E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderSectionsCollectionView.m; sourceTree = "<group>"; };
 		E7F10F96183F6C950061350A /* PhotosImportedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosImportedViewController.h; sourceTree = "<group>"; };
@@ -364,6 +368,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7AE14BD180599DE0021F321 /* CoreLocation.framework in Frameworks */,
 				E7719B691864BC7A002E4A1B /* Accelerate.framework in Frameworks */,
 				E7719B671864BC70002E4A1B /* AdSupport.framework in Frameworks */,
 				E7719B651864BC64002E4A1B /* CoreTelephony.framework in Frameworks */,
@@ -385,8 +390,8 @@
 				E7896C841822ACA600DEBBDC /* ImageIO.framework in Frameworks */,
 				E73DF79E182AEAE200E560FF /* GLKit.framework in Frameworks */,
 				E73DF79C182AEAD700E560FF /* CoreText.framework in Frameworks */,
-				E7AE14BD180599DE0021F321 /* CoreLocation.framework in Frameworks */,
 				3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */,
+				E7F00342189FE1C200315EC2 /* libKeenClient-Aggregate.a in Frameworks */,
 				E73DF798182AEAB400E560FF /* AVFoundation.framework in Frameworks */,
 				3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */,
 				E7AE14C318059A070021F321 /* MobileCoreServices.framework in Frameworks */,
@@ -801,6 +806,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E7F0033E189FE1AE00315EC2 /* KeenClient */,
 				E72F86F7188ED2F80057F83E /* SlideGesture */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
 				E70BC5511887D54E008C1462 /* Landing */,
@@ -861,6 +867,16 @@
 				E7AE14A61803F6870021F321 /* WooventTests-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E7F0033E189FE1AE00315EC2 /* KeenClient */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0033F189FE1C200315EC2 /* KeenClient.h */,
+				E7F00340189FE1C200315EC2 /* KeenProperties.h */,
+				E7F00341189FE1C200315EC2 /* libKeenClient-Aggregate.a */,
+			);
+			name = KeenClient;
 			sourceTree = "<group>";
 		};
 		E7F10F92183F6BE70061350A /* CollectionViewPhotos */ = {
@@ -1234,10 +1250,11 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
+					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1274,10 +1291,11 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
+					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

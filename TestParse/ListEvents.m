@@ -43,7 +43,6 @@
     
     
     if (!self.isBackgroundTask) {
-        [TestFlight passCheckpoint:@"MY_EVENTS"];
         [[Mixpanel sharedInstance] track:@"Event View Appear"];
         
         id tracker = [[GAI sharedInstance] defaultTracker];
@@ -466,7 +465,9 @@
     }
     
     [self localClosestInvitation];
-    [self loadFutureEventsFromServer];
+    if (!self.isNewUser) {
+        [self loadFutureEventsFromServer];
+    }
     [self setBadgeForInvitation:self.tabBarController atIndex:1];
     
     //Sync with FB
