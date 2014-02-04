@@ -18,6 +18,7 @@
 #import "GAIFields.h"
 #import "PDGestureTableView.h"
 #import "KeenClient.h"
+#import "MBProgressHUD.h"
 
 @interface ListInvitationsController ()
 
@@ -352,6 +353,8 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            
             [self.invitations removeAllObjects];
             
             self.invitations = [objects mutableCopy];
@@ -368,6 +371,7 @@
                 [self.tableView reloadData];
             }
         } else {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             // Log details of the failure
             NSLog(@"Problème de chargement");
         }
@@ -403,6 +407,8 @@
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            
             self.declined = [objects mutableCopy];
             
             //Save in local databse
@@ -417,6 +423,7 @@
             }
         } else {
             // Log details of the failure
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             NSLog(@"Problème de chargement");
         }
     }];

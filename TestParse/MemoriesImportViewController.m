@@ -281,7 +281,7 @@
         cell.placeLabel.text = [NSString stringWithFormat:@"A %@", event[@"location"]];
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
-        cell.peopleLabel.text = [NSString stringWithFormat:@"Par %@", event[@"owner"][@"name"]];
+        cell.peopleLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"MemoriesImportViewController_By", nil), event[@"owner"][@"name"]];
         
         return cell;
     }

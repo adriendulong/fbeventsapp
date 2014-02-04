@@ -53,7 +53,7 @@
 "UIActionSheet_Cancel" = "Annuler";
 "UIActionSheet_Delete" = "Supprimer";
 "UIActionSheet_Skip" = "Ignorer";
-"UIActionSheet_Save" = "Enregistrer";
+"UIActionSheet_Save" = "Enregistrer la photo";
 
 
 ///// TutorialViewController /////
@@ -134,6 +134,8 @@
 "PhotoDetailViewController_Time_Minute" = "min";
 "PhotoDetailViewController_Time_Second" = "sec";
 "PhotoDetailViewController_Time_Now" = "à l'instant";
+"PhotoDetailViewController_Comments" = "Commentaires";
+"PhotoDetailViewController_Send" = "Envoyer";
 
 
 ///// PhotosCollectionViewController /////
@@ -154,7 +156,7 @@
 "PhotosCollectionViewController_Error_GMaps" = "Erreur lors de l'ouverture de Google Maps";
 "PhotosCollectionViewController_Error_Maps" = "Erreur lors de l'ouverture de Maps";
 "PhotosCollectionViewController_OK" = "OK";
-"PhotosCollectionViewController_TakePhoto" = "Prendre/Ajouter une photo";
+"PhotosCollectionViewController_TakePhoto" = "Ajouter une photo";
 "PhotosCollectionViewController_AutoImport" = "Importation Automatique";
 "PhotosCollectionViewController_TimeConjonction" = "à";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
@@ -174,6 +176,7 @@
 "PhotosAlbumViewController_Alert_Message" = "Veuillez sélectionner au moins 1 photos !";
 "PhotosAlbumViewController_OK" = "OK";
 "PhotosAlbumViewController_LoadingPhotos" = "Chargement des photos...";
+"PhotosAlbumViewController_CameraRoll" = "Pellicule ▾";
 
 
 

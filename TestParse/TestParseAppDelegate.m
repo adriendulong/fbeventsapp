@@ -283,12 +283,12 @@
     
     self.startTime = [NSDate date];
     
+    [KeenClient disableGeoLocation];
     [KeenClient sharedClientWithProjectId:[MOUtility getKeenProjectId]
                               andWriteKey:[MOUtility getKeenWriteKey]
                                andReadKey:[MOUtility getKeenReadKey]];
     
     KeenClient *client = [KeenClient sharedClient];
-    [KeenClient disableGeoLocation];
     client.globalPropertiesBlock = ^NSDictionary *(NSString *eventCollection) {
         if ([PFUser currentUser]){
             PFUser *user = [PFUser currentUser];

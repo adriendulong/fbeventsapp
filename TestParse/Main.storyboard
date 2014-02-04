@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C48" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="JSE-X3-kZq">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -775,7 +775,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Participation à des évènements" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="140" translatesAutoresizingMaskIntoConstraints="NO" id="4zX-C9-SDG">
-                                        <rect key="frame" x="5.5" y="205" width="140" height="47"/>
+                                        <rect key="frame" x="6" y="205" width="140" height="47"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.29803921570000003" green="0.30196078430000001" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -4067,16 +4067,16 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="e9E-5w-t1P"/>
-        <segue reference="ItH-HP-BNq"/>
-        <segue reference="pId-s9-PUV"/>
-        <segue reference="WWM-2T-ArI"/>
-        <segue reference="yqu-UZ-Hyz"/>
-        <segue reference="Imw-kp-jNA"/>
-        <segue reference="PEq-CK-woa"/>
         <segue reference="WO8-e3-H1i"/>
         <segue reference="eIZ-rP-uPU"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="gQS-Od-x3H"/>
+        <segue reference="PEq-CK-woa"/>
+        <segue reference="Imw-kp-jNA"/>
+        <segue reference="WWM-2T-ArI"/>
+        <segue reference="pId-s9-PUV"/>
+        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="ItH-HP-BNq"/>
+        <segue reference="yqu-UZ-Hyz"/>
     </inferredMetricsTieBreakers>
 </document>

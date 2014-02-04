@@ -123,6 +123,13 @@
         [self localClosestInvitation];
         self.comeFromLogin = NO;
         [self loadFutureEventsFromServer];
+        ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:invitationsController.view animated:YES];
+        hud.labelText = NSLocalizedString(@"ListEvents_Searching", nil);
+        if (invitationsController) {
+            [invitationsController loadInvitationFromServer];
+            [invitationsController loadDeclinedFromSever];
+        }
         [self setBadgeForInvitation:self.tabBarController atIndex:1];
         
         //Sync with FB
@@ -467,8 +474,16 @@
     [self localClosestInvitation];
     if (!self.isNewUser) {
         [self loadFutureEventsFromServer];
+        ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:invitationsController.view animated:YES];
+        hud.labelText = NSLocalizedString(@"ListEvents_Searching", nil);
+        if (invitationsController) {
+            [invitationsController loadInvitationFromServer];
+            [invitationsController loadDeclinedFromSever];
+        }
     }
     [self setBadgeForInvitation:self.tabBarController atIndex:1];
+    
     
     //Sync with FB
     [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];

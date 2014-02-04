@@ -29,6 +29,9 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated{
+    self.title = NSLocalizedString(@"PhotoDetailViewController_Comments", nil);
+    [self.sendComment setTitle:NSLocalizedString(@"PhotoDetailViewController_Send", nil) forState:UIControlStateNormal];
+    
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liftMainViewWhenKeybordAppears:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(returnMainViewToInitialposition:) name:UIKeyboardWillHideNotification object:nil];
