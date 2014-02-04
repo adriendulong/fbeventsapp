@@ -173,6 +173,7 @@
 "PhotosAlbumViewController_Alert_Title" = "Information";
 "PhotosAlbumViewController_Alert_Message" = "Veuillez sélectionner au moins 1 photos !";
 "PhotosAlbumViewController_OK" = "OK";
+"PhotosAlbumViewController_LoadingPhotos" = "Chargement des photos...";
 
 
 
@@ -249,7 +250,7 @@
 "SettingsViewController_support" = "Remarques et preuves d'amour";
 "SettingsViewController_wooventFB" = "Woovent sur Facebook";
 "SettingsViewController_CGU" = "Conditions d'utilisation";
-"SettingsViewController_disconnect" = "Deconnexion";
+"SettingsViewController_disconnect" = "Déconnexion";
 "SettingsViewController_Thanks" = "Remerciements";
 "SettingsViewController_myStats" = "Mes Statistiques";
 
