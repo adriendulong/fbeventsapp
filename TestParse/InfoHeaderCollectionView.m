@@ -37,17 +37,17 @@
     
     //Accept
     if(self.segmentRsvp.selectedSegmentIndex == 0){
-        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventAttending, @"answer", nil];
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventAttending, @"answer", @"press", @"type", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending];
     }
     //Maybe
     else if (self.segmentRsvp.selectedSegmentIndex == 1){
-        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventMaybeAnswer, @"answer", nil];
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventMaybeAnswer, @"answer", @"press", @"type", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer];
     }
     //No
     else{
-        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventDeclined, @"answer", nil];
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"detail", @"view", FacebookEventDeclined, @"answer", @"press", @"type", nil];
         [self RsvpToFbEvent:self.invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined];
     }
     [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];

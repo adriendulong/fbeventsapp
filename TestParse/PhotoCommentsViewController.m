@@ -303,6 +303,7 @@
         
         NSDictionary *comment = @{@"name": [PFUser currentUser][@"name"],
                                   @"id": [PFUser currentUser].objectId,
+                                  @"facebookId": [PFUser currentUser][@"facebookId"],
                                   @"date": [NSDate date],
                                   @"comment":goodMsg};
         

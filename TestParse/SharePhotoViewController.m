@@ -203,6 +203,7 @@
                     
                     NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                             @"id": [PFUser currentUser].objectId,
+                                            @"facebookId": [PFUser currentUser][@"facebookId"],
                                             @"date": [NSDate date],
                                             @"comment":goodMsg};
                     NSArray *comments = [NSArray arrayWithObjects:title, nil];
@@ -250,10 +251,15 @@
                     
                     //Add title if has written something
                     if (!self.hintIsWritten) {
+                        NSString *uniText = [NSString stringWithUTF8String:[self.titlePhoto.text UTF8String]];
+                        NSData *msgData = [uniText dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+                        NSString *goodMsg = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding] ;
+                        
                         NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                                 @"id": [PFUser currentUser].objectId,
+                                                @"facebookId": [PFUser currentUser][@"facebookId"],
                                                 @"date": [NSDate date],
-                                                @"comment":self.titlePhoto.text};
+                                                @"comment":goodMsg};
                         NSArray *comments = [NSArray arrayWithObjects:title, nil];
                         eventPhoto[@"comments"] = comments;
                     }
@@ -375,10 +381,15 @@
                             
                             //Add title if has written something
                             if (!self.hintIsWritten) {
+                                NSString *uniText = [NSString stringWithUTF8String:[self.titlePhoto.text UTF8String]];
+                                NSData *msgData = [uniText dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+                                NSString *goodMsg = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding] ;
+                                
                                 NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                                         @"id": [PFUser currentUser].objectId,
+                                                        @"facebookId": [PFUser currentUser][@"facebookId"],
                                                         @"date": [NSDate date],
-                                                        @"comment":self.titlePhoto.text};
+                                                        @"comment":goodMsg};
                                 NSArray *comments = [NSArray arrayWithObjects:title, nil];
                                 eventPhoto[@"comments"] = comments;
                             }

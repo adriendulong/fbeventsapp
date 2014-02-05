@@ -153,7 +153,7 @@
                                 
                                 PFObject *invitation;
                                 if (self.listSegmentControll.selectedSegmentIndex == 0) {
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", nil];
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
                                     
                                     invitation = self.invitations[indexPath.row];
                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
@@ -161,7 +161,7 @@
                                     
                                 }
                                 else{
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventAttending, @"answer", nil];
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
                                     
                                     invitation = self.declined[indexPath.row];
                                     NSLog(@"IndexPath %i",indexPath.row);
@@ -199,7 +199,7 @@
                                 
                                 PFObject *invitation;
                                 if (self.listSegmentControll.selectedSegmentIndex == 0) {
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", nil];
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
                                     
                                     invitation = self.invitations[indexPath.row];
                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
@@ -207,7 +207,7 @@
                                     
                                 }
                                 else{
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventMaybeAnswer, @"answer", nil];
+                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
                                     invitation = self.declined[indexPath.row];
                                     NSLog(@"IndexPath %i",indexPath.row);
                                     [self.removingDeclined addObject:self.declined[indexPath.row]];
@@ -241,7 +241,7 @@
                                      //KEEN
                                      //Keen
                                      NSDictionary *event;
-                                     event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", nil];
+                                     event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", @"slide", @"type", nil];
                                      
                                      PFObject *invitation;
                                      invitation = self.invitations[indexPath.row];

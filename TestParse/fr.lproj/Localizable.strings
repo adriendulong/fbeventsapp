@@ -8,8 +8,8 @@
 
 
 /* UITabBar */
-"UITabBar_Title_FirstPosition" = "A venir";
-"UITabBar_Title_SecondPosition" = "En attente";
+"UITabBar_Title_FirstPosition" = "Evènements";
+"UITabBar_Title_SecondPosition" = "Invitations";
 "UITabBar_Title_ThirdPosition" = "Souvenirs";
 "UITabBar_Title_FourthPosition" = "Now !";
 
@@ -199,6 +199,7 @@
 "InvitedListViewController_Maybe" = "Peut-être";
 "InvitedListViewController_NoResponse" = "Pas encore répondu";
 "InvitedListViewController_Absent" = "Absent";
+"InvitedListViewController_Loading" = "Chargement...";
 
 
 ///// ListInvitationsController /////
@@ -266,7 +267,7 @@
 "CGUViewController_body" = "";
 
 /// LandingViewController ///
-"LandingViewController_analyzeLoading" = "Nous analysons tes évènements Facebook...";
+"LandingViewController_analyzeLoading" = "Nous préparons quelques belles statistiques pour vous...";
 "LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com";
 "LandingViewControllerWinner_congratsLabel1" = "Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
