@@ -32,6 +32,7 @@
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly;
 +(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
 +(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;
++(void)postOnFacebooTimeline:(NSString *)eventId withAttributes:(NSDictionary *)attributes;
 +(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message;
 +(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message;
 

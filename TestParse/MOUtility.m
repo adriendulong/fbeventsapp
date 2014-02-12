@@ -155,6 +155,81 @@
 }
 
 
++(void)postOnFacebooTimeline:(NSString *)eventId withAttributes:(NSDictionary *)attributes {
+    
+    /*
+     message, picture, link, name, caption, description, source, place, tags
+    */
+    
+    NSArray *keysArray = @[@"message",
+                           @"picture",
+                           @"link",
+                           @"name",
+                           @"caption",
+                           @"description",
+                           @"source",
+                           @"place",
+                           @"tags"];
+    
+    NSMutableDictionary *attMutable = [attributes mutableCopy];
+    
+    
+    for (NSString *attribute in attributes) {
+        
+        if ([keysArray containsObject:attribute]) {
+            
+            [attMutable setValue:[attributes valueForKey:attribute] forKey:attribute];
+        }
+        
+        NSLog(@"attribute = %@", attribute);
+        
+        
+    }
+    
+    NSLog(@"attMutable = %@", attMutable);
+    
+    
+    NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];
+    FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:attMutable HTTPMethod:@"POST"];
+    
+    
+    if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
+        [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions", @"publish_stream"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                if (!error) {
+                                                    [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                        if (!error) {
+                                                            NSLog(@"Message posted");
+                                                        }
+                                                        else{
+                                                            NSLog(@"%@", [error userInfo]);
+                                                        }
+                                                    }];
+                                                } else if (error.fberrorCategory != FBErrorCategoryUserCancelled){
+                                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Permission denied"
+                                                                                                        message:@"Unable to get permission to post"
+                                                                                                       delegate:nil
+                                                                                              cancelButtonTitle:@"OK"
+                                                                                              otherButtonTitles:nil];
+                                                    [alertView show];
+                                                    
+                                                }
+                                            }];
+    }
+    else{
+        [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                NSLog(@"Message posted");
+            }
+            else{
+                NSLog(@"%@", [error userInfo]);
+            }
+        }];
+    }
+    
+}
+
 +(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message{
     
     NSString *requestString = [NSString stringWithFormat:@"%@/feed", eventId];

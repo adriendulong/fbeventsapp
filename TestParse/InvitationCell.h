@@ -21,6 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (IBAction)rsvpChanged:(id)sender;
--(void)segmentValueChanged;
+//-(void)segmentValueChanged;
 
 @end

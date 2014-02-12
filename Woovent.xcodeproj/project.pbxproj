@@ -17,15 +17,19 @@
 		3F490CD61844F92B00A5811E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3F490CD51844F92B00A5811E /* InfoPlist.strings */; };
 		3F538548185757FF00F24F35 /* shutter-photo.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3F538547185757FF00F24F35 /* shutter-photo.caf */; };
 		3F5385521857853F00F24F35 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5385511857853F00F24F35 /* MBProgressHUD.m */; };
+		3F64716118AA2F40006EE6F7 /* CommentPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */; };
+		3F64716418AA5C5C006EE6F7 /* CommentPostToolbarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */; };
 		3F64B640187AB2A7004603C7 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F64B63F187AB2A7004603C7 /* libGoogleAnalyticsServices.a */; };
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
 		3F8D4B4618A0F6FE00611DAC /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */; };
+		3F8D4B4A18A0FAAB00611DAC /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D4B4918A0FAAB00611DAC /* TestViewController.m */; };
 		3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CE8189FE6840080680F /* WYPopoverController.m */; };
 		3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */; };
 		3FEE1CF0189FE7560080680F /* PhotosDatasourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEF189FE7560080680F /* PhotosDatasourceCell.m */; };
 		3FEE1CF3189FE7640080680F /* PhotosDatasourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CF2189FE7640080680F /* PhotosDatasourceViewController.m */; };
+		3FF7ACCD18A914AA000AEBCB /* CommentPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -168,6 +172,10 @@
 		3F538547185757FF00F24F35 /* shutter-photo.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "shutter-photo.caf"; sourceTree = "<group>"; };
 		3F5385501857853F00F24F35 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		3F5385511857853F00F24F35 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		3F64715F18AA2F40006EE6F7 /* CommentPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostViewController.h; sourceTree = "<group>"; };
+		3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostViewController.m; sourceTree = "<group>"; };
+		3F64716218AA5C5C006EE6F7 /* CommentPostToolbarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostToolbarCell.h; sourceTree = "<group>"; };
+		3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostToolbarCell.m; sourceTree = "<group>"; };
 		3F64B639187AB2A7004603C7 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		3F64B63A187AB2A7004603C7 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
 		3F64B63B187AB2A7004603C7 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
@@ -179,6 +187,8 @@
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 		3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
+		3F8D4B4818A0FAAB00611DAC /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		3F8D4B4918A0FAAB00611DAC /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		3FEE1CE7189FE6840080680F /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		3FEE1CE8189FE6840080680F /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		3FEE1CE9189FE6840080680F /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -187,6 +197,8 @@
 		3FEE1CEF189FE7560080680F /* PhotosDatasourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosDatasourceCell.m; sourceTree = "<group>"; };
 		3FEE1CF1189FE7640080680F /* PhotosDatasourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosDatasourceViewController.h; sourceTree = "<group>"; };
 		3FEE1CF2189FE7640080680F /* PhotosDatasourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosDatasourceViewController.m; sourceTree = "<group>"; };
+		3FF7ACCB18A914AA000AEBCB /* CommentPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostCell.h; sourceTree = "<group>"; };
+		3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostCell.m; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -494,6 +506,17 @@
 			path = Libraries/GoogleAnalytics;
 			sourceTree = "<group>";
 		};
+		3F8D4B4718A0FA8E00611DAC /* TEST-CONTROLLERS */ = {
+			isa = PBXGroup;
+			children = (
+				3F8D4B4818A0FAAB00611DAC /* TestViewController.h */,
+				3F8D4B4918A0FAAB00611DAC /* TestViewController.m */,
+				3F64715F18AA2F40006EE6F7 /* CommentPostViewController.h */,
+				3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */,
+			);
+			name = "TEST-CONTROLLERS";
+			sourceTree = "<group>";
+		};
 		3FEE1CE6189FE6560080680F /* WYPopoverController */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,6 +535,17 @@
 				3FEE1CEF189FE7560080680F /* PhotosDatasourceCell.m */,
 			);
 			name = CellPhotosDatasource;
+			sourceTree = "<group>";
+		};
+		3FF7ACC718A9105D000AEBCB /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				3FF7ACCB18A914AA000AEBCB /* CommentPostCell.h */,
+				3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */,
+				3F64716218AA5C5C006EE6F7 /* CommentPostToolbarCell.h */,
+				3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */,
+			);
+			name = Comments;
 			sourceTree = "<group>";
 		};
 		E70115D1183B88300077EAB7 /* CellsPhotoDetail */ = {
@@ -842,9 +876,10 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E7A957861875A0FB007ADCCC /* Main.storyboard */,
+				3F8D4B4718A0FA8E00611DAC /* TEST-CONTROLLERS */,
 				E7F0033E189FE1AE00315EC2 /* KeenClient */,
 				E72F86F7188ED2F80057F83E /* SlideGesture */,
-				E7A957861875A0FB007ADCCC /* Main.storyboard */,
 				E70BC5511887D54E008C1462 /* Landing */,
 				E7719B321864BC32002E4A1B /* Mixpanel */,
 				E77E1DEA18585DF200EF1F8A /* Settings */,
@@ -854,6 +889,7 @@
 				E75A0397181EE63D00A26EF3 /* Utilities */,
 				E73F7A7A1844AF4D003BF2B1 /* UIImage */,
 				E7F10F9B183F85670061350A /* Models */,
+				3FF7ACC718A9105D000AEBCB /* Comments */,
 				E7237A92183E46DC00502113 /* ReLive */,
 				E72055BA1833F8B4003D7AD0 /* Photo */,
 				E7A27F8318296131009615A8 /* Memories */,
@@ -1072,6 +1108,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F64716118AA2F40006EE6F7 /* CommentPostViewController.m in Sources */,
 				3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */,
 				E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */,
 				E745D417183CFB01007BBC3A /* CommentsCell.m in Sources */,
@@ -1101,6 +1138,7 @@
 				3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */,
 				E7FA244A182CD26C00FFDBE6 /* PhotosCollectionViewController.m in Sources */,
 				E7719B601864BC32002E4A1B /* NSData+MPBase64.m in Sources */,
+				3FF7ACCD18A914AA000AEBCB /* CommentPostCell.m in Sources */,
 				E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */,
 				3F5385521857853F00F24F35 /* MBProgressHUD.m in Sources */,
 				E7719B5E1864BC32002E4A1B /* MPSurveyQuestion.m in Sources */,
@@ -1111,6 +1149,7 @@
 				3F286B0C187C1326005A09C2 /* PhotoCommentsViewController.m in Sources */,
 				E70D497A1843BEE4007A0445 /* DetailDescriptionViewController.m in Sources */,
 				E7719B5B1864BC32002E4A1B /* MPSurvey.m in Sources */,
+				3F8D4B4A18A0FAAB00611DAC /* TestViewController.m in Sources */,
 				E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */,
 				E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */,
 				E70BC5541887D582008C1462 /* LandingViewController.m in Sources */,
@@ -1140,6 +1179,7 @@
 				E7719B621864BC32002E4A1B /* UIImage+MPImageEffects.m in Sources */,
 				E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */,
 				3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */,
+				3F64716418AA5C5C006EE6F7 /* CommentPostToolbarCell.m in Sources */,
 				E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */,
 				E72F86FA188ED3140057F83E /* PDGestureTableView.m in Sources */,
 				E794954518575F770014CA36 /* Notification.m in Sources */,
