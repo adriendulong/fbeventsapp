@@ -111,7 +111,7 @@
                                 <segment title="Invitations"/>
                                 <segment title="Refusées"/>
                             </segments>
-                            <color key="tintColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="listTypeChange:" destination="dhX-me-Oqp" eventType="valueChanged" id="c5L-bm-Y2c"/>
                             </connections>
@@ -164,7 +164,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Du-G4-u0l">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.99215686270000003" green="0.62745098040000002" blue="0.078431372550000003" alpha="1" colorSpace="deviceRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="mMx-yq-feK" kind="relationship" relationship="rootViewController" id="Qcd-PV-r6Y"/>
@@ -181,6 +184,10 @@
                     <tabBarItem key="tabBarItem" title="Now !" image="fire_on" id="oCC-AN-Jqi"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vrM-YS-AoM">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="bwP-Lx-Jsp" kind="relationship" relationship="rootViewController" id="4AX-Jx-oyc"/>
@@ -610,7 +617,9 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="HVB-U4-FaS">
-                        <barButtonItem key="backBarButtonItem" title=" " id="qfQ-YQ-gTB"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="qfQ-YQ-gTB">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="camera_app" id="43n-mw-xSJ">
                             <color key="tintColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             <connections>
@@ -639,7 +648,10 @@
                     <tabBarItem key="tabBarItem" title="Invitations" image="invitations_on" id="wGe-Sg-YeR"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="tzw-hE-p05">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.99215686274509807" green="0.62745098039215685" blue="0.078431372549019607" alpha="1" colorSpace="deviceRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="dhX-me-Oqp" kind="relationship" relationship="rootViewController" id="jDd-Ko-eHt"/>
@@ -884,7 +896,7 @@
             </objects>
             <point key="canvasLocation" x="2122" y="-842"/>
         </scene>
-        <!--List Events-->
+        <!--List Events - Woovent-->
         <scene sceneID="hrE-aY-fXA">
             <objects>
                 <tableViewController id="jsg-sy-FTH" customClass="ListEvents" sceneMemberID="viewController">
@@ -972,8 +984,7 @@
                             <outlet property="delegate" destination="jsg-sy-FTH" id="NwX-m0-Y3M"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ZZU-K7-WOt">
-                        <nil key="title"/>
+                    <navigationItem key="navigationItem" title="Woovent" id="ZZU-K7-WOt">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="dEb-Oy-23T">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qSc-mS-GkR">
                                 <rect key="frame" x="16" y="7" width="40" height="30"/>
@@ -985,16 +996,6 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="Ld9-ag-r3H">
-                            <rect key="frame" x="96" y="6" width="128" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_spotlight" translatesAutoresizingMaskIntoConstraints="NO" id="ns9-gE-1q4">
-                                    <rect key="frame" x="48" y="0.0" width="33" height="33"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </imageView>
-                            </subviews>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="hm0-Xr-u47">
                             <view key="customView" alpha="0.0" tag="1" contentMode="scaleToFill" id="qBv-Fo-XD2">
                                 <rect key="frame" x="233" y="5" width="71" height="33"/>
@@ -1031,7 +1032,6 @@
                         <outlet property="fbReloadButton" destination="Rhg-AK-3dh" id="ciI-pq-2W6"/>
                         <outlet property="refreshImage" destination="3OG-Vo-eOq" id="ZbP-4g-999"/>
                         <outlet property="tableEvents" destination="AyT-6Z-M3g" id="OuU-7z-MBT"/>
-                        <outlet property="topImageView" destination="ns9-gE-1q4" id="D7w-aL-0fR"/>
                         <segue destination="2d6-q4-Sf3" kind="modal" identifier="Login" animates="NO" id="zHu-yQ-I5R"/>
                         <segue destination="hyO-uW-Ksj" kind="modal" identifier="CountEvents" animates="NO" id="Wlq-vB-X1o"/>
                     </connections>
@@ -1048,10 +1048,13 @@
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0Ra-Gt-C3h">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" shadowImage="tw_off_share" id="0Ra-Gt-C3h">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.99215686270000003" green="0.62745098040000002" blue="0.078431372550000003" alpha="1" colorSpace="deviceRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1304,7 +1307,6 @@
                         <segue destination="RWG-Eq-dU5" kind="relationship" relationship="viewControllers" id="Ljp-cR-2PO"/>
                         <segue destination="EOI-qy-b9C" kind="relationship" relationship="viewControllers" id="MU2-2V-rfD"/>
                         <segue destination="GNr-Hb-Hb6" kind="relationship" relationship="viewControllers" id="KLt-1b-SGJ"/>
-                        <segue destination="Q93-4X-9xh" kind="relationship" relationship="viewControllers" id="R9b-7Z-N36"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Asc-Xx-XK3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2387,16 +2389,6 @@
                                 <segue destination="fX5-Ux-m2G" kind="modal" id="WWM-2T-ArI"/>
                             </connections>
                         </barButtonItem>
-                        <view key="titleView" contentMode="scaleToFill" id="vb8-gW-tNR">
-                            <rect key="frame" x="96" y="6" width="128" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_spotlight" translatesAutoresizingMaskIntoConstraints="NO" id="aIw-aM-nbU">
-                                    <rect key="frame" x="48" y="0.0" width="33" height="33"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </imageView>
-                            </subviews>
-                        </view>
                         <barButtonItem key="rightBarButtonItem" image="magicwand" id="Zyx-XY-e5X">
                             <color key="tintColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             <connections>
@@ -2407,7 +2399,6 @@
                     <connections>
                         <outlet property="activityIndicator" destination="RaL-tS-0jq" id="1df-Zl-k4H"/>
                         <outlet property="tableView" destination="6GU-2y-XTm" id="Bya-nT-8KN"/>
-                        <outlet property="topImageView" destination="aIw-aM-nbU" id="I4f-DJ-mcl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgW-Gl-SaI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3091,6 +3082,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="CXk-K4-RRu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -3834,9 +3829,13 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0JF-Ef-uY5" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Bcu-XW-rtR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bcu-XW-rtR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -3860,7 +3859,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="3172" y="-382"/>
+            <point key="canvasLocation" x="3063" y="-430"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IYu-eE-f8P">
@@ -3870,6 +3869,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BJ9-GF-KwS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -3888,6 +3891,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EbX-gs-xU9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -3906,6 +3913,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uak-di-Xbc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -4056,16 +4067,16 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="cCH-RC-a7a"/>
-        <segue reference="PFg-Zs-ynb"/>
-        <segue reference="Imw-kp-jNA"/>
-        <segue reference="yqu-UZ-Hyz"/>
-        <segue reference="PEq-CK-woa"/>
         <segue reference="yK3-OH-GQx"/>
-        <segue reference="gQS-Od-x3H"/>
+        <segue reference="PFg-Zs-ynb"/>
         <segue reference="pId-s9-PUV"/>
-        <segue reference="EkG-m5-ZxD"/>
         <segue reference="ItH-HP-BNq"/>
+        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="Wlq-vB-X1o"/>
+        <segue reference="zHu-yQ-I5R"/>
+        <segue reference="cCH-RC-a7a"/>
+        <segue reference="H4y-UD-BIY"/>
+        <segue reference="17P-5b-VHW"/>
         <segue reference="eIZ-rP-uPU"/>
     </inferredMetricsTieBreakers>
 </document>

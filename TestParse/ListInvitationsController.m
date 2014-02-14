@@ -24,7 +24,9 @@
 
 @end
 
-@implementation ListInvitationsController
+@implementation ListInvitationsController{
+    UIImageView *navBarHairlineImageView;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,9 +44,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"RsvpChanged" object:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    navBarHairlineImageView.hidden = NO;
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [TestFlight passCheckpoint:@"INVITATIONS"];
+    navBarHairlineImageView.hidden = YES;
+    
     [[Mixpanel sharedInstance] track:@"Invitations View Appear"];
     
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -63,6 +71,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //[self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(253/255.0) green:(160/255.0) blue:(20/255.0) alpha:1]];
+    navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
     
     //Top icon
     self.topImageView.layer.cornerRadius = 16.0f;
@@ -90,7 +100,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopRefresh) name:HaveFinishedRefreshEvents object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fakeInvitationChanged:) name:fakeAnswerEvents object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDeclinedFromSever) name:ModifEventsInvitationsAnswers object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadAllInvitations) name:ModifEventsInvitationsAnswers object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -325,6 +335,11 @@
 }*/
 
 #pragma mark - Server interactions
+
+-(void)loadAllInvitations{
+    [self loadInvitationFromServer];
+    [self loadDeclinedFromSever];
+}
 
 -(void)loadInvitationFromServer{
     NSLog(@"Load Future Events");
@@ -700,9 +715,9 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    self.buttonAnswerTitle = buttonTitle;
     if (buttonIndex!=4) {
         if (([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound)|| ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)) {
-            self.buttonAnswerTitle = buttonTitle;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Auth_Title", nil)
                                                                 message:NSLocalizedString(@"UIAlertView_postMessageFacebok", nil)
                                                                delegate:self
@@ -832,6 +847,19 @@
             }
         }];
     }
+}
+
+- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
+    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
+        return (UIImageView *)view;
+    }
+    for (UIView *subview in view.subviews) {
+        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
 }
 
 

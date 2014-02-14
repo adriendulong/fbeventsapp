@@ -27,6 +27,7 @@
 @property (assign, nonatomic) BOOL isBackgroundTask;
 @property (assign, nonatomic) BOOL isNewUser;
 
+
 -(void)loadFutureEventsFromServer;
 - (IBAction)fbReload:(id)sender;
 -(void)retrieveEventsSince:(NSDate *)sinceDate to:(NSDate *)toDate isJoin:(BOOL)joined;

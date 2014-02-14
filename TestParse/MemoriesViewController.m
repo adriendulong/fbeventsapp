@@ -21,14 +21,25 @@
 
 @end
 
-@implementation MemoriesViewController
+@implementation MemoriesViewController{
+    UIImageView *navBarHairlineImageView;
+}
 
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UploadPhotoFinished object:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    navBarHairlineImageView.hidden = NO;
+}
+
+
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    navBarHairlineImageView.hidden = YES;
     [[Mixpanel sharedInstance] track:@"Memories View Loaded"];
     
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -40,6 +51,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"UITabBar_Title_ThirdPosition", nil);
+    //[self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(253/255.0) green:(160/255.0) blue:(20/255.0) alpha:1]];
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [UIFont fontWithName:@"Helvetica Neue" size:20.0f] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
     
     UIColor *greyColor = [UIColor colorWithRed:235.0/255.0 green:235.0/255.0 blue:235.0/255.0 alpha:1];
     [self.tableView setBackgroundColor:greyColor];
@@ -439,6 +459,19 @@
     else{
         self.tableView.backgroundView = nil;
     }
+}
+
+- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
+    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
+        return (UIImageView *)view;
+    }
+    for (UIView *subview in view.subviews) {
+        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
 }
 
 @end

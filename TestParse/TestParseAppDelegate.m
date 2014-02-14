@@ -32,7 +32,7 @@
     self.isProdApp = NO;
     
     #warning DEVCONFIG
-    [TestFlight takeOff:@"39edfba5-2220-4a06-a22f-ffcc1445b4b8"];
+    [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
     
     //Mixpanel
     [Mixpanel sharedInstanceWithToken:MixpanelToken];
@@ -67,11 +67,11 @@
     [[tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
     [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations.png"]];
     [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
+    //[[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
     [[tabBarController.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"UITabBar_Title_FirstPosition", nil)];
     [[tabBarController.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"UITabBar_Title_SecondPosition", nil)];
     [[tabBarController.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"UITabBar_Title_ThirdPosition", nil)];
-    [[tabBarController.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"UITabBar_Title_FourthPosition", nil)];
+    //[[tabBarController.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"UITabBar_Title_FourthPosition", nil)];
     
     //Init
     self.needToRefreshEvents = NO;
@@ -292,7 +292,23 @@
     client.globalPropertiesBlock = ^NSDictionary *(NSString *eventCollection) {
         if ([PFUser currentUser]){
             PFUser *user = [PFUser currentUser];
-            return @{@"id": user.objectId, @"name" : user[@"name"], @"location" : user[@"location"], @"facebookId" : user[@"facebookId"], @"email" : user[@"email"], @"device" : [[UIDevice currentDevice] model], @"device_type" : [MOUtility platformNiceString]};
+            
+            NSMutableDictionary *infos = [[NSMutableDictionary alloc] init];
+            [infos setObject:user.objectId forKey:@"id"];
+            if (user[@"name"]) {
+                [infos setObject:user[@"name"] forKey:@"name"];
+            }
+            if (user[@"location"]) {
+                [infos setObject:user[@"location"] forKey:@"location"];
+            }
+            if (user[@"facbeookId"]) {
+                [infos setObject:user[@"facbeookId"] forKey:@"facbeookId"];
+            }
+            if (user[@"email"]) {
+                [infos setObject:user[@"email"] forKey:@"email"];
+            }
+            
+            return [infos copy];
         }
         else{
             return nil;
