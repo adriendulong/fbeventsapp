@@ -252,8 +252,11 @@
             NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
             
             PFUser *currentUser = [PFUser currentUser];
-            currentUser.email = userData[@"email"];
-            [self.mixpanel.people set:@{@"$email": currentUser.email}];
+            
+            if (userData[@"email"]) {
+                currentUser.email = userData[@"email"];
+                [self.mixpanel.people set:@{@"$email": currentUser.email}];
+            }
             
             if(userData[@"id"]){
                 currentUser[@"facebookId"] = userData[@"id"];

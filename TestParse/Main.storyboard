@@ -4067,16 +4067,16 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="yK3-OH-GQx"/>
-        <segue reference="PFg-Zs-ynb"/>
+        <segue reference="UCP-iD-Mrv"/>
         <segue reference="pId-s9-PUV"/>
-        <segue reference="ItH-HP-BNq"/>
         <segue reference="EkG-m5-ZxD"/>
-        <segue reference="Wlq-vB-X1o"/>
+        <segue reference="ItH-HP-BNq"/>
         <segue reference="zHu-yQ-I5R"/>
-        <segue reference="cCH-RC-a7a"/>
-        <segue reference="H4y-UD-BIY"/>
+        <segue reference="Wlq-vB-X1o"/>
+        <segue reference="kaB-St-iPu"/>
+        <segue reference="yK3-OH-GQx"/>
         <segue reference="17P-5b-VHW"/>
+        <segue reference="H4y-UD-BIY"/>
         <segue reference="eIZ-rP-uPU"/>
     </inferredMetricsTieBreakers>
 </document>

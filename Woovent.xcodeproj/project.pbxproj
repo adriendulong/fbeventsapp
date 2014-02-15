@@ -37,7 +37,6 @@
 		E70D49841843CE1E007A0445 /* InvitedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70D49831843CE1E007A0445 /* InvitedCell.m */; };
 		E72055BD1833F9F1003D7AD0 /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72055BC1833F9F1003D7AD0 /* CameraViewController.m */; };
 		E72055C018351C42003D7AD0 /* SharePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72055BF18351C42003D7AD0 /* SharePhotoViewController.m */; };
-		E72055C418352E58003D7AD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E72055C318352E58003D7AD0 /* Images.xcassets */; };
 		E7237A95183E470700502113 /* ChooseLastEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7237A94183E470700502113 /* ChooseLastEventViewController.m */; };
 		E724E57E180F02E800741528 /* MOUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = E724E57D180F02E800741528 /* MOUtility.m */; };
 		E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B941845F5360087719E /* MemoriesImportCell.m */; };
@@ -132,6 +131,7 @@
 		E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D193761840F016008FD530 /* MemoriesViewController.m */; };
 		E7D98814187E9AA800BC8826 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7D98813187E9AA800BC8826 /* Crashlytics.framework */; };
 		E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */; };
+		E7E7E04E18AEF8D500740865 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7E7E04D18AEF8D500740865 /* Images.xcassets */; };
 		E7F10F95183F6C0A0061350A /* HeaderSectionsCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F94183F6C0A0061350A /* HeaderSectionsCollectionView.m */; };
 		E7F10F98183F6C950061350A /* PhotosImportedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F10F97183F6C950061350A /* PhotosImportedViewController.m */; };
 		E7F10F9A183F81E70061350A /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F10F99183F81E70061350A /* AssetsLibrary.framework */; };
@@ -209,7 +209,6 @@
 		E72055BC1833F9F1003D7AD0 /* CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraViewController.m; sourceTree = "<group>"; };
 		E72055BE18351C42003D7AD0 /* SharePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharePhotoViewController.h; sourceTree = "<group>"; };
 		E72055BF18351C42003D7AD0 /* SharePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharePhotoViewController.m; sourceTree = "<group>"; };
-		E72055C318352E58003D7AD0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E7237A93183E470700502113 /* ChooseLastEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseLastEventViewController.h; sourceTree = "<group>"; };
 		E7237A94183E470700502113 /* ChooseLastEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseLastEventViewController.m; sourceTree = "<group>"; };
 		E724E57C180F02E800741528 /* MOUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOUtility.h; sourceTree = "<group>"; };
@@ -356,6 +355,7 @@
 		E7D98813187E9AA800BC8826 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		E7DA1B56183A9563000527A0 /* PhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailViewController.h; sourceTree = "<group>"; };
 		E7DA1B57183A9563000527A0 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
+		E7E7E04D18AEF8D500740865 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E7EA949F18759AB7009EEF31 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7EA94A018759ABF009EEF31 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E7F0033F189FE1C200315EC2 /* KeenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeenClient.h; sourceTree = "<group>"; };
@@ -868,10 +868,10 @@
 				E78F75B5185B669300817159 /* CGUViewController.m */,
 				E74DA7AC18758E68007AAAF3 /* ThanksViewController.h */,
 				E74DA7AD18758E68007AAAF3 /* ThanksViewController.m */,
-				E72055C318352E58003D7AD0 /* Images.xcassets */,
 				E7896C1D18224D0800DEBBDC /* Resources */,
 				E7AE14861803F6870021F321 /* Supporting Files */,
 				E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */,
+				E7E7E04D18AEF8D500740865 /* Images.xcassets */,
 			);
 			path = TestParse;
 			sourceTree = "<group>";
@@ -1020,6 +1020,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7719B561864BC32002E4A1B /* MPCheckmark@2x.png in Resources */,
+				E7E7E04E18AEF8D500740865 /* Images.xcassets in Resources */,
 				3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */,
 				E7719B571864BC32002E4A1B /* MPDismissKeyboard.png in Resources */,
 				E7719B591864BC32002E4A1B /* MPLogo.png in Resources */,
@@ -1032,7 +1033,6 @@
 				E7719B521864BC32002E4A1B /* MPArrowLeft@2x.png in Resources */,
 				E7A957871875A0FB007ADCCC /* Main.storyboard in Resources */,
 				3F538548185757FF00F24F35 /* shutter-photo.caf in Resources */,
-				E72055C418352E58003D7AD0 /* Images.xcassets in Resources */,
 				3F490CCF1844F86F00A5811E /* Localizable.strings in Resources */,
 				E7719B581864BC32002E4A1B /* MPDismissKeyboard@2x.png in Resources */,
 				3F1F63F71844D1C400D1B01E /* README.md in Resources */,
@@ -1218,7 +1218,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "1A223E82-7F7C-4A76-8F71-233A47EA5704";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1253,7 +1253,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6223A424-9BA6-4899-B519-7DEDFCCFBC06";
+				PROVISIONING_PROFILE = "1A223E82-7F7C-4A76-8F71-233A47EA5704";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1295,7 +1295,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1A223E82-7F7C-4A76-8F71-233A47EA5704";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1337,7 +1337,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1A223E82-7F7C-4A76-8F71-233A47EA5704";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
