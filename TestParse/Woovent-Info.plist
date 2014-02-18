@@ -37,6 +37,10 @@
 	<string>1.0.4</string>
 	<key>FacebookAppID</key>
 	<string>493616390746321</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>HelveticaNeueLTStd-Lt.otf</string>
+	</array>
 	<key>FacebookDisplayName</key>
 	<string>Woovent</string>
 	<key>LSRequiresIPhoneOS</key>

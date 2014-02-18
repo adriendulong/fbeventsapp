@@ -57,10 +57,14 @@
 
 
 ///// TutorialViewController /////
-"TutorialViewController_tuto_step_1" = "Manage your Facebook events quickly and simply!";
+"TutorialViewController_tuto_title_1" = "Gather";
+"TutorialViewController_tuto_title_2" = "Sort";
+"TutorialViewController_tuto_title_3" = "Enjoy";
+"TutorialViewController_tuto_title_4" = "Remember";
+"TutorialViewController_tuto_step_1" = "Gather all your Facebook events in one place.";
 "TutorialViewController_tuto_step_2" = "Don’t miss any invitation by filtering them in one click!";
-"TutorialViewController_tuto_step_3" = "Enjoy your events like never before. Everything is reachable: Infos / Photos / Message / Guests etc.";
-"TutorialViewController_tuto_step_4" = "Find all the photos taken by you and your friends during your events with one click";
+"TutorialViewController_tuto_step_3" = "Find all the infos you need for each event.";
+"TutorialViewController_tuto_step_4" = "Never forget any events with the automatic memories!";
 
 
 ///// ChooseLastEventViewController /////
@@ -205,8 +209,8 @@
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ at %@";
 "ListInvitationsController_SendInvit" = "%@ has invited you to this event";
-"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nNo more invitations left!";
-"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nNo invitations denied!";
+"ListInvitationsController_NoPendingInvitation" = "No more invitations left!";
+"ListInvitationsController_NoRefuseInvitation" = "No invitations denied!";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "Pending";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Denied";
 "ListInvitationsController_ProblemChangingInvitation" = "Sorry an error occured when trying to answer this Invitation. Please try again.";
@@ -244,7 +248,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos have been found";
 "MemoriesViewController_AutoImportButton" = "Create a memorie";
-"MemoriesViewController_Empty" = "No memories :(\nCreate one touching the button above !";
+"MemoriesViewController_Empty" = "No Memories...";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Settings";

@@ -48,6 +48,13 @@
 {
     [super viewDidLoad];
     
+    //Title
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [MOUtility getFontWithSize:20.0] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    
     if (!IS_IPHONE_5) {
         self.verticalConstraintPost.constant = 8.0;
     }
@@ -82,7 +89,7 @@
     self.hintIsWritten = YES;
     
     //Top bar
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"SharePhotoViewController_Title", nil);
     
     self.previewImage.image = self.takenPhoto;

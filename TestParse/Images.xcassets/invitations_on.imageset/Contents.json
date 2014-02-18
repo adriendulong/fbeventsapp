@@ -2,13 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "invitations_on.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "invitations_on@2x.png"
+      "filename" : "invitations_on.png"
     }
   ],
   "info" : {

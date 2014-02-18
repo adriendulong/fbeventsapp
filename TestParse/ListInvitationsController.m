@@ -19,6 +19,9 @@
 #import "PDGestureTableView.h"
 #import "KeenClient.h"
 #import "MBProgressHUD.h"
+#import "AppsfireAdSDK.h"
+#import "AFAdSDKSashimiMinimalView.h"
+#import "ExampleMinimalSashimiTableViewCell.h"
 
 @interface ListInvitationsController ()
 
@@ -53,6 +56,10 @@
     [super viewWillAppear:animated];
     navBarHairlineImageView.hidden = YES;
     
+    //self.minimalAdsCount = 0;
+    self.minimalAdsCount = [AppsfireAdSDK numberOfSashimiAdsAvailableForFormat:AFAdSDKSashimiFormatMinimal];
+    NSLog(@"Number of sashimi available (miam miam) : %i", self.minimalAdsCount);
+    
     [[Mixpanel sharedInstance] track:@"Invitations View Appear"];
     
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -73,6 +80,8 @@
     [super viewDidLoad];
     //[self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(253/255.0) green:(160/255.0) blue:(20/255.0) alpha:1]];
     navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
+    
+    self.tableView.rowHeight = 120.0;
     
     //Top icon
     self.topImageView.layer.cornerRadius = 16.0f;
@@ -120,204 +129,265 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.objectsForTable count];
+    NSInteger numberOfInvitations = [self.objectsForTable count];
+    if (self.minimalAdsCount > 0) {
+        if (numberOfInvitations > 1) {
+            NSLog(@"DE LA PUB !!");
+            self.willDisplayAds = YES;
+            return [self.objectsForTable count];
+        }
+        else{
+            self.willDisplayAds = NO;
+            return [self.objectsForTable count];
+        }
+    }
+    else{
+        self.willDisplayAds = NO;
+        return [self.objectsForTable count];
+    }
+    
 }
+
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    InvitationCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    if (cell == nil) {
-        cell = [[InvitationCell alloc]
-                initWithStyle:UITableViewCellStyleDefault
-                reuseIdentifier:CellIdentifier];
-    }
-
-    //Get the event object.
-    PFObject *event = [self.objectsForTable objectAtIndex:indexPath.row][@"event"];
-    PFObject *invitation = [self.objectsForTable objectAtIndex:indexPath.row];
-    
-    //Init the segment controll if declined
-    if ([invitation[@"rsvp_status"] isEqualToString:@"declined"]) {
-        [cell.rsvpSegmentedControl setSelectedSegmentIndex:2];
+    /*if (self.willDisplayAds) {
+        <#statements#>
     }
     else{
-        [cell.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        
+    }*/
+    
+    id sourceObject;
+    NSString *celluid;
+    
+    
+    // get source object
+    sourceObject = nil;
+    if (indexPath.row < [self.objectsForTable count])
+        sourceObject = self.objectsForTable[indexPath.row];
+    
+    // determine cell id
+    celluid = ([sourceObject isKindOfClass:[NSString class]] && [sourceObject isEqualToString:@"sashimi"]) ? @"sashimi-minimal" : @"Cell";
+    
+    if ([sourceObject isKindOfClass:[NSString class]] ) {
+        UITableViewCell *cell;
+        cell = [tableView dequeueReusableCellWithIdentifier:celluid];
+    
+        if (cell == nil) {
+            cell = [[ExampleMinimalSashimiTableViewCell alloc ] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:celluid];
+        }
+        
+        return cell;
     }
-    
-    UIColor *greenColor = [UIColor colorWithRed:130.0/255.0 green:197.0/255.0 blue:56.0/255.0 alpha:1];
-    UIColor *blueColor = [UIColor colorWithRed:41.0/255.0 green:128.0/255.0 blue:185.0/255.0 alpha:1];
-    UIColor *redColor = [UIColor colorWithRed:192.0/255.0 green:57.0/255.0 blue:43.0/255.0 alpha:1];
-    
-    
-    
-    cell.firstLeftAction = [PDGestureTableViewCellAction
-                            actionWithIcon:[UIImage imageNamed:@"check_little"]
-                            color:greenColor
-                            fraction:0.20
-                            didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
-                                // Action for first left action triggering.
-                                //Keen
-                                NSDictionary *event;
-                                
-                                PFObject *invitation;
-                                if (self.listSegmentControll.selectedSegmentIndex == 0) {
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
+    else{
+        InvitationCell *cell;
+        static NSString *CellIdentifier = @"Cell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        //cell.profilImageView.layer.cornerRadius = 24.0f;
+        //cell.profilImageView.layer.masksToBounds = YES;
+        
+        /*
+        if (cell == nil) {
+            cell = [[InvitationCell alloc]
+                    initWithStyle:UITableViewCellStyleDefault
+                    reuseIdentifier:CellIdentifier];
+            
+            
+        }*/
+        
+        //Get the event object.
+        PFObject *event = [self.objectsForTable objectAtIndex:indexPath.row][@"event"];
+        PFObject *invitation = [self.objectsForTable objectAtIndex:indexPath.row];
+        
+        //Init the segment controll if declined
+        if ([invitation[@"rsvp_status"] isEqualToString:@"declined"]) {
+            [cell.rsvpSegmentedControl setSelectedSegmentIndex:2];
+        }
+        else{
+            [cell.rsvpSegmentedControl setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        }
+        
+        
+        
+        UIColor *greenColor = [UIColor colorWithRed:130.0/255.0 green:197.0/255.0 blue:56.0/255.0 alpha:1];
+        UIColor *blueColor = [UIColor colorWithRed:41.0/255.0 green:128.0/255.0 blue:185.0/255.0 alpha:1];
+        UIColor *redColor = [UIColor colorWithRed:192.0/255.0 green:57.0/255.0 blue:43.0/255.0 alpha:1];
+        
+        
+        
+        cell.firstLeftAction = [PDGestureTableViewCellAction
+                                actionWithIcon:[UIImage imageNamed:@"check_little"]
+                                color:greenColor
+                                fraction:0.20
+                                didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
+                                    // Action for first left action triggering.
+                                    //Keen
+                                    NSDictionary *event;
                                     
-                                    invitation = self.invitations[indexPath.row];
-                                    [self.removingInvits addObject:self.invitations[indexPath.row]];
-                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    PFObject *invitation;
+                                    if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                        event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
+                                        
+                                        invitation = self.objectsForTable[indexPath.row];
+                                        [self.removingInvits addObject:self.objectsForTable[indexPath.row]];
+                                        [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                        
+                                    }
+                                    else{
+                                        event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
+                                        
+                                        invitation = self.objectsForTable[indexPath.row];
+                                        NSLog(@"IndexPath %i",indexPath.row);
+                                        [self.removingDeclined addObject:self.objectsForTable[indexPath.row]];
+                                        [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                        
+                                    }
                                     
-                                }
-                                else{
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventAttending, @"answer", @"slide", @"type", nil];
                                     
-                                    invitation = self.declined[indexPath.row];
-                                    NSLog(@"IndexPath %i",indexPath.row);
-                                    [self.removingDeclined addObject:self.declined[indexPath.row]];
-                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                    //KEEN
+                                    [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
                                     
-                                }
-                                
-                                
-                                //KEEN
-                                [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
-                                
-
-                                
-                                [gestureTableView removeCell:cell completion:^{
-                                    NSLog(@"Cell removed!");
-                                    [self.tableView reloadData];
                                     
-                                    //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
-                                    [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending withInvitation:invitation];
                                     
-                                    [self isEmptyTableView];
+                                    [gestureTableView removeCell:cell completion:^{
+                                        NSLog(@"Cell removed!");
+                                        [self addAdIfNecessary];
+                                        
+                                        //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
+                                        [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventAttending withInvitation:invitation];
+                                        
+                                        [self isEmptyTableView];
+                                    }];
+                                    
                                 }];
-                                
-                            }];
-    
-    cell.secondLeftAction = [PDGestureTableViewCellAction
-                            actionWithIcon:[UIImage imageNamed:@"question"]
-                            color:blueColor
-                            fraction:0.65
-                            didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
-                                // Action for first left action triggering.
-                                //Keen
-                                NSDictionary *event;
-                                
-                                PFObject *invitation;
-                                if (self.listSegmentControll.selectedSegmentIndex == 0) {
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
-                                    
-                                    invitation = self.invitations[indexPath.row];
-                                    [self.removingInvits addObject:self.invitations[indexPath.row]];
-                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
-                                    
-                                }
-                                else{
-                                    event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
-                                    invitation = self.declined[indexPath.row];
-                                    NSLog(@"IndexPath %i",indexPath.row);
-                                    [self.removingDeclined addObject:self.declined[indexPath.row]];
-                                    [self.objectsForTable removeObjectAtIndex:indexPath.row];
-                                    
-                                }
-                                
-                                [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
-
-                                
-                                [gestureTableView removeCell:cell completion:^{
-                                    NSLog(@"Cell removed!");
-                                    [self.tableView reloadData];
-                                    
-                                    //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
-                                    [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer withInvitation:invitation];
-                                    
-                                    [self isEmptyTableView];
-                                }];
-                                
-                            }];
-    
-    if (self.listSegmentControll.selectedSegmentIndex == 0) {
-        cell.firstRightAction = [PDGestureTableViewCellAction
-                                 actionWithIcon:[UIImage imageNamed:@"cross"]
-                                 color:redColor
-                                 fraction:0.25
+        
+        cell.secondLeftAction = [PDGestureTableViewCellAction
+                                 actionWithIcon:[UIImage imageNamed:@"question"]
+                                 color:blueColor
+                                 fraction:0.65
                                  didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
                                      // Action for first left action triggering.
-                                     
-                                     //KEEN
                                      //Keen
                                      NSDictionary *event;
-                                     event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", @"slide", @"type", nil];
                                      
                                      PFObject *invitation;
-                                     invitation = self.invitations[indexPath.row];
-                                     [self.removingInvits addObject:self.invitations[indexPath.row]];
-                                     [self.objectsForTable removeObjectAtIndex:indexPath.row];
-                                     
-                                     
+                                     if (self.listSegmentControll.selectedSegmentIndex == 0) {
+                                         event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
+                                         
+                                         invitation = self.objectsForTable[indexPath.row];
+                                         [self.removingInvits addObject:self.objectsForTable[indexPath.row]];
+                                         [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                         
+                                     }
+                                     else{
+                                         event = [NSDictionary dictionaryWithObjectsAndKeys:@"decline", @"view", FacebookEventMaybeAnswer, @"answer", @"slide", @"type", nil];
+                                         invitation = self.objectsForTable[indexPath.row];
+                                         NSLog(@"IndexPath %i",indexPath.row);
+                                         [self.removingDeclined addObject:self.objectsForTable[indexPath.row]];
+                                         [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                         
+                                     }
                                      
                                      [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
                                      
+                                     
                                      [gestureTableView removeCell:cell completion:^{
                                          NSLog(@"Cell removed!");
-                                         [self.tableView reloadData];
+                                         [self addAdIfNecessary];
                                          
                                          //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
-                                         [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined withInvitation:invitation];
+                                         [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventMaybeAnswer withInvitation:invitation];
                                          
                                          [self isEmptyTableView];
                                      }];
                                      
-                                     
                                  }];
+        
+        if (self.listSegmentControll.selectedSegmentIndex == 0) {
+            cell.firstRightAction = [PDGestureTableViewCellAction
+                                     actionWithIcon:[UIImage imageNamed:@"cross"]
+                                     color:redColor
+                                     fraction:0.25
+                                     didTriggerBlock:^(PDGestureTableView *gestureTableView, PDGestureTableViewCell *cell) {
+                                         // Action for first left action triggering.
+                                         
+                                         //KEEN
+                                         //Keen
+                                         NSDictionary *event;
+                                         event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", @"slide", @"type", nil];
+                                         
+                                         PFObject *invitation;
+                                         invitation = self.objectsForTable[indexPath.row];
+                                         [self.removingInvits addObject:self.objectsForTable[indexPath.row]];
+                                         [self.objectsForTable removeObjectAtIndex:indexPath.row];
+                                         
+                                         
+                                         
+                                         [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
+                                         
+                                         [gestureTableView removeCell:cell completion:^{
+                                             NSLog(@"Cell removed!");
+                                             [self addAdIfNecessary];
+                                             
+                                             //[[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
+                                             [self RsvpToFbEvent:invitation[@"event"][@"eventId"] withRsvp:FacebookEventDeclined withInvitation:invitation];
+                                             
+                                             [self isEmptyTableView];
+                                         }];
+                                         
+                                         
+                                     }];
+        }
+        else{
+            cell.firstRightAction = nil;
+        }
+        
+        
+        
+        
+        
+        //init label
+        [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Going", nil) forSegmentAtIndex:0];
+        [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Maybe", nil) forSegmentAtIndex:1];
+        [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Decline", nil) forSegmentAtIndex:2];
+        
+        
+        
+        //Date
+        NSDate *start_date = event[@"start_time"];
+        //Formatter for the hour
+        NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
+        [formatterHourMinute setDateFormat:@"d MMM - HH:mm"];
+        [formatterHourMinute setLocale:[NSLocale currentLocale]];
+        
+        //Fill the cell
+        cell.nameLabel.text = event[@"name"];
+        cell.whenWhereLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
+        cell.ownerInvitationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
+        
+        // Add a nice corner radius to the image
+        
+        
+        //Profile picture
+        [cell.profilImageView setImageWithURL:[MOUtility UrlOfFacebooProfileImage:event[@"owner"][@"id"] withResolution:FacebookNormalProfileImage]
+                             placeholderImage:[UIImage imageNamed:@"profil_default"]];
+        
+        //Assign the event Id
+        cell.invitation = [self.objectsForTable objectAtIndex:indexPath.row];
+        
+        
+        
+        [cell.activityIndicator setHidden:YES];
+        
+        return cell;
     }
-    else{
-        cell.firstRightAction = nil;
-    }
-    
-
     
     
     
-    //init label
-    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Going", nil) forSegmentAtIndex:0];
-    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Maybe", nil) forSegmentAtIndex:1];
-    [cell.rsvpSegmentedControl setTitle:NSLocalizedString(@"UISegmentRSVP_Decline", nil) forSegmentAtIndex:2];
-    
-    
-    
-    //Date
-    NSDate *start_date = event[@"start_time"];
-    //Formatter for the hour
-    NSDateFormatter *formatterHourMinute = [NSDateFormatter new];
-    [formatterHourMinute setDateFormat:@"d MMM - HH:mm"];
-    [formatterHourMinute setLocale:[NSLocale currentLocale]];
-    
-    //Fill the cell
-    cell.nameLabel.text = event[@"name"];
-    cell.whenWhereLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
-    cell.ownerInvitationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
-    
-    // Add a nice corner radius to the image
-    cell.profilImageView.layer.cornerRadius = 24.0f;
-    cell.profilImageView.layer.masksToBounds = YES;
-    
-    //Profile picture
-    [cell.profilImageView setImageWithURL:[MOUtility UrlOfFacebooProfileImage:event[@"owner"][@"id"] withResolution:FacebookNormalProfileImage]
-                        placeholderImage:[UIImage imageNamed:@"profil_default"]];
-    
-    //Assign the event Id
-    cell.invitation = [self.objectsForTable objectAtIndex:indexPath.row];
-    
-   
-    
-    [cell.activityIndicator setHidden:YES];
-    
-    return cell;
+    //return cell;
 }
 
 
@@ -349,7 +419,8 @@
     if(self.listSegmentControll.selectedSegmentIndex==0){
         self.objectsForTable = self.invitations;
         [self isEmptyTableView];
-        [self.tableView reloadData];
+        [self addAdIfNecessary];
+        //[self.tableView reloadData];
     }
     
     /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
@@ -383,7 +454,8 @@
             if(self.listSegmentControll.selectedSegmentIndex==0){
                 self.objectsForTable = self.invitations;
                 [self isEmptyTableView];
-                [self.tableView reloadData];
+                [self addAdIfNecessary];
+                //[self.tableView reloadData];
             }
         } else {
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -402,7 +474,8 @@
     if(self.listSegmentControll.selectedSegmentIndex==1){
         self.objectsForTable = self.declined;
         [self isEmptyTableView];
-        [self.tableView reloadData];
+        [self addAdIfNecessary];
+        //[self.tableView reloadData];
     }
     
     /*PFQuery *queryEvents = [PFQuery queryWithClassName:@"Event"];
@@ -434,7 +507,8 @@
             if(self.listSegmentControll.selectedSegmentIndex==1){
                 self.objectsForTable = self.declined;
                 [self isEmptyTableView];
-                [self.tableView reloadData];
+                [self addAdIfNecessary];
+                //[self.tableView reloadData];
             }
         } else {
             // Log details of the failure
@@ -579,7 +653,8 @@
         
         self.objectsForTable = self.invitations;
         [self isEmptyTableView];
-        [self.tableView reloadData];
+        [self addAdIfNecessary];
+        //[self.tableView reloadData];
     }
     else{
         [TestFlight passCheckpoint:@"SEE_DECLINED"];
@@ -587,7 +662,8 @@
         
         self.objectsForTable = self.declined;
         [self isEmptyTableView];
-        [self.tableView reloadData];
+        [self addAdIfNecessary];
+        //[self.tableView reloadData];
     }
 }
 
@@ -639,13 +715,13 @@
     [self.fbReloadButton setEnabled:NO];
 }
 
-
+//Build empty table view background
 -(void)isEmptyTableView{
     
     self.viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_invit_empty"];
+    UIImage *image = [UIImage imageNamed:@"invitation_empty_icon"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeCenter;
@@ -654,7 +730,8 @@
     //Label
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(18, 370, 285, 60)];
     [label setTextColor:[UIColor darkGrayColor]];
-    [label setNumberOfLines:2];
+    [label setNumberOfLines:1];
+    [label setFont:[MOUtility getFontWithSize:18.0]];
     [label setTextAlignment:NSTextAlignmentCenter];
     label.text = (self.listSegmentControll.selectedSegmentIndex == 0) ? NSLocalizedString(@"ListInvitationsController_NoPendingInvitation", nil) : NSLocalizedString(@"ListInvitationsController_NoRefuseInvitation", nil);
     [self.viewBack addSubview:label];
@@ -860,6 +937,113 @@
         }
     }
     return nil;
+}
+
+-(void)addAdIfNecessary{
+    NSInteger numberOfInvitations = [self.objectsForTable count];
+    NSInteger adToAdd = 0;
+    NSInteger adAlreadyIn = 0;
+    
+    for(id object in self.objectsForTable){
+        if ([object isKindOfClass:[NSString class]] ) {
+            adAlreadyIn++;
+        }
+    }
+    
+    if (self.minimalAdsCount > 0) {
+        if (((numberOfInvitations-adAlreadyIn)>5)&&(self.minimalAdsCount>1)) {
+            NSLog(@"DE LA PUB !!");
+            self.willDisplayAds = YES;
+            adToAdd = 2;
+        }
+        else if((numberOfInvitations-adAlreadyIn) > 2){
+            NSLog(@"DE LA PUB !!");
+            self.willDisplayAds = YES;
+            adToAdd = 1;
+        }
+        else{
+            self.willDisplayAds = NO;
+            
+        }
+    }
+    else{
+        self.willDisplayAds = NO;
+        
+        
+        
+    }
+    
+    if (self.willDisplayAds) {
+        if (adToAdd == 1) {
+            //We add
+            if (adAlreadyIn == 0) {
+                [self.objectsForTable insertObject:@"sashimi" atIndex:2];
+            }
+            //We remove
+            else if(adAlreadyIn == 2){
+                NSInteger firstPosition = -1;
+                NSInteger secondPosition = -1;
+                
+                
+                int i=0;
+                for(id object in self.objectsForTable){
+                    if ([object isKindOfClass:[NSString class]] ) {
+                        if (firstPosition<0) {
+                            firstPosition = i;
+                        }
+                        else{
+                            secondPosition = i;
+                        }
+                    }
+                    i++;
+                }
+                
+                if (secondPosition>0) {
+                    [self.objectsForTable removeObjectAtIndex:secondPosition];
+                }
+            }
+            
+        }
+        else if (adToAdd == 2){
+            if (adAlreadyIn == 0) {
+                [self.objectsForTable insertObject:@"sashimi" atIndex:2];
+                [self.objectsForTable insertObject:@"sashimi" atIndex:5];
+            }
+            else if(adAlreadyIn == 1){
+                [self.objectsForTable insertObject:@"sashimi" atIndex:5];
+            }
+            
+        }
+    }
+    else{
+        //Remove add
+        if (adAlreadyIn>0) {
+            NSInteger firstPosition = -1;
+            NSInteger secondPosition = -1;
+            
+            
+            int i=0;
+            for(id object in self.objectsForTable){
+                if ([object isKindOfClass:[NSString class]] ) {
+                    if (firstPosition<0) {
+                        firstPosition = i;
+                    }
+                    else{
+                        secondPosition = i;
+                    }
+                }
+                i++;
+            }
+            
+            [self.objectsForTable removeObjectAtIndex:firstPosition];
+            if (secondPosition>0) {
+                [self.objectsForTable removeObjectAtIndex:(secondPosition-1)];
+            }
+            
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 

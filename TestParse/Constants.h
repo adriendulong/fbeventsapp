@@ -69,4 +69,5 @@ extern NSString *const KeenWriteKeyProd;
 extern NSString *const KeenReadKeyProd;
 extern NSString *const ParseApplicationIDProd;
 extern NSString *const ParseClientKeyProd;
+extern NSString *const FacebookAppId;
 

@@ -49,7 +49,7 @@
     self.thereIsMore = NO;
     
     self.title = NSLocalizedString(@"MemoriesImportViewController_Title", nil);
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     self.arrayEvents = [[NSMutableArray alloc] init];
     [self.activityIndicator startAnimating];
@@ -324,7 +324,6 @@
             //NSLog(@"%@", result);
             
             for(id event in result[@"data"]){
-                NSLog(@"EVENT FROM FBBBB");
                 [self.arrayEvents addObject:event];
                 self.nbTotalEvents++;
             }

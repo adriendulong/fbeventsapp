@@ -26,6 +26,8 @@
 @property (strong, nonatomic) NSString *buttonAnswerTitle;
 @property (strong, nonatomic) NSMutableArray *removingDeclined;
 @property (strong, nonatomic) NSMutableArray *removingInvits;
+@property (nonatomic, assign) NSUInteger minimalAdsCount;
+@property (nonatomic, assign) BOOL willDisplayAds;
 
 @property (strong, nonatomic) UIView *viewBack;
 

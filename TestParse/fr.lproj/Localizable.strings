@@ -57,10 +57,14 @@
 
 
 ///// TutorialViewController /////
-"TutorialViewController_tuto_step_1" = "Gérez vos évènements Facebook rapidement et simplement !";
-"TutorialViewController_tuto_step_2" = "Triez vos invitations en 1 clic pour ne plus en rater aucune !";
-"TutorialViewController_tuto_step_3" = "Profitez de vos évènements comme jamais. Tout est à portée de main : Infos / Photos / Message / invités etc.";
-"TutorialViewController_tuto_step_4" = "Retrouvez en un clic toutes les photos prises par vous et vos amis lors de vos évènements";
+"TutorialViewController_tuto_title_1" = "Rassemblez";
+"TutorialViewController_tuto_title_2" = "Triez";
+"TutorialViewController_tuto_title_3" = "Vivez";
+"TutorialViewController_tuto_title_4" = "Souvenirs";
+"TutorialViewController_tuto_step_1" = "Regroupez tous vos évènements en un seul et même endroit";
+"TutorialViewController_tuto_step_2" = "Triez vos invitations en un glissement de doigt !";
+"TutorialViewController_tuto_step_3" = "Retrouvez toutes les infos essentielles de chaque évènement.";
+"TutorialViewController_tuto_step_4" = "N'oubliez plus aucun évènement avec les souvenirs automatiques.";
 
 
 ///// ChooseLastEventViewController /////
@@ -205,8 +209,8 @@
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ à %@";
 "ListInvitationsController_SendInvit" = "%@ vous a invité à cet évènement";
-"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nPlus aucune invitation en attente !";
-"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
+"ListInvitationsController_NoPendingInvitation" = "Plus aucune invitation en attente !";
+"ListInvitationsController_NoRefuseInvitation" = "Aucune invitation refusée !";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
 "ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'invitation. Veuillez reessayer.";
@@ -244,7 +248,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
-"MemoriesViewController_Empty" = "Aucun souvenir :(\nCrée en un en cliquant en haut !";
+"MemoriesViewController_Empty" = "Aucun souvenirs...";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";

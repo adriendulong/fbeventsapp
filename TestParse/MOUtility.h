@@ -99,4 +99,13 @@
 +(NSString *)getParseAppId;
 +(NSString *)getParseClientKey;
 
+#pragma mark - fonts
++(UIFont *)getFontWithSize:(CGFloat)size;
+
+#pragma mark - Cover
++(UIImage *)getCover:(NSInteger)which;
+
+#pragma mark - Local Notifications
++(void)programNotifForEvent:(PFObject *)event;
+
 @end

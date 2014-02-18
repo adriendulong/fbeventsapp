@@ -76,7 +76,7 @@
     NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                     [UIColor whiteColor],NSForegroundColorAttributeName,
                                     [UIColor whiteColor],NSBackgroundColorAttributeName,
-                                    [UIFont fontWithName:@"Helvetica Neue" size:20.0f] , NSFontAttributeName, nil];
+                                    [MOUtility getFontWithSize:20.0] , NSFontAttributeName, nil];
     self.navigationController.navigationBar.titleTextAttributes = textAttributes;
     navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
@@ -93,7 +93,7 @@
     self.animating = NO;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc]
                                         init];
-    refreshControl.tintColor = [UIColor orangeColor];
+    refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(fbReload:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
     
@@ -210,7 +210,7 @@
     cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
     [cell.coverImageView setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                   placeholderImage:[UIImage imageNamed:@"cover_default"]];
+                        placeholderImage:[UIImage imageNamed:@"default_cover"]];
     
     return cell;
 }
@@ -614,7 +614,7 @@
     UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_event_empty"];
+    UIImage *image = [UIImage imageNamed:@"events_empty"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
      imageView.contentMode = UIViewContentModeCenter;
@@ -623,6 +623,7 @@
     //Label
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, 280, 40)];
     [label setTextColor:[UIColor darkGrayColor]];
+    [label setFont:[MOUtility getFontWithSize:18.0]];
     [label setTextAlignment:NSTextAlignmentCenter];
     label.text = NSLocalizedString(@"ListEvents_NoEvent", nil);
     [viewBack addSubview:label];

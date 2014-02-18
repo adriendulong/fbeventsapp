@@ -66,7 +66,7 @@
     CGRect viewFrame = self.view.bounds;
     
     if (IS_BIG_SCREEN) {
-        viewFrame.size.height -= 100;
+        viewFrame.size.height -= 80;
     }
     else{
         viewFrame.size.height -= 65;
@@ -89,7 +89,7 @@
     
     self.pageControl = [self getPageControl];
     [self setPageIndicatorTintColor:[UIColor grayColor]];
-    [self setCurrentPageIndicatorTintColor:[UIColor orangeColor]];
+    [self setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,8 +112,8 @@
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    
     NSUInteger index = [(TutorialViewController *)viewController index];
+    
     
     if (index == 0) {
         return nil;
@@ -122,21 +122,37 @@
     // Decrease the index by 1 to return
     index--;
     
+    
     return [self viewControllerAtIndex:index];
     
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    
     NSUInteger index = [(TutorialViewController *)viewController index];
     
+    
     index++;
+
     
     if (index == 4) {
         return nil;
     }
     
     return [self viewControllerAtIndex:index];
+    
+}
+
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers{
+    NSUInteger index = ((TutorialViewController *)[pendingViewControllers objectAtIndex:0]).index;
+    self.nextController = index;
+}
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed{
+    
+    if (completed) {
+        NSString *nameImage = [NSString stringWithFormat:@"background_tuto_%i", (self.nextController+1)];
+        self.backgroundImage.image = [UIImage imageNamed:nameImage];
+    }
     
 }
 

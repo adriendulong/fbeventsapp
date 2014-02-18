@@ -75,3 +75,4 @@ NSString *const KeenWriteKeyProd              = @"2a5713b6923efdf0227f12e0869f6d
 NSString *const KeenReadKeyProd               = @"0b8aa0b86ab69e1bad0042f9bb29f4ab895152d31e93902015831486ab44f9cf84cb9979a6382a2e84fa5fef9e9ee331145c5c07a8444f89af9982838a862a94f010e6c069eedf75b59783ad79328f32c5afe2101c5658fd70e16833c608114fe0814c26094c43e28b27e4fbe545f22b";
 NSString *const ParseApplicationIDProd        = @"8UT7kL1fmD9Orti3P7obNJyTgSpJpEGvz4HkCrr8";
 NSString *const ParseClientKeyProd            = @"dT15cWACdZqlNCu0UIb1goDN6KXmTjs9yolq9CVB";
+NSString *const FacebookAppId                 = @"493616390746321";

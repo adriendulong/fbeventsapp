@@ -10,6 +10,7 @@
 #import "EventUtilities.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <sys/sysctl.h>
+#include <stdlib.h>
 
 @implementation MOUtility
 
@@ -1266,6 +1267,42 @@
     else{
         return ParseClientKeyDev;
     }
+}
+
+
+#pragma mark - Font
++(UIFont *)getFontWithSize:(CGFloat)size{
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeueLTStd-Lt" size:size];
+    return font;
+}
+
+#pragma mark - Cover
++(UIImage *)getCover:(NSInteger)which{
+    int r = arc4random() % 4;
+    
+    NSString *nameImage;
+    if (which) {
+        int number = (which%4)+1;
+        nameImage = [NSString stringWithFormat:@"default_cover%i",number];
+    }
+    else{
+         nameImage = [NSString stringWithFormat:@"default_cover%i",(r+1)];
+    }
+   
+    
+    return [UIImage imageNamed:nameImage];
+}
+
+#pragma mark - Local Notifications
++(void)programNotifForEvent:(PFObject *)event{
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:60];
+    NSString *message = [NSString stringWithFormat:@"Vous avez une évènement demain : %@", event[@"name"]];
+    localNotification.alertBody = message;
+    localNotification.alertAction = @"Plus d'infos";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
 }
 
 

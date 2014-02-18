@@ -16,6 +16,9 @@
 #import "GAI.h"
 #import <Crashlytics/Crashlytics.h>
 #import "KeenClient.h"
+#import "Constants.h"
+#import "AppsfireSDK.h"
+#import "AppsfireAdSDK.h"
 
 
 @implementation TestParseAppDelegate
@@ -51,6 +54,16 @@
     //Facebook init
     [PFFacebookUtils initializeFacebook];
     
+    //Appsfire
+    [AppsfireSDK connectWithAPIKey:@"26256D854142A235E899A6BD9ADDA2A2"];
+    
+#ifdef DEBUG
+    [AppsfireAdSDK setDebugModeEnabled:YES];
+#endif
+    
+    //Prepare
+    [AppsfireAdSDK prepare];
+    
     //Crashlytics
     [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
     
@@ -65,8 +78,8 @@
                                                         } forState:UIControlStateSelected];
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     [[tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations_off.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"heart_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"heart_off.png"]];
     //[[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
     [[tabBarController.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"UITabBar_Title_FirstPosition", nil)];
     [[tabBarController.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"UITabBar_Title_SecondPosition", nil)];
@@ -269,6 +282,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSettings setDefaultAppID:FacebookAppId];
+    [FBAppEvents activateApp];
     [[Mixpanel sharedInstance] track:@"App Open"];
     [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
     [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
