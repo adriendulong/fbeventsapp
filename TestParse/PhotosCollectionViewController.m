@@ -114,7 +114,12 @@
     self.isMapInit = NO;
     
     //Appearance
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [MOUtility getFontWithSize:18.0] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     //[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]}];
     
     if (self.invitation) {
@@ -263,7 +268,7 @@
         headerView.nameEvent.text = event[@"name"];
         headerView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
         headerView.eventDescription.text = event[@"description"];
-        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
+        [headerView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"default_cover"]];
         if (event[@"location"]) {
             headerView.locationLabel.text = event[@"location"];
         }
@@ -811,7 +816,7 @@
     self.headerCollectionView.nameEvent.text = event[@"name"];
     self.headerCollectionView.ownerEvent.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_OwnerEvent", nil), event[@"owner"][@"name"]];
     self.headerCollectionView.eventDescription.text = event[@"description"];
-    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"cover_default"]];
+    [self.headerCollectionView.coverImage setImageWithURL:event[@"cover"] placeholderImage:[UIImage imageNamed:@"default_cover"]];
     
     if ([self.invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
         [self.headerCollectionView.segmentRsvp setSelectedSegmentIndex:0];

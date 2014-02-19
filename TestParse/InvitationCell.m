@@ -8,6 +8,7 @@
 
 #import "InvitationCell.h"
 #import "MOUtility.h"
+#import "KeenClient.h"
 
 @implementation InvitationCell
 
@@ -31,8 +32,13 @@
     [TestFlight passCheckpoint:@"CHANGE_RSVP_INVITATIONS"];
     
     
+    NSDictionary *event;
     //Accept
     if(self.rsvpSegmentedControl.selectedSegmentIndex == 0){
+        //KEEN
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventAttending, @"answer", @"press", @"type", nil];
+        [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
+        
         NSDictionary *userInfo = @{@"invitationId": self.invitation.objectId,
                                    @"rsvp": FacebookEventAttending, @"eventId" : self.invitation[@"event"][@"eventId"]};
         [[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
@@ -41,6 +47,8 @@
     }
     //Maybe
     else if (self.rsvpSegmentedControl.selectedSegmentIndex == 1){
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventMaybeAnswer, @"answer", @"press", @"type", nil];
+        [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
         NSDictionary *userInfo = @{@"invitationId": self.invitation.objectId,
                                    @"rsvp": FacebookEventMaybeAnswer, @"eventId" : self.invitation[@"event"][@"eventId"]};
         [[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];
@@ -48,6 +56,8 @@
     }
     //No
     else{
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"not reply", @"view", FacebookEventDeclined, @"answer", @"press", @"type", nil];
+        [[KeenClient sharedClient] addEvent:event toEventCollection:@"rsvp" error:nil];
         NSDictionary *userInfo = @{@"invitationId": self.invitation.objectId,
                                    @"rsvp": FacebookEventDeclined, @"eventId" : self.invitation[@"event"][@"eventId"]};
         [[NSNotificationCenter defaultCenter] postNotificationName:fakeAnswerEvents object:self userInfo:userInfo];

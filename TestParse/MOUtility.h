@@ -26,6 +26,7 @@
 +(NSDate *)getEndDateEvent:(PFObject *)event;
 +(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 +(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
++ (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime;
 
 #pragma mark - Facebook
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality;
@@ -99,5 +100,15 @@
 +(NSString *)getKeenReadKey;
 +(NSString *)getParseAppId;
 +(NSString *)getParseClientKey;
+
+#pragma mark - fonts
++(UIFont *)getFontWithSize:(CGFloat)size;
+
+#pragma mark - Cover
++(UIImage *)getCover:(NSInteger)which;
+
+#pragma mark - Local Notifications
++(void)programNotifForEvent:(PFObject *)event;
++(void)eraseNotifsOfType:(NSInteger)type;
 
 @end

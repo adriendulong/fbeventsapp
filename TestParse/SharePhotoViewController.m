@@ -48,6 +48,13 @@
 {
     [super viewDidLoad];
     
+    //Title
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [MOUtility getFontWithSize:20.0] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    
     if (!IS_IPHONE_5) {
         self.verticalConstraintPost.constant = 8.0;
     }
@@ -82,7 +89,7 @@
     self.hintIsWritten = YES;
     
     //Top bar
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.backBarButtonItem.title = NSLocalizedString(@"SharePhotoViewController_Title", nil);
     
     self.previewImage.image = self.takenPhoto;
@@ -203,6 +210,7 @@
                     
                     NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                             @"id": [PFUser currentUser].objectId,
+                                            @"facebookId": [PFUser currentUser][@"facebookId"],
                                             @"date": [NSDate date],
                                             @"comment":goodMsg};
                     NSArray *comments = [NSArray arrayWithObjects:title, nil];
@@ -250,10 +258,15 @@
                     
                     //Add title if has written something
                     if (!self.hintIsWritten) {
+                        NSString *uniText = [NSString stringWithUTF8String:[self.titlePhoto.text UTF8String]];
+                        NSData *msgData = [uniText dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+                        NSString *goodMsg = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding] ;
+                        
                         NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                                 @"id": [PFUser currentUser].objectId,
+                                                @"facebookId": [PFUser currentUser][@"facebookId"],
                                                 @"date": [NSDate date],
-                                                @"comment":self.titlePhoto.text};
+                                                @"comment":goodMsg};
                         NSArray *comments = [NSArray arrayWithObjects:title, nil];
                         eventPhoto[@"comments"] = comments;
                     }
@@ -375,10 +388,15 @@
                             
                             //Add title if has written something
                             if (!self.hintIsWritten) {
+                                NSString *uniText = [NSString stringWithUTF8String:[self.titlePhoto.text UTF8String]];
+                                NSData *msgData = [uniText dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+                                NSString *goodMsg = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding] ;
+                                
                                 NSDictionary *title = @{@"name": [PFUser currentUser][@"name"],
                                                         @"id": [PFUser currentUser].objectId,
+                                                        @"facebookId": [PFUser currentUser][@"facebookId"],
                                                         @"date": [NSDate date],
-                                                        @"comment":self.titlePhoto.text};
+                                                        @"comment":goodMsg};
                                 NSArray *comments = [NSArray arrayWithObjects:title, nil];
                                 eventPhoto[@"comments"] = comments;
                             }

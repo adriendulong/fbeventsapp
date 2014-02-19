@@ -8,8 +8,8 @@
 
 
 /* UITabBar */
-"UITabBar_Title_FirstPosition" = "Futuros";
-"UITabBar_Title_SecondPosition" = "En espera";
+"UITabBar_Title_FirstPosition" = "Enventos";
+"UITabBar_Title_SecondPosition" = "Invitaciones";
 "UITabBar_Title_ThirdPosition" = "Recuerdos";
 "UITabBar_Title_FourthPosition" = "Ahora";
 
@@ -57,6 +57,10 @@
 
 
 ///// TutorialViewController /////
+"TutorialViewController_tuto_title_1" = "Gather";
+"TutorialViewController_tuto_title_2" = "Sort";
+"TutorialViewController_tuto_title_3" = "Enjoy";
+"TutorialViewController_tuto_title_4" = "Remember";
 "TutorialViewController_tuto_step_1" = "Administra tus eventos Facebook rápidamente y fácilmente";
 "TutorialViewController_tuto_step_2" = "Ordena tus invitaciones en 1 clic para no faltar a ninguna fiesta” ";
 "TutorialViewController_tuto_step_3" = "Aprovecha de tus eventos como nunca. Todo está a tu alcance: noticias/ fotos/mensajes/ invitados etc.";
@@ -199,13 +203,14 @@
 "InvitedListViewController_Maybe" = "Posibles Participantes";
 "InvitedListViewController_NoResponse" = "Esperando respuesta";
 "InvitedListViewController_Absent" = "Ausentes";
+"InvitedListViewController_Loading" = "Loading...";
 
 
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ a %@";
 "ListInvitationsController_SendInvit" = "%@ te ha invitado a este evento";
-"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nNinguna invitación pendiente";
-"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nNinguna invitación rechazada";
+"ListInvitationsController_NoPendingInvitation" = "Ninguna invitación pendiente";
+"ListInvitationsController_NoRefuseInvitation" = "Ninguna invitación rechazada";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En espera";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Rechazadas";
 "ListInvitationsController_ProblemChangingInvitation" = "Un error se ha ocurrido para responder al invitación. Por favor prueba de nuevo.";
@@ -228,10 +233,15 @@
 "ListInvitationsController_BodyDeclinedMessage3" = "¡ Sin mi, pero disfrutas al máximo !";
 "ListInvitationsController_BodyDeclinedMessage4" = "¡ Lo siento, tengo aquabike !";
 
+"ListInvitations_DateEventLabelAllDay" = "%@ todo el día";
+"ListInvitations_DateEventLabelDuring" = "%@ durante %i día(s)";
+
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notificaciones  : %i";
 "ListEvents_NoEvent" = "No hay próximos eventos ...";
 "ListEvents_Searching" = "Búsqueda eventos...";
+"ListEvents_DateEventLabelAllDay" = "Todo el día";
+"ListEvents_DateEventLabelDuring" = "Durante %i día(s)";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Eventos";
@@ -243,7 +253,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i fotos han sido encontradas";
 "MemoriesViewController_AutoImportButton" = "Recuperación automática";
-"MemoriesViewController_Empty" = "No hay recuerdos: (\nCrear uno tocando el botón de arriba!";
+"MemoriesViewController_Empty" = "No hay recuerdos...";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Ajustes";
@@ -265,7 +275,7 @@
 "CGUViewController_title" = "Las condiciones";
 
 /// LandingViewController ///
-"LandingViewController_analyzeLoading" = " Estamos analizando tus eventos ... ";
+"LandingViewController_analyzeLoading" = "Estamos cocinando algunas magnifico estadísticas para tu...";
 "LandingViewControllerWinner_messageForFacebook" = "¡ %i invitaciones a eventos ! ¿ Tienes mas ? Prueba en la aplicación Woovent : http://www.woovent.com";
 "LandingViewControllerWinner_congratsLabel1" = "¡ Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = " ¡ Bien!";

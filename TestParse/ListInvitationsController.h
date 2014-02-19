@@ -22,10 +22,13 @@
 @property (assign, nonatomic) BOOL animating;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 @property (weak, nonatomic) NSMutableArray *eventWaitingForAnswer;
-@property (weak, nonatomic) NSString *answerOccuringId;
-@property (weak, nonatomic) NSString *buttonAnswerTitle;
+@property (strong, nonatomic) NSString *answerOccuringId;
+@property (strong, nonatomic) NSString *buttonAnswerTitle;
 @property (strong, nonatomic) NSMutableArray *removingDeclined;
 @property (strong, nonatomic) NSMutableArray *removingInvits;
+@property (nonatomic, assign) NSUInteger minimalAdsCount;
+@property (nonatomic, assign) BOOL willDisplayAds;
+@property (nonatomic, assign) NSInteger needReloadFuture;
 
 @property (strong, nonatomic) UIView *viewBack;
 

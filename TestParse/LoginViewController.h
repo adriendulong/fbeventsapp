@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
 @property (strong, nonatomic) Mixpanel *mixpanel;
 @property (nonatomic, assign) BOOL isNewUser;
+@property (nonatomic, assign) NSInteger nextController;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 - (IBAction)facebook:(id)sender;
 -(void)updateUserInfos;

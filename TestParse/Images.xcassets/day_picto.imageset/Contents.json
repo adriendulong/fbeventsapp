@@ -2,8 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "day_picto.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

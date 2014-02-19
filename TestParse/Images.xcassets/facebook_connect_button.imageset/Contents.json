@@ -2,8 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "facebook_connect_button.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

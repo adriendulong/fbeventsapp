@@ -25,7 +25,9 @@
 
 @end
 
-@implementation ListEvents
+@implementation ListEvents{
+    UIImageView *navBarHairlineImageView;
+}
 
 @synthesize invitations;
 
@@ -39,6 +41,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    navBarHairlineImageView.hidden = YES;
     
     
     
@@ -53,6 +56,11 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    navBarHairlineImageView.hidden = NO;
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     if (self.isNewUser) {
         self.isNewUser = NO;
@@ -63,6 +71,15 @@
 
 - (void)viewDidLoad
 {
+    self.title = NSLocalizedString(@"UITabBar_Title_FirstPosition", nil);
+    //[self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(253/255.0) green:(160/255.0) blue:(20/255.0) alpha:1]];
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [MOUtility getFontWithSize:20.0] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
     //Top icon
     self.topImageView.layer.cornerRadius = 17.0f;
@@ -76,7 +93,7 @@
     self.animating = NO;
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc]
                                         init];
-    refreshControl.tintColor = [UIColor orangeColor];
+    refreshControl.tintColor = [UIColor grayColor];
     [refreshControl addTarget:self action:@selector(fbReload:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
     
@@ -120,7 +137,6 @@
         [self.tableView reloadData];
         [self isEmptyTableView];
         
-        [self localClosestInvitation];
         self.comeFromLogin = NO;
         [self loadFutureEventsFromServer];
         ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
@@ -171,6 +187,7 @@
     //Get the event object.
     PFObject *event = [self.invitations objectAtIndex:indexPath.row][@"event"];
     
+    
     //Date
     NSDate *start_date = event[@"start_time"];
     //Formatter for the hour
@@ -188,13 +205,27 @@
     //Fill the cell
     cell.nameEventLabel.text = event[@"name"];
     
-    cell.whereWhenLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
+    NSString *hourToPrint;
+    if (![event[@"is_date_only"] boolValue]) {
+        hourToPrint = [formatterHourMinute stringFromDate:start_date];
+    }
+    else{
+        if (event[@"end_time"]) {
+            NSInteger nbDays = [MOUtility daysBetweenDate:(NSDate *)event[@"start_time"] andDate:(NSDate *)event[@"end_time"]];
+            hourToPrint = [NSString stringWithFormat:NSLocalizedString(@"ListEvents_DateEventLabelDuring", nil), nbDays];
+        }
+        else{
+            hourToPrint = NSLocalizedString(@"ListEvents_DateEventLabelAllDay", nil);
+        }
+    }
+    
+    cell.whereWhenLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", hourToPrint] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), hourToPrint, event[@"location"]];
     cell.ownerInvitation.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
     cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
     cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
     [cell.coverImageView setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                   placeholderImage:[UIImage imageNamed:@"cover_default"]];
+                        placeholderImage:[UIImage imageNamed:@"default_cover"]];
     
     return cell;
 }
@@ -229,11 +260,16 @@
             else{
                 self.facebookEventNotReplied = [result[@"data"] count];
                 if (self.facebookEventNotReplied==0) {
+                    [self setBadgeForInvitation:self.tabBarController atIndex:1];
                     ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
                     if (invitationsController) {
                         [invitationsController loadInvitationFromServer];
                         [invitationsController loadDeclinedFromSever];
                     }
+                }
+                
+                if (self.facebookEventsNb == 0) {
+                    [self stopRefresh];
                 }
             }
             
@@ -246,7 +282,10 @@
             
         }
         else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) { // Since the request failed, we can check if it was due to an invalid session
-            [self performSegueWithIdentifier:@"Login" sender:nil];
+            [[Mixpanel sharedInstance] track:@"OAuth Disconnect"];
+            if (!self.isBackgroundTask) {
+                [self performSegueWithIdentifier:@"Login" sender:nil];
+            }
         }
         else{
             NSLog(@"%@", error);
@@ -357,7 +396,12 @@
         if (!error) {
             [invits addObjectsFromArray:objects];
             
+            //Erase all actual notifs
+            [MOUtility eraseNotifsOfType:0];
+            [MOUtility eraseNotifsOfType:1];
+            
             for(PFObject *invitation in objects){
+                [MOUtility programNotifForEvent:invitation];
                 [MOUtility saveInvitationWithEvent:invitation];
             }
             
@@ -367,45 +411,9 @@
             [self isEmptyTableView];
             [self.tableEvents reloadData];
             
-            //Select the closest invit
-            [self selectClosestInvitation];
-            
             [self stopRefresh];
             
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-            
-            //Query event with end time
-            /*PFQuery *queryEnd = [PFQuery queryWithClassName:@"Invitation"];
-            [queryEnd whereKey:@"user" equalTo:[PFUser currentUser]];
-            [queryEnd whereKey:@"event" matchesQuery:queryEventEndTime];
-            [queryEnd whereKey:@"rsvp_status" notContainedIn:@[FacebookEventNotReplied,FacebookEventDeclined]];
-            [queryEnd includeKey:@"event"];
-            
-            [queryEnd findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if (!error) {
-                    [invits addObjectsFromArray:objects];
-                    
-                    [[Mixpanel sharedInstance].people set:@{@"Nb Futur Events": [NSNumber numberWithInt:invits.count]}];
-                    
-                    self.invitations = [MOUtility sortByStartDate:invits isAsc:YES];
-                    [self isEmptyTableView];
-                    [self.tableEvents reloadData];
-                    
-                    //Select the closest invit
-                    [self selectClosestInvitation];
-                    
-                    [self stopRefresh];
-                    
-                    
-                    for(PFObject *invitation in objects){
-                        [MOUtility saveInvitationWithEvent:invitation];
-                    }
-                }
-                else{
-                    NSLog(@"Problème de chargement");
-                    [self stopRefresh];
-                }
-            }];*/
             
         } else {
             // Log details of the failure
@@ -470,8 +478,7 @@
     else{
         self.isNewUser = NO;
     }
-    
-    [self localClosestInvitation];
+
     if (!self.isNewUser) {
         [self loadFutureEventsFromServer];
         ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
@@ -635,7 +642,7 @@
     UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
     
     //Image
-    UIImage *image = [UIImage imageNamed:@"marmotte_event_empty"];
+    UIImage *image = [UIImage imageNamed:@"events_empty"];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     [imageView setImage:image];
      imageView.contentMode = UIViewContentModeCenter;
@@ -644,6 +651,7 @@
     //Label
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, 280, 40)];
     [label setTextColor:[UIColor darkGrayColor]];
+    [label setFont:[MOUtility getFontWithSize:18.0]];
     [label setTextAlignment:NSTextAlignmentCenter];
     label.text = NSLocalizedString(@"ListEvents_NoEvent", nil);
     [viewBack addSubview:label];
@@ -725,5 +733,18 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:HaveFinishedRefreshEvents object:self];
 }
 
+
+- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
+    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
+        return (UIImageView *)view;
+    }
+    for (UIView *subview in view.subviews) {
+        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
+        if (imageView) {
+            return imageView;
+        }
+    }
+    return nil;
+}
 
 @end

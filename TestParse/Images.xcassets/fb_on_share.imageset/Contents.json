@@ -2,8 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "fb_on_share.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

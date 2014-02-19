@@ -11,6 +11,7 @@
 #import "MOUtility.h"
 #import "EventUtilities.h"
 #import "FbEventsUtilities.h"
+#import "MBProgressHUD.h"
 
 @interface InvitedListViewController ()
 
@@ -37,8 +38,12 @@
     [super viewDidLoad];
     self.title = NSLocalizedString(@"InvitedListViewController_Title", nil);
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"InvitedListViewController_Loading", nil);
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(greatMomentToUpdateInvited:) name:InvitedDetailFinished object:nil];
     
+    self.invited = [[NSMutableArray alloc] init];
     self.attending = [[NSMutableArray alloc] init];
     self.maybe = [[NSMutableArray alloc] init];
     self.no = [[NSMutableArray alloc] init];
@@ -208,10 +213,10 @@
 -(void)getGuestsFromFacebookEvent:(NSString *)next{
     NSString *requestString;
     if (next) {
-        requestString = [NSString stringWithFormat:@"%@/invited?limit=20&after=%@", self.event[@"eventId"], next];
+        requestString = [NSString stringWithFormat:@"%@/invited?fields=id,name,rsvp_status&limit=100&after=%@", self.event[@"eventId"], next];
     }
     else{
-        requestString = [NSString stringWithFormat:@"%@/invited?limit=20", self.event[@"eventId"]];
+        requestString = [NSString stringWithFormat:@"%@/invited?fields=id,name,rsvp_status&limit=100", self.event[@"eventId"]];
     }
     
     FBRequest *request = [FBRequest requestForGraphPath:requestString];
@@ -244,14 +249,21 @@
         }
         else{
             NSLog(@"%@", error);
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         }
     }];
 }
 
 -(void)addOrUpdateInvited:(NSDictionary *)invited{
-    PFObject *guest;
-    PFObject *invitation;
+    //PFObject *guest;
+    //PFObject *invitation;
     
+    PFObject *prospectObject = [PFObject objectWithClassName:@"Prospect"];
+    prospectObject[@"facebookId"] = invited[@"id"];
+    prospectObject[@"name"] = invited[@"name"];
+    [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:prospectObject];
+    
+    /*
     //We see if there is an invitation for this user
     for(id invit in self.invited){
         PFObject *tempGuests = [FbEventsUtilities getProspectOrUserFromInvitation:invit];
@@ -325,7 +337,7 @@
             }
         }];
         
-    }
+    }*/
     
 }
 
@@ -367,10 +379,15 @@
     invitation[@"rsvp_status"] = rsvp;
     invitation[@"start_time"] = self.event[@"start_time"];
     
+    [self.invited addObject:invitation];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:InvitedDetailFinished object:self userInfo:nil];
+    
+    /*
     [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         [self.invited addObject:invitation];
         [[NSNotificationCenter defaultCenter] postNotificationName:InvitedDetailFinished object:self userInfo:nil];
-    }];
+    }];*/
     
 }
 
@@ -408,6 +425,7 @@
             [self getGuestsFromFacebookEvent:self.afterCursor];
         }
         [self newDataTable];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     }
     
     

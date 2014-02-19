@@ -58,7 +58,11 @@
 
 - (void)viewDidLoad
 {
-    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIColor whiteColor],NSForegroundColorAttributeName,
+                                    [UIColor whiteColor],NSBackgroundColorAttributeName,
+                                    [MOUtility getFontWithSize:18.0] , NSFontAttributeName, nil];
+    self.navigationController.navigationBar.titleTextAttributes = textAttributes;
     self.badge.hidden = YES;
 
     

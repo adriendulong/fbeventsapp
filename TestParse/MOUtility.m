@@ -10,6 +10,8 @@
 #import "EventUtilities.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <sys/sysctl.h>
+#include <stdlib.h>
+#import "KeenClient.h"
 
 @implementation MOUtility
 
@@ -67,6 +69,17 @@
     if (dateToReturn==nil) {
         dateToReturn = [oldDateFormat dateFromString:date];
     }
+    
+    if (dateToReturn==nil) {
+        if (date) {
+            NSDictionary *event= [NSDictionary dictionaryWithObjectsAndKeys: date, @"time", nil];
+            [[KeenClient sharedClient] addEvent:event toEventCollection:@"problem_time" error:nil];
+        }
+        
+        dateToReturn = [NSDate date];
+    }
+    
+    
     
     return dateToReturn;
 }
@@ -422,6 +435,24 @@
     NSDate* myDate = [myFormatter dateFromString:birthdayString];
     
     return myDate;
+}
+
++ (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+    NSDate *fromDate;
+    NSDate *toDate;
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+                 interval:NULL forDate:fromDateTime];
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+                 interval:NULL forDate:toDateTime];
+    
+    NSDateComponents *difference = [calendar components:NSDayCalendarUnit
+                                               fromDate:fromDate toDate:toDate options:0];
+    
+    return [difference day];
 }
 
 
@@ -1341,6 +1372,151 @@
         return ParseClientKeyDev;
     }
 }
+
+
+#pragma mark - Font
++(UIFont *)getFontWithSize:(CGFloat)size{
+    UIFont *font = [UIFont fontWithName:@"HelveticaNeueLTStd-Lt" size:size];
+    return font;
+}
+
+#pragma mark - Cover
++(UIImage *)getCover:(NSInteger)which{
+    int r = arc4random() % 4;
+    
+    NSString *nameImage;
+    if (which) {
+        int number = (which%4)+1;
+        nameImage = [NSString stringWithFormat:@"default_cover%i",number];
+    }
+    else{
+         nameImage = [NSString stringWithFormat:@"default_cover%i",(r+1)];
+    }
+   
+    
+    return [UIImage imageNamed:nameImage];
+}
+
+#pragma mark - Local Notifications
++(void)programNotifForEvent:(PFObject *)invitation{
+    NSString *rsvp_status = invitation[@"rsvp_status"];
+    
+    if(invitation[@"start_time"]){
+        //Need a notif
+        if ([rsvp_status isEqualToString:FacebookEventAttending]||[rsvp_status isEqualToString:FacebookEventMaybe]) {
+            //Erase all notif for this event
+            [self eraseNotifsForInvitation:invitation];
+            [self createNotif:invitation andType:0];
+            [self createNotif:invitation andType:1];
+            
+        }
+        //Don't need it, but check if we need to remove one
+        else{
+            //Erase all notifs for this event if there is
+            [self eraseNotifsForInvitation:invitation];
+        }
+    }
+}
+
++(void)eraseNotifsForInvitation:(PFObject *)invitation{
+    NSArray *localNotifs = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    
+    for(UILocalNotification *notif in localNotifs){
+        NSDictionary *userInfos = notif.userInfo;
+        if ([userInfos[@"invitationId"] isEqualToString:invitation.objectId]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notif];
+        }
+    }
+    
+}
+
++(void)eraseNotifsOfType:(NSInteger)type{
+    NSArray *localNotifs = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    NSNumber *typeNotif = [NSNumber numberWithInt:type];
+    
+    for(UILocalNotification *notif in localNotifs){
+        NSDictionary *userInfos = notif.userInfo;
+        if ([(NSNumber *)userInfos[@"type"] compare:typeNotif]==NSOrderedSame) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notif];
+        }
+    }
+    
+}
+
++(void)createNotif:(PFObject *)invitation andType:(NSUInteger)type{
+    NSDictionary *userInfos = @{@"invitationId": invitation.objectId, @"type":[NSNumber numberWithInt:type]};
+    PFObject *event = invitation[@"event"];
+     NSString *rsvp_status = invitation[@"rsvp_status"];
+    
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    NSString *message;
+    NSDate *dateStart = (NSDate *)event[@"start_time"];
+    
+    //Day before
+    if (type == 0) {
+        if ([rsvp_status isEqualToString:FacebookEventAttending]) {
+            message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TomorrowGo", nil), event[@"name"]];
+        }
+        else if([rsvp_status isEqualToString:FacebookEventMaybe]){
+            message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TommorowMaybe", nil), event[@"name"]];
+        }
+        
+        //Day before beginning
+        NSDate *testDate = [NSDate date];
+        dateStart = [dateStart dateByAddingTimeInterval:-(60*60*24)];
+        testDate = [testDate dateByAddingTimeInterval:15];
+        
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+        NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: dateStart];
+        [components setHour: 20];
+        [components setMinute: 0];
+        [components setSecond: 0];
+        
+        NSDate *newDate = [gregorian dateFromComponents: components];
+        
+        
+        localNotification.fireDate = newDate;
+        
+        localNotification.alertAction = @"Plus d'infos";
+    }
+    //Just after the beginning of the event
+    else{
+        NSDate *testDate = [NSDate date];
+        testDate = [testDate dateByAddingTimeInterval:60*1];
+        
+        //If date only put notif at 20:00 of this day
+        NSDate *newDate = [[NSDate alloc] init];
+        if ([event[@"is_date_only"] boolValue]) {
+            
+            NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+            NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: dateStart];
+            [components setHour: 20];
+            [components setMinute: 0];
+            [components setSecond: 0];
+            
+            newDate = [gregorian dateFromComponents: components];
+        }
+        //Otherwise 3 hours after the beginning
+        else{
+            
+            newDate = [dateStart dateByAddingTimeInterval:60*60*3];
+            
+        }
+        
+        localNotification.fireDate = newDate;
+        message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_SameDay", nil), event[@"name"]];
+        localNotification.alertAction = @"Immortaliser";
+    }
+    
+    
+    localNotification.alertBody = message;
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    localNotification.userInfo = userInfos;
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
+
 
 
 

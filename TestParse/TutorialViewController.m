@@ -17,27 +17,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.iconImageView.layer.cornerRadius = 20.0f;
-    self.iconImageView.layer.masksToBounds = YES;
     
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor clearColor];
     
     if (self.index==0) {
-        self.imageView.image = [UIImage imageNamed:@"tuto_step_1"];
+        self.iconImageView.image = [UIImage imageNamed:@"icon_tuto_1"];
+        self.titleLabel.text = NSLocalizedString(@"TutorialViewController_tuto_title_1", nil);
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_1", nil);
     }
     else if(self.index==1){
         [[Mixpanel sharedInstance] track:@"Use Tutoriel"];
-        self.imageView.image = [UIImage imageNamed:@"tuto_step_2"];
+        self.iconImageView.image = [UIImage imageNamed:@"icon_tuto_2"];
+        self.titleLabel.text = NSLocalizedString(@"TutorialViewController_tuto_title_2", nil);
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_2", nil);
     }
     else if(self.index == 2){
-        self.imageView.image = [UIImage imageNamed:@"tuto_step_3"];
+        self.iconImageView.image = [UIImage imageNamed:@"icon_tuto_3"];
+        self.titleLabel.text = NSLocalizedString(@"TutorialViewController_tuto_title_3", nil);
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_3", nil);
     }
     else{
-        self.imageView.image = [UIImage imageNamed:@"tuto_step_4"];
+        self.iconImageView.image = [UIImage imageNamed:@"icon_tuto_4"];
+        self.titleLabel.text = NSLocalizedString(@"TutorialViewController_tuto_title_4", nil);
         self.explicationLabel.text = NSLocalizedString(@"TutorialViewController_tuto_step_4", nil);
     }
 }

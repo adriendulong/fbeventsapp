@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.title = NSLocalizedString(@"PhotosAlbumViewController_Title", nil);
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -66,9 +66,9 @@
     //self.titleViewButton.backgroundColor = [UIColor orangeColor];
     [self.titleViewButton setTitle:NSLocalizedString(@"PhotosAlbumViewController_CameraRoll", nil) forState:UIControlStateNormal];
     self.titleViewButton.frame = CGRectMake(0, 0, 200, 44);
-    self.titleViewButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.titleViewButton.titleLabel.font = [MOUtility getFontWithSize:20.0];
     [self.titleViewButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.titleViewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.titleViewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.titleViewButton addTarget:self action:@selector(titleTap) forControlEvents:UIControlEventTouchUpInside];
     
     self.navigationItem.titleView = self.titleViewButton;

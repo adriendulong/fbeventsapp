@@ -16,6 +16,9 @@
 #import "GAI.h"
 #import <Crashlytics/Crashlytics.h>
 #import "KeenClient.h"
+#import "Constants.h"
+#import "AppsfireSDK.h"
+#import "AppsfireAdSDK.h"
 
 
 @implementation TestParseAppDelegate
@@ -32,7 +35,7 @@
     self.isProdApp = NO;
     
     #warning DEVCONFIG
-    [TestFlight takeOff:@"39edfba5-2220-4a06-a22f-ffcc1445b4b8"];
+    [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
     
     //Mixpanel
     [Mixpanel sharedInstanceWithToken:MixpanelToken];
@@ -51,6 +54,16 @@
     //Facebook init
     [PFFacebookUtils initializeFacebook];
     
+    //Appsfire
+    [AppsfireSDK connectWithAPIKey:@"26256D854142A235E899A6BD9ADDA2A2"];
+    
+#ifdef DEBUG
+    [AppsfireAdSDK setDebugModeEnabled:YES];
+#endif
+    
+    //Prepare
+    [AppsfireAdSDK prepare];
+    
     //Crashlytics
     [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
     
@@ -65,13 +78,13 @@
                                                         } forState:UIControlStateSelected];
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
     [[tabBarController.tabBar.items objectAtIndex:0] setFinishedSelectedImage:[UIImage imageNamed:@"my_events_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"my_events_off.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"memories_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"memories_off.png"]];
-    [[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
+    [[tabBarController.tabBar.items objectAtIndex:1] setFinishedSelectedImage:[UIImage imageNamed:@"invitations_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"invitations_off.png"]];
+    [[tabBarController.tabBar.items objectAtIndex:2] setFinishedSelectedImage:[UIImage imageNamed:@"heart_on.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"heart_off.png"]];
+    //[[tabBarController.tabBar.items objectAtIndex:3] setFinishedSelectedImage:[UIImage imageNamed:@"fire_on"] withFinishedUnselectedImage:[UIImage imageNamed:@"fire_off"]];
     [[tabBarController.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"UITabBar_Title_FirstPosition", nil)];
     [[tabBarController.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"UITabBar_Title_SecondPosition", nil)];
     [[tabBarController.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"UITabBar_Title_ThirdPosition", nil)];
-    [[tabBarController.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"UITabBar_Title_FourthPosition", nil)];
+    //[[tabBarController.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"UITabBar_Title_FourthPosition", nil)];
     
     //Init
     self.needToRefreshEvents = NO;
@@ -195,6 +208,48 @@
     }
     
     
+    
+    ////// LOCAL Notifs
+    UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (locationNotification) {
+        // Set icon badge number to zero
+        NSString *objectIdInvit = locationNotification.userInfo[@"invitationId"];
+        
+        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+        [queryInvit whereKey:@"objectId" equalTo:objectIdInvit];
+        [queryInvit includeKey:@"event"];
+        queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+            }else if ([PFUser currentUser]) {
+                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                viewController.invitation = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        }];
+    }
+    
+    
+    
     //Update user infos
     if ([PFUser currentUser]) {
         [MOUtility updateUserInfos];
@@ -231,6 +286,9 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     NSNumber *seconds = @([[NSDate date] timeIntervalSinceDate:self.startTime]);
     [[Mixpanel sharedInstance] track:@"Session" properties:@{@"Length": seconds}];
+    
+    NSDictionary *event= [NSDictionary dictionaryWithObjectsAndKeys: seconds, @"length", nil];
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"Session" error:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -268,7 +326,12 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSArray *localNotifs = [[UIApplication sharedApplication] scheduledLocalNotifications];
+
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSettings setDefaultAppID:FacebookAppId];
+    [FBAppEvents activateApp];
     [[Mixpanel sharedInstance] track:@"App Open"];
     [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
     [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
@@ -292,12 +355,38 @@
     client.globalPropertiesBlock = ^NSDictionary *(NSString *eventCollection) {
         if ([PFUser currentUser]){
             PFUser *user = [PFUser currentUser];
-            return @{@"id": user.objectId, @"name" : user[@"name"], @"location" : user[@"location"], @"facebookId" : user[@"facebookId"], @"email" : user[@"email"], @"device" : [[UIDevice currentDevice] model], @"device_type" : [MOUtility platformNiceString]};
+            
+            NSMutableDictionary *infos = [[NSMutableDictionary alloc] init];
+            [infos setObject:user.objectId forKey:@"id"];
+            if (user[@"name"]) {
+                [infos setObject:user[@"name"] forKey:@"name"];
+            }
+            if (user[@"location"]) {
+                [infos setObject:user[@"location"] forKey:@"location"];
+            }
+            if (user[@"facbeookId"]) {
+                [infos setObject:user[@"facbeookId"] forKey:@"facbeookId"];
+            }
+            if (user[@"email"]) {
+                [infos setObject:user[@"email"] forKey:@"email"];
+            }
+            
+            return [infos copy];
         }
         else{
             return nil;
         }
     };
+    
+    NSDictionary *event;
+    if ([PFUser currentUser]) {
+        event= [NSDictionary dictionaryWithObjectsAndKeys: @YES, @"with_user", nil];
+    }
+    else{
+        event= [NSDictionary dictionaryWithObjectsAndKeys: @NO, @"with_user", nil];
+    }
+    
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"App Open" error:nil];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -546,6 +635,54 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     
     //
     
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    UIApplicationState state = [application applicationState];
+    if (state == UIApplicationStateActive) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rappel"
+                                                        message:notification.alertBody
+                                                       delegate:self cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        NSString *objectIdInvit = notification.userInfo[@"invitationId"];
+        
+        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+        [queryInvit whereKey:@"objectId" equalTo:objectIdInvit];
+        [queryInvit includeKey:@"event"];
+        queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+            }else if ([PFUser currentUser]) {
+                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                viewController.invitation = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        }];
+    }
+
 }
 
 

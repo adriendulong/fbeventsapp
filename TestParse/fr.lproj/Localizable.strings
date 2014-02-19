@@ -6,10 +6,15 @@
 "PushNotifs_InvitationsOne" = "Une invitation à un évènement en attente de réponse";
 "PushNotifs_NewComment" = "%@ a commenté une de vos photos";
 
+/* Local Notifs */
+"LocalNotifs_TomorrowGo" = "Demain aura lieu '%@', va consulter les dernières infos.";
+"LocalNotifs_TommorowMaybe" = "Demain aura lieu '%@', pense à confirmer ta présence.";
+"LocalNotifs_SameDay" = "'%@' a commencé! Consulte les photos ou ajoute les tiennes !";
+
 
 /* UITabBar */
-"UITabBar_Title_FirstPosition" = "A venir";
-"UITabBar_Title_SecondPosition" = "En attente";
+"UITabBar_Title_FirstPosition" = "Evènements";
+"UITabBar_Title_SecondPosition" = "Invitations";
 "UITabBar_Title_ThirdPosition" = "Souvenirs";
 "UITabBar_Title_FourthPosition" = "Now !";
 
@@ -57,10 +62,14 @@
 
 
 ///// TutorialViewController /////
-"TutorialViewController_tuto_step_1" = "Gérez vos évènements Facebook rapidement et simplement !";
-"TutorialViewController_tuto_step_2" = "Triez vos invitation en 1 clic pour ne plus en rater aucune !";
-"TutorialViewController_tuto_step_3" = "Profitez de vos évènements comme jamais. Tout est à portée de main : Infos / Photos / Message / invités etc.";
-"TutorialViewController_tuto_step_4" = "Retrouvez en un clic toutes les photos prises par vous et vos amis lors de vos évènements";
+"TutorialViewController_tuto_title_1" = "Rassemblez";
+"TutorialViewController_tuto_title_2" = "Triez";
+"TutorialViewController_tuto_title_3" = "Vivez";
+"TutorialViewController_tuto_title_4" = "Souvenirs";
+"TutorialViewController_tuto_step_1" = "Regroupez tous vos évènements en un seul et même endroit";
+"TutorialViewController_tuto_step_2" = "Triez vos invitations en un glissement de doigt !";
+"TutorialViewController_tuto_step_3" = "Retrouvez toutes les infos essentielles de chaque évènement.";
+"TutorialViewController_tuto_step_4" = "N'oubliez plus aucun évènement avec les souvenirs automatiques.";
 
 
 ///// ChooseLastEventViewController /////
@@ -199,13 +208,14 @@
 "InvitedListViewController_Maybe" = "Peut-être";
 "InvitedListViewController_NoResponse" = "Pas encore répondu";
 "InvitedListViewController_Absent" = "Absent";
+"InvitedListViewController_Loading" = "Chargement...";
 
 
 ///// ListInvitationsController /////
 "ListInvitationsController_WhenWhere" = "%@ à %@";
 "ListInvitationsController_SendInvit" = "%@ vous a invité à cet évènement";
-"ListInvitationsController_NoPendingInvitation" = "Yeah !!!\nPlus aucune invitation en attente !";
-"ListInvitationsController_NoRefuseInvitation" = "Yeah !!!\nAucune invitation refusée !";
+"ListInvitationsController_NoPendingInvitation" = "Plus aucune invitation en attente !";
+"ListInvitationsController_NoRefuseInvitation" = "Aucune invitation refusée !";
 "ListInvitationsController_InvitationsNotJoinedSegment" = "En attente";
 "ListInvitationsController_InvitationsDeclinedSegment" = "Refusées";
 "ListInvitationsController_ProblemChangingInvitation" = "Une erreur a eu lieu lors de la réponse à l'invitation. Veuillez reessayer.";
@@ -228,10 +238,15 @@
 "ListInvitationsController_BodyDeclinedMessage3" = "Ce sera sans moi mais, amusez vous bien !";
 "ListInvitationsController_BodyDeclinedMessage4" = "Désolé, j'ai aquabike !";
 
+"ListInvitations_DateEventLabelAllDay" = "%@ toute la journée";
+"ListInvitations_DateEventLabelDuring" = "%@ pendant %i jour(s)";
+
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "Aucun évènement à venir ...";
 "ListEvents_Searching" = "Recherche d'évènements...";
+"ListEvents_DateEventLabelAllDay" = "Toute la journée";
+"ListEvents_DateEventLabelDuring" = "Pendant %i jour(s)";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";
@@ -243,7 +258,7 @@
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
-"MemoriesViewController_Empty" = "Aucun souvenir :(\nCrée en un en cliquant en haut !";
+"MemoriesViewController_Empty" = "Aucun souvenirs...";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
@@ -266,7 +281,7 @@
 "CGUViewController_body" = "";
 
 /// LandingViewController ///
-"LandingViewController_analyzeLoading" = "Nous analysons tes évènements Facebook...";
+"LandingViewController_analyzeLoading" = "Nous préparons quelques belles statistiques pour vous...";
 "LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com";
 "LandingViewControllerWinner_congratsLabel1" = "Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";

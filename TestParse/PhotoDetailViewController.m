@@ -47,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //self.title = NSLocalizedString(@"PhotoDetailViewController_Title", nil);
-    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self updateOwner];
     
     //Notifs
