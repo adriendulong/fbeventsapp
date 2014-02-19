@@ -23,7 +23,6 @@
 		3F775D7C184CB953007E8897 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7B184CB953007E8897 /* SDWebImage.framework */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
-		3F8D4B4618A0F6FE00611DAC /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */; };
 		3F8D4B4A18A0FAAB00611DAC /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D4B4918A0FAAB00611DAC /* TestViewController.m */; };
 		3FEBC1BF18B3677C008EE28E /* CommentDetailsPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */; };
 		3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CE8189FE6840080680F /* WYPopoverController.m */; };
@@ -191,7 +190,6 @@
 		3F775D7B184CB953007E8897 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Libraries/SDWebImage/SDWebImage.framework; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
-		3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
 		3F8D4B4818A0FAAB00611DAC /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		3F8D4B4918A0FAAB00611DAC /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		3FEBC1BD18B3677C008EE28E /* CommentDetailsPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentDetailsPostViewController.h; sourceTree = "<group>"; };
@@ -935,6 +933,7 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
+				E704C4C218B282C900BD32C1 /* appsfire-sdk */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
 				3F8D4B4718A0FA8E00611DAC /* TEST-CONTROLLERS */,
 				E7F0033E189FE1AE00315EC2 /* KeenClient */,
@@ -1300,8 +1299,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1320,7 +1319,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1342,8 +1341,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1355,7 +1354,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1367,8 +1366,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1377,11 +1376,7 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/Parse",
 					"$(SRCROOT)/Libraries/GoogleMaps",
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Facebook,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/GoogleMaps,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Parse,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/SDWebImage,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
+					"$(SRCROOT)/TestParse",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
@@ -1392,14 +1387,12 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/TestParse,
-					/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse,
-					"/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse/appsfire-sdk",
+					"$(SRCROOT)/TestParse",
+					"$(SRCROOT)/TestParse/appsfire-sdk",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1411,8 +1404,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1421,11 +1414,7 @@
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/Parse",
 					"$(SRCROOT)/Libraries/GoogleMaps",
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Facebook,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/GoogleMaps,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/Parse,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/Libraries/SDWebImage,
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse,
+					"$(SRCROOT)/TestParse",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestParse/Woovent-Prefix.pch";
@@ -1436,14 +1425,12 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/Libraries/TestFlight",
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
-					/Users/adriendulong/Documents/Developpement/iPhone/TestParse/TestParse,
-					/Users/Jeremy/Dropbox/iOS/fbeventsapp/TestParse,
-					/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse,
-					"/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse/appsfire-sdk",
+					"$(SRCROOT)/TestParse",
+					"$(SRCROOT)/TestParse/appsfire-sdk",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
+				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
