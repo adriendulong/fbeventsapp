@@ -10,6 +10,10 @@
 #import "CommentPostCell.h"
 #import "CommentPostToolbarCell.h"
 #import "MOUtility.h"
+#import "CommentDetailsPostViewController.h"
+
+#define HEIGHT_CELL_POST 95
+#define WIDTH_MESSAGE_TEXTVIEW 280
 
 @interface CommentPostViewController ()
 
@@ -52,7 +56,7 @@
     //Request
     NSString *requestString = [NSString stringWithFormat:@"%lld?fields=feed.fields(message,from,likes,comments.fields(message,from,created_time,like_count)),name", 499827973392733];//self.invitation[@"event"][@"eventId"]];
     
-    NSLog(@"Request : %@", requestString);
+    //NSLog(@"Request : %@", requestString);
     
     FBRequest *request = [FBRequest requestForGraphPath:requestString];
     
@@ -60,30 +64,17 @@
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
             
-            //NSLog(@"result = %@", result);
-            
-            //NSLog(@"name = %@", result[@"name"]);
-            
             for(id post in result[@"feed"][@"data"]) {
                 
                 NSDate *datePost = [MOUtility parseFacebookDate:post[@"created_time"] isDateOnly:NO];
                 
-                //NSLog(@"feed = %@", feed);
-                //NSString *postString = [NSString stringWithFormat:@"%@ : %@", post[@"from"][@"name"], post[@"message"]];
-                
-                //NSLog(@"%@", postString);
-                
-                
                 NSMutableArray *commentsArray = [NSMutableArray array];
                 if ((post[@"comments"][@"data"] != nil)) {
+                    
                     
                     for (id comment in post[@"comments"][@"data"]) {
                         
                         NSDate *dateComment = [MOUtility parseFacebookDate:comment[@"created_time"] isDateOnly:NO];
-                        
-                        //NSString *commentString = [NSString stringWithFormat:@"%@ : %@", comment[@"from"][@"name"], comment[@"message"]];
-                        
-                        //NSLog(@"%@", commentString);
                         
                         NSDictionary *commentDict = @{ @"from" : comment[@"from"],
                                                        @"created_time" : dateComment,
@@ -98,9 +89,6 @@
                 
                 NSArray *likesArray = (post[@"likes"][@"data"] == nil) ? [NSArray array] : post[@"likes"][@"data"];
                 
-                //NSLog(@"likesArray = %@", likesArray);
-                
-                
                 NSDictionary *postDict = @{ @"id" : post[@"id"],
                                             @"from" : post[@"from"],
                                             @"created_time" : datePost,
@@ -108,20 +96,13 @@
                                             @"message" : post[@"message"],
                                             @"comments" : commentsArray };
                 
-                //NSLog(@"postDict = %@", postDict);
                 [self.postAndComments addObject:postDict];
                 
             }
             
-            //NSLog(@"postAndComments = %@", self.postAndComments);
-            
             NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"created_time" ascending:NO];
             NSArray *postAndCommentsTmp = [self.postAndComments copy];
             [postAndCommentsTmp sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-            
-            //NSArray *recent = [postAndCommentsTmp copy];
-            
-            //NSLog(@"recent = %@", recent);
             
             [self.tableView reloadData];
             
@@ -137,13 +118,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return self.postAndComments.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     return 2;
 }
 
@@ -157,36 +136,74 @@
         CommentPostCell *cell = (CommentPostCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
         
-        UIBezierPath *maskPath;
-        maskPath = [UIBezierPath bezierPathWithRoundedRect:cell.subContentView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(2.5, 2.5)];
-        
-        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-        maskLayer.frame = cell.subContentView.bounds;
-        maskLayer.path = maskPath.CGPath;
-        cell.subContentView.layer.mask = maskLayer;
+        [cell.contentView.layer setCornerRadius:2.5];
+        [cell.contentView.layer setBorderWidth:0.5];
+        [cell.contentView.layer setBorderColor:[UIColor colorWithRed:0.74 green:0.75 blue:0.77 alpha:1].CGColor];
         
         
+        NSString *message = self.postAndComments[indexPath.section][@"message"];
+        CGFloat textViewHeight = [self textViewHeightForAttributedText:[[NSAttributedString alloc] initWithString:message] andWidth:WIDTH_MESSAGE_TEXTVIEW];
         
-        
-        //cell.subContentView.layer.cornerRadius = 2.5f;
-        //cell.subContentView.layer.borderColor = [UIColor colorWithRed:0.74 green:0.75 blue:0.77 alpha:1].CGColor;
-        //cell.subContentView.layer.borderWidth = 0.5f;
-        //cell.subContentView.layer.masksToBounds = YES;
-        
-        // Configure the cell...
         NSURL *avatarUrl = [MOUtility UrlOfFacebooProfileImage:self.postAndComments[indexPath.section][@"from"][@"id"] withResolution:FacebookSquareProfileImage];
         
         [cell.avatar setImageWithURL:avatarUrl placeholderImage:[UIImage imageNamed:@"profil_default"]];
         cell.fullName.text = self.postAndComments[indexPath.section][@"from"][@"name"];
         cell.date.text = [self lastSinceCommentSent:self.postAndComments[indexPath.section][@"created_time"]];
-        cell.textView.text = self.postAndComments[indexPath.section][@"message"];
-        cell.textView.backgroundColor = [UIColor redColor];
-        cell.nbLike.text = [NSString stringWithFormat:@"%i", [self.postAndComments[indexPath.section][@"likes"] count]];
-        cell.nbComment.text = [NSString stringWithFormat:@"%i", [self.postAndComments[indexPath.section][@"comments"] count]];
+        cell.textView.text = message;
         
-       // cell.textViewHeight.constant = 300;//[self sizeRectFromText:cell.textView.text].height;
+        cell.textViewHeightConstraints.constant = textViewHeight;
+        
+        
+        
+        // RESET Social Icon + Label
+        cell.nbLike.hidden = NO;
+        cell.thumbImageView.hidden = NO;
+        cell.nbComment.hidden = NO;
+        cell.commentImageView.hidden = NO;
+        
+        cell.thumbImageView.image = [UIImage imageNamed:@"like_woovent"];
+        
+        
+        
+        
+        NSInteger nbLikes = [self.postAndComments[indexPath.section][@"likes"] count];
+        NSInteger nbComments = [self.postAndComments[indexPath.section][@"comments"] count];
+        
+        cell.nbLike.text = [NSString stringWithFormat:@"%i", nbLikes];
+        cell.nbComment.text = [NSString stringWithFormat:@"%i", nbComments];
+        
+        
+        if (nbLikes == 0 && nbComments > 0) {
+            
+            cell.thumbImageView.image = [UIImage imageNamed:@"message_woovent"];
+            cell.nbLike.text = [NSString stringWithFormat:@"%i", nbComments];
+            
+            cell.nbComment.hidden = YES;
+            cell.commentImageView.hidden = YES;
+        } else if (nbLikes == 0 && nbComments == 0) {
+            cell.socialViewHeightConstaints.constant = 0;
+        } else {
+            
+            if (nbComments == 0) {
+                cell.nbComment.hidden = YES;
+                cell.commentImageView.hidden = YES;
+            }
+            
+            if (nbLikes == 0) {
+                cell.nbLike.hidden = YES;
+                cell.thumbImageView.hidden = YES;
+            }
+        }
+        
         
         cell.textView.scrollEnabled = NO;
+        cell.textView.textContainer.lineFragmentPadding = 0;
+        cell.textView.textContainerInset = UIEdgeInsetsZero;
+        
+        [self.textViews setObject:cell.textView forKey:indexPath];
+        
+        [cell setNeedsUpdateConstraints];
+        [cell updateConstraintsIfNeeded];
         
         
         return cell;
@@ -197,29 +214,29 @@
         CommentPostToolbarCell *cell = (CommentPostToolbarCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
         NSInteger nbComment = [self.postAndComments[indexPath.section][@"comments"] count];
+        cell.showComments.tag = indexPath.section;
         
-        //NSLog(@"indexPath: %@ | nbComment: %i", indexPath, nbComment);
         
         if (nbComment > 0) {
             
-            UIBezierPath *maskPath;
-            maskPath = [UIBezierPath bezierPathWithRoundedRect:cell.subContentView.bounds byRoundingCorners:(UIRectCornerBottomLeft | UIRectCornerBottomRight) cornerRadii:CGSizeMake(2.5, 2.5)];
-            
-            CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-            maskLayer.frame = cell.subContentView.bounds;
-            maskLayer.path = maskPath.CGPath;
-            cell.subContentView.layer.mask = maskLayer;
-            
-            NSString *titleButton = (nbComment == 1) ? @"Afficher le commentaire" : [NSString stringWithFormat:@"Afficher les %i commentaires", nbComment];
-            //NSLog(@"titleButton: %@", titleButton);
+            NSString *titleButton = (nbComment == 1) ? NSLocalizedString(@"CommentPostViewController_ShowComment", nil) : [NSString stringWithFormat:NSLocalizedString(@"CommentPostViewController_ShowNbComments", nil), nbComment];
             
             [cell.showComments setTitle:titleButton forState:UIControlStateNormal];
             cell.showComments.titleLabel.textAlignment = NSTextAlignmentCenter;
             
+            cell.showComments.enabled = YES;
+            
         } else {
-            [cell.showComments setTitle:@"Aucun commentaire" forState:UIControlStateNormal];
+            [cell.showComments setTitle:NSLocalizedString(@"CommentPostViewController_NoComment", nil) forState:UIControlStateNormal];
             cell.showComments.titleLabel.textAlignment = NSTextAlignmentCenter;
+            
+            cell.showComments.enabled = NO;
         }
+        
+        [cell.showComments.layer setCornerRadius:2.5];
+        [cell.showComments.layer setBorderWidth:0.5];
+        [cell.showComments.layer setBorderColor:[UIColor colorWithRed:0.74 green:0.75 blue:0.77 alpha:1].CGColor];
+        
         
         return cell;
     }
@@ -229,32 +246,29 @@
     return nil;
 }
 
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        CGFloat textViewHeight = [self sizeRectFromText:self.postAndComments[indexPath.section][@"message"]].height;
-        
-        return 135.0f+textViewHeight;
+        return HEIGHT_CELL_POST + [self textViewHeightForRowAtIndexPath:indexPath];
     } else {
         return 40.0f;
     }
 }
- 
 
-/*-(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
+
+-(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0)
-        return 10.0;
-    return 1.0;
+        return 13.0;
+    return 6.5;
 }
 
 
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == self.postAndComments.count-1)
-        return 10.0;
-    return 1.0;
+        return 13.0;
+    return 6.5;
 }
 
 -(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
@@ -265,72 +279,33 @@
 -(UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section
 {
     return [[UIView alloc] initWithFrame:CGRectZero];
-}*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 #pragma mark - UITextView size
-- (CGSize)sizeRectFromText:(NSString *)text {
+
+- (CGFloat)textViewHeightForAttributedText: (NSAttributedString*)text andWidth: (CGFloat)width {
+    UITextView *calculationView = [[UITextView alloc] init];
+    [calculationView setAttributedText:text];
+    CGSize size = [calculationView sizeThatFits:CGSizeMake(width, FLT_MAX)];
     
-    CGRect textRect = [text boundingRectWithSize:(CGSize){270, CGFLOAT_MAX}
-                                         options:NSStringDrawingUsesLineFragmentOrigin
-                                      attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                         context:nil];
-    
-    NSLog(@"textView height = %f", textRect.size.height);
-    
-    return textRect.size;
+    return size.height;
 }
 
+- (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITextView *calculationView = [self.textViews objectForKey:indexPath];
+    CGFloat textViewWidth = calculationView.frame.size.width;
+    
+    if (!calculationView.attributedText) {
+        NSString *message = self.postAndComments[indexPath.section][@"message"];
+        
+        calculationView = [[UITextView alloc] init];
+        calculationView.attributedText = [[NSAttributedString alloc] initWithString:message];
+        textViewWidth = WIDTH_MESSAGE_TEXTVIEW;
+    }
+    CGSize size = [calculationView sizeThatFits:CGSizeMake(textViewWidth, FLT_MAX)];
+    
+    return size.height;
+}
 
 #pragma mark - NSDate to NSString
 -(NSString *)lastSinceCommentSent:(NSDate *)sendDate {
@@ -365,6 +340,23 @@
     return response;
     
     
+}
+
+#pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]]) {
+        
+        UIButton *showComments = (UIButton *)sender;
+        
+        if ([[segue identifier] isEqualToString:@"commentDetailsPostSegue"])
+        {
+            CommentDetailsPostViewController *cdpvc = [segue destinationViewController];
+            
+            [cdpvc setPostAndComments:self.postAndComments[showComments.tag]];
+        }
+    }
 }
 
 @end

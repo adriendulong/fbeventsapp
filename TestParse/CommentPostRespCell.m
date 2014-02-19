@@ -1,14 +1,14 @@
 //
-//  CommentPostCell.m
+//  CommentPostRespCell.m
 //  Woovent
 //
-//  Created by Jérémy on 10/02/2014.
+//  Created by Jérémy on 19/02/2014.
 //  Copyright (c) 2014 Adrien Dulong. All rights reserved.
 //
 
-#import "CommentPostCell.h"
+#import "CommentPostRespCell.h"
 
-@implementation CommentPostCell
+@implementation CommentPostRespCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

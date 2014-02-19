@@ -25,11 +25,13 @@
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
 		3F8D4B4618A0F6FE00611DAC /* libKeenClient-Aggregate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */; };
 		3F8D4B4A18A0FAAB00611DAC /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D4B4918A0FAAB00611DAC /* TestViewController.m */; };
+		3FEBC1BF18B3677C008EE28E /* CommentDetailsPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */; };
 		3FEE1CEB189FE6840080680F /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CE8189FE6840080680F /* WYPopoverController.m */; };
 		3FEE1CEC189FE6840080680F /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEA189FE6840080680F /* WYStoryboardPopoverSegue.m */; };
 		3FEE1CF0189FE7560080680F /* PhotosDatasourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CEF189FE7560080680F /* PhotosDatasourceCell.m */; };
 		3FEE1CF3189FE7640080680F /* PhotosDatasourceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FEE1CF2189FE7640080680F /* PhotosDatasourceViewController.m */; };
 		3FF7ACCD18A914AA000AEBCB /* CommentPostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */; };
+		3FF97C2B18B4F37A0044EF03 /* CommentPostRespCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF97C2A18B4F37A0044EF03 /* CommentPostRespCell.m */; };
 		E70115D4183B88570077EAB7 /* OwnerPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */; };
 		E70115D7183B886A0077EAB7 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D6183B886A0077EAB7 /* PhotoCell.m */; };
 		E70115DA183B88800077EAB7 /* LikesPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115D9183B88800077EAB7 /* LikesPhotoCell.m */; };
@@ -189,6 +191,8 @@
 		3F8D4B4518A0F6FE00611DAC /* libKeenClient-Aggregate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libKeenClient-Aggregate.a"; sourceTree = "<group>"; };
 		3F8D4B4818A0FAAB00611DAC /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		3F8D4B4918A0FAAB00611DAC /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		3FEBC1BD18B3677C008EE28E /* CommentDetailsPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentDetailsPostViewController.h; sourceTree = "<group>"; };
+		3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentDetailsPostViewController.m; sourceTree = "<group>"; };
 		3FEE1CE7189FE6840080680F /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		3FEE1CE8189FE6840080680F /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		3FEE1CE9189FE6840080680F /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -199,6 +203,8 @@
 		3FEE1CF2189FE7640080680F /* PhotosDatasourceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosDatasourceViewController.m; sourceTree = "<group>"; };
 		3FF7ACCB18A914AA000AEBCB /* CommentPostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostCell.h; sourceTree = "<group>"; };
 		3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostCell.m; sourceTree = "<group>"; };
+		3FF97C2918B4F37A0044EF03 /* CommentPostRespCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostRespCell.h; sourceTree = "<group>"; };
+		3FF97C2A18B4F37A0044EF03 /* CommentPostRespCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostRespCell.m; sourceTree = "<group>"; };
 		E70115D2183B88570077EAB7 /* OwnerPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnerPhotoCell.h; sourceTree = "<group>"; };
 		E70115D3183B88570077EAB7 /* OwnerPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnerPhotoCell.m; sourceTree = "<group>"; };
 		E70115D5183B886A0077EAB7 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -513,6 +519,8 @@
 				3F8D4B4918A0FAAB00611DAC /* TestViewController.m */,
 				3F64715F18AA2F40006EE6F7 /* CommentPostViewController.h */,
 				3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */,
+				3FEBC1BD18B3677C008EE28E /* CommentDetailsPostViewController.h */,
+				3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */,
 			);
 			name = "TEST-CONTROLLERS";
 			sourceTree = "<group>";
@@ -542,6 +550,8 @@
 			children = (
 				3FF7ACCB18A914AA000AEBCB /* CommentPostCell.h */,
 				3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */,
+				3FF97C2918B4F37A0044EF03 /* CommentPostRespCell.h */,
+				3FF97C2A18B4F37A0044EF03 /* CommentPostRespCell.m */,
 				3F64716218AA5C5C006EE6F7 /* CommentPostToolbarCell.h */,
 				3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */,
 			);
@@ -1141,6 +1151,7 @@
 				3FF7ACCD18A914AA000AEBCB /* CommentPostCell.m in Sources */,
 				E7D193771840F016008FD530 /* MemoriesViewController.m in Sources */,
 				3F5385521857853F00F24F35 /* MBProgressHUD.m in Sources */,
+				3FEBC1BF18B3677C008EE28E /* CommentDetailsPostViewController.m in Sources */,
 				E7719B5E1864BC32002E4A1B /* MPSurveyQuestion.m in Sources */,
 				E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */,
 				E70D49841843CE1E007A0445 /* InvitedCell.m in Sources */,
@@ -1174,6 +1185,7 @@
 				E7F10FA1183FA39F0061350A /* PhotosSelectionCell.m in Sources */,
 				E7F10F9E183F85E80061350A /* Photo.m in Sources */,
 				E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */,
+				3FF97C2B18B4F37A0044EF03 /* CommentPostRespCell.m in Sources */,
 				3F286B10187C148B005A09C2 /* CommentCell.m in Sources */,
 				3FEE1CF3189FE7640080680F /* PhotosDatasourceViewController.m in Sources */,
 				E7719B621864BC32002E4A1B /* UIImage+MPImageEffects.m in Sources */,
