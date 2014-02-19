@@ -187,6 +187,7 @@
     //Get the event object.
     PFObject *event = [self.invitations objectAtIndex:indexPath.row][@"event"];
     
+    
     //Date
     NSDate *start_date = event[@"start_time"];
     //Formatter for the hour
@@ -204,7 +205,21 @@
     //Fill the cell
     cell.nameEventLabel.text = event[@"name"];
     
-    cell.whereWhenLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
+    NSString *hourToPrint;
+    if (![event[@"is_date_only"] boolValue]) {
+        hourToPrint = [formatterHourMinute stringFromDate:start_date];
+    }
+    else{
+        if (event[@"end_time"]) {
+            NSInteger nbDays = [MOUtility daysBetweenDate:(NSDate *)event[@"start_time"] andDate:(NSDate *)event[@"end_time"]];
+            hourToPrint = [NSString stringWithFormat:NSLocalizedString(@"ListEvents_DateEventLabelDuring", nil), nbDays];
+        }
+        else{
+            hourToPrint = NSLocalizedString(@"ListEvents_DateEventLabelAllDay", nil);
+        }
+    }
+    
+    cell.whereWhenLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", hourToPrint] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), hourToPrint, event[@"location"]];
     cell.ownerInvitation.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
     cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
     cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
@@ -245,11 +260,16 @@
             else{
                 self.facebookEventNotReplied = [result[@"data"] count];
                 if (self.facebookEventNotReplied==0) {
+                    [self setBadgeForInvitation:self.tabBarController atIndex:1];
                     ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
                     if (invitationsController) {
                         [invitationsController loadInvitationFromServer];
                         [invitationsController loadDeclinedFromSever];
                     }
+                }
+                
+                if (self.facebookEventsNb == 0) {
+                    [self stopRefresh];
                 }
             }
             
@@ -262,7 +282,10 @@
             
         }
         else if ([error.userInfo[FBErrorParsedJSONResponseKey][@"body"][@"error"][@"type"] isEqualToString:@"OAuthException"]) { // Since the request failed, we can check if it was due to an invalid session
-            [self performSegueWithIdentifier:@"Login" sender:nil];
+            [[Mixpanel sharedInstance] track:@"OAuth Disconnect"];
+            if (!self.isBackgroundTask) {
+                [self performSegueWithIdentifier:@"Login" sender:nil];
+            }
         }
         else{
             NSLog(@"%@", error);
@@ -373,7 +396,12 @@
         if (!error) {
             [invits addObjectsFromArray:objects];
             
+            //Erase all actual notifs
+            [MOUtility eraseNotifsOfType:0];
+            [MOUtility eraseNotifsOfType:1];
+            
             for(PFObject *invitation in objects){
+                [MOUtility programNotifForEvent:invitation];
                 [MOUtility saveInvitationWithEvent:invitation];
             }
             

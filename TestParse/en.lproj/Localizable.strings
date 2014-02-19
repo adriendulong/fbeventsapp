@@ -233,10 +233,15 @@
 "ListInvitationsController_BodyDeclinedMessage3" = "Have a great moment!";
 "ListInvitationsController_BodyDeclinedMessage4" = "Sorry, I have my pony lesson!";
 
+"ListInvitations_DateEventLabelAllDay" = "%@ all day long";
+"ListInvitations_DateEventLabelDuring" = "%@ during %i day";
+
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "No upcoming events ...";
 "ListEvents_Searching" = "Search events...";
+"ListEvents_DateEventLabelAllDay" = "All day long";
+"ListEvents_DateEventLabelDuring" = "During %i day";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Events";

@@ -208,6 +208,48 @@
     }
     
     
+    
+    ////// LOCAL Notifs
+    UILocalNotification *locationNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (locationNotification) {
+        // Set icon badge number to zero
+        NSString *objectIdInvit = locationNotification.userInfo[@"invitationId"];
+        
+        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+        [queryInvit whereKey:@"objectId" equalTo:objectIdInvit];
+        [queryInvit includeKey:@"event"];
+        queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+            }else if ([PFUser currentUser]) {
+                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                viewController.invitation = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+                
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        }];
+    }
+    
+    
+    
     //Update user infos
     if ([PFUser currentUser]) {
         [MOUtility updateUserInfos];
@@ -244,6 +286,9 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     NSNumber *seconds = @([[NSDate date] timeIntervalSinceDate:self.startTime]);
     [[Mixpanel sharedInstance] track:@"Session" properties:@{@"Length": seconds}];
+    
+    NSDictionary *event= [NSDictionary dictionaryWithObjectsAndKeys: seconds, @"length", nil];
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"Session" error:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -281,6 +326,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    NSArray *localNotifs = [[UIApplication sharedApplication] scheduledLocalNotifications];
+
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSettings setDefaultAppID:FacebookAppId];
     [FBAppEvents activateApp];
@@ -329,6 +377,16 @@
             return nil;
         }
     };
+    
+    NSDictionary *event;
+    if ([PFUser currentUser]) {
+        event= [NSDictionary dictionaryWithObjectsAndKeys: @YES, @"with_user", nil];
+    }
+    else{
+        event= [NSDictionary dictionaryWithObjectsAndKeys: @NO, @"with_user", nil];
+    }
+    
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"App Open" error:nil];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -577,6 +635,54 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     
     //
     
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    UIApplicationState state = [application applicationState];
+    if (state == UIApplicationStateActive) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rappel"
+                                                        message:notification.alertBody
+                                                       delegate:self cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        NSString *objectIdInvit = notification.userInfo[@"invitationId"];
+        
+        PFQuery *queryInvit = [PFQuery queryWithClassName:@"Invitation"];
+        [queryInvit whereKey:@"objectId" equalTo:objectIdInvit];
+        [queryInvit includeKey:@"event"];
+        queryInvit.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+            if (error && error.code == kPFErrorObjectNotFound) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+                
+            }else if ([PFUser currentUser]) {
+                PhotosCollectionViewController *viewController = (PhotosCollectionViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"PhotosCollectionEvent"];
+                viewController.invitation = object;
+                viewController.hidesBottomBarWhenPushed = YES;
+                
+                UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+                UINavigationController *navController = (UINavigationController *)tabBar.selectedViewController;
+                [navController pushViewController:viewController animated:YES];
+
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem"
+                                                                message:@"There was a problem accessing to this event."
+                                                               delegate:self cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        }];
+    }
+
 }
 
 

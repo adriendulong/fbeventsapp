@@ -233,10 +233,15 @@
 "ListInvitationsController_BodyDeclinedMessage3" = "¡ Sin mi, pero disfrutas al máximo !";
 "ListInvitationsController_BodyDeclinedMessage4" = "¡ Lo siento, tengo aquabike !";
 
+"ListInvitations_DateEventLabelAllDay" = "%@ todo el día";
+"ListInvitations_DateEventLabelDuring" = "%@ durante %i día(s)";
+
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notificaciones  : %i";
 "ListEvents_NoEvent" = "No hay próximos eventos ...";
 "ListEvents_Searching" = "Búsqueda eventos...";
+"ListEvents_DateEventLabelAllDay" = "Todo el día";
+"ListEvents_DateEventLabelDuring" = "Durante %i día(s)";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Eventos";

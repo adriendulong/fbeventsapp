@@ -6,6 +6,11 @@
 "PushNotifs_InvitationsOne" = "Une invitation à un évènement en attente de réponse";
 "PushNotifs_NewComment" = "%@ a commenté une de vos photos";
 
+/* Local Notifs */
+"LocalNotifs_TomorrowGo" = "Demain aura lieu '%@', va consulter les dernières infos.";
+"LocalNotifs_TommorowMaybe" = "Demain aura lieu '%@', pense à confirmer ta présence.";
+"LocalNotifs_SameDay" = "'%@' a commencé! Consulte les photos ou ajoute les tiennes !";
+
 
 /* UITabBar */
 "UITabBar_Title_FirstPosition" = "Evènements";
@@ -233,10 +238,15 @@
 "ListInvitationsController_BodyDeclinedMessage3" = "Ce sera sans moi mais, amusez vous bien !";
 "ListInvitationsController_BodyDeclinedMessage4" = "Désolé, j'ai aquabike !";
 
+"ListInvitations_DateEventLabelAllDay" = "%@ toute la journée";
+"ListInvitations_DateEventLabelDuring" = "%@ pendant %i jour(s)";
+
 ///// ListEvents /////
 "ListEvents_Notifs" = "Notifs : %i";
 "ListEvents_NoEvent" = "Aucun évènement à venir ...";
 "ListEvents_Searching" = "Recherche d'évènements...";
+"ListEvents_DateEventLabelAllDay" = "Toute la journée";
+"ListEvents_DateEventLabelDuring" = "Pendant %i jour(s)";
 
 ///// MemoriesImportViewController /////
 "MemoriesImportViewController_Title" = "Evènements";

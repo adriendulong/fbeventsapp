@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSMutableArray *removingInvits;
 @property (nonatomic, assign) NSUInteger minimalAdsCount;
 @property (nonatomic, assign) BOOL willDisplayAds;
+@property (nonatomic, assign) NSInteger needReloadFuture;
 
 @property (strong, nonatomic) UIView *viewBack;
 

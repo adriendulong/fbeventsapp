@@ -363,9 +363,28 @@
         [formatterHourMinute setDateFormat:@"d MMM - HH:mm"];
         [formatterHourMinute setLocale:[NSLocale currentLocale]];
         
+        NSDateFormatter *formatterDay = [NSDateFormatter new];
+        [formatterDay setDateFormat:@"d MMM"];
+        [formatterDay setLocale:[NSLocale currentLocale]];
+        
+        NSString *hourToPrint;
+        if (![event[@"is_date_only"] boolValue]) {
+            hourToPrint = [formatterHourMinute stringFromDate:start_date];
+        }
+        else{
+            if (event[@"end_time"]) {
+                NSInteger nbDays = [MOUtility daysBetweenDate:(NSDate *)event[@"start_time"] andDate:(NSDate *)event[@"end_time"]];
+                hourToPrint = [NSString stringWithFormat:NSLocalizedString(@"ListInvitations_DateEventLabelDuring", nil),[formatterDay stringFromDate:start_date] ,nbDays];
+            }
+            else{
+                hourToPrint = [NSString stringWithFormat:NSLocalizedString(@"ListInvitations_DateEventLabelAllDay", nil), [formatterDay stringFromDate:start_date]];
+            }
+        }
+        
+        
         //Fill the cell
         cell.nameLabel.text = event[@"name"];
-        cell.whenWhereLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", [formatterHourMinute stringFromDate:start_date]] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), [formatterHourMinute stringFromDate:start_date], event[@"location"]];
+        cell.whenWhereLabel.text = (event[@"location"] == nil) ? [NSString stringWithFormat:@"%@", hourToPrint] : [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_WhenWhere", nil), hourToPrint, event[@"location"]];
         cell.ownerInvitationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ListInvitationsController_SendInvit", nil), event[@"owner"][@"name"]];
         
         // Add a nice corner radius to the image
@@ -919,6 +938,7 @@
                 
             }
             else{
+                NSLog(@"Error : %@", error);
                 [userInfo setObject:@NO forKey:@"isSuccess"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
             }

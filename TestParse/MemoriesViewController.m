@@ -440,6 +440,7 @@
 
 -(void)isEmptyTableView{
     UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+    [viewBack setUserInteractionEnabled:NO];
     
     UIImage *image = [UIImage imageNamed:@"broken_heart"];
     UIImageView *imageView = [[UIImageView alloc] init];
@@ -474,21 +475,23 @@
     [label setFont:[MOUtility getFontWithSize:18.0]];
     label.text = NSLocalizedString(@"MemoriesViewController_Empty", nil);
     
-    [viewBack addSubview:imageView];
-    [viewBack addSubview:label];
-    [viewBack addSubview:buttonMemories];
-    
     
     [buttonMemories setTitle:NSLocalizedString(@"MemoriesViewController_AutoImportButton", nil) forState:UIControlStateNormal];
-    [buttonMemories addTarget:self action:@selector(createMemorie) forControlEvents:UIControlEventTouchDown];
+    [buttonMemories addTarget:self action:@selector(createMemorie) forControlEvents:UIControlEventTouchUpInside];
     [buttonMemories setEnabled:YES];
     
     [buttonMemories setBackgroundImage:[UIImage imageNamed:@"import_auto_infos"] forState:UIControlStateNormal];
     
+    [viewBack addSubview:imageView];
+    [viewBack addSubview:label];
+    [viewBack addSubview:buttonMemories];
+    
     if (!self.memoriesInvitations) {
         self.tableView.backgroundView = viewBack;
+        
     }
     else if(self.memoriesInvitations.count==0){
+        
         self.tableView.backgroundView = viewBack;
     }
     else{

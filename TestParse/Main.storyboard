@@ -887,7 +887,7 @@
             </objects>
             <point key="canvasLocation" x="2122" y="-842"/>
         </scene>
-        <!--List Events - Woovent-->
+        <!--List Events-->
         <scene sceneID="hrE-aY-fXA">
             <objects>
                 <tableViewController id="jsg-sy-FTH" customClass="ListEvents" sceneMemberID="viewController">
@@ -975,13 +975,24 @@
                             <outlet property="delegate" destination="jsg-sy-FTH" id="NwX-m0-Y3M"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Woovent" id="ZZU-K7-WOt">
+                    <navigationItem key="navigationItem" id="ZZU-K7-WOt">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="settings_white" id="VAa-Uo-kpU">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="fX5-Ux-m2G" kind="modal" id="5cn-bh-g8i"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="FeZ-6X-O6R">
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mini_picto" translatesAutoresizingMaskIntoConstraints="NO" id="B39-Ga-Fqt">
+                                    <rect key="frame" x="48" y="0.0" width="33" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </imageView>
+                            </subviews>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="hm0-Xr-u47">
                             <view key="customView" alpha="0.0" tag="1" contentMode="scaleToFill" id="qBv-Fo-XD2">
                                 <rect key="frame" x="233" y="5" width="71" height="33"/>
@@ -1178,7 +1189,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="ET plus" footerTitle="Woovent v1.0.2" id="Mfm-yn-LFA">
+                            <tableViewSection headerTitle="ET plus" footerTitle="Woovent v1.0.4" id="Mfm-yn-LFA">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ubw-vn-bEI">
                                         <rect key="frame" x="0.0" y="435" width="320" height="44"/>
@@ -2353,6 +2364,16 @@
                                 <segue destination="fX5-Ux-m2G" kind="modal" id="WWM-2T-ArI"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="8Ey-LC-8mA">
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mini_picto" translatesAutoresizingMaskIntoConstraints="NO" id="3Ql-N2-oZA">
+                                    <rect key="frame" x="48" y="0.0" width="33" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </imageView>
+                            </subviews>
+                        </view>
                         <barButtonItem key="rightBarButtonItem" image="plus" id="Zyx-XY-e5X">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -4014,6 +4035,7 @@
         <image name="marmote1" width="124" height="117"/>
         <image name="marmotte_search" width="149" height="214"/>
         <image name="masque_rond" width="48" height="48"/>
+        <image name="mini_picto" width="80" height="80"/>
         <image name="modif_type_event" width="46" height="46"/>
         <image name="my_events_on" width="23" height="21"/>
         <image name="next_cover" width="10" height="15"/>
@@ -4040,13 +4062,13 @@
         <segue reference="WWM-2T-ArI"/>
         <segue reference="85D-2h-GPM"/>
         <segue reference="pId-s9-PUV"/>
+        <segue reference="yqu-UZ-Hyz"/>
+        <segue reference="H4y-UD-BIY"/>
+        <segue reference="Imw-kp-jNA"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="Biz-ZH-3yq"/>
         <segue reference="gQS-Od-x3H"/>
         <segue reference="ItH-HP-BNq"/>
         <segue reference="EkG-m5-ZxD"/>
-        <segue reference="Wlq-vB-X1o"/>
-        <segue reference="zHu-yQ-I5R"/>
-        <segue reference="PEq-CK-woa"/>
     </inferredMetricsTieBreakers>
 </document>
