@@ -295,4 +295,7 @@
 "LandingViewControllerWinner_start" = "Démarrer !";
 "LandingViewControllerWinner_challenge" = "Défis tes amis !";
 
-
+/// CommentPostViewController ///
+"CommentPostViewController_ShowComment" = "Afficher le commentaire";
+"CommentPostViewController_ShowNbComments" = "Afficher les %i commentaires";
+"CommentPostViewController_NoComment" = "Aucun commentaire";

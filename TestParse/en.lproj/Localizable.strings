@@ -288,3 +288,8 @@
 "LandingViewControllerWinner_easilyManage" = "With Woovent, easily manage your Facebook events!";
 "LandingViewControllerWinner_start" = "Go !";
 "LandingViewControllerWinner_challenge" = "Challenge your friends!";
+
+/// CommentPostViewController ///
+"CommentPostViewController_ShowComment" = "Show comment";
+"CommentPostViewController_ShowNbComments" = "Show %i comments";
+"CommentPostViewController_NoComment" = "No comment";
