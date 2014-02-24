@@ -183,6 +183,7 @@
 
 /*!
  *  @brief Ask if ads are loaded and if there is at least one modal ad available
+ *  @since 2.2
  *
  *  @note If ads aren't downloaded yet, then the method will return `NO`.
  *  To test the library, and then have a positive response, please use the "debug" mode.
@@ -190,9 +191,9 @@
  *  @param modalType The kind of modal you want to check.
  *  Note that most of ads should be available for both formats.
  *
- *  @return `YES` if ads are loaded and if there is at least one modal ad available, `NO` otherwise.
+ *  @return `AFAdSDKAdAvailabilityPending` if ads aren't loaded yet, `AFAdSDKAdAvailabilityYes` and if there is at least one modal ad available, `AFAdSDKAdAvailabilityNo` otherwise.
  */
-+ (BOOL)isThereAModalAdAvailable:(AFAdSDKModalType)modalType;
++ (AFAdSDKAdAvailability)isThereAModalAdAvailableForType:(AFAdSDKModalType)modalType;
 
 /*!
  *  @brief Cancel any pending ad modal request you have made in the past.
@@ -263,5 +264,11 @@
  *  @return An `UIView` containing an ad which can be displayed right now. In case a problem occured, `nil` could be returned.
  */
 + (AFAdSDKSashimiView *)sashimiViewForSubclass:(Class)viewClass withController:(UIViewController *)controller andError:(NSError **)error;
+
+
+/** @name Deprecated Methods.
+ */
+
++ (BOOL)isThereAModalAdAvailable:(AFAdSDKModalType)modalType __deprecated_msg("This method is deprecated. You should use '+isThereAModalAdAvailableForType:' instead!");
 
 @end

@@ -21,9 +21,106 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import <EventKit/EventKit.h>
 
 #define METERS_PER_MILE 1609.344
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
+//////////
+/// SHARE UIActivityController
+//////////
+
+/*
+@implementation APActivityProvider
+- (id) activityViewController:(UIActivityViewController *)activityViewController
+          itemForActivityType:(NSString *)activityType
+{
+    if ( [activityType isEqualToString:UIActivityTypePostToTwitter] )
+        return @"This is a #twitter post!";
+    if ( [activityType isEqualToString:UIActivityTypePostToFacebook] )
+        return @"This is a facebook post!";
+    if ( [activityType isEqualToString:UIActivityTypeMessage] )
+        return @"SMS message text";
+    if ( [activityType isEqualToString:UIActivityTypeMail] )
+        return @"Email text here!";
+    return nil;
+}
+- (id) activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController { return @""; }
+@end*/
+
+@implementation APActivityIcon
+- (NSString *)activityType { return @"com.moment.addToCalendar"; }
+- (NSString *)activityTitle { return NSLocalizedString(@"PhotosCollectionViewController_AddCalendar", nil); }
+- (UIImage *) activityImage { return [UIImage imageNamed:@"my_events_off"]; }
+- (BOOL) canPerformWithActivityItems:(NSArray *)activityItems { return YES; }
+- (void) prepareWithActivityItems:(NSArray *)activityItems { }
+- (UIViewController *) activityViewController { return nil; }
+- (void) performActivity {
+    EKEventStore *eventStore = [[EKEventStore alloc] init];
+    if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)])
+    {
+        // the selector is available, so we must be on iOS 6 or newer
+        [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (error)
+                {
+                    [self activityDidFinish:YES];
+                    // display error message here
+                }
+                else if (!granted)
+                {
+                    [self activityDidFinish:YES];
+                    // display access denied error message here
+                }
+                else
+                {
+                    EKEvent *event = [EKEvent eventWithEventStore:eventStore];
+                    event.title = self.nameEvent;
+                    event.startDate =  self.start_time; //today
+                    if (self.is_date_only) {
+                        event.allDay = YES;
+                        if (self.has_end_time) {
+                            event.endDate = self.end_time;
+                        }
+                        else{
+                            event.endDate = [self.start_time dateByAddingTimeInterval:60*60*24];
+                        }
+                    }
+                    else{
+                        event.allDay = NO;
+                        
+                        if (self.has_end_time) {
+                            event.endDate = self.end_time;
+                        }
+                        else{
+                            event.endDate = [self.start_time dateByAddingTimeInterval:60*60*12];
+                        }
+                    }
+                    
+                    [event setCalendar:[eventStore defaultCalendarForNewEvents]];
+                    NSError *err = nil;
+                    [eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&err];
+                    if (err) {
+                        NSLog(@"error : %@", err);
+                    }
+                    [self activityDidFinish:YES];
+                    // access granted
+                    // ***** do the important stuff here *****
+                }
+        }];
+    }
+    else
+    {
+        // this code runs in iOS 4 or iOS 5
+        // ***** do the important stuff here *****
+    }
+}
+@end
+
+
+
+//////////
+/// END SHARE UIActivityController
+//////////
 
 @interface PhotosCollectionViewController ()
 
@@ -49,8 +146,6 @@
     //We are in the tab Bar
     if (!self.invitation) {
         self.mustChangeTitle = NO;
-        
-        [TestFlight passCheckpoint:@"DETAIL_EVENT_TAB_BAR"];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateClosestEvent:) name:UpdateClosestEvent object:nil];
         
@@ -89,7 +184,6 @@
         
     }
     else{
-        [TestFlight passCheckpoint:@"DETAIL_EVENT"];
         [self.navigationController setToolbarHidden:YES];
     }
     
@@ -913,14 +1007,12 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
-        [TestFlight passCheckpoint:@"ADD_PHOTO_BUTTON"];
         [[Mixpanel sharedInstance] track:@"Take Photo" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter], @"Where" : @"Collection View"}];
         UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
         CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
         cameraViewController.event = self.invitation[@"event"];
     }
     else if ([segue.identifier isEqualToString:@"AddPhotoBarItem"]) {
-        [TestFlight passCheckpoint:@"ADD_PHOTO_BAR_ITEM"];
         [[Mixpanel sharedInstance] track:@"Take Photo" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter], @"Where" : @"Top Bar"}];
         UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
         CameraViewController *cameraViewController = [navController.viewControllers objectAtIndex:0];
@@ -960,16 +1052,14 @@
         photoImported.levelRoot = 1;
     }
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){
-        [TestFlight passCheckpoint:@"DESCRIPTION_FROM_DETAIL"];
         
         DetailDescriptionViewController *detailDescription = (DetailDescriptionViewController *)segue.destinationViewController;
         detailDescription.description = self.invitation[@"event"][@"description"];
     }
     else if([segue.identifier isEqualToString:@"Invited"]){
-        [TestFlight passCheckpoint:@"GUESTS_FROM_DETAIL"];
         
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;
-        invitedController.invited = self.invited;
+        invitedController.invited = [self.invited mutableCopy];
         invitedController.event = self.invitation[@"event"];
     }
     
@@ -978,7 +1068,6 @@
 #pragma mark - MAPS
 
 - (void)touchedMap:(UITapGestureRecognizer *)recognizer {
-    [TestFlight passCheckpoint:@"CLICK_OPEN_MAP"];
     
     if ([[UIApplication sharedApplication] canOpenURL:
               [NSURL URLWithString:@"comgooglemaps://"]]) {
@@ -1039,10 +1128,8 @@
 }
 
 - (IBAction)hideViewTap:(id)sender {
-    [TestFlight passCheckpoint:@"CHANGE_VISIBILITY_DETAILS"];
     
     if (self.isShowingDetails) {
-        [TestFlight passCheckpoint:@"HIDE_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Show_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:YES];
         
@@ -1055,7 +1142,6 @@
         self.headerCollectionView.rightArrow.transform = rightRotationTransform;
     }
     else{
-        [TestFlight passCheckpoint:@"SHOW_DETAILS"];
         self.headerCollectionView.labelHide.text = NSLocalizedString(@"PhotosCollectionViewController_Hide_Label", nil);
         [self.headerCollectionView.viewToHide setHidden:NO];
         
@@ -1071,6 +1157,54 @@
     self.isShowingDetails = !self.isShowingDetails;
     [self.collectionView reloadData];
     //[self.collectionViewLayout invalidateLayout];
+}
+
+- (IBAction)share:(id)sender {
+    //APActivityProvider *ActivityProvider = [[APActivityProvider alloc] init];
+    
+    NSString *message;
+    NSString *urlEvent = [NSString stringWithFormat:@"http://woovent.com/e/%@", ((PFObject *)self.invitation[@"event"]).objectId];
+    if ([self.headerCollectionView.nbPhotosLabel.text intValue]>3) {
+        message = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_ShareMessageMultiple", nil), [self.headerCollectionView.nbPhotosLabel.text intValue], self.invitation[@"event"][@"name"], urlEvent];
+    }
+    else{
+        message = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_ShareMessageFew", nil), self.invitation[@"event"][@"name"], urlEvent];
+    }
+   
+    NSArray *urlToShare = [NSArray arrayWithObjects:message, nil];
+    
+    
+    //Custom Save Date
+    APActivityIcon *ca = [[APActivityIcon alloc] init];
+    ca.nameEvent = self.invitation[@"event"][@"name"];
+    ca.is_date_only = [self.invitation[@"event"][@"is_date_only"] boolValue];
+    if(self.invitation[@"event"][@"end_time"]){
+        ca.has_end_time = YES;
+        ca.end_time = (NSDate *)self.invitation[@"event"][@"end_time"];
+    }
+    ca.start_time = (NSDate *)self.invitation[@"event"][@"start_time"];
+    NSArray *Acts = @[ca];
+    
+    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:urlToShare applicationActivities:Acts];
+    [controller setValue:self.invitation[@"event"][@"name"] forKey:@"subject"];
+    NSArray *excludedActivities = @[UIActivityTypePostToWeibo,
+                                    UIActivityTypeAirDrop,
+                                    UIActivityTypePrint, UIActivityTypeCopyToPasteboard,
+                                    UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll,
+                                    UIActivityTypeAddToReadingList, UIActivityTypePostToFlickr,
+                                    UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    controller.excludedActivityTypes = excludedActivities;
+    
+    controller.completionHandler = ^(NSString *activityType, BOOL completed) {
+        if (completed) {
+            [[Mixpanel sharedInstance] track:@"Share Event" properties:@{@"type": activityType}];
+        }
+    };
+    
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    
+    
 }
 
 

@@ -394,7 +394,6 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"DetailEvent"]) {
-        [TestFlight passCheckpoint:@"DETAIL_FROM_MEMORIES"];
         [[Mixpanel sharedInstance] track:@"Detail Event" properties:@{@"From": @"Memories View"}];
         
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];

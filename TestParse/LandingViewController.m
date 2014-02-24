@@ -142,16 +142,16 @@
     if (requestFacebook==nil) {
         //Attending and maybe
         if (self.step == 0) {
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&limit=500", stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=now&limit=10000"];
         }
         else if(self.step == 1){
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=declined&limit=1500", stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=now&type=declined&limit=10000"];
         }
         else if(self.step == 2){
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=not_replied&limit=1500",stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=now&type=not_replied&limit=10000"];
         }
         else{
-            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=%@&type=created&limit=500", stopDate];
+            requestFacebook = [NSString stringWithFormat:@"/me/events?fields=id&until=now&type=created&limit=10000"];
         }
         
     }

@@ -286,9 +286,12 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     NSNumber *seconds = @([[NSDate date] timeIntervalSinceDate:self.startTime]);
     [[Mixpanel sharedInstance] track:@"Session" properties:@{@"Length": seconds}];
+    [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
     
     NSDictionary *event= [NSDictionary dictionaryWithObjectsAndKeys: seconds, @"length", nil];
-    [[KeenClient sharedClient] addEvent:event toEventCollection:@"Session" error:nil];
+    KeenProperties *keenProperties = [[KeenProperties alloc] init];
+    keenProperties.timestamp = [NSDate date];
+    [[KeenClient sharedClient] addEvent:event withKeenProperties:keenProperties toEventCollection:@"Session" error:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -308,6 +311,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     //reload events
     if ([PFUser currentUser]) {
@@ -326,13 +330,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSettings setDefaultAppID:FacebookAppId];
     [FBAppEvents activateApp];
-    [[Mixpanel sharedInstance] track:@"App Open"];
-    [[Mixpanel sharedInstance].people set:@{@"Last Session": [NSDate date]}];
+    
     [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
     
     //Clear Badge
@@ -377,15 +379,6 @@
         }
     };
     
-    NSDictionary *event;
-    if ([PFUser currentUser]) {
-        event= [NSDictionary dictionaryWithObjectsAndKeys: @YES, @"with_user", nil];
-    }
-    else{
-        event= [NSDictionary dictionaryWithObjectsAndKeys: @NO, @"with_user", nil];
-    }
-    
-    [[KeenClient sharedClient] addEvent:event toEventCollection:@"App Open" error:nil];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -686,7 +679,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
 
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    //[[Mixpanel sharedInstance] track:@"Background Fetch"];
     
     if ([PFUser currentUser]) {
         UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;

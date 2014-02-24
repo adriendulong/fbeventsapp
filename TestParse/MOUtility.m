@@ -1406,6 +1406,7 @@
         if ([rsvp_status isEqualToString:FacebookEventAttending]||[rsvp_status isEqualToString:FacebookEventMaybe]) {
             //Erase all notif for this event
             [self eraseNotifsForInvitation:invitation];
+            
             [self createNotif:invitation andType:0];
             [self createNotif:invitation andType:1];
             
@@ -1513,7 +1514,15 @@
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     localNotification.userInfo = userInfos;
     localNotification.soundName = UILocalNotificationDefaultSoundName;
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    
+    
+    //Notif date must be after the actuel date otherwise will always pop up
+    if ([localNotification.fireDate compare:[NSDate date]] == NSOrderedDescending) {
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+    }
+    
+    
+    
 }
 
 

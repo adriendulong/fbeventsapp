@@ -103,6 +103,7 @@
                 event = object;
                 
                 //See if an invitation exists
+                
                 PFQuery *queryInvit  = [PFQuery queryWithClassName:@"Invitation"];
                 [queryInvit whereKey:@"user" equalTo:[PFUser currentUser]];
                 [queryInvit whereKey:@"event" equalTo:event];

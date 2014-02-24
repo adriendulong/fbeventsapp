@@ -10,6 +10,16 @@
 #import "InfoHeaderCollectionView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+/*@interface APActivityProvider : UIActivityItemProvider <UIActivityItemSource>
+@end*/
+@interface APActivityIcon : UIActivity
+@property (strong, nonatomic) NSDate *start_time;
+@property (strong, nonatomic) NSDate *end_time;
+@property (strong, nonatomic) NSString *nameEvent;
+@property (nonatomic, assign) BOOL has_end_time;
+@property (nonatomic, assign) BOOL is_date_only;
+@end
+
 @interface PhotosCollectionViewController : UICollectionViewController
 
 @property (strong, nonatomic) NSArray *photos;
@@ -31,4 +41,5 @@
 
 - (IBAction)autoImport:(id)sender;
 - (IBAction)hideViewTap:(id)sender;
+- (IBAction)share:(id)sender;
 @end

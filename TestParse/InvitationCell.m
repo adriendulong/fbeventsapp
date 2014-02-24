@@ -29,7 +29,6 @@
 }
 
 -(IBAction)rsvpChanged:(id)sender {
-    [TestFlight passCheckpoint:@"CHANGE_RSVP_INVITATIONS"];
     
     
     NSDictionary *event;

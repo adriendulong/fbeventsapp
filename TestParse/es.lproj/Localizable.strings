@@ -6,6 +6,10 @@
 "PushNotifs_InvitationsOne" = "Una invitación a un evento pendiente de respuesta";
 "PushNotifs_NewComment" = "%@ a commenté une de vos photos";
 
+/* Local Notifs */
+"LocalNotifs_TomorrowGo" = "%@ will take place tomorrow, get the last infos";
+"LocalNotifs_TommorowMaybe" = "%@ will take place tomorrow, confirm your presence";
+"LocalNotifs_SameDay" = "%@ has started! Take a look to the photos or add yours!";
 
 /* UITabBar */
 "UITabBar_Title_FirstPosition" = "Enventos";
@@ -164,6 +168,9 @@
 "PhotosCollectionViewController_AutoImport" = "Crear un recuerdo";
 "PhotosCollectionViewController_TimeConjonction" = "a";
 "PhotosCollectionViewController_NbPhotos" = "%i Fotos";
+"PhotosCollectionViewController_AddCalendar" = "Añadir al calendario";
+"PhotosCollectionViewController_ShareMessageMultiple" = "Find here the %i photos taken during %@ : %@";
+"PhotosCollectionViewController_ShareMessageFew" = "Find here all the photos taken during %@ : %@";
 
 
 
@@ -266,6 +273,13 @@
 "SettingsViewController_disconnect" = "Salir";
 "SettingsViewController_Thanks" = "Agradecimientos";
 "SettingsViewController_myStats" = "Mis Estadísticas";
+"SettingsViewController_rateApp" = "Rate the app";
+"SettingsViewController_ShareApp" = "This is an app that will revolutionize the way you manage your Facebook events!\n Download it, it's free!\n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "An app for your Facebook events";
+"SettingsViewController_TitleSectionOne" = "Spread the word!";
+"SettingsViewController_TitleSectionTwo" = "Notifications";
+"SettingsViewController_TitleSectionThree" = "For Woovent";
+"SettingsViewController_TitleSectionFour" = "And More";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "Conectándome acepto las condiciones";
@@ -276,7 +290,7 @@
 
 /// LandingViewController ///
 "LandingViewController_analyzeLoading" = "Estamos cocinando algunas magnifico estadísticas para tu...";
-"LandingViewControllerWinner_messageForFacebook" = "¡ %i invitaciones a eventos ! ¿ Tienes mas ? Prueba en la aplicación Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_messageForFacebook" = "¡ %i invitaciones a eventos ! ¿ Tienes mas ? Prueba en la aplicación Woovent : http://www.woovent.com #woovent";
 "LandingViewControllerWinner_congratsLabel1" = "¡ Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = " ¡ Bien!";
 "LandingViewControllerWinner_congratsLabel3" = "¡ Puedes hacer mejor !";

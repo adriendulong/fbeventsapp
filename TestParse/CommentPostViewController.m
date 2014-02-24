@@ -54,7 +54,7 @@
 -(void)getPostOnEventWall {
     
     //Request
-    NSString *requestString = [NSString stringWithFormat:@"%lld?fields=feed.fields(message,from,likes,comments.fields(message,from,created_time,like_count)),name", 499827973392733];//self.invitation[@"event"][@"eventId"]];
+    NSString *requestString = [NSString stringWithFormat:@"%lld?fields=feed.fields(message,from,likes,comments.fields(message,from,created_time,like_count)),name", 613256465423657];//self.invitation[@"event"][@"eventId"]];
     
     //NSLog(@"Request : %@", requestString);
     

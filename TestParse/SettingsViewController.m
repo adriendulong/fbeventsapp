@@ -9,6 +9,18 @@
 #import "SettingsViewController.h"
 #import "MOUtility.h"
 
+@implementation APActivityIconSettings
+- (NSString *)activityType { return @"com.moment.rateApp"; }
+- (NSString *)activityTitle { return NSLocalizedString(@"SettingsViewController_rateApp", nil); }
+- (UIImage *) activityImage { return [UIImage imageNamed:@"heart_off"]; }
+- (BOOL) canPerformWithActivityItems:(NSArray *)activityItems { return YES; }
+- (void) prepareWithActivityItems:(NSArray *)activityItems { }
+- (UIViewController *) activityViewController { return nil; }
+- (void) performActivity {
+   //Open App Store
+}
+@end
+
 @interface SettingsViewController ()
 
 @end
@@ -37,7 +49,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [TestFlight passCheckpoint:@"SETTINGS"];
     
     //Init
     self.iPhoneNotifLabel.text = NSLocalizedString(@"SettingsViewController_iPhoneNotifs", nil);
@@ -95,15 +106,44 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return 4;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (section==0) {
+        return NSLocalizedString(@"SettingsViewController_TitleSectionOne", nil);
+    }
+    else if(section == 1){
+        return NSLocalizedString(@"SettingsViewController_TitleSectionTwo", nil);
+    }
+    else if(section == 2)
+    {
+        return NSLocalizedString(@"SettingsViewController_TitleSectionThree", nil);
+    }
+    else{
+        return NSLocalizedString(@"SettingsViewController_TitleSectionFour", nil);
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    if (section == 3) {
+        NSString *version = [NSString stringWithFormat:@"Woovent v%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        return version;
+    }
+    else{
+        return @"";
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
+        return 1;
+    }
+    else if (section == 1) {
         return 3;
     }
-    else if (section == 1){
+    else if (section == 2){
         return 2;
     }
     else{
@@ -123,11 +163,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {
+        if (indexPath.row==0) {
+            [self share];
+        }
+    }
+    else if (indexPath.section==1) {
         if (indexPath.row==2) {
             [self performSegueWithIdentifier:@"CountEvents" sender:nil];
         }
     }
-    else if (indexPath.section==1) {
+    else if (indexPath.section==2) {
         
         //Remarques et preuves d'amour
         if (indexPath.row==0) {
@@ -153,7 +198,7 @@
             }
         }
     }
-    else if (indexPath.section==2){
+    else if (indexPath.section==3){
         //Conditions d'utilisations
         if (indexPath.row==0) {
             //Cool
@@ -256,7 +301,6 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"Login"]){
-        [TestFlight passCheckpoint:@"DISCONNECT"];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:LogOutUser object:self];
         [MOUtility logoutApp];
@@ -269,6 +313,35 @@
     NSLog(@"%@", b);
 
     self.mustDismiss = YES;
+}
+
+
+-(void)share{
+    NSString *message = [NSString  stringWithFormat:NSLocalizedString(@"SettingsViewController_ShareApp", nil)];
+    NSArray *urlToShare = [NSArray arrayWithObjects:message, nil];
+    
+    
+    //Custom Save Date
+    APActivityIconSettings *ca = [[APActivityIconSettings alloc] init];
+    NSArray *Acts = @[ca];
+    
+    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:urlToShare applicationActivities:Acts];
+    [controller setValue:NSLocalizedString(@"SettingsViewController_ShareAppTitle", nil) forKey:@"subject"];
+    NSArray *excludedActivities = @[UIActivityTypePostToWeibo,
+                                    UIActivityTypeAirDrop,
+                                    UIActivityTypePrint, UIActivityTypeCopyToPasteboard,
+                                    UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll,
+                                    UIActivityTypeAddToReadingList, UIActivityTypePostToFlickr,
+                                    UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    controller.excludedActivityTypes = excludedActivities;
+    
+    controller.completionHandler = ^(NSString *activityType, BOOL completed) {
+        if (completed) {
+            [[Mixpanel sharedInstance] track:@"Share App" properties:@{@"type": activityType}];
+        }
+    };
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 

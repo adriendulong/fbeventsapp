@@ -55,7 +55,6 @@
 
 //RSVP to an event
 -(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp{
-    [TestFlight passCheckpoint:@"CHANGE_RSVP_FROM_DETAIL"];
     
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
@@ -133,10 +132,8 @@
 }
 
 - (IBAction)hideView:(id)sender {
-    [TestFlight passCheckpoint:@"CHANGE_VISIBILITY_DETAILS"];
     
     if (self.isShowingDetails) {
-        [TestFlight passCheckpoint:@"HIDE_DETAILS"];
         self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Details", nil);
         self.isShowingDetails = NO;
         [self.viewToHide setHidden:YES];
@@ -144,7 +141,6 @@
         
     }
     else{
-        [TestFlight passCheckpoint:@"SHOW_DETAILS"];
         self.labelHide.text = NSLocalizedString(@"InfoHeaderCollectionView_Hide", nil);
         self.isShowingDetails = YES;
         [self.viewToHide setHidden:NO];

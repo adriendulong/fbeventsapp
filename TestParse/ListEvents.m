@@ -286,15 +286,25 @@
             if (!self.isBackgroundTask) {
                 [self performSegueWithIdentifier:@"Login" sender:nil];
             }
+            else{
+                self.completionHandler(UIBackgroundFetchResultFailed);
+            }
         }
         else{
             NSLog(@"%@", error);
-            ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
-            if (invitationsController) {
-                [invitationsController loadInvitationFromServer];
-                [invitationsController loadDeclinedFromSever];
+            
+            if (!self.isBackgroundTask) {
+                ListInvitationsController *invitationsController =  (ListInvitationsController *)[[[[self.tabBarController viewControllers] objectAtIndex:1] viewControllers] objectAtIndex:0];
+                if (invitationsController) {
+                    [invitationsController loadInvitationFromServer];
+                    [invitationsController loadDeclinedFromSever];
+                }
+                [self stopRefresh];
             }
-            [self stopRefresh];
+            else{
+                self.completionHandler(UIBackgroundFetchResultFailed);
+            }
+            
         }
     }];
 
@@ -343,22 +353,25 @@
     /*if (self.isNewUser) {
         [self performSegueWithIdentifier:@"CountEvents" sender:nil];
     }*/
-    
+
     if (!self.isBackgroundTask) {
-        [TestFlight passCheckpoint:@"RELOAD_INVITATIONS_FROM_FB"];
-    }
-    
-    
-    if (!self.refreshControl.isRefreshing) {
-        [self.activityIndicator setHidden:NO];
-        [self.refreshImage setHidden:YES];
+        if (!self.refreshControl.isRefreshing) {
+            [self.activityIndicator setHidden:NO];
+            [self.refreshImage setHidden:YES];
+            
+        }
         
+        [self.fbReloadButton setEnabled:NO];
+        
+        [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
+        [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+    }
+    else{
+        [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
     }
     
-    [self.fbReloadButton setEnabled:NO];
     
-    [self retrieveEventsSince:[NSDate date] to:nil isJoin:YES];
-    [self retrieveEventsSince:[NSDate date] to:nil isJoin:NO];
+    
     
 }
 
@@ -400,10 +413,12 @@
             [MOUtility eraseNotifsOfType:0];
             [MOUtility eraseNotifsOfType:1];
             
+
             for(PFObject *invitation in objects){
                 [MOUtility programNotifForEvent:invitation];
                 [MOUtility saveInvitationWithEvent:invitation];
             }
+
             
             [[Mixpanel sharedInstance].people set:@{@"Nb Futur Events": [NSNumber numberWithInt:invits.count]}];
             
@@ -702,7 +717,8 @@
             //If it was a background task, said that it is finished
             if (self.isBackgroundTask) {
                 self.isBackgroundTask = NO;
-                [[Mixpanel sharedInstance] track:@"Background Fetch"];
+                NSLog(@"OK");
+                [[Mixpanel sharedInstance] track:@"Background Fetch" properties:@{@"success": @YES}];
                 self.completionHandler(UIBackgroundFetchResultNewData);
             }
             
@@ -717,7 +733,7 @@
             //If it was a background task, said that it is finished
             if (self.isBackgroundTask) {
                 self.isBackgroundTask = NO;
-                [[Mixpanel sharedInstance] track:@"Background Fetch"];
+                [[Mixpanel sharedInstance] track:@"Background Fetch" properties:@{@"success": @NO}];
                 self.completionHandler(UIBackgroundFetchResultFailed);
                 
             }

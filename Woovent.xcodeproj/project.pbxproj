@@ -37,7 +37,6 @@
 		E70115DD183B92F90077EAB7 /* ActionPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E70115DC183B92F90077EAB7 /* ActionPhotoCell.m */; };
 		E704C4BF18B24FD200BD32C1 /* HelveticaNeueLTStd-Lt.otf in Resources */ = {isa = PBXBuildFile; fileRef = E704C4BE18B24FC700BD32C1 /* HelveticaNeueLTStd-Lt.otf */; };
 		E704C4C118B2817400BD32C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E704C4C018B2817400BD32C1 /* Images.xcassets */; };
-		E704C4CC18B282C900BD32C1 /* libAppsfireSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E704C4C618B282C900BD32C1 /* libAppsfireSDK.a */; };
 		E704C4D018B29D4900BD32C1 /* ExampleMinimalSashimiTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E704C4CF18B29D4900BD32C1 /* ExampleMinimalSashimiTableViewCell.m */; };
 		E70BC5541887D582008C1462 /* LandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70BC5531887D582008C1462 /* LandingViewController.m */; };
 		E70D4977184367A1007A0445 /* UploadFilesAutomaticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70D4976184367A1007A0445 /* UploadFilesAutomaticViewController.m */; };
@@ -133,6 +132,7 @@
 		E7B406F7181ADA86001559CF /* ListEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = E7B406F6181ADA86001559CF /* ListEvents.m */; };
 		E7BD58B61823E9D200A62F2F /* FbEventsUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E7BD58B51823E9D200A62F2F /* FbEventsUtilities.m */; };
 		E7C87D27184CF8CD00C586E6 /* LikesCollectionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */; };
+		E7C9104918BBAD020009A965 /* libAppsfireSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7C9104318BBAD020009A965 /* libAppsfireSDK.a */; };
 		E7CFCF27183628AA001821BF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF26183628AA001821BF /* LoginViewController.m */; };
 		E7CFCF2A18362939001821BF /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7CFCF2918362939001821BF /* TutorialViewController.m */; };
 		E7D09A9718533EE400BBCAB6 /* FbEvents.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7D09A9518533EE400BBCAB6 /* FbEvents.xcdatamodeld */; };
@@ -216,14 +216,6 @@
 		E70115DC183B92F90077EAB7 /* ActionPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPhotoCell.m; sourceTree = "<group>"; };
 		E704C4BE18B24FC700BD32C1 /* HelveticaNeueLTStd-Lt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HelveticaNeueLTStd-Lt.otf"; sourceTree = "<group>"; };
 		E704C4C018B2817400BD32C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E704C4C318B282C900BD32C1 /* AppsfireAdSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireAdSDK.h; sourceTree = "<group>"; };
-		E704C4C418B282C900BD32C1 /* AppsfireSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDK.h; sourceTree = "<group>"; };
-		E704C4C518B282C900BD32C1 /* AppsfireSDKConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDKConstants.h; sourceTree = "<group>"; };
-		E704C4C618B282C900BD32C1 /* libAppsfireSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsfireSDK.a; sourceTree = "<group>"; };
-		E704C4C818B282C900BD32C1 /* AFAdSDKAdBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKAdBadgeView.h; sourceTree = "<group>"; };
-		E704C4C918B282C900BD32C1 /* AFAdSDKSashimiExtendedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiExtendedView.h; sourceTree = "<group>"; };
-		E704C4CA18B282C900BD32C1 /* AFAdSDKSashimiMinimalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiMinimalView.h; sourceTree = "<group>"; };
-		E704C4CB18B282C900BD32C1 /* AFAdSDKSashimiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiView.h; sourceTree = "<group>"; };
 		E704C4CE18B29D4900BD32C1 /* ExampleMinimalSashimiTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleMinimalSashimiTableViewCell.h; sourceTree = "<group>"; };
 		E704C4CF18B29D4900BD32C1 /* ExampleMinimalSashimiTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleMinimalSashimiTableViewCell.m; sourceTree = "<group>"; };
 		E70BC5521887D582008C1462 /* LandingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandingViewController.h; sourceTree = "<group>"; };
@@ -376,6 +368,14 @@
 		E7BD58B51823E9D200A62F2F /* FbEventsUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FbEventsUtilities.m; sourceTree = "<group>"; };
 		E7C87D25184CF8CD00C586E6 /* LikesCollectionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikesCollectionsController.h; sourceTree = "<group>"; };
 		E7C87D26184CF8CD00C586E6 /* LikesCollectionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikesCollectionsController.m; sourceTree = "<group>"; };
+		E7C9104018BBAD020009A965 /* AppsfireAdSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireAdSDK.h; sourceTree = "<group>"; };
+		E7C9104118BBAD020009A965 /* AppsfireSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDK.h; sourceTree = "<group>"; };
+		E7C9104218BBAD020009A965 /* AppsfireSDKConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDKConstants.h; sourceTree = "<group>"; };
+		E7C9104318BBAD020009A965 /* libAppsfireSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsfireSDK.a; sourceTree = "<group>"; };
+		E7C9104518BBAD020009A965 /* AFAdSDKAdBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKAdBadgeView.h; sourceTree = "<group>"; };
+		E7C9104618BBAD020009A965 /* AFAdSDKSashimiExtendedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiExtendedView.h; sourceTree = "<group>"; };
+		E7C9104718BBAD020009A965 /* AFAdSDKSashimiMinimalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiMinimalView.h; sourceTree = "<group>"; };
+		E7C9104818BBAD020009A965 /* AFAdSDKSashimiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAdSDKSashimiView.h; sourceTree = "<group>"; };
 		E7CFCF25183628AA001821BF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		E7CFCF26183628AA001821BF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		E7CFCF2818362939001821BF /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
@@ -444,7 +444,7 @@
 				E7AE14C618059A070021F321 /* StoreKit.framework in Frameworks */,
 				E7AE14BC180599DE0021F321 /* CFNetwork.framework in Frameworks */,
 				E7AE14B7180599C70021F321 /* libz.1.1.3.dylib in Frameworks */,
-				E704C4CC18B282C900BD32C1 /* libAppsfireSDK.a in Frameworks */,
+				E7C9104918BBAD020009A965 /* libAppsfireSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,10 +530,6 @@
 			children = (
 				3F8D4B4818A0FAAB00611DAC /* TestViewController.h */,
 				3F8D4B4918A0FAAB00611DAC /* TestViewController.m */,
-				3F64715F18AA2F40006EE6F7 /* CommentPostViewController.h */,
-				3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */,
-				3FEBC1BD18B3677C008EE28E /* CommentDetailsPostViewController.h */,
-				3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */,
 			);
 			name = "TEST-CONTROLLERS";
 			sourceTree = "<group>";
@@ -561,6 +557,10 @@
 		3FF7ACC718A9105D000AEBCB /* Comments */ = {
 			isa = PBXGroup;
 			children = (
+				3F64715F18AA2F40006EE6F7 /* CommentPostViewController.h */,
+				3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */,
+				3FEBC1BD18B3677C008EE28E /* CommentDetailsPostViewController.h */,
+				3FEBC1BE18B3677C008EE28E /* CommentDetailsPostViewController.m */,
 				3FF7ACCB18A914AA000AEBCB /* CommentPostCell.h */,
 				3FF7ACCC18A914AA000AEBCB /* CommentPostCell.m */,
 				3FF97C2918B4F37A0044EF03 /* CommentPostRespCell.h */,
@@ -591,24 +591,13 @@
 		E704C4C218B282C900BD32C1 /* appsfire-sdk */ = {
 			isa = PBXGroup;
 			children = (
-				E704C4C318B282C900BD32C1 /* AppsfireAdSDK.h */,
-				E704C4C418B282C900BD32C1 /* AppsfireSDK.h */,
-				E704C4C518B282C900BD32C1 /* AppsfireSDKConstants.h */,
-				E704C4C618B282C900BD32C1 /* libAppsfireSDK.a */,
-				E704C4C718B282C900BD32C1 /* sashimi */,
+				E7C9104018BBAD020009A965 /* AppsfireAdSDK.h */,
+				E7C9104118BBAD020009A965 /* AppsfireSDK.h */,
+				E7C9104218BBAD020009A965 /* AppsfireSDKConstants.h */,
+				E7C9104318BBAD020009A965 /* libAppsfireSDK.a */,
+				E7C9104418BBAD020009A965 /* sashimi */,
 			);
 			path = "appsfire-sdk";
-			sourceTree = "<group>";
-		};
-		E704C4C718B282C900BD32C1 /* sashimi */ = {
-			isa = PBXGroup;
-			children = (
-				E704C4C818B282C900BD32C1 /* AFAdSDKAdBadgeView.h */,
-				E704C4C918B282C900BD32C1 /* AFAdSDKSashimiExtendedView.h */,
-				E704C4CA18B282C900BD32C1 /* AFAdSDKSashimiMinimalView.h */,
-				E704C4CB18B282C900BD32C1 /* AFAdSDKSashimiView.h */,
-			);
-			path = sashimi;
 			sourceTree = "<group>";
 		};
 		E704C4CD18B29D3A00BD32C1 /* SashimiCells */ = {
@@ -999,6 +988,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E7C9104418BBAD020009A965 /* sashimi */ = {
+			isa = PBXGroup;
+			children = (
+				E7C9104518BBAD020009A965 /* AFAdSDKAdBadgeView.h */,
+				E7C9104618BBAD020009A965 /* AFAdSDKSashimiExtendedView.h */,
+				E7C9104718BBAD020009A965 /* AFAdSDKSashimiMinimalView.h */,
+				E7C9104818BBAD020009A965 /* AFAdSDKSashimiView.h */,
+			);
+			path = sashimi;
+			sourceTree = "<group>";
+		};
 		E7F0033E189FE1AE00315EC2 /* KeenClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -1299,8 +1299,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1319,7 +1319,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1341,8 +1341,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1354,7 +1354,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -1366,8 +1366,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1389,10 +1389,11 @@
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
 					"$(SRCROOT)/TestParse",
 					"$(SRCROOT)/TestParse/appsfire-sdk",
+					"/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse/appsfire-sdk",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1404,8 +1405,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrien Dulong (2RSN8753K7)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1427,10 +1428,11 @@
 					"$(SRCROOT)/Libraries/GoogleAnalytics",
 					"$(SRCROOT)/TestParse",
 					"$(SRCROOT)/TestParse/appsfire-sdk",
+					"/Users/AdrienDulong/Documents/Woovent/iPhone/WooventApp/fbeventsapp/TestParse/appsfire-sdk",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Woovent;
-				PROVISIONING_PROFILE = "78E7B0B4-7FD4-4302-977E-B75B5961E942";
+				PROVISIONING_PROFILE = "6EAB3673-8D04-4275-B88B-3340D19E78E8";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -169,6 +169,9 @@
 "PhotosCollectionViewController_AutoImport" = "Importation Automatique";
 "PhotosCollectionViewController_TimeConjonction" = "à";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
+"PhotosCollectionViewController_AddCalendar" = "Ajouter au calendrier";
+"PhotosCollectionViewController_ShareMessageMultiple" = "Retrouve ici les %i photos prises pendant %@ : %@";
+"PhotosCollectionViewController_ShareMessageFew" = "Retrouve ici toutes les photos prises pendant %@ : %@";
 
 
 
@@ -271,6 +274,13 @@
 "SettingsViewController_disconnect" = "Déconnexion";
 "SettingsViewController_Thanks" = "Remerciements";
 "SettingsViewController_myStats" = "Mes Statistiques";
+"SettingsViewController_rateApp" = "Noter l'app";
+"SettingsViewController_ShareApp" = "Voilà une app qui va révolutionner la gestion de tes évènenements Facebook !\n Télécharge là c'est gratuit !\n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "Une application pour tes évènements Facebook";
+"SettingsViewController_TitleSectionOne" = "Fais passer le mot !";
+"SettingsViewController_TitleSectionTwo" = "Notifications";
+"SettingsViewController_TitleSectionThree" = "Pour Woovent";
+"SettingsViewController_TitleSectionFour" = "Et Plus";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "En me connectant j'accepte les CGU";
@@ -282,7 +292,7 @@
 
 /// LandingViewController ///
 "LandingViewController_analyzeLoading" = "Nous préparons quelques belles statistiques pour vous...";
-"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com #woovent";
 "LandingViewControllerWinner_congratsLabel1" = "Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
 "LandingViewControllerWinner_congratsLabel3" = "Peut mieux faire !";
