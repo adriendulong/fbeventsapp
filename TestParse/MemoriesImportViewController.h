@@ -13,7 +13,7 @@
 @property (assign,nonatomic) int nbTotalEvents;
 @property (strong, nonatomic) NSMutableArray *arrayEvents;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) PFObject *chosedEvent;
+@property (strong, nonatomic) NSDictionary *chosedEvent;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (assign, nonatomic) BOOL thereIsMore;
 @property (strong, nonatomic) NSString *nextPage;

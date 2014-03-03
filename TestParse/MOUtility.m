@@ -396,6 +396,23 @@
     }
 }
 
++(NSDate *)getEndDateWooventEvent:(NSDictionary *)event {
+    NSDate *startDate = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+    
+    if ([event[@"is_date_only"] boolValue] == YES) {
+        return [startDate dateByAddingTimeInterval:36*3600];
+    }
+    else {
+        
+        if (event[@"end_time"]) {
+            return [MOUtility parseFacebookDate:event[@"end_time"] isDateOnly:NO];
+        }
+        else {
+            return [startDate dateByAddingTimeInterval:12*3600];
+        }
+    }
+}
+
 +(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending{
     NSMutableArray *eventMutArray = [[NSMutableArray alloc] init];
     

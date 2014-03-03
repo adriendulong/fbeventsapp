@@ -24,6 +24,7 @@
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 +(NSDate *)getEndDateEvent:(PFObject *)event;
++(NSDate *)getEndDateWooventEvent:(NSDictionary *)event;
 +(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 +(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
 + (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime;

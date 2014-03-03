@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *placeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *invitedLabel;
 
-@property (strong, nonatomic) PFObject *event;
+@property (strong, nonatomic) NSDictionary *event;
 @property (strong, nonatomic) NSArray *invited;
 @property (assign, nonatomic) int selectedType;
 @property (strong, nonatomic) NSArray *elementsForEvening;

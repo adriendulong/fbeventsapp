@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSMutableArray *imagesFound;
 @property (assign, nonatomic) int numberOfPhotosSelectedPhone;
 @property (assign, nonatomic) int numberOfPhotosSelectedFB;
-@property (strong, nonatomic) PFObject *event;
+@property (strong, nonatomic) NSDictionary *event;
 @property (strong, nonatomic) NSDate *endDate;
 
 @property (assign, nonatomic) int levelRoot;

@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *placeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *peopleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nbPhotosFound;
 
 @end

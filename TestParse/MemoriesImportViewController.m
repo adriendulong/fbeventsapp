@@ -90,7 +90,8 @@
         self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         self.hud.labelText = NSLocalizedString(@"MemoriesImportViewController_Loading", nil);
         
-        NSDictionary *eventFacebook = [self.arrayEvents objectAtIndex:indexPath.row];
+        NSMutableDictionary *eventCustom = [[self.arrayEvents objectAtIndex:indexPath.row] mutableCopy];
+        NSDictionary *eventFacebook = eventCustom[@"event"];
         
         __block PFObject *event;
         
@@ -123,7 +124,9 @@
                                 ////
                                 // PERFORM SEGUE
                                 ////
-                                self.chosedEvent = event;
+                                
+                                eventCustom[@"event"] = event;
+                                self.chosedEvent = eventCustom;
                                 [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                 [self performSegueWithIdentifier:@"DirectImport" sender:nil];
                                 
@@ -134,7 +137,8 @@
                             ////
                             // PERFORM SEGUE
                             ////
-                            self.chosedEvent = event;
+                            eventCustom[@"event"] = event;
+                            self.chosedEvent = eventCustom;
                             if (event[@"end_time"]) {
                                 [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
                                 [self performSegueWithIdentifier:@"DirectImport" sender:nil];
@@ -165,7 +169,8 @@
                                         ////
                                         // PERFORM SEGUE
                                         ////
-                                        self.chosedEvent = event;
+                                        eventCustom[@"event"] = event;
+                                        self.chosedEvent = eventCustom;
                                         [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                         [self performSegueWithIdentifier:@"DirectImport" sender:nil];
                                         
@@ -176,7 +181,8 @@
                                     ////
                                     // PERFORM SEGUE
                                     ////
-                                    self.chosedEvent = event;
+                                    eventCustom[@"event"] = event;
+                                    self.chosedEvent = eventCustom;
                                     if (event[@"end_time"]) {
                                         [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                         [self performSegueWithIdentifier:@"DirectImport" sender:nil];
@@ -211,7 +217,8 @@
                                 /////
                                 // PERFORM SEGUE
                                 /////
-                                self.chosedEvent = event;
+                                eventCustom[@"event"] = event;
+                                self.chosedEvent = eventCustom;
                                 if (event[@"end_time"]) {
                                     [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
                                     [self performSegueWithIdentifier:@"DirectImport" sender:nil];
@@ -255,7 +262,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row<self.arrayEvents.count) {
-        static NSString *CellIdentifier = @"Cell";
+        static NSString *CellIdentifier = @"MemoriesCell";
         
         MemoriesImportCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         
@@ -264,7 +271,8 @@
             
         }
         
-        NSDictionary *event = [self.arrayEvents objectAtIndex:indexPath.row];
+        NSDictionary *eventCustom = [self.arrayEvents objectAtIndex:indexPath.row];
+        NSDictionary *event = eventCustom[@"event"];
         
         //Date
         NSDate *start_date = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
@@ -282,6 +290,7 @@
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
         cell.peopleLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"MemoriesImportViewController_By", nil), event[@"owner"][@"name"]];
+        cell.nbPhotosFound.text = [eventCustom[@"nb_photos"] stringValue];
         
         return cell;
     }
@@ -314,7 +323,9 @@
     
     //Request
     if (requestFacebook==nil) {
-        requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&limit=20",FacebookEventsFields, stopDate];
+        //requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&limit=20",FacebookEventsFields, stopDate];
+        requestFacebook = [NSString stringWithFormat:@"/me/events?fields=%@&until=%@&limit=100",FacebookEventsFields, stopDate];
+        NSLog(@"requestFacebook = %@", requestFacebook);
     }
     FBRequest *request = [FBRequest requestForGraphPath:requestFacebook];
     
@@ -323,15 +334,43 @@
         if (!error) {
             //NSLog(@"%@", result);
             
-            for(id event in result[@"data"]){
-                [self.arrayEvents addObject:event];
-                self.nbTotalEvents++;
+            NSArray *resultArray = result[@"data"];
+            
+            
+            for (int e=0; e < resultArray.count; e++) {
+                
+                NSDictionary *event = (NSDictionary *)resultArray[e];
+                
+                NSDate *startDate = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+                NSDate *endTimeWoovent = (NSDate *)[MOUtility getEndDateWooventEvent:event];
+                
+                [self getNbPhotosBetweenDate:startDate andDate:endTimeWoovent withCallback:^(int nbPhotos) {
+                    
+                    NSDictionary *eventCustom = @{ @"event": event,
+                                                   @"end_time_woovent": endTimeWoovent,
+                                                   @"nb_photos": [NSNumber numberWithInt:nbPhotos]
+                                                 };
+                    
+                    //[self.arrayEvents addObject:event];
+                    [self.arrayEvents addObject:eventCustom];
+                    self.nbTotalEvents++;
+                    
+                    if (e == resultArray.count-1) {
+                        //NSLog(@"Reload");
+                        [self.tableView reloadData];
+                    }
+                    
+                }];
             }
             
+            
             if(result[@"paging"][@"next"]){
+                //NSLog(@"result[@\"paging\"][@\"next\"] = %@", result[@"paging"][@"next"]);
                 self.thereIsMore = YES;
                 NSURL *previous = [NSURL URLWithString:result[@"paging"][@"next"]];
-                NSString *goodRequest = [NSString stringWithFormat:@"%@?%@", [previous path], [previous query]];
+                //NSLog(@"previous.path = %@ | previous.query = %@", previous.path, previous.query);
+                NSString *goodRequest = [NSString stringWithFormat:@"%@?%@", previous.path, previous.query];
+                //NSLog(@"goodRequest = %@", goodRequest);
                 self.nextPage = goodRequest;
                 //[self loadOldFacebookEvents:goodRequest];
             }
@@ -342,7 +381,7 @@
             
             [self.activityIndicator stopAnimating];
             [self.activityIndicator setHidden:YES];
-            [self.tableView reloadData];
+            //[self.tableView reloadData];
             
             
         }
@@ -368,6 +407,43 @@
         photosImported.levelRoot = 0;
     }
     
+}
+
+
+#pragma mark - Load photos
+
+- (void)getNbPhotosBetweenDate:(NSDate *)startDate andDate:(NSDate *)endDate withCallback:(void (^)(int nbPhotos))callback
+{
+    __block int nbPhotos = 0;
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        
+        @autoreleasepool {
+            if (group) {
+                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop2) {
+                    if (result) {
+                        
+                        NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                        
+                        if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
+                            nbPhotos++;
+                        }
+                        
+                    }
+                }];
+                
+                if (stop) {
+                    callback(nbPhotos);
+                }
+            }
+        }
+        
+    } failureBlock:^(NSError *error) {
+        NSLog(@"Failed.");
+    }];
 }
 
 @end

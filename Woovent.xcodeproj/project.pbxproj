@@ -933,8 +933,8 @@
 		E7AE14851803F6870021F321 /* TestParse */ = {
 			isa = PBXGroup;
 			children = (
-				E704C4C218B282C900BD32C1 /* appsfire-sdk */,
 				E7A957861875A0FB007ADCCC /* Main.storyboard */,
+				E704C4C218B282C900BD32C1 /* appsfire-sdk */,
 				3F8D4B4718A0FA8E00611DAC /* TEST-CONTROLLERS */,
 				E7F0033E189FE1AE00315EC2 /* KeenClient */,
 				E72F86F7188ED2F80057F83E /* SlideGesture */,

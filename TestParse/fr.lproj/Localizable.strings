@@ -253,7 +253,7 @@
 "MemoriesImportViewController_Loading" = "Chargement";
 "MemoriesImportViewController_LoadMore" = "Charger Plus";
 "MemoriesImportViewController_WhatEventKind" = "Quel évènement souhaitez vous revivre ?";
-"MemoriesImportViewController_By" = "Par";
+"MemoriesImportViewController_By" = "par";
 
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";

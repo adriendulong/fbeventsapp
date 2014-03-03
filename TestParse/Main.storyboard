@@ -2812,7 +2812,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="72" id="lKq-b9-jR7" customClass="MemoriesImportCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemoriesCell" rowHeight="72" id="lKq-b9-jR7" customClass="MemoriesImportCell">
                                         <rect key="frame" x="0.0" y="22" width="320" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lKq-b9-jR7" id="wzz-WS-iBd">
@@ -2840,17 +2840,28 @@
                                                             <color key="textColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The meeting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iDX-Af-BKl">
-                                                            <rect key="frame" x="55" y="15" width="248" height="21"/>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The meeting" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iDX-Af-BKl">
+                                                            <rect key="frame" x="55" y="15" width="206" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="avec Adrien Dulong et Remi Bardoux" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vZ-n0-Fv3">
-                                                            <rect key="frame" x="55" y="36" width="241" height="21"/>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="par Adrien Dulong" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="8vZ-n0-Fv3">
+                                                            <rect key="frame" x="55" y="36" width="206" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="polaroid_icon" translatesAutoresizingMaskIntoConstraints="NO" id="AZ4-WO-nz3">
+                                                            <rect key="frame" x="269" y="15" width="35" height="40"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="33" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Na2-iR-Muk">
+                                                            <rect key="frame" x="273" y="15" width="27" height="34"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -2864,6 +2875,7 @@
                                             <outlet property="dayLabel" destination="STo-1M-XkI" id="Cp8-bR-RKR"/>
                                             <outlet property="monthLabel" destination="J9x-S9-hMD" id="AIy-48-vFH"/>
                                             <outlet property="nameLabel" destination="iDX-Af-BKl" id="OnJ-hv-woH"/>
+                                            <outlet property="nbPhotosFound" destination="Na2-iR-Muk" id="7j6-08-kkD"/>
                                             <outlet property="peopleLabel" destination="8vZ-n0-Fv3" id="ziB-yl-bhV"/>
                                         </connections>
                                     </tableViewCell>
@@ -4472,6 +4484,7 @@
         <image name="next_gris" width="7" height="13"/>
         <image name="next_orange" width="7" height="13"/>
         <image name="plus" width="21" height="22"/>
+        <image name="polaroid_icon" width="45" height="55"/>
         <image name="refresh" width="25" height="25"/>
         <image name="reverse_cam" width="20" height="20"/>
         <image name="semi_separate" width="272" height="1"/>
@@ -4489,16 +4502,16 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="pId-s9-PUV"/>
+        <segue reference="WWM-2T-ArI"/>
+        <segue reference="EkG-m5-ZxD"/>
+        <segue reference="ItH-HP-BNq"/>
+        <segue reference="yqu-UZ-Hyz"/>
+        <segue reference="zHu-yQ-I5R"/>
+        <segue reference="PEq-CK-woa"/>
         <segue reference="WO8-e3-H1i"/>
         <segue reference="eIZ-rP-uPU"/>
         <segue reference="yK3-OH-GQx"/>
         <segue reference="gQS-Od-x3H"/>
-        <segue reference="WWM-2T-ArI"/>
-        <segue reference="pId-s9-PUV"/>
-        <segue reference="yqu-UZ-Hyz"/>
-        <segue reference="ItH-HP-BNq"/>
-        <segue reference="e9E-5w-t1P"/>
-        <segue reference="zHu-yQ-I5R"/>
-        <segue reference="PEq-CK-woa"/>
     </inferredMetricsTieBreakers>
 </document>

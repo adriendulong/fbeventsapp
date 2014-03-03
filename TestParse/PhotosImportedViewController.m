@@ -234,8 +234,8 @@
 
 -(void)loadPhotos
 {
-    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
-    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    NSDate *startDate = [(NSDate *)self.event[@"event"][@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = self.event[@"end_time_woovent"];
     
     self.isLoadingFromPhone = YES;
     
@@ -359,8 +359,8 @@
     
     NSMutableArray *resultsPhotos = [[NSMutableArray alloc] init];
     
-    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
-    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    NSDate *startDate = [(NSDate *)self.event[@"event"][@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *endDate = self.event[@"end_time_woovent"];
     
     int startTimeInterval = (int)[startDate timeIntervalSince1970];
     NSString *startDateString = [NSString stringWithFormat:@"%i", startTimeInterval];
@@ -371,7 +371,7 @@
     
     
     //FQL request
-    NSString *requestFql = [NSString stringWithFormat:@"SELECT uid  FROM event_member WHERE eid=%@ and uid IN (SELECT uid2 FROM friend WHERE uid1 = me());", self.event[@"eventId"]];
+    NSString *requestFql = [NSString stringWithFormat:@"SELECT uid  FROM event_member WHERE eid=%@ and uid IN (SELECT uid2 FROM friend WHERE uid1 = me());", self.event[@"event"][@"eventId"]];
     
     //Make request
     FBRequest *request = [FBRequest requestForGraphPath:@"fql"];
@@ -604,7 +604,7 @@
         
         UploadFilesAutomaticViewController *photoCollectionController = (UploadFilesAutomaticViewController *)segue.destinationViewController;
         photoCollectionController.photosToUpload = [selectedPhotos copy];
-        photoCollectionController.event = self.event;
+        photoCollectionController.event = self.event[@"event"];
         photoCollectionController.levelRoot = self.levelRoot;
     }
     

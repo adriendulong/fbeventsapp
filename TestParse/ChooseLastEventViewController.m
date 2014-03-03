@@ -70,13 +70,13 @@
     self.title = NSLocalizedString(@"ChooseLastEventViewController_Title", nil);
     
     //Init View
-    NSDate *start_date = self.event[@"start_time"];
+    NSDate *start_date = self.event[@"event"][@"start_time"];
     NSDateFormatter *formatterMonth = [NSDateFormatter new];
     [formatterMonth setDateFormat:@"MMM"];
     NSDateFormatter *formatterDay = [NSDateFormatter new];
     [formatterDay setDateFormat:@"d"];
-    self.titleLabel.text = self.event[@"name"];
-    self.placeLabel.text = [NSString stringWithFormat:@"%@", self.event[@"location"]];
+    self.titleLabel.text = self.event[@"event"][@"name"];
+    self.placeLabel.text = [NSString stringWithFormat:@"%@", self.event[@"event"][@"location"]];
     self.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
     self.dateLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
     
@@ -154,34 +154,34 @@
         [alert show];
         
         
-        self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-        self.event[@"last"] = [NSNumber numberWithInt:(int)[self.elementsForEvening objectAtIndex:rowSelected][@"last"]];
+        self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+        self.event[@"event"][@"last"] = [NSNumber numberWithInt:(int)[self.elementsForEvening objectAtIndex:rowSelected][@"last"]];
         
     }
     else if (self.selectedType == 2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Journey", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
-        self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-        self.event[@"last"] = [NSNumber numberWithInt:(int)[self.elementsForDay objectAtIndex:rowSelected][@"last"]];
+        self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+        self.event[@"event"][@"last"] = [NSNumber numberWithInt:(int)[self.elementsForDay objectAtIndex:rowSelected][@"last"]];
         
     }
     else if (self.selectedType == 3) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Week-End", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
-        self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-        self.event[@"last"] = [NSNumber numberWithInt:(int)[self.elementsForWE objectAtIndex:rowSelected][@"last"]];
+        self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+        self.event[@"event"][@"last"] = [NSNumber numberWithInt:(int)[self.elementsForWE objectAtIndex:rowSelected][@"last"]];
     }
     else if (self.selectedType == 4) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ChooseLastEventViewController_Choice", nil) message:NSLocalizedString(@"ChooseLastEventViewController_Holiday", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ChooseLastEventViewController_OK", nil), nil];
         [alert show];
         
-        self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-        self.event[@"last"] = [NSNumber numberWithInt:(int)[self.elementsForHolidays objectAtIndex:rowSelected][@"last"]];
+        self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+        self.event[@"event"][@"last"] = [NSNumber numberWithInt:(int)[self.elementsForHolidays objectAtIndex:rowSelected][@"last"]];
     }
     
-    [self.event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    [self.event[@"event"] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
         }
         else{
@@ -330,31 +330,31 @@
 
         if (self.selectedType == 1) {
             
-            self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-            self.event[@"last"] = [self.elementsForEvening objectAtIndex:rowSelected][@"last"];
+            self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+            self.event[@"event"][@"last"] = [self.elementsForEvening objectAtIndex:rowSelected][@"last"];
             
         }
         else if (self.selectedType == 2) {
             
-            self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-            self.event[@"last"] = [self.elementsForDay objectAtIndex:rowSelected][@"last"];
+            self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+            self.event[@"event"][@"last"] = [self.elementsForDay objectAtIndex:rowSelected][@"last"];
             
         }
         else if (self.selectedType == 3) {
             
-            self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-            self.event[@"last"] = [self.elementsForWE objectAtIndex:rowSelected][@"last"];
+            self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+            self.event[@"event"][@"last"] = [self.elementsForWE objectAtIndex:rowSelected][@"last"];
         }
         else if (self.selectedType == 4) {
             
-            self.event[@"type"] = [NSNumber numberWithInt:self.selectedType];
-            self.event[@"last"] = [self.elementsForHolidays objectAtIndex:rowSelected][@"last"];
+            self.event[@"event"][@"type"] = [NSNumber numberWithInt:self.selectedType];
+            self.event[@"event"][@"last"] = [self.elementsForHolidays objectAtIndex:rowSelected][@"last"];
         }
         
         
         
         //Save
-        [self.event saveInBackground];
+        [self.event[@"event"] saveInBackground];
         
         
         PhotosImportedViewController *photoCollectionController = (PhotosImportedViewController *)segue.destinationViewController;
@@ -365,20 +365,20 @@
 }
 
 -(void)animateIfHasAType{
-    if (self.event[@"type"]) {
-        if ([(NSNumber *)self.event[@"type"] intValue] == 1) {
+    if (self.event[@"event"][@"type"]) {
+        if ([(NSNumber *)self.event[@"event"][@"type"] intValue] == 1) {
             UIButton *button = (UIButton *)[self.viewOne viewWithTag:1];
             [button sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
-        else if ([(NSNumber *)self.event[@"type"] intValue] == 2) {
+        else if ([(NSNumber *)self.event[@"event"][@"type"] intValue] == 2) {
             UIButton *button = (UIButton *)[self.viewTwo viewWithTag:2];
             [button sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
-        else if ([(NSNumber *)self.event[@"type"] intValue] == 3) {
+        else if ([(NSNumber *)self.event[@"event"][@"type"] intValue] == 3) {
             UIButton *button = (UIButton *)[self.viewThree viewWithTag:3];
             [button sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
-        else if ([(NSNumber *)self.event[@"type"] intValue] == 4) {
+        else if ([(NSNumber *)self.event[@"event"][@"type"] intValue] == 4) {
             UIButton *button = (UIButton *)[self.viewFour viewWithTag:4];
             [button sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
@@ -462,7 +462,7 @@
     
     if (type==1) {
         for (int i=0; i<self.elementsForEvening.count; i++) {
-            if ([[self.elementsForEvening objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
+            if ([[self.elementsForEvening objectAtIndex:i][@"last"] intValue] == [self.event[@"event"][@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -470,7 +470,7 @@
     }
     else if(type == 2){
         for (int i=0; i<self.elementsForDay.count; i++) {
-            if ([[self.elementsForDay objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
+            if ([[self.elementsForDay objectAtIndex:i][@"last"] intValue] == [self.event[@"event"][@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -478,7 +478,7 @@
     }
     else if(type == 3){
         for (int i=0; i<self.elementsForWE.count; i++) {
-            if ([[self.elementsForWE objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
+            if ([[self.elementsForWE objectAtIndex:i][@"last"] intValue] == [self.event[@"event"][@"last"] intValue]) {
                 position = i;
                 return position;
             }
@@ -486,7 +486,7 @@
     }
     else if(type == 4){
         for (int i=0; i<self.elementsForHolidays.count; i++) {
-            if ([[self.elementsForHolidays objectAtIndex:i][@"last"] intValue] == [self.event[@"last"] intValue]) {
+            if ([[self.elementsForHolidays objectAtIndex:i][@"last"] intValue] == [self.event[@"event"][@"last"] intValue]) {
                 position = i;
                 return position;
             }

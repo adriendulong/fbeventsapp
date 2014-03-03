@@ -248,7 +248,7 @@
 "MemoriesImportViewController_Loading" = "En carga";
 "MemoriesImportViewController_LoadMore" = "Cargar más";
 "MemoriesImportViewController_WhatEventKind" = "¿ Que evento te gustaria volver a vivir ? ";
-"MemoriesImportViewController_By" = "De";
+"MemoriesImportViewController_By" = "de";
 
 ///// MemoriesViewController /////
 "MemoriesViewController_NbRefoundPhotos" = "%i fotos han sido encontradas";
