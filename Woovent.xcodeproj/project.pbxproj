@@ -10,6 +10,7 @@
 		3F1F63F71844D1C400D1B01E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F11844D1C300D1B01E /* README.md */; };
 		3F1F63F81844D1C400D1B01E /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F1F63F21844D1C300D1B01E /* release_notes.md */; };
 		3F1F63FD1844D2B400D1B01E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1F63F01844D1C300D1B01E /* libTestFlight.a */; };
+		3F21873B18C4995200823DA7 /* RCCPeakableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F21873A18C4995200823DA7 /* RCCPeakableImageView.m */; };
 		3F286B0C187C1326005A09C2 /* PhotoCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F286B0B187C1326005A09C2 /* PhotoCommentsViewController.m */; };
 		3F286B10187C148B005A09C2 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F286B0F187C148B005A09C2 /* CommentCell.m */; };
 		3F3986D4184E26F6009A2D54 /* CameraFocusSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3986D3184E26F6009A2D54 /* CameraFocusSquare.m */; };
@@ -166,6 +167,8 @@
 		3F1F63F31844D1C300D1B01E /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		3F1F63F41844D1C300D1B01E /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		3F1F63F51844D1C300D1B01E /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		3F21873918C4995200823DA7 /* RCCPeakableImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCPeakableImageView.h; sourceTree = "<group>"; };
+		3F21873A18C4995200823DA7 /* RCCPeakableImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCPeakableImageView.m; sourceTree = "<group>"; };
 		3F286B0A187C1326005A09C2 /* PhotoCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCommentsViewController.h; sourceTree = "<group>"; };
 		3F286B0B187C1326005A09C2 /* PhotoCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCommentsViewController.m; sourceTree = "<group>"; };
 		3F286B0E187C148B005A09C2 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
@@ -475,6 +478,15 @@
 			path = Libraries/TestFlight;
 			sourceTree = "<group>";
 		};
+		3F21873818C4995200823DA7 /* RCCPeakableImageView */ = {
+			isa = PBXGroup;
+			children = (
+				3F21873918C4995200823DA7 /* RCCPeakableImageView.h */,
+				3F21873A18C4995200823DA7 /* RCCPeakableImageView.m */,
+			);
+			path = RCCPeakableImageView;
+			sourceTree = "<group>";
+		};
 		3F286B0D187C145D005A09C2 /* CellsPhotoComment */ = {
 			isa = PBXGroup;
 			children = (
@@ -495,6 +507,7 @@
 		3F5385491857846600F24F35 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3F21873818C4995200823DA7 /* RCCPeakableImageView */,
 				3FEE1CE6189FE6560080680F /* WYPopoverController */,
 				3F53854A1857847F00F24F35 /* MBProgressHUD */,
 			);
@@ -1246,6 +1259,7 @@
 				E794954518575F770014CA36 /* Notification.m in Sources */,
 				E7AE150E180999C00021F321 /* FirstLaunchViewController.m in Sources */,
 				E79E5FB3181FCF1D00C8A3AC /* EventUtilities.m in Sources */,
+				3F21873B18C4995200823DA7 /* RCCPeakableImageView.m in Sources */,
 				E76605A918337563009AABEE /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
