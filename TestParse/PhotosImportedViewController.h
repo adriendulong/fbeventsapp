@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "MXLMediaView.h"
 
-@interface PhotosImportedViewController : UICollectionViewController <UIGestureRecognizerDelegate>
+@interface PhotosImportedViewController : UICollectionViewController <MXLMediaViewDelegate, UIGestureRecognizerDelegate>
+
+@property (nonatomic, assign, getter=isTapLongGesture) BOOL tapLongGesture;
 
 @property (strong, nonatomic) NSMutableArray *imagesFound;
 @property (assign, nonatomic) int numberOfPhotosSelectedPhone;

@@ -17,11 +17,8 @@
 #import "EventUtilities.h"
 #import "MOUtility.h"
 #import "UploadFilesAutomaticViewController.h"
-#import "MXLMediaView.h"
 
-@interface PhotosImportedViewController () <MXLMediaViewDelegate>
-
-@property (nonatomic, assign, getter=isTapLongGesture) BOOL tapLongGesture;
+@interface PhotosImportedViewController ()
 
 @end
 
@@ -182,14 +179,14 @@
     
     PhotosSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
-    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
     
     if (indexPath.section == 0) {
         cell.imagePhoto.image = selectedPhoto.thumbnail;
     }
     else{
         [cell.imagePhoto setImageWithURL:[NSURL URLWithString:selectedPhoto.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"photo_default"]];
+                        placeholderImage:[UIImage imageNamed:@"photo_default"]];
     }
     
     if (selectedPhoto.isSelected) {
@@ -205,9 +202,9 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    //NSLog(@"index path %i, row %i", indexPath.section, indexPath.row);
+    //NSLog(@"index path %i, row %i", indexPath.section, indexPath.item);
     
-    Photo *photo = [[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    Photo *photo = [[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
     
     if (photo.isSelected) {
         photo.isSelected = NO;
@@ -241,9 +238,9 @@
     
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
     if (indexPath == nil) {
-        NSLog(@"long press on collectionView but not on a item");
+        //NSLog(@"long press on collectionView but not on a item");
     } else {
-        NSLog(@"long press on collectionView at item %d", indexPath.item);
+        //NSLog(@"long press on collectionView at item %d", indexPath.item);
         
         if (!self.isTapLongGesture) {
             [self showFullScreenPhotoFromIndexPath:indexPath];
@@ -265,7 +262,7 @@
 {
     self.tapLongGesture = YES;
     
-    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
     
     [MOUtility getUIImageFromAssetURL:selectedPhoto.assetUrl withEnded:^(UIImage *image) {
         
@@ -281,7 +278,7 @@
 #pragma mark MXLMediaViewDelegate Methods
 
 -(void)mediaView:(MXLMediaView *)mediaView didReceiveLongPressGesture:(id)gesture {
-    NSLog(@"MXLMediaViewDelgate: Long pressed received");
+    //NSLog(@"MXLMediaViewDelgate: Long pressed received");
     
     UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Partager la photo"
                                                                   delegate:nil
@@ -292,13 +289,11 @@
 }
 
 -(void)mediaViewWillDismiss:(MXLMediaView *)mediaView {
-    NSLog(@"MXLMediaViewDelgate: Will dismiss");
-    
-    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    //NSLog(@"MXLMediaViewDelgate: Will dismiss");
 }
 
 -(void)mediaViewDidDismiss:(MXLMediaView *)mediaView {
-    NSLog(@"MXLMediaViewDelgate: Did dismiss");
+    //NSLog(@"MXLMediaViewDelgate: Did dismiss");
     
     self.tapLongGesture = NO;
 }
@@ -330,7 +325,7 @@
                         if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                             
                             Photo *photo = [[Photo alloc] init];
-                            photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                            photo.thumbnail = [UIImage imageWithCGImage:result.aspectRatioThumbnail];
                             photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                             photo.date = photoDate;
                             photo.ownerPhoto = [PFUser currentUser];

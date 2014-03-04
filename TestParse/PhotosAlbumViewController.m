@@ -47,6 +47,8 @@
     self.datasourceComplete = [NSMutableArray array];
 	// Do any additional setup after loading the view.
     
+    [self addLongPressGestureRecognizer];
+    
     [self getAllAssetsGroupType];
     
     [self loadPhotos];
@@ -121,12 +123,12 @@
     if (self.nbAutomaticPhotos > 1) {
         
         if (indexPath.section == 0) {
-            photo = (Photo *)[self.datasourceAutomatic objectAtIndex:indexPath.row];
+            photo = (Photo *)[self.datasourceAutomatic objectAtIndex:indexPath.item];
         } else {
-            photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.row];
+            photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.item];
         }
     } else {
-        photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.row];
+        photo = (Photo *)[self.datasourceComplete objectAtIndex:indexPath.item];
     }
     
     [photoView setImage:photo.thumbnail];
@@ -151,12 +153,12 @@
     if (self.nbAutomaticPhotos > 1) {
         
         if (indexPath.section == 0) {
-            photo = [self.datasourceAutomatic objectAtIndex:indexPath.row];
+            photo = [self.datasourceAutomatic objectAtIndex:indexPath.item];
         } else {
-            photo = [self.datasourceComplete objectAtIndex:indexPath.row];
+            photo = [self.datasourceComplete objectAtIndex:indexPath.item];
         }
     } else {
-        photo = [self.datasourceComplete objectAtIndex:indexPath.row];
+        photo = [self.datasourceComplete objectAtIndex:indexPath.item];
     }
     
     if (photo.isSelected) {
@@ -231,6 +233,93 @@
     }
     
     return nil;
+}
+
+
+
+#pragma mark - Long press gesture recognizer
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+    if (indexPath == nil) {
+        //NSLog(@"long press on collectionView but not on a item");
+    } else {
+        //NSLog(@"long press on collectionView at item %d", indexPath.item);
+        
+        if (!self.isTapLongGesture) {
+            [self showFullScreenPhotoFromIndexPath:indexPath];
+        }
+    }
+}
+
+-(void)addLongPressGestureRecognizer
+{
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.3; //seconds
+    lpgr.delegate = self;
+    [self.collectionView addGestureRecognizer:lpgr];
+    
+    self.tapLongGesture = NO;
+}
+
+-(void)showFullScreenPhotoFromIndexPath:(NSIndexPath *)indexPath
+{
+    self.tapLongGesture = YES;
+    
+    Photo *selectedPhoto;
+    if (self.nbAutomaticPhotos > 1) {
+        
+        if (indexPath.section == 0) {
+            selectedPhoto = [self.datasourceAutomatic objectAtIndex:indexPath.item];
+        } else {
+            selectedPhoto = [self.datasourceComplete objectAtIndex:indexPath.item];
+        }
+    } else {
+        selectedPhoto = [self.datasourceComplete objectAtIndex:indexPath.item];
+    }
+    
+    [MOUtility getUIImageFromAssetURL:selectedPhoto.assetUrl withEnded:^(UIImage *image) {
+        
+        if (image) {
+            MXLMediaView *mediaView = [[MXLMediaView alloc] init];
+            [mediaView setDelegate:self];
+            
+            [mediaView showImage:image inParentView:self.navigationController.view completion:nil];
+        }
+    }];
+}
+
+#pragma mark MXLMediaViewDelegate Methods
+
+-(void)mediaView:(MXLMediaView *)mediaView didReceiveLongPressGesture:(id)gesture {
+    //NSLog(@"MXLMediaViewDelgate: Long pressed received");
+    
+    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Partager la photo"
+                                                                  delegate:nil
+                                                         cancelButtonTitle:@"Annuler"
+                                                    destructiveButtonTitle:nil
+                                                         otherButtonTitles:@"Twitter", @"Facebook", @"Instagram", nil];
+    [shareActionSheet showInView:self.view];
+}
+
+-(void)mediaViewWillDismiss:(MXLMediaView *)mediaView {
+    //NSLog(@"MXLMediaViewDelgate: Will dismiss");
+    
+    if (self.datasourceAutomatic.count == 0) {
+        [self.selectButton removeFromSuperview];
+        self.headerConstraint.constant = 0;
+        
+        [self.collectionView setContentInset:UIEdgeInsetsMake(64, 0, 0, 0)];
+    }
+}
+
+-(void)mediaViewDidDismiss:(MXLMediaView *)mediaView {
+    //NSLog(@"MXLMediaViewDelgate: Did dismiss");
+    
+    self.tapLongGesture = NO;
 }
 
 
@@ -331,7 +420,7 @@
                                 if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                                     
                                     Photo *photo = [[Photo alloc] init];
-                                    photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                    photo.thumbnail = [UIImage imageWithCGImage:result.aspectRatioThumbnail];
                                     photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                                     photo.date = photoDate;
                                     photo.isSelected = YES;
@@ -407,7 +496,7 @@
                                 if (![MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                                     
                                     Photo *photo = [[Photo alloc] init];
-                                    photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                    photo.thumbnail = [UIImage imageWithCGImage:result.aspectRatioThumbnail];
                                     photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                                     photo.date = photoDate;
                                     photo.isSelected = NO;
@@ -468,7 +557,7 @@
                                     if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                                         
                                         Photo *photo = [[Photo alloc] init];
-                                        photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                        photo.thumbnail = [UIImage imageWithCGImage:result.aspectRatioThumbnail];
                                         photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                                         photo.date = photoDate;
                                         photo.isSelected = YES;
@@ -546,7 +635,7 @@
                                     if (![MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
                                         
                                         Photo *photo = [[Photo alloc] init];
-                                        photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                        photo.thumbnail = [UIImage imageWithCGImage:result.aspectRatioThumbnail];
                                         photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                                         photo.date = photoDate;
                                         photo.isSelected = NO;

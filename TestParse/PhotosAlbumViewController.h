@@ -11,8 +11,11 @@
 #import "WYStoryboardPopoverSegue.h"
 #import "WYPopoverController.h"
 #import "PhotosDatasourceViewController.h"
+#import "MXLMediaView.h"
 
-@interface PhotosAlbumViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, WYPopoverControllerDelegate, PhotosDatasourceViewControllerDelegate>
+@interface PhotosAlbumViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, WYPopoverControllerDelegate, PhotosDatasourceViewControllerDelegate, MXLMediaViewDelegate, UIGestureRecognizerDelegate>
+
+@property (nonatomic, assign, getter=isTapLongGesture) BOOL tapLongGesture;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;

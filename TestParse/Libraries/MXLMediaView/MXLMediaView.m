@@ -127,8 +127,6 @@
 
 // Used to dismiss the actual image provided
 -(void)hideMediaImageView {
-    NSLog(@"hideMediaImageView");
-    
     // Animation to shrink it to nothing
     [UIView animateWithDuration:0.2 animations:^{
         CGAffineTransform transform = _mediaImageView.transform;
