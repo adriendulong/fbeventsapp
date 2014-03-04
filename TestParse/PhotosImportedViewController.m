@@ -17,8 +17,11 @@
 #import "EventUtilities.h"
 #import "MOUtility.h"
 #import "UploadFilesAutomaticViewController.h"
+#import "MXLMediaView.h"
 
-@interface PhotosImportedViewController ()
+@interface PhotosImportedViewController () <MXLMediaViewDelegate>
+
+@property (nonatomic, assign, getter=isTapLongGesture) BOOL tapLongGesture;
 
 @end
 
@@ -62,6 +65,8 @@
     
     self.numberOfPhotosSelectedFB = 0;
     self.numberOfPhotosSelectedPhone = 0;
+    
+    [self addLongPressGestureRecognizer];
     
     //Load photos from phone
     [self loadPhotos];
@@ -199,7 +204,8 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"index path %i, row %i", indexPath.section, indexPath.row);
+    
+    //NSLog(@"index path %i, row %i", indexPath.section, indexPath.row);
     
     Photo *photo = [[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
@@ -227,8 +233,75 @@
     
 }
 
+#pragma mark - Long press gesture recognizer
 
-#pragma mark - Photos from iPhone
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.collectionView];
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+    if (indexPath == nil) {
+        NSLog(@"long press on collectionView but not on a item");
+    } else {
+        NSLog(@"long press on collectionView at item %d", indexPath.item);
+        
+        if (!self.isTapLongGesture) {
+            [self showFullScreenPhotoFromIndexPath:indexPath];
+        }
+    }
+}
+
+-(void)addLongPressGestureRecognizer
+{
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.3; //seconds
+    lpgr.delegate = self;
+    [self.collectionView addGestureRecognizer:lpgr];
+    
+    self.tapLongGesture = NO;
+}
+
+-(void)showFullScreenPhotoFromIndexPath:(NSIndexPath *)indexPath
+{
+    self.tapLongGesture = YES;
+    
+    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    
+    [MOUtility getUIImageFromAssetURL:selectedPhoto.assetUrl withEnded:^(UIImage *image) {
+        
+        if (image) {
+            MXLMediaView *mediaView = [[MXLMediaView alloc] init];
+            [mediaView setDelegate:self];
+            
+            [mediaView showImage:image inParentView:self.navigationController.view completion:nil];
+        }
+    }];
+}
+
+#pragma mark MXLMediaViewDelegate Methods
+
+-(void)mediaView:(MXLMediaView *)mediaView didReceiveLongPressGesture:(id)gesture {
+    NSLog(@"MXLMediaViewDelgate: Long pressed received");
+    
+    UIActionSheet *shareActionSheet = [[UIActionSheet alloc] initWithTitle:@"Partager la photo"
+                                                                  delegate:nil
+                                                         cancelButtonTitle:@"Annuler"
+                                                    destructiveButtonTitle:nil
+                                                         otherButtonTitles:@"Twitter", @"Facebook", @"Instagram", nil];
+    [shareActionSheet showInView:self.view];
+}
+
+-(void)mediaViewWillDismiss:(MXLMediaView *)mediaView {
+    NSLog(@"MXLMediaViewDelgate: Will dismiss");
+    
+    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+}
+
+-(void)mediaViewDidDismiss:(MXLMediaView *)mediaView {
+    NSLog(@"MXLMediaViewDelgate: Did dismiss");
+    
+    self.tapLongGesture = NO;
+}
 
 #pragma mark - Load photos
 

@@ -592,6 +592,63 @@
                                             completion:accountStoreHandler];
 }
 
+#pragma mark - IOS Resources
++ (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(void (^) (UIImage *image) )block
+{
+    if (block) {
+        
+        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+        [assetsLibrary assetForURL:assetUrl resultBlock: ^(ALAsset *asset) {
+            
+            if (asset) {
+                
+                @autoreleasepool {
+                    ALAssetRepresentation *representation = [asset defaultRepresentation];
+                    CGImageRef fullResImage = representation.fullResolutionImage;
+                    
+                    NSString *adjustment = representation.metadata[@"AdjustmentXMP"];
+                    
+                    if (adjustment) {
+                        NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
+                        CIImage *image = [CIImage imageWithCGImage:fullResImage];
+                        
+                        NSError *error = nil;
+                        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData
+                                                                     inputImageExtent:image.extent
+                                                                                error:&error];
+                        CIContext *context = [CIContext contextWithOptions:nil];
+                        if (filterArray && !error) {
+                            for (CIFilter *filter in filterArray) {
+                                [filter setValue:image forKey:kCIInputImageKey];
+                                image = [filter outputImage];
+                            }
+                            fullResImage = [context createCGImage:image fromRect:[image extent]];
+                        }
+                    }
+                    
+                    
+                    
+                    UIImage *img = [UIImage imageWithCGImage:fullResImage
+                                                       scale:representation.scale
+                                                 orientation:(UIImageOrientation)representation.orientation];
+                    
+                    fullResImage = nil;
+                    
+                    //NSData *photoData = UIImageJPEGRepresentation(img, 0.8);
+                    
+                    
+                    block(img);
+                }
+            }
+            
+        } failureBlock:^(NSError *error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            block(nil);
+        }];
+    }
+}
+
 
 #pragma mark - Type Event
 +(int)typeEvent:(PFObject *)event{

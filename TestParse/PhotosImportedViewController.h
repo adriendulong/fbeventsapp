@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface PhotosImportedViewController : UICollectionViewController
+@interface PhotosImportedViewController : UICollectionViewController <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *imagesFound;
 @property (assign, nonatomic) int numberOfPhotosSelectedPhone;

@@ -56,7 +56,7 @@
 +(void)postImage:(UIImage *)image withStatus:(NSString *)status;
 
 #pragma mark - IOS Resources
-//- (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(UIImage *)block;
++ (void)getUIImageFromAssetURL:(NSURL *)assetUrl withEnded:(void (^) (UIImage *image) )block;
 
 
 #pragma mark - Database Local
