@@ -159,44 +159,34 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    NSString *urlString;
+    NSLog(@"CLICK");
+    
+    //if (![[UIApplication sharedApplication] openURL:url])
+    switch (indexPath.section) {
+        case 0:
+            urlString = [NSString stringWithFormat:@"http://facebook.com/%@", [self.attending objectAtIndex:indexPath.row][@"prospect"][@"facebookId"]];
+            break;
+        case 1:
+            urlString = [NSString stringWithFormat:@"http://facebook.com/%@", [self.maybe objectAtIndex:indexPath.row][@"prospect"][@"facebookId"]];
+            break;
+        case 2:
+            urlString = [NSString stringWithFormat:@"http://facebook.com/%@", [self.notjoined objectAtIndex:indexPath.row][@"prospect"][@"facebookId"]];
+            break;
+        case 3:
+            urlString = [NSString stringWithFormat:@"http://facebook.com/%@", [self.no objectAtIndex:indexPath.row][@"prospect"][@"facebookId"]];
+            break;
+        default:
+            break;
+    }
+    
+    if (urlString) {
+        NSURL *url = [NSURL URLWithString:urlString];
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 /*
 #pragma mark - Navigation
@@ -244,6 +234,10 @@
             
             for (id guest in guests) {
                 [self addOrUpdateInvited:guest];
+            }
+            
+            if ([guests count]==0) {
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             }
             
         }

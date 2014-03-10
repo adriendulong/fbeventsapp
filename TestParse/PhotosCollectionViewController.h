@@ -24,7 +24,7 @@
 
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) PFObject *invitation;
-@property (strong, nonatomic) NSArray *invited;
+@property (strong, nonatomic) NSMutableArray *invited;
 @property (strong, nonatomic) InfoHeaderCollectionView *headerCollectionView;
 @property (strong, nonatomic) NSIndexPath *headerIndexPath;
 @property (nonatomic, assign) BOOL isShowingDetails;
@@ -38,6 +38,7 @@
 @property (nonatomic, assign) int nbTotal;
 @property (nonatomic, assign) BOOL isMapInit;
 @property (assign, nonatomic) BOOL mustChangeTitle;
+- (IBAction)showDiscussions:(id)sender;
 
 - (IBAction)autoImport:(id)sender;
 - (IBAction)hideViewTap:(id)sender;

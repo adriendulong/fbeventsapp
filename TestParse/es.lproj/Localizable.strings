@@ -4,12 +4,12 @@
 "PushNotifs_NewPhotoOne" = "Una nueva foto añadida a %@";
 "PushNotifs_InvitationsMany" = "%@ invitaciones a eventos pendientes de respuesta";
 "PushNotifs_InvitationsOne" = "Una invitación a un evento pendiente de respuesta";
-"PushNotifs_NewComment" = "%@ a commenté une de vos photos";
+"PushNotifs_NewComment" = "%@ ha comentado una de tus fotos";
 
 /* Local Notifs */
-"LocalNotifs_TomorrowGo" = "%@ will take place tomorrow, get the last infos";
-"LocalNotifs_TommorowMaybe" = "%@ will take place tomorrow, confirm your presence";
-"LocalNotifs_SameDay" = "%@ has started! Take a look to the photos or add yours!";
+"LocalNotifs_TomorrowGo" = "Mañana tienes %@, mira tus ultimas noticias";
+"LocalNotifs_TommorowMaybe" = "Mañana tienes %@, confirma sí vienes.";
+"LocalNotifs_SameDay" = "¡ %@ ha empezado ! Mira tus fotos o sube tuyas !";
 
 /* UITabBar */
 "UITabBar_Title_FirstPosition" = "Enventos";
@@ -36,8 +36,8 @@
 "UIAlertView_Cancel" = "Cancelar";
 "UIAlertView_Yes" = "Si";
 "UIAlertView_No" = "No";
-"UIAlertView_StartApp" = "Start the app";
-"UIAlertView_TryAgain" = "Try again !";
+"UIAlertView_StartApp" = "Iniciar la aplicacion";
+"UIAlertView_TryAgain" = "Traer de nuevo";
 "UIAlertView_StatisticsProblem" = "A problem occured while scanning your events, we can't generate your stats. Do you want to try again ? Or start to use the app now ?";
 "UIAlertView_postMessageFacebok" = "Indicamos sólo en el muro del evento Facebook tu respuesta. Facebook preguntará una autorización por Woovent para subir en tu nombre.";
 "UIAlertView_postPhotoFacebook" = "Queremos poner sobre el muro del evento un enlace de las fotos subidas a este evento. Facebook preguntará una autorización por Woovent para subir en tu nombre.";
@@ -169,8 +169,8 @@
 "PhotosCollectionViewController_TimeConjonction" = "a";
 "PhotosCollectionViewController_NbPhotos" = "%i Fotos";
 "PhotosCollectionViewController_AddCalendar" = "Añadir al calendario";
-"PhotosCollectionViewController_ShareMessageMultiple" = "Find here the %i photos taken during %@ : %@";
-"PhotosCollectionViewController_ShareMessageFew" = "Find here all the photos taken during %@ : %@";
+"PhotosCollectionViewController_ShareMessageMultiple" = "Encuentra aquí las %i fotos sacadas durante %@ : %@";
+"PhotosCollectionViewController_ShareMessageFew" = "Encuentra aquí todas las fotos sacadas durante %@ : %@";
 
 
 
@@ -210,7 +210,7 @@
 "InvitedListViewController_Maybe" = "Posibles Participantes";
 "InvitedListViewController_NoResponse" = "Esperando respuesta";
 "InvitedListViewController_Absent" = "Ausentes";
-"InvitedListViewController_Loading" = "Loading...";
+"InvitedListViewController_Loading" = "En carga...";
 
 
 ///// ListInvitationsController /////
@@ -261,6 +261,7 @@
 "MemoriesViewController_NbRefoundPhotos" = "%i fotos han sido encontradas";
 "MemoriesViewController_AutoImportButton" = "Recuperación automática";
 "MemoriesViewController_Empty" = "No hay recuerdos...";
+"MemoriesViewController_EmptyLabelClick" = "Click aqui para crear un recuerdo !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Ajustes";
@@ -273,13 +274,13 @@
 "SettingsViewController_disconnect" = "Salir";
 "SettingsViewController_Thanks" = "Agradecimientos";
 "SettingsViewController_myStats" = "Mis Estadísticas";
-"SettingsViewController_rateApp" = "Rate the app";
-"SettingsViewController_ShareApp" = "This is an app that will revolutionize the way you manage your Facebook events!\n Download it, it's free!\n http://woovent.com/gettheapp/";
-"SettingsViewController_ShareAppTitle" = "An app for your Facebook events";
-"SettingsViewController_TitleSectionOne" = "Spread the word!";
-"SettingsViewController_TitleSectionTwo" = "Notifications";
-"SettingsViewController_TitleSectionThree" = "For Woovent";
-"SettingsViewController_TitleSectionFour" = "And More";
+"SettingsViewController_rateApp" = "Nota la aplicación";
+"SettingsViewController_ShareApp" = "¡ Hey mira, he encontrado la aplicación perfecta para tus eventos Facebook ! \n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "Una aplicación para tus eventos Facebook";
+"SettingsViewController_TitleSectionOne" = "¡ Corre la voz !";
+"SettingsViewController_TitleSectionTwo" = "Notificaciones";
+"SettingsViewController_TitleSectionThree" = "Para Woovent";
+"SettingsViewController_TitleSectionFour" = "Y mas";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "Conectándome acepto las condiciones";
@@ -308,3 +309,4 @@
 "CommentPostViewController_ShowComment" = "Ver comentario";
 "CommentPostViewController_ShowNbComments" = "Ver %i comentarios";
 "CommentPostViewController_NoComment" = "No hay comentario";
+"CommentPostViewController_NoPosts" = "No hay message en este evento";

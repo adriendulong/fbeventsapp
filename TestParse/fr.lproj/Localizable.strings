@@ -262,6 +262,7 @@
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
 "MemoriesViewController_Empty" = "Aucun souvenirs...";
+"MemoriesViewController_EmptyLabelClick" = "Touche ici pour créer un souvenir !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
@@ -275,8 +276,8 @@
 "SettingsViewController_Thanks" = "Remerciements";
 "SettingsViewController_myStats" = "Mes Statistiques";
 "SettingsViewController_rateApp" = "Noter l'app";
-"SettingsViewController_ShareApp" = "Voilà une app qui va révolutionner la gestion de tes évènenements Facebook !\n Télécharge là c'est gratuit !\n http://woovent.com/gettheapp/";
-"SettingsViewController_ShareAppTitle" = "Une application pour tes évènements Facebook";
+"SettingsViewController_ShareApp" = "Hey regarde, j'ai trouvé l'app parfaite pour tes évènements Facebook !  \n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "Une app pour tes évènements Facebook";
 "SettingsViewController_TitleSectionOne" = "Fais passer le mot !";
 "SettingsViewController_TitleSectionTwo" = "Notifications";
 "SettingsViewController_TitleSectionThree" = "Pour Woovent";
@@ -309,3 +310,4 @@
 "CommentPostViewController_ShowComment" = "Afficher le commentaire";
 "CommentPostViewController_ShowNbComments" = "Afficher les %i commentaires";
 "CommentPostViewController_NoComment" = "Aucun commentaire";
+"CommentPostViewController_NoPosts" = "Aucun message pour cet évènement.";

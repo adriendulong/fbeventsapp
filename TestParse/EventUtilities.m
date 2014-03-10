@@ -15,6 +15,7 @@
 +(BOOL)isAdminOfEvent:(PFObject *)event forUser:(PFObject *)user{
     BOOL isAdmin = NO;
     
+    
     if(event[@"admin"]){
         NSArray *admins = [event objectForKey:@"admins"];
         
@@ -80,6 +81,8 @@
     if ([EventUtilities isAdminOfEvent:event forUser:user]) {
         invitation[@"isAdmin"] = @YES;
     }
+    
+    
     [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObject:rsvp forKey:@"rsvp"];
         [[NSNotificationCenter defaultCenter]

@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "MOUtility.h"
+#import "FbEventsUtilities.h"
 
 @implementation APActivityIconSettings
 - (NSString *)activityType { return @"com.moment.rateApp"; }
@@ -18,6 +19,9 @@
 - (UIViewController *) activityViewController { return nil; }
 - (void) performActivity {
    //Open App Store
+    NSString *iTunesLink = @"itms-apps://itunes.com/apps/woovent";
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink]];
 }
 @end
 
@@ -80,11 +84,19 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logIn:) name:LogInUser object:nil];
     
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-    if (currentInstallation[@"is_push_notif"]) {
+    if ([currentInstallation[@"is_push_notif"] boolValue]) {
         [self.switchNotifTel setOn:YES];
     }
     else{
         [self.switchNotifTel setOn:NO];
+    }
+    
+    PFUser *user = [PFUser currentUser];
+    if ([user[@"is_mail_notif"] boolValue]) {
+        [self.swithNotifMail setOn:YES];
+    }
+    else{
+        [self.swithNotifMail setOn:NO];
     }
 
 

@@ -29,6 +29,10 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [self makeRotation];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [self.loadingView setHidden:NO];
     [self.winnerView setHidden:YES];
@@ -67,6 +71,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.makeRotate = YES;
 	// Do any additional setup after loading the view.
     
     self.iconView.layer.cornerRadius = 20.0f;
@@ -82,8 +88,9 @@
         self.constraintViewCup.constant = 45.0f;
     }
     
-    self.counterTimer = 0;
-    self.facebookTimer = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+    //self.counterTimer = 0;
+    //self.facebookTimer = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -296,8 +303,6 @@
 
 
 -(void)nextScreen{
-    [self.facebookTimer invalidate];
-    self.facebookTimer = nil;
     
     self.totalInvitationsNumber.text = [NSString stringWithFormat:@"%d", (self.nbAttending+self.nbMaybe+self.nbDeclined+self.nbNotReplied)];
     self.participateEventNumber.text = [NSString stringWithFormat:@"%d", (self.nbAttending+self.nbMaybe)];
@@ -308,6 +313,8 @@
     
     [self.loadingView setHidden:YES];
     [self.winnerView setHidden:NO];
+    
+    //self.makeRotate = NO;
     
     //Screenshot
     [self getSnapshotImage];
@@ -391,6 +398,29 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self loadOldFacebookEvents:nil];
+    }
+}
+
+- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ ];
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    rotationAnimation.delegate = self;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation" ];
+}
+
+-(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+    [NSTimer scheduledTimerWithTimeInterval:0.6 target:self selector:@selector(makeRotation) userInfo:nil repeats:NO];
+}
+
+-(void)makeRotation{
+    if (self.makeRotate) {
+        [self runSpinAnimationOnView:self.wmImage duration:3.0 rotations:1.0 repeat:1.0];
     }
 }
 

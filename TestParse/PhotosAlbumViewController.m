@@ -371,7 +371,7 @@
                     
                     if (self.datasourceAutomatic.count == 0) {
                         [self.selectButton removeFromSuperview];
-                        self.headerConstraint.constant = 0;
+                        self.headerConstraint.constant = 64;
                     } else {
                         self.navigationItem.rightBarButtonItem.enabled = YES;
                     }
@@ -506,7 +506,7 @@
                         
                         if (self.datasourceAutomatic.count == 0) {
                             [self.selectButton removeFromSuperview];
-                            self.headerConstraint.constant = 0;
+                            self.headerConstraint.constant = 64;
                         } else {
                             self.navigationItem.rightBarButtonItem.enabled = YES;
                         }

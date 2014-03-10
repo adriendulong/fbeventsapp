@@ -27,15 +27,20 @@
 +(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 +(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
 + (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime;
++(NSDate *)setDateTime:(NSDate*)date withTime:(NSInteger)hour;
 
 #pragma mark - Facebook
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality;
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly;
++(NSDate *)parseFacebookDateUnix:(NSString *)date;
 +(PFObject *)createEventFromFacebookDict:(NSDictionary *)facebookEvent;
 +(PFObject *)createInvitationFromFacebookDict:(NSDictionary *)facebookEvent andEvent:(PFObject *)event;
 +(void)postOnFacebooTimeline:(NSString *)eventId withAttributes:(NSDictionary *)attributes;
 +(void)postLinkOnFacebookEventWall:(NSString *)eventId withUrl:(NSString *)url withMessage:(NSString *)message;
 +(void)postRSVP:(NSString *)eventId withMessage:(NSString *)message;
+
+#pragma mark - Events
++(NSMutableArray *)keepGoodEvents:(NSArray *)invitations;
 
 #pragma mark - Colors
 +(UIColor*)colorWithHexString:(NSString*)hex;
@@ -104,11 +109,19 @@
 #pragma mark - fonts
 +(UIFont *)getFontWithSize:(CGFloat)size;
 
+#pragma mark - String
++(NSString *)removeAccentuation:(NSString *)text;
+
 #pragma mark - Cover
 +(UIImage *)getCover:(NSInteger)which;
 
 #pragma mark - Local Notifications
 +(void)programNotifForEvent:(PFObject *)event;
 +(void)eraseNotifsOfType:(NSInteger)type;
+
+
+#pragma mark - Photos
++(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events;
+
 
 @end

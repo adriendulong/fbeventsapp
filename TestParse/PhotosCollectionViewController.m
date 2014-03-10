@@ -21,6 +21,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "CommentPostViewController.h"
 #import <EventKit/EventKit.h>
 
 #define METERS_PER_MILE 1609.344
@@ -143,8 +144,10 @@
            value:@"Event Detail View"];
     [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     
+    
+    [self setTitle];
     //We are in the tab Bar
-    if (!self.invitation) {
+    /*if (!self.invitation) {
         self.mustChangeTitle = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateClosestEvent:) name:UpdateClosestEvent object:nil];
@@ -185,7 +188,7 @@
     }
     else{
         [self.navigationController setToolbarHidden:YES];
-    }
+    }*/
     
 }
 
@@ -207,6 +210,8 @@
     
     self.isMapInit = NO;
     
+    self.invited = [[NSMutableArray alloc] init];
+    
     //Appearance
     NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                     [UIColor whiteColor],NSForegroundColorAttributeName,
@@ -217,7 +222,7 @@
     //[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor orangeColor]}];
     
     if (self.invitation) {
-        [self setTitle];
+        //[self setTitle];
         
         
         
@@ -241,18 +246,7 @@
         [self updateEventFromFB];
         [self loadPhotos];
     }
-    //else{
-    //    [self.tabBarController setSelectedIndex:0];
-    //}
-    
-    /*
-     "PhotosCollectionViewController_Title_Future" = "dans %i jours";
-     "PhotosCollectionViewController_Title_Tomorrow" = "demain";
-     "PhotosCollectionViewController_Title_Past" = "il y a %i jours";
-     "PhotosCollectionViewController_Title_Yesterday" = "hier";
-     "PhotosCollectionViewController_Title_Today" = "Aujourd'hui";
-     */
-    
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -400,7 +394,9 @@
             [headerView.automaticImport setHidden:YES];
             headerView.constraintButtonPhoto.constant = 35.0f;
             headerView.constraintViewNbPhotos.constant = 0.0f;
-            //headerView.separateConstraint.constant = 20.0f;
+            
+            
+            
         }
         else{
             headerView.constraintButtonPhoto.constant = 90.0f;
@@ -438,10 +434,10 @@
         if (self.isDuringOrAfter) {
             if (self.isShowingDetails) {
                 if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
-                    return CGSizeMake(800, 620);
+                    return CGSizeMake(800, 720);
                 }
                 else{
-                    return CGSizeMake(800, 845);
+                    return CGSizeMake(800, 945);
                 }
             }
             else{
@@ -451,10 +447,10 @@
         else{
             if (self.isShowingDetails) {
                 if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
-                    return CGSizeMake(800, 580);
+                    return CGSizeMake(800, 680);
                 }
                 else{
-                    return CGSizeMake(800, 785);
+                    return CGSizeMake(800, 885);
                 }
             }
             else{
@@ -669,35 +665,42 @@
 #pragma mark - Invited
 
 -(void)getInvitedFromServer{
-    PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
-    [query whereKey:@"event" equalTo:self.invitation[@"event"]];
-    [query includeKey:@"user"];
-    [query includeKey:@"prospect"];
-    
-    //Cache then network
-    query.cachePolicy = kPFCachePolicyNetworkElseCache;
-    
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            self.invited = objects;
-            [self updateGuestsView];
-            
-            //Get all the invited
-            if (!self.guestViewUpdated) {
+    if (self.invitation[@"event"]) {
+        PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
+        [query whereKey:@"event" equalTo:self.invitation[@"event"]];
+        [query whereKeyExists:@"user"];
+        [query includeKey:@"user"];
+        query.limit = 5;
+        
+        //Cache then network
+        query.cachePolicy = kPFCachePolicyNetworkElseCache;
+        
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                
+                for (PFObject *guest in objects) {
+                    if (guest[@"user"]) {
+                        NSDictionary *invitation = @{@"name": guest[@"user"][@"name"], @"facebookId":guest[@"user"][@"facebookId"], @"rsvp_status":guest[@"rsvp_status"]};
+                        if (invitation!=nil) {
+                            [self.invited addObject:invitation];
+                        }
+                    }
+                }
+
+                [self updateGuestsView];
+                
+                //Get all the invited
                 if (self.invited.count < 5) {
-                    [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"] withLimit:5];
+                    [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"] withLimit:(5-self.invited.count)];
                 }
-                else{
-                    [self getGuestsFromFacebookEvent:self.invitation[@"event"][@"eventId"] withLimit:0];
-                }
+                
+                
+            } else {
+                // Log details of the failure
+                NSLog(@"Problème de chargement");
             }
-            
-            
-        } else {
-            // Log details of the failure
-            NSLog(@"Problème de chargement");
-        }
-    }];
+        }];
+    }
     
 }
 
@@ -705,7 +708,7 @@
 -(void)getGuestsFromFacebookEvent:(NSString *)facebookId withLimit:(int)limit{
     NSString *requestString = [NSString stringWithFormat:@"%@/invited?limit=%i&summary=1", self.invitation[@"event"][@"eventId"], limit];
     FBRequest *request = [FBRequest requestForGraphPath:requestString];
-    
+
     self.hasUpdatedGuestsFromFB = YES;
     
     // Send request to Facebook
@@ -725,6 +728,8 @@
                 [self addOrUpdateInvited:guest];
             }
             
+            [self updateGuestsView];
+            
         }
         else{
             NSLog(@"%@", error);
@@ -733,129 +738,8 @@
 }
 
 -(void)addOrUpdateInvited:(NSDictionary *)invited{
-    PFObject *guest;
-    PFObject *invitation;
-    
-    //We see if there is an invitation for this user
-    for(id invit in self.invited){
-        PFObject *tempGuests = [FbEventsUtilities getProspectOrUserFromInvitation:invit];
-        if ([tempGuests[@"facebookId"] isEqualToString:invited[@"id"]]) {
-            guest = tempGuests;
-            invitation = invit;
-        }
-    }
-    
-    //We already have an invitation and a guest we just update the invitation
-    if (guest) {
-        //Update guest or user
-        if (![guest[@"name"] isEqualToString:invited[@"name"]]) {
-            guest[@"name"] = invited[@"name"];
-            [guest saveEventually];
-        }
-        
-        //Update invitation
-        if (![invitation[@"rsvp_status"] isEqualToString:invited[@"rsvp_status"]]) {
-            invitation[@"rsvp_status"] = invited[@"rsvp_status"];
-            [invitation saveEventually];
-        }
-        
-        //We have finished with this user
-        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateInvitedFinished object:self userInfo:nil];
-    }
-    
-    //The invitation does not exist
-    else{
-        //See if a user or a prospect exist
-        PFQuery *query = [PFUser query];
-        [query whereKey:@"facebookId" equalTo:invited[@"id"]];
-        [query getFirstObjectInBackgroundWithBlock:^(PFObject *userFound, NSError *error) {
-            if (error && error.code == kPFErrorObjectNotFound) {
-                ///////
-                // PROSPECT EXISTS ??
-                //////
-                PFQuery *queryProspect = [PFQuery queryWithClassName:@"Prospect"];
-                [queryProspect whereKey:@"facebookId" equalTo:invited[@"id"]];
-                [queryProspect getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                    
-                    //If there is no prospect
-                    if (error && error.code == kPFErrorObjectNotFound) {
-                        //We create a prospect
-                        PFObject *prospectObject = [PFObject objectWithClassName:@"Prospect"];
-                        prospectObject[@"facebookId"] = invited[@"id"];
-                        prospectObject[@"name"] = invited[@"name"];
-                        [prospectObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            //And create invitation
-                            [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:prospectObject];
-                        }];
-                    }
-                    //A prospect already exist, add invitation
-                    else if(!error){
-                        [self createInvitation:invited[@"rsvp_status"] forUser:nil forProspect:object];
-                    }
-                }];
-            }
-            else if(!error){
-                //Invitation exists ?
-                PFQuery *invitationUser = [PFQuery queryWithClassName:@"Invitation"];
-                [invitationUser whereKey:@"user" equalTo:userFound];
-                [invitationUser whereKey:@"event" equalTo:self.invitation[@"event"]];
-                [invitationUser getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                    if (error && error.code == kPFErrorObjectNotFound) {
-                        [self createInvitation:invited[@"rsvp_status"] forUser:(PFUser *)userFound forProspect:nil];
-                    }
-                }];
-                
-                
-            }
-        }];
-        
-    }
-    
-}
-
-
--(void)createInvitation:(NSString *)rsvp forUser:(PFUser *)user forProspect:(PFObject *)prospect{
-    PFObject *invitation = [PFObject objectWithClassName:@"Invitation"];
-    [invitation setObject:self.invitation[@"event"] forKey:@"event"];
-    
-    invitation[@"isOwner"] = @NO;
-    invitation[@"isAdmin"] = @NO;
-    
-    if (user) {
-        [invitation setObject:user forKey:@"user"];
-        if([EventUtilities isOwnerOfEvent:self.invitation[@"event"] forUser:user])
-        {
-            NSLog(@"You are the owner !!");
-            invitation[@"isOwner"] = @YES;
-        }
-        
-        if ([EventUtilities isAdminOfEvent:self.invitation[@"event"] forUser:user]) {
-            invitation[@"isAdmin"] = @YES;
-        }
-        
-        if (self.isDuringOrAfter) {
-            invitation[@"is_memory"] = @NO;
-        }
-    }
-    else{
-        [invitation setObject:prospect forKey:@"prospect"];
-        if([EventUtilities isOwnerOfEvent:self.invitation[@"event"] forUser:prospect])
-        {
-            NSLog(@"You are the owner !!");
-            invitation[@"isOwner"] = @YES;
-        }
-        
-        if ([EventUtilities isAdminOfEvent:self.invitation[@"event"] forUser:prospect]) {
-            invitation[@"isAdmin"] = @YES;
-        }
-    }
-    
-    invitation[@"rsvp_status"] = rsvp;
-    invitation[@"start_time"] = self.invitation[@"event"][@"start_time"];
-    
-    [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:UpdateInvitedFinished object:self userInfo:nil];
-    }];
+    NSDictionary *invitation = @{@"name": invited[@"name"], @"facebookId":invited[@"id"], @"rsvp_status":invited[@"rsvp_status"]};
+    [self.invited addObject:invitation];
     
 }
 
@@ -879,25 +763,9 @@
     [self.collectionViewLayout invalidateLayout];
 }
 
--(void)greatMomentToUpdateInvited:(NSNotification *)note{
-    self.nbInvitedAlreadyAdded++;
-    
-    
-    if (self.nbInvitedAlreadyAdded==self.nbInvitedToAdd) {
-        [self getInvitedFromServer];
-        self.guestViewUpdated = YES;
-    }
-    else if (self.nbInvitedAlreadyAdded==5){
-        [self getInvitedFromServer];
-        self.guestViewUpdated = YES;
-    }
-    
-    /*if (!self.guestViewUpdated) {
-        
-    }*/
-    
-    
-}
+/*
+ Update the main view (header of collection voew)
+ */
 
 -(void)updateView{
     
@@ -940,24 +808,23 @@
     //self.locationLabel.text = event[@"location"];
 }
 
+
+/*
+ Update view with all the guests
+ */
+
 -(void)updateGuestsView{
     
     //Update Guests
     for (NSInteger i=1; i<6; i++) {
         if (i<=[self.invited count]) {
-            PFObject *invitation = [self.invited objectAtIndex:i-1];
-            PFObject *guest;
-            if (invitation[@"user"]) {
-                guest = invitation[@"user"];
-            }
-            else{
-                guest = invitation[@"prospect"];
-            }
+            NSDictionary *invitation = [self.invited objectAtIndex:i-1];
+
             
             UIView *guestView = [self.headerCollectionView.viewToHide viewWithTag:i];
             [guestView setHidden:NO];
             UIImageView *photo = (UIImageView *)[guestView viewWithTag:6];
-            [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:guest[@"facebookId"] withResolution:FacebookLargeProfileImage]
+            [photo setImageWithURL:[MOUtility UrlOfFacebooProfileImage:invitation[@"facebookId"] withResolution:FacebookLargeProfileImage]
                   placeholderImage:[UIImage imageNamed:@"profil_default"]];
             photo.layer.cornerRadius = 23.0f;
             photo.layer.masksToBounds = YES;
@@ -984,26 +851,8 @@
     }
 }
 
--(void)updateNbInvited{
-    self.nbAttending = 0;
-    self.nbMaybe = 0;
-    self.nbTotal = 0;
-    
-    for(PFObject *invitation in self.invited){
-        self.nbTotal++;
-        if ([invitation[@"rsvp_status"] isEqualToString:FacebookEventAttending]) {
-            self.nbAttending++;
-        }
-        else if([invitation[@"rsvp_status"] isEqualToString:FacebookEventMaybe]){
-            self.nbMaybe++;
-        }
-    }
 
-   //Update labels
-    self.headerCollectionView.nbTotalInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests", nil), self.nbTotal];
-    self.headerCollectionView.detailInvitedLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_NbGuests_NbMaybe", nil), self.nbAttending, self.nbMaybe];
-    
-}
+#pragma mark - Segue
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"AddPhoto"]) {
@@ -1062,6 +911,11 @@
         invitedController.invited = [self.invited mutableCopy];
         invitedController.event = self.invitation[@"event"];
     }
+    else if([segue.identifier isEqualToString:@"Discussions"]){
+        CommentPostViewController *postViewController = (CommentPostViewController *)segue.destinationViewController;
+        postViewController.idEvent = self.invitation[@"event"][@"eventId"];
+        //invitedController.event = self.invitation[@"event"];
+    }
     
 }
 
@@ -1069,33 +923,27 @@
 
 - (void)touchedMap:(UITapGestureRecognizer *)recognizer {
     
+    NSString *placeGoodFormat;
+    if (self.invitation[@"event"][@"location"]) {
+        placeGoodFormat = [[self.invitation[@"event"][@"location"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+    }
+    else if(self.invitation[@"event"][@"venue"][@"name"]){
+        placeGoodFormat = [[self.invitation[@"event"][@"venue"][@"name"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
+    }
+    
+    placeGoodFormat = [MOUtility removeAccentuation:placeGoodFormat];
+    
     if ([[UIApplication sharedApplication] canOpenURL:
               [NSURL URLWithString:@"comgooglemaps://"]]) {
         
-        NSString *placeGoodFormat;
-        if (self.invitation[@"event"][@"location"]) {
-            placeGoodFormat = [[self.invitation[@"event"][@"location"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
-        }
-        else if(self.invitation[@"event"][@"venue"][@"name"]){
-            placeGoodFormat = [[self.invitation[@"event"][@"venue"][@"name"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
-        }
-        
         NSString *request = [NSString stringWithFormat:@"comgooglemaps://?q=%@", placeGoodFormat];
-        
+
         if(![[UIApplication sharedApplication] openURL:
             [NSURL URLWithString:request]]){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PhotosCollectionViewController_Error", nil) message:NSLocalizedString(@"PhotosCollectionViewController_Error_GMaps", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"PhotosCollectionViewController_OK", nil), nil];
             [alert show];
         }
     } else {
-        NSString *placeGoodFormat;
-        if (self.invitation[@"event"][@"location"]) {
-            placeGoodFormat = [[self.invitation[@"event"][@"location"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
-        }
-        else if(self.invitation[@"event"][@"venue"][@"name"]){
-            placeGoodFormat = [[self.invitation[@"event"][@"venue"][@"name"] capitalizedString] stringByReplacingOccurrencesOfString:@" " withString: @"+"];
-        }
-        
         NSString *request = [NSString stringWithFormat:@"http://maps.apple.com/?q=%@", placeGoodFormat];
         
         if(![[UIApplication sharedApplication] openURL:
@@ -1110,8 +958,13 @@
 }
 
 
--(void)acessMap:(NSNotification *)note{
-    
+
+/*
+ Go to the discussions view
+ */
+- (IBAction)showDiscussions:(id)sender {
+    NSLog(@"Discussions");
+    [self performSegueWithIdentifier:@"Discussions" sender:nil];
 }
 
 - (IBAction)autoImport:(id)sender {
@@ -1126,6 +979,10 @@
         
     }
 }
+
+/*
+ Hide or show the information when tap on the top button
+ */
 
 - (IBAction)hideViewTap:(id)sender {
     
@@ -1158,6 +1015,11 @@
     [self.collectionView reloadData];
     //[self.collectionViewLayout invalidateLayout];
 }
+
+
+/*
+ Share the event
+ */
 
 - (IBAction)share:(id)sender {
     //APActivityProvider *ActivityProvider = [[APActivityProvider alloc] init];
@@ -1213,19 +1075,28 @@
     
     if (self.mustChangeTitle) {
         PFObject *event = self.invitation[@"event"];
-        NSTimeInterval distanceBetweenDates = [event[@"start_time"] timeIntervalSinceDate:[NSDate date]];
-        double secondsInAnDays = 86400;
-        NSInteger daysBetweenDates = distanceBetweenDates / secondsInAnDays;
         
-        if (daysBetweenDates > 1) {
-            self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Future", nil), daysBetweenDates];
-        } else if (daysBetweenDates == 1) {
+        NSDate *today = [MOUtility setDateTime:[NSDate date] withTime:0];
+        NSDate *start_date_event = [MOUtility setDateTime:(NSDate *)event[@"start_time"] withTime:0];
+        
+        NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                            fromDate:today
+                                                              toDate:start_date_event
+                                                             options:0];
+        
+        NSLog(@"Date interval %i", components.day);
+        
+        
+        if (components.day > 1) {
+            self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Future", nil), components.day];
+        } else if (components.day == 1) {
             self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Tomorrow", nil);
-        } else if (daysBetweenDates == 0) {
+        } else if (components.day == 0) {
             self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Today", nil);
         } else {
-            if (abs(daysBetweenDates) > 1) {
-                self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Past", nil), abs(daysBetweenDates)];
+            if (abs(components.day) > 1) {
+                self.title = [NSString stringWithFormat:NSLocalizedString(@"PhotosCollectionViewController_Title_Past", nil), abs(components.day)];
             } else {
                 self.title = NSLocalizedString(@"PhotosCollectionViewController_Title_Yesterday", nil);
             }
@@ -1246,9 +1117,4 @@
 }
 
 
--(void)updateClosestEvent:(NSNotification *)note{
-    ListEvents *listEvents = (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
-    self.invitation = listEvents.closestInvitation;
-    [self updateView];
-}
 @end

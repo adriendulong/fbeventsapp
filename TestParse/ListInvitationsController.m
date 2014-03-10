@@ -673,12 +673,16 @@
     //One more invitation we are answering
     self.nbEventsAnswering++;
     
-    for(PFObject *invitationLoop in self.objectsForTable){
-        if ([invitationLoop.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
-            invitation = invitationLoop;
-            hasToDelete = YES;
-            break;
+    for(id objectLoop in self.objectsForTable){
+        if (![objectLoop isKindOfClass:[NSString class]]) {
+            PFObject *invitationLoop = (PFObject *)objectLoop;
+            if ([invitationLoop.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                invitation = invitationLoop;
+                hasToDelete = YES;
+                break;
+            }
         }
+        
     }
     
     if (hasToDelete) {
@@ -935,6 +939,8 @@
                                                                                               cancelButtonTitle:@"OK"
                                                                                               otherButtonTitles:nil];
                                                     [alertView show];
+                                                    [userInfo setObject:@NO forKey:@"isSuccess"];
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
                                                     
                                                 }
                                             }];

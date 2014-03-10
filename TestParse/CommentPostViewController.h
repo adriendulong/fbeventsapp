@@ -13,5 +13,6 @@
 
 @property (nonatomic, strong) NSMutableArray *postAndComments;
 @property (nonatomic, strong) NSMutableDictionary *textViews;
+@property (nonatomic, strong) NSString *idEvent;
 
 @end

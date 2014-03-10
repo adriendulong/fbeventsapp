@@ -16,6 +16,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "MBProgressHUD.h"
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
@@ -41,6 +42,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    PFUser *user = [PFUser currentUser];
+    [user refreshInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        NSLog(@"User last upload : %@", user[@"last_upload"]);
+        
+    }];
+    
     /*if ([self.memoriesInvitations count]>0) {
         [MOUtility programNotifForEvent:[self.memoriesInvitations objectAtIndex:0][@"event"]];
     }*/
@@ -52,6 +59,9 @@
     [tracker set:kGAIScreenName
            value:@"Memories View"];
     [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    
+    
+    [self loadMemoriesFromSever];
 }
 
 - (void)viewDidLoad
@@ -75,18 +85,10 @@
     self.topImageView.layer.masksToBounds = YES;
     
     self.memoriesInvitations = [[NSMutableArray alloc] init];
-    [self.activityIndicator startAnimating];
-    [self.activityIndicator setHidden:NO];
-    [self loadMemoriesFromSever];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadPhotosAfterUpload:) name:UploadPhotoFinished object:nil];
-    
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,7 +114,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    return 195;
+    return 173;
 }
 
 
@@ -131,7 +133,7 @@
         cell = [[MemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    [self getNbPhotosAtIndex:indexPath forCell:cell];
+    //[self getNbPhotosAtIndex:indexPath forCell:cell];
     
     //Get the event object.
     PFObject *event = [self.memoriesInvitations objectAtIndex:indexPosition][@"event"];
@@ -150,106 +152,34 @@
     [formatterDay setLocale:[NSLocale currentLocale]];
     
     //Fill the cell
-    cell.nameLabel.text = event[@"name"];
-    cell.placeLabel.text = [NSString stringWithFormat:@"%@", event[@"location"]];
-    cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
-    cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
-    
-    if (self.photosEvent.count >indexPosition) {
-        if ([[self.photosEvent objectAtIndex:indexPosition] count]>0) {
-            NSMutableArray *arrayPhotos = [[NSMutableArray alloc] init];
-            
-            for(PFObject *photo in [self.photosEvent objectAtIndex:indexPosition]){
-                NSDictionary *dict = @{@"type": @0,
-                                       @"photo": photo};
-                [arrayPhotos addObject:dict];
-                
-            }
-            
-            [cell.coverImage setHidden:YES];
-            
-            if (arrayPhotos.count < 9) {
-                int diff = 9 - arrayPhotos.count;
-                UIImage *image = [[UIImage alloc] init];
-                for(int i=0;i<diff;i++){
-                    if ((i%4)==0) {
-                        image = [UIImage imageNamed:@"img1"];
-                    }
-                    else if((i%4)==1){
-                        image = [UIImage imageNamed:@"img2"];
-                    }
-                    else if((i%4)==2){
-                        image = [UIImage imageNamed:@"img3"];
-                    }
-                    else if((i%4)==3){
-                        image = [UIImage imageNamed:@"img4"];
-                    }
-                    NSDictionary *dict = @{@"type": @1,
-                                           @"image": image};
-                    [arrayPhotos addObject:dict];
-                }
-                
-                
-                //[arrayPhotos shuffle];
-            }
-            
-            for (int i=0; i<9; i++) {
-                PFImageView *imageView = (PFImageView *)[cell viewWithTag:i+1];
-                
-                if (i<[arrayPhotos count]) {
-                    
-                    
-                    [imageView setHidden:NO];
-                    if ([arrayPhotos objectAtIndex:i][@"photo"]) {
-                        PFObject *photo =[arrayPhotos objectAtIndex:i][@"photo"];
-                        if (photo[@"facebookId"]) {
-                            [imageView setImageWithURL:photo[@"facebook_url_low"] placeholderImage:[UIImage imageNamed:@"default_cover"]];
-                        }
-                        else{
-                            imageView.image = [UIImage imageNamed:@"default_cover"]; // placeholder image
-                            imageView.file = (PFFile *)photo[@"low_image"]; // remote image
-                            
-                            [imageView loadInBackground];
-                        }
-                    }
-                    else{
-                        imageView.image = (UIImage *)[arrayPhotos objectAtIndex:i][@"image"];
-                    }
-                    
-                }
-                else{
-                    [imageView setHidden:YES];
-                }
-            }
-        }
-        else{
-            [cell.coverImage setHidden:NO];
-            [cell.coverImage setImageWithURL:[NSURL URLWithString:event[@"cover"]]
-                            placeholderImage:[UIImage imageNamed:@"default_cover"]];
-        }
-    }
-    
-    
-    return cell;
-    
-    /*if (indexPath.row==0) {
-        static NSString *CellIdentifier = @"FirstCell";
-     
-        FirstMemorieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-     
-        if (cell == nil) {
-            cell = [[FirstMemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        }
-     
-        UIButton *buttonImport = (UIButton *)[cell viewWithTag:100];
-        [buttonImport setTitle:NSLocalizedString(@"MemoriesViewController_AutoImportButton", nil) forState:UIControlStateNormal];
-        
-        return cell;
+    cell.nameEventLabel.text = event[@"name"];
+    //Comments
+    if (event[@"nb_comments"]) {
+        cell.nbCommentsLabel.text = event[@"nb_comments"];
     }
     else{
-        
-    }*/
+        cell.nbCommentsLabel.text = @"0";
+    }
     
+    //Likes
+    if (event[@"nb_likes"]) {
+        cell.nbLikesLabel.text = event[@"nb_likes"];
+    }
+    else{
+        cell.nbLikesLabel.text = @"0";
+    }
+    
+    //Photos
+    //Likes
+    if (event[@"nb_photos"]) {
+        cell.nbPhotosLabel.text = event[@"nb_photos"];
+    }
+    else{
+        cell.nbPhotosLabel.text = @"0";
+    }
+
+    
+    return cell;
     
     
     
@@ -300,15 +230,7 @@
     self.memoriesInvitations = [[MOUtility getPastMemories] mutableCopy];
     [self isEmptyTableView];
     [self.tableView reloadData];
-    /*self.photosEvent = [[NSMutableArray alloc] init];
-    int i=0;
-    for(PFObject *memorieInvit in self.memoriesInvitations){
-        NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
-        [self.photosEvent addObject:mutableArrayTemp];
-        [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
-        i++;
-    }*/
-    
+
     
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -322,11 +244,8 @@
     //query.cachePolicy = kPFCachePolicyCacheThenNetwork;
     
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         if (!error) {
-            if (self.activityIndicator.isAnimating) {
-                [self.activityIndicator stopAnimating];
-                [self.activityIndicator setHidden:YES];
-            }
             
             self.memoriesInvitations = [objects mutableCopy];
             
@@ -334,15 +253,16 @@
                 [MOUtility saveInvitationWithEvent:invitation];
             }
             
-            self.photosEvent = [[NSMutableArray alloc] init];
+            [self getPhotosToUpload];
             
+            /*self.photosEvent = [[NSMutableArray alloc] init];
             int i=0;
             for(PFObject *memorieInvit in self.memoriesInvitations){
                 NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
                 [self.photosEvent addObject:mutableArrayTemp];
                 [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
                 i++;
-            }
+            }*/
             
             [[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInt:self.memoriesInvitations.count]}];
             
@@ -350,10 +270,7 @@
             [self.tableView reloadData];
         } else {
             // Log details of the failure
-            if (self.activityIndicator.isAnimating) {
-                [self.activityIndicator stopAnimating];
-                [self.activityIndicator setHidden:YES];
-            }
+            
             NSLog(@"Problème de chargement");
         }
     }];
@@ -371,16 +288,19 @@
     
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            [self.photosEvent replaceObjectAtIndex:position withObject:objects];
-            
-            
-            NSArray *visible = [self.tableView indexPathsForVisibleRows];
-            for(NSIndexPath *indexPath in visible){
-                if (position == indexPath.row) {
-                    [self isEmptyTableView];
-                    [self.tableView reloadData];
+            if (position<[self.photosEvent count]) {
+                [self.photosEvent replaceObjectAtIndex:position withObject:objects];
+                
+                
+                NSArray *visible = [self.tableView indexPathsForVisibleRows];
+                for(NSIndexPath *indexPath in visible){
+                    if (position == indexPath.row) {
+                        [self isEmptyTableView];
+                        [self.tableView reloadData];
+                    }
                 }
             }
+            
         }
     }];
 }
@@ -444,23 +364,25 @@
     UIImage *image = [UIImage imageNamed:@"broken_heart"];
     UIImageView *imageView = [[UIImageView alloc] init];
     
+    //Arrow
+    UIImage *imageArrow = [UIImage imageNamed:@"arrowWoovent"];
+    UIImageView *imageViewArrow = [[UIImageView alloc] init];
+    
     //Label
     UILabel *label = [[UILabel alloc] init];
-    
-    //Button
-    UIButton *buttonMemories = [UIButton buttonWithType:UIButtonTypeCustom];
+    UILabel *labelArrow = [[UILabel alloc] init];
     
     
+    imageViewArrow.frame = CGRectMake(235, 75, 60, 34);
+    labelArrow.frame = CGRectMake(20, 95, 240, 25);
     //Image
     if (IS_IPHONE_5) {
-        imageView.frame = CGRectMake(109, 170, 102, 90);
-        label.frame = CGRectMake(20, 300, 280, 60);
-        buttonMemories.frame = CGRectMake(20, 450, 280, 40);
+        imageView.frame = CGRectMake(109, 200, 102, 90);
+        label.frame = CGRectMake(20, 330, 280, 60);
     }
     else{
-        imageView.frame = CGRectMake(109, 170, 102, 90);
-        label.frame = CGRectMake(20, 280, 280, 60);
-        buttonMemories.frame = CGRectMake(20, 350, 280, 40);
+        imageView.frame = CGRectMake(109, 200, 102, 90);
+        label.frame = CGRectMake(20, 310, 280, 60);
     }
     
     
@@ -468,22 +390,26 @@
     [imageView setImage:image];
     imageView.contentMode = UIViewContentModeCenter;
     
+    [imageViewArrow setImage:imageArrow];
+    imageViewArrow.contentMode = UIViewContentModeCenter;
+    
     [label setTextColor:[UIColor darkGrayColor]];
     [label setTextAlignment:NSTextAlignmentCenter];
     [label setNumberOfLines:1];
     [label setFont:[MOUtility getFontWithSize:18.0]];
     label.text = NSLocalizedString(@"MemoriesViewController_Empty", nil);
     
-    
-    [buttonMemories setTitle:NSLocalizedString(@"MemoriesViewController_AutoImportButton", nil) forState:UIControlStateNormal];
-    [buttonMemories addTarget:self action:@selector(createMemorie) forControlEvents:UIControlEventTouchUpInside];
-    [buttonMemories setEnabled:YES];
-    
-    [buttonMemories setBackgroundImage:[UIImage imageNamed:@"import_auto_infos"] forState:UIControlStateNormal];
+    [labelArrow setTextColor:[UIColor orangeColor]];
+    [labelArrow setTextAlignment:NSTextAlignmentLeft];
+    [labelArrow setNumberOfLines:1];
+    [labelArrow setFont:[MOUtility getFontWithSize:14.0]];
+    labelArrow.text = NSLocalizedString(@"MemoriesViewController_EmptyLabelClick", nil);
     
     [viewBack addSubview:imageView];
+    [viewBack addSubview:imageViewArrow];
     [viewBack addSubview:label];
-    [viewBack addSubview:buttonMemories];
+    [viewBack addSubview:labelArrow];
+
     
     if (!self.memoriesInvitations) {
         self.tableView.backgroundView = viewBack;
@@ -509,6 +435,59 @@
         }
     }
     return nil;
+}
+
+-(void)getPhotosToUpload{
+    NSDate *last_upload = (NSDate *)[PFUser currentUser][@"last_upload"];
+    NSMutableArray *eventsToCheck = [[NSMutableArray alloc] init];
+    
+    for(PFObject *invitation in self.memoriesInvitations){
+        NSDate *start_date = (NSDate *)invitation[@"event"][@"start_time"];
+        
+        //If start time event after last upload
+        if ([last_upload compare:start_date]==NSOrderedAscending) {
+            NSLog(@"Ajout de l'évènement %@ à checker", invitation[@"event"][@"name"]);
+            [eventsToCheck addObject:invitation[@"event"]];
+        }
+    }
+    
+    ALAuthorizationStatus autho =  [ALAssetsLibrary authorizationStatus];
+    NSLog(@"Authorisation : %d", autho);
+    
+    [[MOUtility getNumberOfPhotosToImport:last_upload forEvents:[eventsToCheck copy]] continueWithBlock:^id(BFTask *task) {
+        if (task.error) {
+            NSLog(@"Error");
+            
+        }
+        else{
+            NSLog(@"Nombre de photos %@", task.result[@"nb_photos"]);
+        }
+        
+        return nil;
+    }];
+}
+
+-(BFTask *)setMostLikePhoto:(PFObject *)event{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
+    [queryPhotos whereKey:@"event" equalTo:event];
+    [queryPhotos orderByDescending:@"createdAt"];
+    queryPhotos.limit = 1;
+    queryPhotos.cachePolicy = kPFCachePolicyCacheThenNetwork;
+    
+    
+    [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            [task setResult:objects];
+        }
+        else{
+            [task setError:error];
+        }
+    }];
+    
+    
+    return task.task;
 }
 
 @end

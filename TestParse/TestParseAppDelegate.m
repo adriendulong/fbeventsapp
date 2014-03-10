@@ -34,6 +34,8 @@
     //Prod or Dev
     self.isProdApp = NO;
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     #warning DEVCONFIG
     [TestFlight takeOff:@"730fc4c1-31c0-4954-815c-db37d664150a"];
     
@@ -63,6 +65,7 @@
     
     //Prepare
     [AppsfireAdSDK prepare];
+    [AppsfireSDK setFeatures:AFSDKFeatureMonetization];
     
     //Crashlytics
     [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
