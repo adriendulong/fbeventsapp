@@ -185,8 +185,8 @@
  *  @brief Ask if ads are loaded and if there is at least one modal ad available
  *  @since 2.2
  *
- *  @note If ads aren't downloaded yet, then the method will return `NO`.
- *  To test the library, and then have a positive response, please use the "debug" mode.
+ *  @note If ads aren't downloaded yet, then the method will return `AFAdSDKAdAvailabilityPending`.
+ *  To test the library, and then have always have a positive response, please use the "debug" mode (see online documentation for more precisions).
  *
  *  @param modalType The kind of modal you want to check.
  *  Note that most of ads should be available for both formats.

@@ -288,7 +288,7 @@
  *  @return Return an integer that represent the number of unread notifications.
  *  If SDK isn't initialized, this number will be 0.
  */
-+ (NSInteger)numberOfPendingNotifications;
++ (NSUInteger)numberOfPendingNotifications;
 
 /*!
  *  @brief Returns an SDK sessionID.
