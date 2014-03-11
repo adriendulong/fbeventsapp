@@ -1,7 +1,7 @@
 /*!
  *  @header    AppsfireSDK.h
  *  @abstract  Appsfire iOS SDK Header
- *  @version   2.1.1
+ *  @version   2.2.0
  */
 
 /*
@@ -90,6 +90,19 @@
  *  @return `YES` if no error was detected, `NO` if a problem occured (likely due to the key).
  */
 + (BOOL)connectWithAPIKey:(NSString *)key afterDelay:(NSTimeInterval)delay;
+
+/*!
+ *  @brief Define the features you want to use in Appsfire SDK.
+ *  @since 2.2.0
+ *
+ *  @note Defining this property will allow us to avoid unnecessary library process and web-services calls.
+ *  For example, if you only use the Monetization SDK (AppsfireAdSDK), then you could set `AFSDKFeatureMonetization`.
+ *
+ *  @warning Don't touch this property if you aren't 100% sure about what you're doing.
+ *
+ *  @param features Features defined by a bitmask. You can enable one or more features. By default 'Engage' and 'Monetization' features are enabled.
+ */
++ (void)setFeatures:(AFSDKFeature)features;
 
 /*!
  *  @brief Sets delegate when Appsfire SDK calls one.

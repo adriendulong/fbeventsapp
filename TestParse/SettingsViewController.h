@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+@interface APActivityIconSettings : UIActivity
+@end
+
 @interface SettingsViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISwitch *switchNotifTel;
 @property (weak, nonatomic) IBOutlet UISwitch *swithNotifMail;

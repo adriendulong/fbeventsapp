@@ -30,6 +30,9 @@ typedef NS_ENUM(NSUInteger, AFAdSDKAdBadgeStyleMode) {
 /*!
  *  `AFAdSDKAdBadgeView` is a view used to inform end users that they are in an advertisement
  *  situation. To avoid any confusion and mislead the customer.
+ * 
+ * @note    The recommended size for the badge is `34x14`, if you plan to pick another size, you 
+ *          we recommend to get the best fitting size for a given size with the `-sizeThatFits` method.
  */
 @interface AFAdSDKAdBadgeView : UIView
 

@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintVerticalMarmotteWinner;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalConstraintViewTextWinner;
 @property (strong, nonatomic) UIImage *imageScreenshot;
+@property (nonatomic, assign) BOOL makeRotate;
 
 
 //Label Loading
@@ -28,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *facebookFour;
 @property (strong, nonatomic) NSTimer *facebookTimer;
 @property (assign, nonatomic) int counterTimer;
+@property (weak, nonatomic) IBOutlet UIImageView *wmImage;
 
 
 //Labels Winner

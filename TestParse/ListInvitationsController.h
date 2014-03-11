@@ -29,6 +29,8 @@
 @property (nonatomic, assign) NSUInteger minimalAdsCount;
 @property (nonatomic, assign) BOOL willDisplayAds;
 @property (nonatomic, assign) NSInteger needReloadFuture;
+@property (nonatomic, assign) NSInteger nbEventsAnswering;
+@property (nonatomic, assign) NSInteger nbTotalEventsAnswered;
 
 @property (strong, nonatomic) UIView *viewBack;
 

@@ -103,6 +103,8 @@
     self.removingDeclined = [[NSMutableArray alloc] init];
     self.removingInvits = [[NSMutableArray alloc] init];
     self.animating = NO;
+    self.nbEventsAnswering = 0;
+    self.nbTotalEventsAnswered = 0;
     
     //[self loadInvitationFromServer];
     //[self loadDeclinedFromSever];
@@ -431,7 +433,7 @@
 }
 
 -(void)loadInvitationFromServer{
-    NSLog(@"Load Future Events");
+    NSLog(@"Load Future Invits");
     
     //Load Invitation from local database
     self.invitations = [[MOUtility getFuturInvitationNotReplied] mutableCopy];
@@ -545,6 +547,19 @@
     
     BOOL isInDeclined = NO;
     
+    //One invitation left we are answering
+    if (self.nbEventsAnswering>self.nbTotalEventsAnswered) {
+        self.nbTotalEventsAnswered = self.nbEventsAnswering;
+    }
+    
+    if (self.nbEventsAnswering>0) {
+        self.nbEventsAnswering--;
+    }
+    else{
+        self.nbEventsAnswering = 0;
+    }
+    
+    
     
     
     //If not success we put back the row
@@ -613,30 +628,40 @@
                 }
                 
             }
-            [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count]}];
-            [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
+            
             [self.removingInvits removeObject:invitation];
         }
         else{
             [self.removingDeclined removeObject:invitation];
-            [[Mixpanel sharedInstance] track:@"RSVP Declined" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Declined Now" : [NSNumber numberWithInt:self.invitations.count]}];
         }
         
-        if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
+        /*if ([notification.userInfo[@"rsvp"] isEqualToString:FacebookEventAttending] || [notification.userInfo[@"rsvp"] isEqualToString:FacebookEventMaybeAnswer]) {
             //Animation tab Evenements
             self.countTimer = 0;
             self.timeOfActiveUser = [NSTimer scheduledTimerWithTimeInterval:0.3  target:self selector:@selector(actionTimer) userInfo:nil repeats:YES];
         }
         else{
             [self loadDeclinedFromSever];
-        }
+        }*/
     }
     
-    [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+    //Once we answered everything we update
+    if (self.nbEventsAnswering==0) {
+        //We reload the list in the future events
+        [EventUtilities setBadgeForInvitation:self.tabBarController atIndex:1];
+        ListEvents *eventsController =  (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
+        [eventsController loadFutureEventsFromServer];
+        [self loadDeclinedFromSever];
+        
+        //Track RSVP
+        [[Mixpanel sharedInstance] track:@"RSVP Invitation" properties:@{@"Answer": notification.userInfo[@"rsvp"], @"Nb Invitations Now" : [NSNumber numberWithInt:self.invitations.count], @"Nb RSVP":[NSNumber numberWithInt:self.nbTotalEventsAnswered]}];
+        self.nbTotalEventsAnswered = 0;
+        [[Mixpanel sharedInstance].people  set:@{@"Nb Invitations": [NSNumber numberWithInt:self.invitations.count]}];
+    }
     
-    //We reload the list in the future events
-    ListEvents *eventsController =  (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
-    [eventsController loadFutureEventsFromServer];
+    
+    
+    
 }
 
 
@@ -645,12 +670,19 @@
     NSLog(@"%@",notification.userInfo[@"invitationId"]);
     BOOL hasToDelete = NO;
     
-    for(PFObject *invitationLoop in self.objectsForTable){
-        if ([invitationLoop.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
-            invitation = invitationLoop;
-            hasToDelete = YES;
-            break;
+    //One more invitation we are answering
+    self.nbEventsAnswering++;
+    
+    for(id objectLoop in self.objectsForTable){
+        if (![objectLoop isKindOfClass:[NSString class]]) {
+            PFObject *invitationLoop = (PFObject *)objectLoop;
+            if ([invitationLoop.objectId isEqualToString:notification.userInfo[@"invitationId"]]) {
+                invitation = invitationLoop;
+                hasToDelete = YES;
+                break;
+            }
         }
+        
     }
     
     if (hasToDelete) {
@@ -667,7 +699,6 @@
 
 - (IBAction)listTypeChange:(id)sender {
     if (self.listSegmentControll.selectedSegmentIndex == 0) {
-        [TestFlight passCheckpoint:@"SEE_NOT_JOINED"];
         [[Mixpanel sharedInstance] track:@"Click Segement Invitations"];
         
         self.objectsForTable = self.invitations;
@@ -676,7 +707,6 @@
         //[self.tableView reloadData];
     }
     else{
-        [TestFlight passCheckpoint:@"SEE_DECLINED"];
         [[Mixpanel sharedInstance] track:@"Click Segement Declined"];
         
         self.objectsForTable = self.declined;
@@ -853,6 +883,8 @@
 
 -(void)RsvpToFbEvent:(NSString *)fbId withRsvp:(NSString *)rsvp withInvitation:(PFObject *)invitation{
     
+    //One more event waiting to be answered
+    self.nbEventsAnswering++;
     
     NSString *requestString = [NSString stringWithFormat:@"%@/%@", fbId, rsvp];
     FBRequest *request = [FBRequest requestWithGraphPath:requestString parameters:nil HTTPMethod:@"POST"];
@@ -907,6 +939,8 @@
                                                                                               cancelButtonTitle:@"OK"
                                                                                               otherButtonTitles:nil];
                                                     [alertView show];
+                                                    [userInfo setObject:@NO forKey:@"isSuccess"];
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"RsvpChanged" object:self userInfo:userInfo];
                                                     
                                                 }
                                             }];
@@ -971,12 +1005,12 @@
     }
     
     if (self.minimalAdsCount > 0) {
-        if (((numberOfInvitations-adAlreadyIn)>5)&&(self.minimalAdsCount>1)) {
+        /*if (((numberOfInvitations-adAlreadyIn)>5)&&(self.minimalAdsCount>1)) {
             NSLog(@"DE LA PUB !!");
             self.willDisplayAds = YES;
             adToAdd = 2;
-        }
-        else if((numberOfInvitations-adAlreadyIn) > 2){
+        }*/
+        if((numberOfInvitations-adAlreadyIn) > 5){
             NSLog(@"DE LA PUB !!");
             self.willDisplayAds = YES;
             adToAdd = 1;
@@ -997,7 +1031,7 @@
         if (adToAdd == 1) {
             //We add
             if (adAlreadyIn == 0) {
-                [self.objectsForTable insertObject:@"sashimi" atIndex:2];
+                [self.objectsForTable insertObject:@"sashimi" atIndex:5];
             }
             //We remove
             else if(adAlreadyIn == 2){

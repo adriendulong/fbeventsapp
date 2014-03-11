@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface FirstMemorieCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *nbPhotosFound;
+@property (weak, nonatomic) IBOutlet UIButton *buttonImport;
+@property (weak, nonatomic) IBOutlet UILabel *infosPhotosFound;
+
+
 
 @end

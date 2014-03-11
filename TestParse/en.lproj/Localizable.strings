@@ -1,11 +1,15 @@
 /* PUSH Notifications */
 "PushNotifs_LikePhoto" = "%@ has liked one of your photos";
-"PushNotifs_NewPhotos" = "%%@ new photos added to %@";
+"PushNotifs_NewPhotos" = "%@ new photos added to %@";
 "PushNotifs_NewPhotoOne" = "New photo added to %@";
 "PushNotifs_InvitationsMany" = "%@ events invitations awaiting for response";
 "PushNotifs_InvitationsOne" = "One event invitation awaiting for response";
 "PushNotifs_NewComment" = "%@ commented one of your photos";
 
+/* Local Notifs */
+"LocalNotifs_TomorrowGo" = "%@ will take place tomorrow, get the last infos";
+"LocalNotifs_TommorowMaybe" = "%@ will take place tomorrow, confirm your presence";
+"LocalNotifs_SameDay" = "%@ has started! Take a look to the photos or add yours!";
 
 /* UITabBar */
 "UITabBar_Title_FirstPosition" = "Events";
@@ -164,6 +168,9 @@
 "PhotosCollectionViewController_AutoImport" = "Import Automatically";
 "PhotosCollectionViewController_TimeConjonction" = "at";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
+"PhotosCollectionViewController_AddCalendar" = "Add to the calendar";
+"PhotosCollectionViewController_ShareMessageMultiple" = "Find here the %i photos taken during %@ : %@";
+"PhotosCollectionViewController_ShareMessageFew" = "Find here all the photos taken during %@ : %@";
 
 
 
@@ -254,6 +261,7 @@
 "MemoriesViewController_NbRefoundPhotos" = "%i photos have been found";
 "MemoriesViewController_AutoImportButton" = "Create a memorie";
 "MemoriesViewController_Empty" = "No Memories...";
+"MemoriesViewController_EmptyLabelClick" = "Click here to create a memorie!";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Settings";
@@ -266,6 +274,13 @@
 "SettingsViewController_disconnect" = "Logout";
 "SettingsViewController_Thanks" = "Thanks";
 "SettingsViewController_myStats" = "My Statistics";
+"SettingsViewController_rateApp" = "Rate the app";
+"SettingsViewController_ShareApp" = "Check this out! Perfect app for your Facebook events!\n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "Awesome app for your Facebook events";
+"SettingsViewController_TitleSectionOne" = "Spread the word!";
+"SettingsViewController_TitleSectionTwo" = "Notifications";
+"SettingsViewController_TitleSectionThree" = "For Woovent";
+"SettingsViewController_TitleSectionFour" = "And More";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "By connecting myself I accept Terms of Service";
@@ -276,7 +291,7 @@
 
 /// LandingViewController ///
 "LandingViewController_analyzeLoading" = "We're cooking up some great stats for you...";
-"LandingViewControllerWinner_messageForFacebook" = "%i Facebook event invitations! Anyone to challenge me?!\nCome and have a try on  Woovent app : http://www.woovent.com";
+"LandingViewControllerWinner_messageForFacebook" = "%i Facebook event invitations! Anyone to challenge me?!\nCome and have a try on  Woovent app : http://www.woovent.com #woovent";
 "LandingViewControllerWinner_congratsLabel1" = "Wowww!";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
 "LandingViewControllerWinner_congratsLabel3" = "Peut mieux faire !";
@@ -293,3 +308,4 @@
 "CommentPostViewController_ShowComment" = "Show comment";
 "CommentPostViewController_ShowNbComments" = "Show %i comments";
 "CommentPostViewController_NoComment" = "No comment";
+"CommentPostViewController_NoPosts" = "No posts for this event.";

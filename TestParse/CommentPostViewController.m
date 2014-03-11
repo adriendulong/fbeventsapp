@@ -33,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Discussion";
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,7 +55,7 @@
 -(void)getPostOnEventWall {
     
     //Request
-    NSString *requestString = [NSString stringWithFormat:@"%lld?fields=feed.fields(message,from,likes,comments.fields(message,from,created_time,like_count)),name", 499827973392733];//self.invitation[@"event"][@"eventId"]];
+    NSString *requestString = [NSString stringWithFormat:@"%@?fields=feed.fields(message,from,likes,comments.fields(message,from,created_time,like_count)),name", self.idEvent];//self.invitation[@"event"][@"eventId"]];
     
     //NSLog(@"Request : %@", requestString);
     
@@ -63,40 +64,44 @@
     // Send request to Facebook
     [request startWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
         if (!error) {
+            NSLog(@"Result : %@", result);
             
             for(id post in result[@"feed"][@"data"]) {
                 
-                NSDate *datePost = [MOUtility parseFacebookDate:post[@"created_time"] isDateOnly:NO];
-                
-                NSMutableArray *commentsArray = [NSMutableArray array];
-                if ((post[@"comments"][@"data"] != nil)) {
+                if (post[@"message"]) {
+                    NSDate *datePost = [MOUtility parseFacebookDate:post[@"created_time"] isDateOnly:NO];
                     
-                    
-                    for (id comment in post[@"comments"][@"data"]) {
+                    NSMutableArray *commentsArray = [NSMutableArray array];
+                    if ((post[@"comments"][@"data"] != nil)) {
                         
-                        NSDate *dateComment = [MOUtility parseFacebookDate:comment[@"created_time"] isDateOnly:NO];
                         
-                        NSDictionary *commentDict = @{ @"from" : comment[@"from"],
-                                                       @"created_time" : dateComment,
-                                                       @"like_count" : comment[@"like_count"],
-                                                       @"message" : comment[@"message"] };
+                        for (id comment in post[@"comments"][@"data"]) {
+                            
+                            NSDate *dateComment = [MOUtility parseFacebookDate:comment[@"created_time"] isDateOnly:NO];
+                            
+                            NSDictionary *commentDict = @{ @"from" : comment[@"from"],
+                                                           @"created_time" : dateComment,
+                                                           @"like_count" : comment[@"like_count"],
+                                                           @"message" : comment[@"message"] };
+                            
+                            [commentsArray addObject:commentDict];
+                        }
                         
-                        [commentsArray addObject:commentDict];
                     }
                     
+                    
+                    NSArray *likesArray = (post[@"likes"][@"data"] == nil) ? [NSArray array] : post[@"likes"][@"data"];
+                    
+                    NSDictionary *postDict = @{ @"id" : post[@"id"],
+                                                @"from" : post[@"from"],
+                                                @"created_time" : datePost,
+                                                @"likes" : likesArray,
+                                                @"message" : post[@"message"],
+                                                @"comments" : commentsArray };
+                    
+                    [self.postAndComments addObject:postDict];
                 }
-                
-                
-                NSArray *likesArray = (post[@"likes"][@"data"] == nil) ? [NSArray array] : post[@"likes"][@"data"];
-                
-                NSDictionary *postDict = @{ @"id" : post[@"id"],
-                                            @"from" : post[@"from"],
-                                            @"created_time" : datePost,
-                                            @"likes" : likesArray,
-                                            @"message" : post[@"message"],
-                                            @"comments" : commentsArray };
-                
-                [self.postAndComments addObject:postDict];
+               
                 
             }
             
@@ -105,6 +110,7 @@
             [postAndCommentsTmp sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
             
             [self.tableView reloadData];
+            [self isEmptyTableView];
             
         }
         else{
@@ -356,6 +362,30 @@
             
             [cdpvc setPostAndComments:self.postAndComments[showComments.tag]];
         }
+    }
+}
+
+-(void)isEmptyTableView{
+    UIView *viewBack = [[UIView alloc] initWithFrame:self.view.frame];
+
+    
+    //Label
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 250, 280, 40)];
+    [label setTextColor:[UIColor darkGrayColor]];
+    [label setFont:[MOUtility getFontWithSize:18.0]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    label.text = NSLocalizedString(@"CommentPostViewController_NoPosts", nil);
+    [viewBack addSubview:label];
+    
+    
+    if (!self.postAndComments) {
+        self.tableView.backgroundView = viewBack;
+    }
+    else if(self.postAndComments.count==0){
+        self.tableView.backgroundView = viewBack;
+    }
+    else{
+        self.tableView.backgroundView = nil;
     }
 }
 

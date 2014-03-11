@@ -38,9 +38,11 @@
  */
 typedef NS_OPTIONS(NSUInteger, AFSDKFeature) {
     /** Engage feature */
-    AFSDKFeatureEngage          = 0,
+    AFSDKFeatureEngage          = 1 << 0,
     /** Monetization feature */
-    AFSDKFeatureMonetization    = 1 << 0
+    AFSDKFeatureMonetization    = 1 << 1,
+    /** Track feature */
+    AFSDKFeatureTrack           = 1 << 2
 };
 
 
@@ -96,6 +98,20 @@ typedef NS_ENUM(NSUInteger, AFAdSDKSashimiFormat) {
     AFAdSDKSashimiFormatMinimal = 0,
     /**  */
     AFAdSDKSashimiFormatExtended = 1
+};
+
+
+/*!
+ *  @brief Enum for specifying the ad availability.
+ *  @since 2.2
+ */
+typedef NS_ENUM(NSUInteger, AFAdSDKAdAvailability) {
+    /** Answer can't be given right now */
+    AFAdSDKAdAvailabilityPending = 0,
+    /** An ad is available right now */
+    AFAdSDKAdAvailabilityYes = 1,
+    /** An ad isn't available right now */
+    AFAdSDKAdAvailabilityNo = 2
 };
 
 

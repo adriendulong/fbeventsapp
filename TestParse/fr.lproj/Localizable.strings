@@ -169,6 +169,9 @@
 "PhotosCollectionViewController_AutoImport" = "Importation Automatique";
 "PhotosCollectionViewController_TimeConjonction" = "à";
 "PhotosCollectionViewController_NbPhotos" = "%i Photos";
+"PhotosCollectionViewController_AddCalendar" = "Ajouter au calendrier";
+"PhotosCollectionViewController_ShareMessageMultiple" = "Retrouve ici les %i photos prises pendant %@ : %@";
+"PhotosCollectionViewController_ShareMessageFew" = "Retrouve ici toutes les photos prises pendant %@ : %@";
 
 
 
@@ -259,6 +262,7 @@
 "MemoriesViewController_NbRefoundPhotos" = "%i photos ont été retrouvées";
 "MemoriesViewController_AutoImportButton" = "Créer un souvenir";
 "MemoriesViewController_Empty" = "Aucun souvenirs...";
+"MemoriesViewController_EmptyLabelClick" = "Touche ici pour créer un souvenir !";
 
 //// SettingsViewController /////
 "SettingsViewController_Title" = "Preférences";
@@ -271,6 +275,13 @@
 "SettingsViewController_disconnect" = "Déconnexion";
 "SettingsViewController_Thanks" = "Remerciements";
 "SettingsViewController_myStats" = "Mes Statistiques";
+"SettingsViewController_rateApp" = "Noter l'app";
+"SettingsViewController_ShareApp" = "Hey regarde, j'ai trouvé l'app parfaite pour tes évènements Facebook !  \n http://woovent.com/gettheapp/";
+"SettingsViewController_ShareAppTitle" = "Une app pour tes évènements Facebook";
+"SettingsViewController_TitleSectionOne" = "Fais passer le mot !";
+"SettingsViewController_TitleSectionTwo" = "Notifications";
+"SettingsViewController_TitleSectionThree" = "Pour Woovent";
+"SettingsViewController_TitleSectionFour" = "Et Plus";
 
 //// LoginViewController ///
 "LoginViewController_CGU" = "En me connectant j'accepte les CGU";
@@ -282,7 +293,7 @@
 
 /// LandingViewController ///
 "LandingViewController_analyzeLoading" = "Nous préparons quelques belles statistiques pour vous...";
-"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com";
+"LandingViewControllerWinner_messageForFacebook" = "%i invitations à des évènements ! Qui dit mieux ?! \nViens tester sur l'application Woovent : http://www.woovent.com #woovent";
 "LandingViewControllerWinner_congratsLabel1" = "Wooow !";
 "LandingViewControllerWinner_congratsLabel2" = "Pas mal !";
 "LandingViewControllerWinner_congratsLabel3" = "Peut mieux faire !";
@@ -299,3 +310,4 @@
 "CommentPostViewController_ShowComment" = "Afficher le commentaire";
 "CommentPostViewController_ShowNbComments" = "Afficher les %i commentaires";
 "CommentPostViewController_NoComment" = "Aucun commentaire";
+"CommentPostViewController_NoPosts" = "Aucun message pour cet évènement.";

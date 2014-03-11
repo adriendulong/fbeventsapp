@@ -12,6 +12,8 @@
 #import <sys/sysctl.h>
 #include <stdlib.h>
 #import "KeenClient.h"
+#import "FbEventsUtilities.h"
+#import "Photo.h"
 
 @implementation MOUtility
 
@@ -45,14 +47,19 @@
 
 +(NSDate *)parseFacebookDate:(NSString *)date isDateOnly:(BOOL)isDateOnly{
     
+    NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    
     NSDateFormatter *dateFullFormatter = [[NSDateFormatter alloc] init];
+    [dateFullFormatter setLocale:enUSPOSIXLocale];
     [dateFullFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH:mm:ssZ"];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [dateFormatter setLocale:enUSPOSIXLocale];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     NSDateFormatter *oldDateFormat = [[NSDateFormatter alloc] init];
+    [oldDateFormat setLocale:enUSPOSIXLocale];
     [oldDateFormat setDateFormat:@"yyyy'-'MM'-'dd'T'HH:mm:ss"];
     
     NSDate* dateToReturn;
@@ -79,9 +86,12 @@
         dateToReturn = [NSDate date];
     }
     
-    
-    
     return dateToReturn;
+}
+
++(NSDate *)parseFacebookDateUnix:(NSString *)dateUnix{
+    NSDate* dateFacebook = [NSDate dateWithTimeIntervalSince1970:[dateUnix doubleValue]];
+    return dateFacebook;
 }
 
 +(NSURL *)UrlOfFacebooProfileImage:(NSString *)profileId withResolution:(NSString *)quality{
@@ -328,6 +338,32 @@
     }
 }
 
+#pragma mark - Events
++(NSMutableArray *)keepGoodEvents:(NSArray *)invitations{
+    NSMutableArray *invitationsSorted = [[NSMutableArray alloc] init];
+    NSDate *now = [NSDate date];
+    
+    for(PFObject *invitation in invitations){
+        PFObject *tempEvent = invitation[@"event"];
+        
+        //All day long we keep it 25 hours
+        if ([tempEvent[@"is_date_only"] boolValue]) {
+            [invitationsSorted addObject:invitation];
+        }
+        //Not all day long we keep it 12 hours
+        else{
+            NSDate *start_time = (NSDate *)tempEvent[@"start_time"];
+            start_time = [start_time dateByAddingTimeInterval:12*3600];
+            if ([start_time compare:now] == NSOrderedDescending) {
+                [invitationsSorted addObject:invitation];
+            }
+        }
+        
+    }
+    
+    return invitationsSorted;
+}
+
 
 #pragma mark - Colors
 
@@ -470,6 +506,13 @@
                                                fromDate:fromDate toDate:toDate options:0];
     
     return [difference day];
+}
+
++(NSDate *)setDateTime:(NSDate*)date withTime:(NSInteger)hour{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    [components setHour:hour];
+    return [calendar dateFromComponents:components];
 }
 
 
@@ -1137,7 +1180,7 @@
     NSSortDescriptor *dateSort = [[NSSortDescriptor alloc] initWithKey:@"event.start_date" ascending:NO selector:nil];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:dateSort]];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((event.start_date < %@) OR (event.end_date < %@)) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [[NSDate date] dateByAddingTimeInterval:-12*3600], [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((event.start_date < %@)) AND ((rsvp_status like %@) OR (rsvp_status like %@)) AND (is_memory == %@)", [NSDate date], FacebookEventMaybe, FacebookEventAttending, [NSNumber numberWithBool:YES]];
     fetchRequest.predicate = predicate;
     
     // fetch all objects
@@ -1454,6 +1497,17 @@
     return font;
 }
 
+#pragma mark - String
++(NSString *)removeAccentuation:(NSString *)text{
+    // convert to a data object, using a lossy conversion to ASCII
+    NSData *asciiEncoded = [text dataUsingEncoding:NSASCIIStringEncoding
+                                            allowLossyConversion:YES];
+    
+    // take the data object and recreate a string using the lossy conversion
+    return [[NSString alloc] initWithData:asciiEncoded
+                                            encoding:NSASCIIStringEncoding];
+}
+
 #pragma mark - Cover
 +(UIImage *)getCover:(NSInteger)which{
     int r = arc4random() % 4;
@@ -1480,6 +1534,7 @@
         if ([rsvp_status isEqualToString:FacebookEventAttending]||[rsvp_status isEqualToString:FacebookEventMaybe]) {
             //Erase all notif for this event
             [self eraseNotifsForInvitation:invitation];
+            
             [self createNotif:invitation andType:0];
             [self createNotif:invitation andType:1];
             
@@ -1526,41 +1581,22 @@
     NSString *message;
     NSDate *dateStart = (NSDate *)event[@"start_time"];
     
-    //Day before
-    if (type == 0) {
-        if ([rsvp_status isEqualToString:FacebookEventAttending]) {
-            message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TomorrowGo", nil), event[@"name"]];
-        }
-        else if([rsvp_status isEqualToString:FacebookEventMaybe]){
-            message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TommorowMaybe", nil), event[@"name"]];
-        }
-        
-        //Day before beginning
-        NSDate *testDate = [NSDate date];
-        dateStart = [dateStart dateByAddingTimeInterval:-(60*60*24)];
-        testDate = [testDate dateByAddingTimeInterval:15];
-        
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-        NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: dateStart];
-        [components setHour: 20];
-        [components setMinute: 0];
-        [components setSecond: 0];
-        
-        NSDate *newDate = [gregorian dateFromComponents: components];
-        
-        
-        localNotification.fireDate = newDate;
-        
-        localNotification.alertAction = @"Plus d'infos";
-    }
-    //Just after the beginning of the event
-    else{
-        NSDate *testDate = [NSDate date];
-        testDate = [testDate dateByAddingTimeInterval:60*1];
-        
-        //If date only put notif at 20:00 of this day
-        NSDate *newDate = [[NSDate alloc] init];
-        if ([event[@"is_date_only"] boolValue]) {
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    
+    if ([currentInstallation[@"is_push_notif"] boolValue]) {
+        //Day before
+        if (type == 0) {
+            if ([rsvp_status isEqualToString:FacebookEventAttending]) {
+                message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TomorrowGo", nil), event[@"name"]];
+            }
+            else if([rsvp_status isEqualToString:FacebookEventMaybe]){
+                message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_TommorowMaybe", nil), event[@"name"]];
+            }
+            
+            //Day before beginning
+            NSDate *testDate = [NSDate date];
+            dateStart = [dateStart dateByAddingTimeInterval:-(60*60*24)];
+            testDate = [testDate dateByAddingTimeInterval:15];
             
             NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
             NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: dateStart];
@@ -1568,28 +1604,117 @@
             [components setMinute: 0];
             [components setSecond: 0];
             
-            newDate = [gregorian dateFromComponents: components];
+            NSDate *newDate = [gregorian dateFromComponents: components];
+            
+            
+            localNotification.fireDate = newDate;
+            
+            localNotification.alertAction = @"Plus d'infos";
         }
-        //Otherwise 3 hours after the beginning
+        //Just after the beginning of the event
         else{
+            NSDate *testDate = [NSDate date];
+            testDate = [testDate dateByAddingTimeInterval:60*1];
             
-            newDate = [dateStart dateByAddingTimeInterval:60*60*3];
+            //If date only put notif at 20:00 of this day
+            NSDate *newDate = [[NSDate alloc] init];
+            if ([event[@"is_date_only"] boolValue]) {
+                
+                NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+                NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: dateStart];
+                [components setHour: 20];
+                [components setMinute: 0];
+                [components setSecond: 0];
+                
+                newDate = [gregorian dateFromComponents: components];
+            }
+            //Otherwise 3 hours after the beginning
+            else{
+                
+                newDate = [dateStart dateByAddingTimeInterval:60*60*3];
+                
+            }
             
+            localNotification.fireDate = newDate;
+            message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_SameDay", nil), event[@"name"]];
+            localNotification.alertAction = @"Immortaliser";
         }
         
-        localNotification.fireDate = newDate;
-        message = [NSString stringWithFormat:NSLocalizedString(@"LocalNotifs_SameDay", nil), event[@"name"]];
-        localNotification.alertAction = @"Immortaliser";
+        
+        localNotification.alertBody = message;
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
+        localNotification.userInfo = userInfos;
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        
+        
+        //Notif date must be after the actuel date otherwise will always pop up
+        if ([localNotification.fireDate compare:[NSDate date]] == NSOrderedDescending) {
+            [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        }
+        
     }
     
-    
-    localNotification.alertBody = message;
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.userInfo = userInfos;
-    localNotification.soundName = UILocalNotificationDefaultSoundName;
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
+
+#pragma mark - Photos
++(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    __block NSInteger nbPhotos = 0;
+    __block NSMutableArray *photosArray = [[NSMutableArray alloc] init];
+
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+
+        
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        
+        @autoreleasepool {
+            if (group) {
+                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    if (result) {
+                        
+                        NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                        
+                        for(PFObject *event in events){
+                            NSDate *start_date = (NSDate *)event[@"start_time"];
+                            NSDate *end_date = [FbEventsUtilities getEndDateEvent:event];
+                            
+                            
+                            if ([MOUtility date:photoDate isBetweenDate:start_date andDate:end_date]) {
+                                nbPhotos++;
+                                if (nbPhotos<4) {
+                                    Photo *photo = [[Photo alloc] init];
+                                    photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                    photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
+                                    photo.date = photoDate;
+                                    
+                                    [photosArray addObject:photo];
+                                } 
+                                break;
+                            }
+                        }
+                        
+    
+                    }
+                }];
+                
+            }
+            else{
+                [task setResult:@{@"nb_photos": [NSNumber numberWithInt:nbPhotos], @"photos":photosArray}];
+            }
+        }
+        
+        //[self updateNavBar];
+    } failureBlock:^(NSError *error) {
+        [task setError:error];
+    }];
+
+    
+    
+    return task.task;
+}
 
 
 

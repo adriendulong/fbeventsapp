@@ -10,11 +10,21 @@
 #import "InfoHeaderCollectionView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+/*@interface APActivityProvider : UIActivityItemProvider <UIActivityItemSource>
+@end*/
+@interface APActivityIcon : UIActivity
+@property (strong, nonatomic) NSDate *start_time;
+@property (strong, nonatomic) NSDate *end_time;
+@property (strong, nonatomic) NSString *nameEvent;
+@property (nonatomic, assign) BOOL has_end_time;
+@property (nonatomic, assign) BOOL is_date_only;
+@end
+
 @interface PhotosCollectionViewController : UICollectionViewController
 
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) PFObject *invitation;
-@property (strong, nonatomic) NSArray *invited;
+@property (strong, nonatomic) NSMutableArray *invited;
 @property (strong, nonatomic) InfoHeaderCollectionView *headerCollectionView;
 @property (strong, nonatomic) NSIndexPath *headerIndexPath;
 @property (nonatomic, assign) BOOL isShowingDetails;
@@ -28,7 +38,9 @@
 @property (nonatomic, assign) int nbTotal;
 @property (nonatomic, assign) BOOL isMapInit;
 @property (assign, nonatomic) BOOL mustChangeTitle;
+- (IBAction)showDiscussions:(id)sender;
 
 - (IBAction)autoImport:(id)sender;
 - (IBAction)hideViewTap:(id)sender;
+- (IBAction)share:(id)sender;
 @end
