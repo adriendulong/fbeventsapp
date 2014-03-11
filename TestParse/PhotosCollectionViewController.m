@@ -146,49 +146,6 @@
     
     
     [self setTitle];
-    //We are in the tab Bar
-    /*if (!self.invitation) {
-        self.mustChangeTitle = NO;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateClosestEvent:) name:UpdateClosestEvent object:nil];
-        
-        ListEvents *listEvents = (ListEvents *)[[[[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
-        self.invitation = listEvents.closestInvitation;
-        
-        if (self.invitation) {
-            [self setTitle];
-            
-            
-            
-            //Init images
-            NSDate *startDate = self.invitation[@"event"][@"start_time"];
-            if ([startDate compare:[NSDate date]]==NSOrderedAscending) {
-                self.isDuringOrAfter = YES;
-                self.isShowingDetails = NO;
-            }
-            else{
-                self.isDuringOrAfter = NO;
-                self.isShowingDetails = YES;
-            }
-            
-            self.hasUpdatedGuestsFromFB = NO;
-            [self.collectionViewLayout invalidateLayout];
-            
-            
-            [[Mixpanel sharedInstance] track:@"Now Event" properties:@{@"has_started": [NSNumber numberWithBool:self.isDuringOrAfter]}];
-            //Update view
-            [self getInvitedFromServer];
-            [self updateEventFromFB];
-            [self loadPhotos];
-        }
-        else{
-            [self.tabBarController setSelectedIndex:0];
-        }
-        
-    }
-    else{
-        [self.navigationController setToolbarHidden:YES];
-    }*/
     
 }
 
@@ -294,6 +251,14 @@
         self.headerIndexPath = indexPath;
         
         InfoHeaderCollectionView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
+        
+        //Gestue recognizers
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideViewTap:)];
+        gestureRecognizer.cancelsTouchesInView = NO;
+        [headerView.hideView addGestureRecognizer:gestureRecognizer];
+        UITapGestureRecognizer *gestureRecognizerDiscussion = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDiscussions:)];
+        gestureRecognizerDiscussion.cancelsTouchesInView = NO;
+        [headerView.dicussionView addGestureRecognizer:gestureRecognizerDiscussion];
         
         //Init labels
         [headerView.takePhotoButton setTitle:NSLocalizedString(@"PhotosCollectionViewController_TakePhoto", nil) forState:UIControlStateNormal];

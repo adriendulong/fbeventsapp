@@ -37,6 +37,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *detailInvitedLabel;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBlocDiscussion;
+@property (weak, nonatomic) IBOutlet UIView *hideView;
+@property (weak, nonatomic) IBOutlet UIView *dicussionView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightHeader;
 

@@ -14,5 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
+@property (nonatomic, assign) BOOL hasPhotosToImport;
+@property (nonatomic, assign) int nbPhotosToImport;
 
 @end

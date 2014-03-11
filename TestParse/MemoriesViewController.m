@@ -42,6 +42,8 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    //self.hasPhotosToImport = NO;
+    
     PFUser *user = [PFUser currentUser];
     [user refreshInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         NSLog(@"User last upload : %@", user[@"last_upload"]);
@@ -67,6 +69,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hasPhotosToImport = NO;
     
     self.title = NSLocalizedString(@"UITabBar_Title_ThirdPosition", nil);
     //[self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:(253/255.0) green:(160/255.0) blue:(20/255.0) alpha:1]];
@@ -108,13 +112,29 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.memoriesInvitations count];
+    if (self.hasPhotosToImport) {
+        return [self.memoriesInvitations count]+1;
+    }
+    else{
+        return [self.memoriesInvitations count];
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    return 173;
+    if (self.hasPhotosToImport) {
+        if (indexPath.row == 0) {
+            return 100;
+        }
+        else{
+            return 173;
+        }
+    }
+    else{
+        return 173;
+    }
+    
 }
 
 
@@ -124,8 +144,26 @@
     
 
     static NSString *CellIdentifier = @"Cell";
-    
+    static NSString *FirstCellIdentifier = @"FirstCell";
     int indexPosition = indexPath.row;
+    
+    if (self.hasPhotosToImport) {
+        indexPosition = indexPath.row - 1;
+        
+        if (indexPath.row == 0) {
+            FirstMemorieCell *cell = [tableView dequeueReusableCellWithIdentifier:FirstCellIdentifier forIndexPath:indexPath];
+            
+            if (cell == nil) {
+                cell = [[FirstMemorieCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            }
+
+            cell.nbPhotosFound.text = [NSString stringWithFormat:@"%i", self.nbPhotosToImport];
+            
+            return cell;
+        }
+    }
+    
+    
     
     MemorieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
@@ -155,7 +193,7 @@
     cell.nameEventLabel.text = event[@"name"];
     //Comments
     if (event[@"nb_comments"]) {
-        cell.nbCommentsLabel.text = event[@"nb_comments"];
+        cell.nbCommentsLabel.text = [NSString stringWithFormat:@"%@", event[@"nb_comments"]];
     }
     else{
         cell.nbCommentsLabel.text = @"0";
@@ -163,7 +201,7 @@
     
     //Likes
     if (event[@"nb_likes"]) {
-        cell.nbLikesLabel.text = event[@"nb_likes"];
+        cell.nbLikesLabel.text = [NSString stringWithFormat:@"%@", event[@"nb_likes"]];
     }
     else{
         cell.nbLikesLabel.text = @"0";
@@ -172,11 +210,33 @@
     //Photos
     //Likes
     if (event[@"nb_photos"]) {
-        cell.nbPhotosLabel.text = event[@"nb_photos"];
+        cell.nbPhotosLabel.text = [NSString stringWithFormat:@"%@", event[@"nb_photos"]];
     }
     else{
         cell.nbPhotosLabel.text = @"0";
     }
+    
+    
+    //Get and set the most likes photos as cover photo
+    [[self setMostLikePhoto:event] continueWithBlock:^id(BFTask *task) {
+        if (task.error) {
+            NSLog(@"Error while loading the photos of event : %@", event[@"name"]);
+        }
+        else{
+            cell.backgroundImage.image = [UIImage imageNamed:@"default_cover"];
+            
+            if (task.result != nil) {
+                if (task.result[0][@"full_image"]!=nil) {
+                    cell.backgroundImage.file = task.result[0][@"full_image"]; // remote image
+                    
+                    [cell.backgroundImage loadInBackground];
+                }
+            }
+            
+        }
+        
+        return nil;
+    }];
 
     
     return cell;
@@ -254,15 +314,7 @@
             }
             
             [self getPhotosToUpload];
-            
-            /*self.photosEvent = [[NSMutableArray alloc] init];
-            int i=0;
-            for(PFObject *memorieInvit in self.memoriesInvitations){
-                NSMutableArray *mutableArrayTemp = [[NSMutableArray alloc] init];
-                [self.photosEvent addObject:mutableArrayTemp];
-                [self loadPhotosOfEvent:memorieInvit[@"event"] atPosition:i];
-                i++;
-            }*/
+
             
             [[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInt:self.memoriesInvitations.count]}];
             
@@ -282,7 +334,7 @@
     PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
     [queryPhotos whereKey:@"event" equalTo:event];
     [queryPhotos orderByDescending:@"createdAt"];
-    queryPhotos.limit = 9;
+    queryPhotos.limit = 1;
     queryPhotos.cachePolicy = kPFCachePolicyCacheThenNetwork;
 
     
@@ -336,20 +388,6 @@
 
 }
 
--(void)getNbPhotosAtIndex:(NSIndexPath *)index forCell:(MemorieCell *)cell{
-    PFObject *event = [self.memoriesInvitations objectAtIndex:index.row][@"event"];
-    
-    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
-    query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-    [query whereKey:@"event" equalTo:event];
-    [query countObjectsInBackgroundWithBlock:^(int count, NSError *error) {
-        if (!error) {
-            cell.nbPhotosLabel.text = [NSString stringWithFormat:NSLocalizedString(@"MemoriesViewController_NbRefoundPhotos", nil), count];
-        } else {
-            // The request failed
-        }
-    }];
-}
 
 -(void)createMemorie{
     
@@ -457,10 +495,24 @@
     [[MOUtility getNumberOfPhotosToImport:last_upload forEvents:[eventsToCheck copy]] continueWithBlock:^id(BFTask *task) {
         if (task.error) {
             NSLog(@"Error");
-            
+            if (self.hasPhotosToImport) {
+                self.hasPhotosToImport = NO;
+                [self.tableView reloadData];
+            }
         }
         else{
             NSLog(@"Nombre de photos %@", task.result[@"nb_photos"]);
+            if (self.hasPhotosToImport) {
+                self.hasPhotosToImport = YES;
+                self.nbPhotosToImport = [task.result[@"nb_photos"] integerValue];
+                [self.tableView reloadData];
+            }
+            else if(self.nbPhotosToImport != [task.result[@"nb_photos"] integerValue]){
+                self.hasPhotosToImport = YES;
+                self.nbPhotosToImport = [task.result[@"nb_photos"] integerValue];
+                [self.tableView reloadData];
+            }
+            
         }
         
         return nil;
@@ -474,8 +526,8 @@
     [queryPhotos whereKey:@"event" equalTo:event];
     [queryPhotos orderByDescending:@"createdAt"];
     queryPhotos.limit = 1;
-    queryPhotos.cachePolicy = kPFCachePolicyCacheThenNetwork;
-    
+    queryPhotos.cachePolicy = kPFCachePolicyNetworkElseCache;
+
     
     [queryPhotos findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
