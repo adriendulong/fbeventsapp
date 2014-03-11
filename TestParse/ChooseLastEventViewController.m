@@ -358,7 +358,7 @@
         
         
         PhotosImportedViewController *photoCollectionController = (PhotosImportedViewController *)segue.destinationViewController;
-        photoCollectionController.event = self.event;
+        photoCollectionController.events = [NSMutableArray arrayWithObject:self.event];
         photoCollectionController.levelRoot = self.levelRoot;
     }
     

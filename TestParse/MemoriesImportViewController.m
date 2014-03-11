@@ -403,7 +403,7 @@
     }
     else if([segue.identifier isEqualToString:@"DirectImport"]){
         PhotosImportedViewController *photosImported = (PhotosImportedViewController *)segue.destinationViewController;
-        photosImported.event = self.chosedEvent;
+        photosImported.events = [NSMutableArray arrayWithObject:self.chosedEvent];
         photosImported.levelRoot = 0;
     }
     

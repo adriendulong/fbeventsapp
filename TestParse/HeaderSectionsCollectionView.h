@@ -10,8 +10,8 @@
 
 @interface HeaderSectionsCollectionView : UICollectionReusableView
 @property (weak, nonatomic) IBOutlet UIImageView *imageLogo;
-@property (weak, nonatomic) IBOutlet UILabel *numberPhotos;
-@property (weak, nonatomic) IBOutlet UILabel *typeOfSource;
+@property (weak, nonatomic) IBOutlet UILabel *dateEvent;
+@property (weak, nonatomic) IBOutlet UILabel *eventName;
 @property (weak, nonatomic) IBOutlet UIView *viewHeader;
 @property (weak, nonatomic) IBOutlet UIButton *modifySelectionButton;
 @property (assign, nonatomic) int position;

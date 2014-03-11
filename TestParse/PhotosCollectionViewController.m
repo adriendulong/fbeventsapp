@@ -956,7 +956,7 @@
     else if ([segue.identifier isEqualToString:@"DirectImport"]){
         
         PhotosImportedViewController *photoImported = (PhotosImportedViewController *)segue.destinationViewController;
-        photoImported.event = self.invitation[@"event"];
+        photoImported.events = [NSArray arrayWithObject:self.invitation[@"event"]];
         photoImported.levelRoot = 1;
     }
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){
@@ -969,7 +969,7 @@
         [TestFlight passCheckpoint:@"GUESTS_FROM_DETAIL"];
         
         InvitedListViewController *invitedController = (InvitedListViewController *)segue.destinationViewController;
-        invitedController.invited = self.invited;
+        invitedController.invited = [self.invited mutableCopy];
         invitedController.event = self.invitation[@"event"];
     }
     
