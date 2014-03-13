@@ -52,6 +52,7 @@
 		E72288C918C24542006B6999 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E72288C818C24542006B6999 /* Bolts.framework */; };
 		E7237A95183E470700502113 /* ChooseLastEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7237A94183E470700502113 /* ChooseLastEventViewController.m */; };
 		E724E57E180F02E800741528 /* MOUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = E724E57D180F02E800741528 /* MOUtility.m */; };
+		E725F6B218D1B6EC00E3A946 /* PastEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E725F6B118D1B6EC00E3A946 /* PastEventsCell.m */; };
 		E7294B951845F5360087719E /* MemoriesImportCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B941845F5360087719E /* MemoriesImportCell.m */; };
 		E7294B981845F5590087719E /* MemoriesImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7294B971845F5590087719E /* MemoriesImportViewController.m */; };
 		E72F86FA188ED3140057F83E /* PDGestureTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E72F86F9188ED3140057F83E /* PDGestureTableView.m */; };
@@ -253,6 +254,8 @@
 		E7237A94183E470700502113 /* ChooseLastEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseLastEventViewController.m; sourceTree = "<group>"; };
 		E724E57C180F02E800741528 /* MOUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOUtility.h; sourceTree = "<group>"; };
 		E724E57D180F02E800741528 /* MOUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOUtility.m; sourceTree = "<group>"; };
+		E725F6B018D1B6EC00E3A946 /* PastEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PastEventsCell.h; sourceTree = "<group>"; };
+		E725F6B118D1B6EC00E3A946 /* PastEventsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PastEventsCell.m; sourceTree = "<group>"; };
 		E7294B931845F5360087719E /* MemoriesImportCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesImportCell.h; sourceTree = "<group>"; };
 		E7294B941845F5360087719E /* MemoriesImportCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoriesImportCell.m; sourceTree = "<group>"; };
 		E7294B961845F5590087719E /* MemoriesImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoriesImportViewController.h; sourceTree = "<group>"; };
@@ -738,6 +741,19 @@
 			name = Connection;
 			sourceTree = "<group>";
 		};
+		E725F6AF18D1B6AF00E3A946 /* MemoriesCells */ = {
+			isa = PBXGroup;
+			children = (
+				E765014D1844FD8600B96E47 /* MemorieCell.h */,
+				E765014E1844FD8600B96E47 /* MemorieCell.m */,
+				E76501501845225400B96E47 /* FirstMemorieCell.h */,
+				E76501511845225400B96E47 /* FirstMemorieCell.m */,
+				E725F6B018D1B6EC00E3A946 /* PastEventsCell.h */,
+				E725F6B118D1B6EC00E3A946 /* PastEventsCell.m */,
+			);
+			name = MemoriesCells;
+			sourceTree = "<group>";
+		};
 		E72F86F7188ED2F80057F83E /* SlideGesture */ = {
 			isa = PBXGroup;
 			children = (
@@ -882,14 +898,11 @@
 		E7A27F8318296131009615A8 /* Memories */ = {
 			isa = PBXGroup;
 			children = (
+				E725F6AF18D1B6AF00E3A946 /* MemoriesCells */,
 				E74F53B8182962D000B1C1AF /* MemoriesController.h */,
 				E74F53B9182962D000B1C1AF /* MemoriesController.m */,
 				E7D193751840F016008FD530 /* MemoriesViewController.h */,
 				E7D193761840F016008FD530 /* MemoriesViewController.m */,
-				E765014D1844FD8600B96E47 /* MemorieCell.h */,
-				E765014E1844FD8600B96E47 /* MemorieCell.m */,
-				E76501501845225400B96E47 /* FirstMemorieCell.h */,
-				E76501511845225400B96E47 /* FirstMemorieCell.m */,
 				E7294B931845F5360087719E /* MemoriesImportCell.h */,
 				E7294B941845F5360087719E /* MemoriesImportCell.m */,
 				E7294B961845F5590087719E /* MemoriesImportViewController.h */,
@@ -1264,6 +1277,7 @@
 				E7D09A9718533EE400BBCAB6 /* FbEvents.xcdatamodeld in Sources */,
 				E7896C4C182294C400DEBBDC /* InvitationCell.m in Sources */,
 				E7F10FA1183FA39F0061350A /* PhotosSelectionCell.m in Sources */,
+				E725F6B218D1B6EC00E3A946 /* PastEventsCell.m in Sources */,
 				E7F10F9E183F85E80061350A /* Photo.m in Sources */,
 				E7DA1B58183A9563000527A0 /* PhotoDetailViewController.m in Sources */,
 				3FF97C2B18B4F37A0044EF03 /* CommentPostRespCell.m in Sources */,

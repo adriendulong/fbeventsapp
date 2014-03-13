@@ -1660,9 +1660,21 @@
 #pragma mark - Photos
 +(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events{
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
-    __block NSInteger nbPhotos = 0;
-    __block NSMutableArray *photosArray = [[NSMutableArray alloc] init];
+    //__block NSInteger nbPhotos = 0;
+    //__block NSMutableArray *photosArray = [[NSMutableArray alloc] init];
+    
+    NSMutableArray *eventsInfosPhotos = [[NSMutableArray alloc] init];
 
+    for(PFObject *event in events){
+        NSInteger nbPhotos = 0;
+        NSMutableArray *photosArray = [[NSMutableArray alloc] init];
+        NSMutableDictionary *infosEvent = [[NSMutableDictionary alloc] init];
+        [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos] forKey:@"nb_photos"];
+        [infosEvent setObject:photosArray forKey:@"photos"];
+        [infosEvent setObject:event forKey:@"event"];
+        
+        [eventsInfosPhotos addObject:infosEvent];
+    }
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 
@@ -1677,21 +1689,49 @@
                         
                         NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
                         
-                        for(PFObject *event in events){
-                            NSDate *start_date = (NSDate *)event[@"start_time"];
+                        for(NSMutableDictionary *infosEvent in eventsInfosPhotos){
+                            PFObject *event = infosEvent[@"event"];
+                            NSInteger nbPhotos = [(NSNumber *)infosEvent[@"nb_photos"] integerValue];
+                            NSMutableArray *arrayPhotos = (NSMutableArray *)infosEvent[@"photos"];
+                            
+                            NSDate *start_date;
+                            
+                            if (lastUploadDate) {
+                                NSDate *start_date_event = (NSDate *)event[@"start_time"];
+                                
+                                
+                                if ([start_date_event compare:lastUploadDate]==NSOrderedDescending) {
+                                    start_date = (NSDate *)event[@"start_time"];
+                                }
+                                else{
+                                    start_date = lastUploadDate;
+                                }
+                            }
+                            else{
+                                start_date = (NSDate *)event[@"start_time"];
+                            }
+                            
+                            
+                            
+                            
                             NSDate *end_date = [FbEventsUtilities getEndDateEvent:event];
                             
                             
                             if ([MOUtility date:photoDate isBetweenDate:start_date andDate:end_date]) {
                                 nbPhotos++;
-                                if (nbPhotos<4) {
+                                if (nbPhotos<2) {
                                     Photo *photo = [[Photo alloc] init];
                                     photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
                                     photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
                                     photo.date = photoDate;
                                     
-                                    [photosArray addObject:photo];
-                                } 
+                                    [arrayPhotos addObject:photo];
+                                }
+
+                                
+                                [infosEvent setObject:arrayPhotos forKey:@"photos"];
+                                [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos ] forKey:@"nb_photos"];
+                                
                                 break;
                             }
                         }
@@ -1702,7 +1742,7 @@
                 
             }
             else{
-                [task setResult:@{@"nb_photos": [NSNumber numberWithInt:nbPhotos], @"photos":photosArray}];
+                [task setResult:eventsInfosPhotos];
             }
         }
         

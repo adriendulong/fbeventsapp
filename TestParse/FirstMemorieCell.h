@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *nbPhotosFound;
 @property (weak, nonatomic) IBOutlet UIButton *buttonImport;
 @property (weak, nonatomic) IBOutlet UILabel *infosPhotosFound;
+@property (weak, nonatomic) IBOutlet UIImageView *imagePreview;
 
 
 
