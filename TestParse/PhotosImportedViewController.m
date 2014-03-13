@@ -87,6 +87,7 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
+    
     UICollectionReusableView *reusableview = nil;
     
     if (kind == UICollectionElementKindSectionHeader) {
@@ -105,12 +106,12 @@
         headerView.imageLogo.image = [UIImage imageNamed:@"camera_app"];
         headerView.dateEvent.text = formattedDateString;
         
-        if (self.numberOfPhotosSelectedPhone == [[self.imagesFound objectAtIndex:indexPath.section] count]) {
+        /*if (self.numberOfPhotosSelectedPhone == [[self.imagesFound objectAtIndex:indexPath.section] count]) {
             [headerView.modifySelectionButton setSelected:YES];
         }
         else{
             [headerView.modifySelectionButton setSelected:NO];
-        }
+        }*/
         
         //Phone
         /*if (indexPath.section == 0) {
@@ -207,20 +208,24 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [[self.imagesFound objectAtIndex:section] count];
+    //return [[self.imagesFound objectAtIndex:section] count];
+    return [[[self.events objectAtIndex:section] objectForKey:@"photos"] count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return [self.imagesFound count];
+    //return [self.imagesFound count];
+    return [self.events count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     static NSString *identifier = @"Cell";
     
     PhotosSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
-    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    //Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    Photo *selectedPhoto = (Photo *)[[[self.events objectAtIndex:indexPath.section] objectForKey:@"photos"] objectAtIndex:indexPath.item];
     
     if (indexPath.section == 0) {
         cell.imagePhoto.image = selectedPhoto.thumbnail;
@@ -245,7 +250,8 @@
     
     //NSLog(@"index path %i, row %i", indexPath.section, indexPath.item);
     
-    Photo *photo = [[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    //Photo *photo = [[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    Photo *photo = [[[self.events objectAtIndex:indexPath.section] objectForKey:@"photos"] objectAtIndex:indexPath.item];
     
     if (photo.isSelected) {
         photo.isSelected = NO;
@@ -303,7 +309,8 @@
 {
     self.tapLongGesture = YES;
     
-    Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    //Photo *selectedPhoto = (Photo *)[[self.imagesFound objectAtIndex:indexPath.section] objectAtIndex:indexPath.item];
+    Photo *selectedPhoto = (Photo *)[[[self.events objectAtIndex:indexPath.section] objectForKey:@"photos"] objectAtIndex:indexPath.item];
     
     [MOUtility getUIImageFromAssetURL:selectedPhoto.assetUrl withEnded:^(UIImage *image) {
         
@@ -344,7 +351,7 @@
 -(void)loadPhotos
 {
     
-    for (NSDictionary *event in self.events) {
+    for (NSMutableDictionary *event in self.events) {
         
         NSLog(@"event NAME = %@", event[@"event"][@"name"]);
         
@@ -390,7 +397,8 @@
             }
             
             NSArray *photosLibrary = [photosFoundLibrary copy];
-            [self.imagesFound setObject:photosLibrary atIndexedSubscript:0];
+            //[self.imagesFound setObject:photosLibrary atIndexedSubscript:0];
+            [event setValue:photosLibrary forKey:@"photos"];
             
             self.isLoadingFromPhone = NO;
             
