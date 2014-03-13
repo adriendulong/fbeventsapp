@@ -2602,7 +2602,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="avec Adrien Dulong et Remi Bardoux" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vZ-n0-Fv3">
-                                                            <rect key="frame" x="55" y="36" width="241" height="21"/>
+                                                            <rect key="frame" x="55" y="36" width="248" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -2927,7 +2927,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5x-aO-bzh">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5x-aO-bzh">
                                             <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
@@ -2954,7 +2954,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="La séance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z80-DY-aEk">
-                                            <rect key="frame" x="43" y="0.0" width="229" height="21"/>
+                                            <rect key="frame" x="42" y="2" width="230" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -2988,8 +2988,8 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="0.62745100259999997" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                             <connections>
-                                <outlet property="dateEvent" destination="Vo8-nF-ayA" id="WmV-TH-7uW"/>
-                                <outlet property="eventName" destination="z80-DY-aEk" id="096-zw-Hjp"/>
+                                <outlet property="dateEvent" destination="Vo8-nF-ayA" id="sLg-Mn-Jcl"/>
+                                <outlet property="eventName" destination="z80-DY-aEk" id="djj-uI-5N3"/>
                                 <outlet property="imageLogo" destination="MkL-oL-4Re" id="nAi-j6-Dd8"/>
                                 <outlet property="modifySelectionButton" destination="oMp-hr-iE5" id="ivZ-Sk-k4M"/>
                                 <outlet property="viewHeader" destination="2Xp-1H-MTw" id="f8n-ou-PJV"/>
@@ -4130,14 +4130,14 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Wlq-vB-X1o"/>
+        <segue reference="s0i-eK-Ml6"/>
         <segue reference="zHu-yQ-I5R"/>
+        <segue reference="Wlq-vB-X1o"/>
+        <segue reference="pId-s9-PUV"/>
         <segue reference="WWM-2T-ArI"/>
-        <segue reference="85D-2h-GPM"/>
-        <segue reference="380-WA-bVs"/>
+        <segue reference="ItH-HP-BNq"/>
+        <segue reference="EkG-m5-ZxD"/>
         <segue reference="H4y-UD-BIY"/>
-        <segue reference="EZZ-yh-I9A"/>
-        <segue reference="ZWB-wq-JTW"/>
         <segue reference="gQS-Od-x3H"/>
     </inferredMetricsTieBreakers>
 </document>

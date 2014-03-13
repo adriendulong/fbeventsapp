@@ -21,10 +21,10 @@
 		3F63004E18CF4628000D0AF7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F63004818CF4628000D0AF7 /* README.md */; };
 		3F63004F18CF4628000D0AF7 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F63004918CF4628000D0AF7 /* release_notes.md */; };
 		3F63005718CF47E6000D0AF7 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F63005618CF47E6000D0AF7 /* libGoogleAnalyticsServices.a */; };
-		3F63006B18CF6101000D0AF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F63006A18CF6101000D0AF7 /* Main.storyboard */; };
 		3F63007618CF6BCB000D0AF7 /* libAppsfireSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F63007018CF6BCB000D0AF7 /* libAppsfireSDK.a */; };
 		3F64716118AA2F40006EE6F7 /* CommentPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */; };
 		3F64716418AA5C5C006EE6F7 /* CommentPostToolbarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */; };
+		3F6BABAA18D22B3E00F983D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F6BABA918D22B3E00F983D5 /* Main.storyboard */; };
 		3F775D7E184CB973007E8897 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D7D184CB973007E8897 /* Parse.framework */; };
 		3F775D82184CB9A8007E8897 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F775D81184CB9A8007E8897 /* FacebookSDK.framework */; };
 		3F8D4B4A18A0FAAB00611DAC /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8D4B4918A0FAAB00611DAC /* TestViewController.m */; };
@@ -192,7 +192,6 @@
 		3F63005418CF47DA000D0AF7 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		3F63005518CF47DA000D0AF7 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		3F63005618CF47E6000D0AF7 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		3F63006A18CF6101000D0AF7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3F63006D18CF6BCB000D0AF7 /* AppsfireAdSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireAdSDK.h; sourceTree = "<group>"; };
 		3F63006E18CF6BCB000D0AF7 /* AppsfireSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDK.h; sourceTree = "<group>"; };
 		3F63006F18CF6BCB000D0AF7 /* AppsfireSDKConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsfireSDKConstants.h; sourceTree = "<group>"; };
@@ -205,6 +204,7 @@
 		3F64716018AA2F40006EE6F7 /* CommentPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostViewController.m; sourceTree = "<group>"; };
 		3F64716218AA5C5C006EE6F7 /* CommentPostToolbarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentPostToolbarCell.h; sourceTree = "<group>"; };
 		3F64716318AA5C5C006EE6F7 /* CommentPostToolbarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentPostToolbarCell.m; sourceTree = "<group>"; };
+		3F6BABA918D22B3E00F983D5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3F775D7D184CB973007E8897 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libraries/Parse/Parse.framework; sourceTree = "<group>"; };
 		3F775D81184CB9A8007E8897 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 		3F8D4B4818A0FAAB00611DAC /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
@@ -915,7 +915,7 @@
 			isa = PBXGroup;
 			children = (
 				E73F7A551844A54E003BF2B1 /* .gitignore */,
-				3F63006A18CF6101000D0AF7 /* Main.storyboard */,
+				3F6BABA918D22B3E00F983D5 /* Main.storyboard */,
 				E7AE14851803F6870021F321 /* TestParse */,
 				E7AE14A41803F6870021F321 /* TestParseTests */,
 				E7AE147E1803F6870021F321 /* Frameworks */,
@@ -1167,7 +1167,7 @@
 				E7719B541864BC32002E4A1B /* MPArrowRight@2x.png in Resources */,
 				3F490CD61844F92B00A5811E /* InfoPlist.strings in Resources */,
 				E73F7A561844A54E003BF2B1 /* .gitignore in Resources */,
-				3F63006B18CF6101000D0AF7 /* Main.storyboard in Resources */,
+				3F6BABAA18D22B3E00F983D5 /* Main.storyboard in Resources */,
 				E7719B5C1864BC32002E4A1B /* MPSurvey.storyboard in Resources */,
 				E7719B521864BC32002E4A1B /* MPArrowLeft@2x.png in Resources */,
 				3F538548185757FF00F24F35 /* shutter-photo.caf in Resources */,
