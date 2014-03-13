@@ -305,8 +305,8 @@
 
 -(void)loadPhotos
 {
-    
-    NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
+    NSDate *startDate = (NSDate *)self.event[@"start_time"];
+    //NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
     NSDate *endDate = [MOUtility getEndDateEvent:self.event];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
