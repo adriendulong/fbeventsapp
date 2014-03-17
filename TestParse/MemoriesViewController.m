@@ -198,7 +198,7 @@
             [viewImage addSubview:imgView];
             imgView.transform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(-12));
             
-            if (self.previewPhotos[1]) {
+            if ([self.previewPhotos count]>1) {
                 UIView *viewImageTwo = (UIView *)[cell viewWithTag:3];
                 UIImageView *imgViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(27, 19, 63, 63)];
                 imgViewTwo.image = ((Photo *)self.previewPhotos[1]).thumbnail;

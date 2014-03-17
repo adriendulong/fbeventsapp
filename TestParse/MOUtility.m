@@ -1728,7 +1728,6 @@
                                     
                                     
                                     if ([MOUtility date:photoDate isBetweenDate:start_date andDate:end_date]) {
-                                        nbPhotos++;
                                         if (nbPhotos<2) {
                                             Photo *photo = [[Photo alloc] init];
                                             photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
@@ -1738,7 +1737,8 @@
                                             [arrayPhotos addObject:photo];
                                         }
                                         
-                                        
+                                        nbPhotos++;
+
                                         [infosEvent setObject:arrayPhotos forKey:@"photos"];
                                         [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos ] forKey:@"nb_photos"];
                                         
