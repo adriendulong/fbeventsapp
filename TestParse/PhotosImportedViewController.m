@@ -357,6 +357,7 @@
         
         NSDate *startDate = [(NSDate *)event[@"event"][@"start_time"] dateByAddingTimeInterval:-6*3600];
         NSDate *endDate = event[@"end_time_woovent"];
+        NSLog(@"PhotosImported - end_time_woovent = %@", endDate);
         
         self.isLoadingFromPhone = YES;
         

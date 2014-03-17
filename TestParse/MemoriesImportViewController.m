@@ -15,6 +15,7 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "Photo.h"
 
 @interface MemoriesImportViewController ()
 
@@ -92,6 +93,10 @@
         
         NSMutableDictionary *eventCustom = [[self.arrayEvents objectAtIndex:indexPath.row] mutableCopy];
         NSDictionary *eventFacebook = eventCustom[@"event"];
+        NSDate *endTimeWoovent = eventCustom[@"end_time_woovent"];
+        
+        
+        NSLog(@"MemoriesImport - end_time_woovent = %@", endTimeWoovent);
         
         __block PFObject *event;
         
@@ -291,7 +296,20 @@
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
         cell.peopleLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"MemoriesImportViewController_By", nil), event[@"owner"][@"name"]];
-        cell.nbPhotosFound.text = [eventCustom[@"nb_photos"] stringValue];
+        
+        
+        if ([eventCustom[@"nb_photos"] intValue]>0) {
+            [[cell viewWithTag:1] setHidden:NO];
+            
+            //NSLog(@"eventCustom = %@", eventCustom);
+            
+            //cell.previewPhoto.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:0]).thumbnail;
+            cell.previewPhoto.image = [UIImage imageNamed:@"default_cover"];
+            cell.nbPhotosLabel.text = [NSString stringWithFormat:@"%@", [eventCustom[@"nb_photos"] stringValue]];
+        }
+        else{
+            [[cell viewWithTag:1] setHidden:YES];
+        }
         
         return cell;
     }
