@@ -32,7 +32,7 @@
 {
     
     //Prod or Dev
-    self.isProdApp = NO;
+    self.isProdApp = YES;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     

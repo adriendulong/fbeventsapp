@@ -10,5 +10,6 @@
 
 @interface PhotoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet PFImageView *photoImage;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loader;
 
 @end

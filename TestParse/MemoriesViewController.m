@@ -187,13 +187,9 @@
             //Labels
             cell.infosPhotosFound.text = [NSString stringWithFormat:@"Des photos ont été retrouvé pour %i évènements", self.nbEventsWhichHavePhotos];
             [cell.buttonImport setTitle:@"Importer ces photos" forState:UIControlStateNormal];
-            
-            //cell.imagePreview.transform = CGAffineTransformIdentity;
-            //cell.imagePreview.transform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(-12));
 
             
-            
-            cell.nbPhotosFound.text = [NSString stringWithFormat:@"%i", self.nbPhotosToImport];
+            cell.nbPhotosFound.text = [NSString stringWithFormat:@"%li", (long)self.nbPhotosToImport];
             
             UIView *viewImage = (UIView *)[cell viewWithTag:2];
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(27, 19, 63, 63)];
@@ -201,6 +197,16 @@
             
             [viewImage addSubview:imgView];
             imgView.transform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(-12));
+            
+            if (self.previewPhotos[1]) {
+                UIView *viewImageTwo = (UIView *)[cell viewWithTag:3];
+                UIImageView *imgViewTwo = [[UIImageView alloc] initWithFrame:CGRectMake(27, 19, 63, 63)];
+                imgViewTwo.image = ((Photo *)self.previewPhotos[1]).thumbnail;
+                
+                [viewImageTwo addSubview:imgViewTwo];
+                imgViewTwo.transform = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(10));
+            }
+            
             
             
             
@@ -320,19 +326,21 @@
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayDateLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
         
-        if ([self.allPastEventsInfosPhotos[indexPosition][@"nb_photos"] intValue]>0) {
-            [[cell viewWithTag:1] setHidden:NO];
-            cell.previewPhoto.image = ((Photo *)[self.allPastEventsInfosPhotos[indexPosition][@"photos"] objectAtIndex:0]).thumbnail;
-            cell.nbPhotosLabel.text = [NSString stringWithFormat:@"%@", self.allPastEventsInfosPhotos[indexPosition][@"nb_photos"]];
+        if ([self.allPastEventsInfosPhotos count]>indexPosition) {
+            if ([self.allPastEventsInfosPhotos[indexPosition][@"nb_photos"] intValue]>0) {
+                [[cell viewWithTag:1] setHidden:NO];
+                cell.previewPhoto.image = ((Photo *)[self.allPastEventsInfosPhotos[indexPosition][@"photos"] objectAtIndex:0]).thumbnail;
+                cell.nbPhotosLabel.text = [NSString stringWithFormat:@"%@", self.allPastEventsInfosPhotos[indexPosition][@"nb_photos"]];
+            }
+            else{
+                [[cell viewWithTag:1] setHidden:YES];
+            }
         }
         else{
             [[cell viewWithTag:1] setHidden:YES];
         }
         
-        
-        NSLog(@"NB PHOTOS : %@", self.allPastEventsInfosPhotos[indexPosition][@"nb_photos"]);
 
-        
         return cell;
     }
     
@@ -404,8 +412,9 @@
     query.limit = 100;
 
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        
         if (!error) {
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             NSMutableArray *allEvents = [[NSMutableArray alloc] init];
             
             //On verifie cb de Memories on a
@@ -429,9 +438,6 @@
                 [self.imagesBackgroundEvents addObject:[NSNull null]];
             }
             
-            NSLog(@"Nb events avec photos : %lu", (unsigned long)[self.memoriesInvitations count]);
-            NSLog(@"Nb events total  : %lu", (unsigned long)[self.allPastInvitations count]);
-            
             
             if ([self.segmentControl selectedSegmentIndex]==0) {
                 self.tableViewObjects = self.memoriesInvitations;
@@ -440,14 +446,17 @@
                 self.tableViewObjects = self.allPastInvitations;
             }
             
-            [self getPhotosToUpload];
+            
             
             [self isEmptyTableView];
             [self.tableView reloadData];
             
+            [self getPhotosToUpload];
             
+
             //Get number of photos for all events
-            [[MOUtility getNumberOfPhotosToImport:nil forEvents:[allEvents copy]] continueWithBlock:^id(BFTask *task) {
+            [[MOUtility getNumberOfPhotosToImport:nil forEvents:[allEvents copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
+                NSLog(@"On main thread : %d",[NSThread isMainThread] ? 1:0);
                 if (task.error) {
                     NSLog(@"Error");
                 }
@@ -466,46 +475,16 @@
                 return nil;
             }];
             
-            
-            
-            //[MOUtility getNumberOfPhotosToImport:last_upload forEvents:@[event]];
-            
-
-            
-            /*
-           // if (withPhotos) {
-                self.memoriesInvitations = [objects mutableCopy];
-                self.imagesBackgroundEvents = [[NSMutableArray alloc] initWithCapacity:[objects count]];
-                for(PFObject *invitation in objects){
-                    [self.imagesBackgroundEvents addObject:[NSNull null]];
-                }
-                
-                if ([self.segmentControl selectedSegmentIndex] == 0) {
-                    [self isEmptyTableView];
-                    [self.tableView reloadData];
-                }
-                
-            //}
-            //else{
-                self.allPastInvitations = [objects mutableCopy];
-                [self getPhotosToUpload];
-                
-                if ([self.segmentControl selectedSegmentIndex] == 0) {
-                    [self isEmptyTableView];
-                    [self.tableView reloadData];
-                }
-            //}
+            /*[[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInteger:self.memoriesInvitations.count]}];
             
             for(PFObject *invitation in objects){
                 [MOUtility saveInvitationWithEvent:invitation];
-            }
-            
-            
-            [[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInteger:self.memoriesInvitations.count]}];*/
+            }*/
+
             
         } else {
             // Log details of the failure
-            
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             NSLog(@"Problème de chargement");
         }
     }];
@@ -660,9 +639,15 @@
         NSDate *start_date = (NSDate *)invitation[@"event"][@"start_time"];
         
         //If start time event after last upload
-        if ([last_upload compare:start_date]==NSOrderedAscending) {
+        if (last_upload) {
+            if ([last_upload compare:start_date]==NSOrderedAscending) {
+                [eventsToCheck addObject:invitation[@"event"]];
+            }
+        }
+        else{
             [eventsToCheck addObject:invitation[@"event"]];
         }
+        
     }
     
     ALAuthorizationStatus autho =  [ALAssetsLibrary authorizationStatus];
@@ -671,7 +656,7 @@
     self.nbEventsToImportFrom = [eventsToCheck count];
     
     if (self.nbEventsToImportFrom >0) {
-        [[MOUtility getNumberOfPhotosToImport:last_upload forEvents:[eventsToCheck copy]] continueWithBlock:^id(BFTask *task) {
+        [[MOUtility getNumberOfPhotosToImport:last_upload forEvents:[eventsToCheck copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
             if (task.error) {
                 NSLog(@"Error");
                 if (self.hasPhotosToImport) {
@@ -756,7 +741,7 @@
     
     PFQuery *queryPhotos = [PFQuery queryWithClassName:@"Photo"];
     [queryPhotos whereKey:@"event" equalTo:event];
-    [queryPhotos orderByDescending:@"createdAt"];
+    [queryPhotos orderByDescending:@"nb_likes"];
     queryPhotos.limit = 1;
     queryPhotos.cachePolicy = kPFCachePolicyNetworkElseCache;
 

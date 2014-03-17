@@ -1660,99 +1660,114 @@
 #pragma mark - Photos
 +(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events{
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
-    //__block NSInteger nbPhotos = 0;
+    __block NSInteger nbPhotos = 0;
     //__block NSMutableArray *photosArray = [[NSMutableArray alloc] init];
     
-    NSMutableArray *eventsInfosPhotos = [[NSMutableArray alloc] init];
-
-    for(PFObject *event in events){
-        NSInteger nbPhotos = 0;
-        NSMutableArray *photosArray = [[NSMutableArray alloc] init];
-        NSMutableDictionary *infosEvent = [[NSMutableDictionary alloc] init];
-        [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos] forKey:@"nb_photos"];
-        [infosEvent setObject:photosArray forKey:@"photos"];
-        [infosEvent setObject:event forKey:@"event"];
-        
-        [eventsInfosPhotos addObject:infosEvent];
-    }
+    dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-
+    dispatch_async(aQueue, ^{
+        NSLog(@"On main thread : %d",[NSThread isMainThread] ? 1:0);
         
-    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        NSMutableArray *eventsInfosPhotos = [[NSMutableArray alloc] init];
         
-        @autoreleasepool {
-            if (group) {
-                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                    if (result) {
-                        
-                        NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
-                        
-                        for(NSMutableDictionary *infosEvent in eventsInfosPhotos){
-                            PFObject *event = infosEvent[@"event"];
-                            NSInteger nbPhotos = [(NSNumber *)infosEvent[@"nb_photos"] integerValue];
-                            NSMutableArray *arrayPhotos = (NSMutableArray *)infosEvent[@"photos"];
-                            
-                            NSDate *start_date;
-                            
-                            if (lastUploadDate) {
-                                NSDate *start_date_event = (NSDate *)event[@"start_time"];
-                                
-                                
-                                if ([start_date_event compare:lastUploadDate]==NSOrderedDescending) {
-                                    start_date = (NSDate *)event[@"start_time"];
-                                }
-                                else{
-                                    start_date = lastUploadDate;
-                                }
-                            }
-                            else{
-                                start_date = (NSDate *)event[@"start_time"];
-                            }
-                            
-                            
-                            
-                            
-                            NSDate *end_date = [FbEventsUtilities getEndDateEvent:event];
-                            
-                            
-                            if ([MOUtility date:photoDate isBetweenDate:start_date andDate:end_date]) {
-                                nbPhotos++;
-                                if (nbPhotos<2) {
-                                    Photo *photo = [[Photo alloc] init];
-                                    photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
-                                    photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
-                                    photo.date = photoDate;
-                                    
-                                    [arrayPhotos addObject:photo];
-                                }
-
-                                
-                                [infosEvent setObject:arrayPhotos forKey:@"photos"];
-                                [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos ] forKey:@"nb_photos"];
-                                
-                                break;
-                            }
-                        }
-                        
-    
-                    }
-                }];
-                
-            }
-            else{
-                [task setResult:eventsInfosPhotos];
-            }
+        for(PFObject *event in events){
+            NSInteger nbPhotos = 0;
+            NSMutableArray *photosArray = [[NSMutableArray alloc] init];
+            NSMutableDictionary *infosEvent = [[NSMutableDictionary alloc] init];
+            [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos] forKey:@"nb_photos"];
+            [infosEvent setObject:photosArray forKey:@"photos"];
+            [infosEvent setObject:event forKey:@"event"];
+            
+            [eventsInfosPhotos addObject:infosEvent];
         }
         
-        //[self updateNavBar];
-    } failureBlock:^(NSError *error) {
-        [task setError:error];
-    }];
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        
+        
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            
+            @autoreleasepool {
+                if (group) {
+                    if ([[group valueForProperty:ALAssetsGroupPropertyType] compare:[NSNumber numberWithInt:ALAssetsGroupPhotoStream]]!=NSOrderedSame) {
 
+                        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                        [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                            if (result) {
+                                nbPhotos++;
+                                
+                                NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+
+                                
+                                for(NSMutableDictionary *infosEvent in eventsInfosPhotos){
+                                    
+                                    PFObject *event = infosEvent[@"event"];
+                                    NSInteger nbPhotos = [(NSNumber *)infosEvent[@"nb_photos"] integerValue];
+                                    NSMutableArray *arrayPhotos = (NSMutableArray *)infosEvent[@"photos"];
+                                    
+                                    NSDate *start_date;
+                                    
+                                    if (lastUploadDate) {
+                                        NSDate *start_date_event = (NSDate *)event[@"start_time"];
+                                        
+                                        
+                                        if ([start_date_event compare:lastUploadDate]==NSOrderedDescending) {
+                                            start_date = (NSDate *)event[@"start_time"];
+                                        }
+                                        else{
+                                            start_date = lastUploadDate;
+                                        }
+                                    }
+                                    else{
+                                        start_date = (NSDate *)event[@"start_time"];
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    NSDate *end_date = [FbEventsUtilities getEndDateEvent:event];
+                                    
+                                    
+                                    if ([MOUtility date:photoDate isBetweenDate:start_date andDate:end_date]) {
+                                        nbPhotos++;
+                                        if (nbPhotos<2) {
+                                            Photo *photo = [[Photo alloc] init];
+                                            photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                            photo.assetUrl = [result valueForProperty:ALAssetPropertyAssetURL];
+                                            photo.date = photoDate;
+                                            
+                                            [arrayPhotos addObject:photo];
+                                        }
+                                        
+                                        
+                                        [infosEvent setObject:arrayPhotos forKey:@"photos"];
+                                        [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos ] forKey:@"nb_photos"];
+                                        
+                                        break;
+                                    }
+                                }
+                                
+                                
+                            }
+                        }];
+                    }
+                    
+                    
+                    
+                    
+                }
+                else{
+                    NSLog(@"NB PHOTOS %i", nbPhotos);
+                    [task setResult:eventsInfosPhotos];
+                }
+            }
+            
+            //[self updateNavBar];
+        } failureBlock:^(NSError *error) {
+            [task setError:error];
+        }];
+    });
     
-    
+ 
     return task.task;
 }
 

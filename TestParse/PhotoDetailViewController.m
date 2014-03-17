@@ -241,7 +241,9 @@
         else{
             imgView.file = (PFFile *)self.photo[@"full_image"];
             
-            [imgView loadInBackground];
+            [imgView loadInBackground:^(UIImage *image, NSError *error) {
+                [cell.loader setHidden:YES];
+            }];
         }
         
         self.maineImageView = imgView;
