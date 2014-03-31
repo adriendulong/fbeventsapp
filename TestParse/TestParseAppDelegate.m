@@ -19,6 +19,7 @@
 #import "Constants.h"
 #import "AppsfireSDK.h"
 #import "AppsfireAdSDK.h"
+#import "iRate.h"
 
 
 @implementation TestParseAppDelegate
@@ -69,6 +70,26 @@
     
     //Crashlytics
     [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
+    
+    
+    /* ------------------ iRate ------------------- */
+    /*          ---> Noter l'application <--        */
+    /* -------------------------------------------- */
+    //configure iRate
+    iRate *config = [iRate sharedInstance];
+    [config setAppStoreCountry:@"FR"];
+    [config setAppStoreID:781588768];
+    config.daysUntilPrompt = 2;
+    config.usesUntilPrompt = 10;
+#ifdef DEBUG
+    config.verboseLogging = YES;
+    //config.previewMode = YES;
+#else
+    config.verboseLogging = NO;
+#endif
+    [iRate load];
+    
+    
     
     // Register for push notifications
     [application registerForRemoteNotificationTypes:
