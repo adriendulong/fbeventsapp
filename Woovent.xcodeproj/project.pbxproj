@@ -17,6 +17,8 @@
 		3F49772B18CF6F76005623C4 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F49772A18CF6F76005623C4 /* SDWebImage.framework */; };
 		3F538548185757FF00F24F35 /* shutter-photo.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3F538547185757FF00F24F35 /* shutter-photo.caf */; };
 		3F5385521857853F00F24F35 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F5385511857853F00F24F35 /* MBProgressHUD.m */; };
+		3F61FA9018E9B0BE008EA6BE /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3F61FA8D18E9B0BE008EA6BE /* iRate.bundle */; };
+		3F61FA9118E9B0BE008EA6BE /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F61FA8F18E9B0BE008EA6BE /* iRate.m */; };
 		3F63004D18CF4628000D0AF7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F63004718CF4628000D0AF7 /* libTestFlight.a */; };
 		3F63004E18CF4628000D0AF7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F63004818CF4628000D0AF7 /* README.md */; };
 		3F63004F18CF4628000D0AF7 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 3F63004918CF4628000D0AF7 /* release_notes.md */; };
@@ -179,6 +181,9 @@
 		3F538547185757FF00F24F35 /* shutter-photo.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "shutter-photo.caf"; sourceTree = "<group>"; };
 		3F5385501857853F00F24F35 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		3F5385511857853F00F24F35 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		3F61FA8D18E9B0BE008EA6BE /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
+		3F61FA8E18E9B0BE008EA6BE /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
+		3F61FA8F18E9B0BE008EA6BE /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
 		3F63004718CF4628000D0AF7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		3F63004818CF4628000D0AF7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		3F63004918CF4628000D0AF7 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
@@ -526,6 +531,7 @@
 		3F5385491857846600F24F35 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3F61FA8C18E9B0BE008EA6BE /* iRate */,
 				3F21873C18C4EC1300823DA7 /* MXLMediaView */,
 				3FEE1CE6189FE6560080680F /* WYPopoverController */,
 				3F53854A1857847F00F24F35 /* MBProgressHUD */,
@@ -540,6 +546,16 @@
 				3F5385511857853F00F24F35 /* MBProgressHUD.m */,
 			);
 			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		3F61FA8C18E9B0BE008EA6BE /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				3F61FA8D18E9B0BE008EA6BE /* iRate.bundle */,
+				3F61FA8E18E9B0BE008EA6BE /* iRate.h */,
+				3F61FA8F18E9B0BE008EA6BE /* iRate.m */,
+			);
+			path = iRate;
 			sourceTree = "<group>";
 		};
 		3F63006C18CF6BCB000D0AF7 /* appsfire-sdk */ = {
@@ -1175,6 +1191,7 @@
 				3F63004F18CF4628000D0AF7 /* release_notes.md in Resources */,
 				E7719B5A1864BC32002E4A1B /* MPLogo@2x.png in Resources */,
 				E7719B511864BC32002E4A1B /* MPArrowLeft.png in Resources */,
+				3F61FA9018E9B0BE008EA6BE /* iRate.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1264,6 +1281,7 @@
 				E7948A40185626D4004A5351 /* NotificationsViewController.m in Sources */,
 				E755FFAB18885505007F735A /* UIView-JTViewToImage.m in Sources */,
 				E7719B5D1864BC32002E4A1B /* MPSurveyNavigationController.m in Sources */,
+				3F61FA9118E9B0BE008EA6BE /* iRate.m in Sources */,
 				3F21874218C4EC1300823DA7 /* MXLMediaView.m in Sources */,
 				E78F75B6185B669300817159 /* CGUViewController.m in Sources */,
 				E73F7A841844AF5B003BF2B1 /* UIImage+AlphaAdditions.m in Sources */,
