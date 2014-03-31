@@ -12,6 +12,7 @@
 #import "MOUtility.h"
 #import "SharePhotoViewController.h"
 #import "MBProgressHUD.h"
+#import "FbEventsUtilities.h"
 
 #define MAX_PHOTOS_UPLOAD (int)20
 
@@ -396,7 +397,7 @@
 {
     NSDate *startDate = (NSDate *)self.event[@"start_time"];
     //NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
-    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    NSDate *endDate = [FbEventsUtilities getEndDateEvent:self.event];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
@@ -525,7 +526,7 @@
 {
     
     NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
-    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    NSDate *endDate = [FbEventsUtilities getEndDateEvent:self.event];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     

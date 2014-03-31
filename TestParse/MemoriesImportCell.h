@@ -11,10 +11,7 @@
 @interface MemoriesImportCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *dayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *monthLabel;
-@property (weak, nonatomic) IBOutlet UILabel *placeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *peopleLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *previewPhoto;
-@property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nbPhotosFound;
 
 @end

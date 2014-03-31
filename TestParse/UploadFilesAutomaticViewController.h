@@ -11,19 +11,17 @@
 
 @interface UploadFilesAutomaticViewController : UIViewController <UIAlertViewDelegate>
 
-@property (strong, nonatomic) NSArray *photosToUpload;
-@property (strong, nonatomic) PFObject *event;
-@property (assign, nonatomic) int nbOfPhotosUploaded;
-@property (assign, nonatomic) int photosReallyUploaded;
+@property (strong, nonatomic) NSMutableArray *photosToUpload;
+@property (strong, nonatomic) NSMutableArray *photosAlreadyUploaded;
+@property (strong, nonatomic) NSArray *invitations;
 
-@property (weak, nonatomic) IBOutlet UILabel *nbPhotosLabel;
-@property (weak, nonatomic) IBOutlet UIProgressView *progessView;
+@property (weak, nonatomic) IBOutlet UIButton *inviteButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *percentIndicator;
-@property (assign, nonatomic) int levelRoot;
-@property (weak, nonatomic) IBOutlet UIImageView *marmoteImage;
-@property (weak, nonatomic) IBOutlet UILabel *labelMarmotte;
+@property (weak, nonatomic) IBOutlet UIView *viewPhotosUploading;
+@property (weak, nonatomic) IBOutlet UILabel *labelPhotosUploading;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
-@property (strong, nonatomic) NSTimer *marmoteTimer;
-@property (assign, nonatomic) int counterTimer;
+- (IBAction)inviteFriends:(id)sender;
+
+
 @end

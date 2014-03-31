@@ -233,19 +233,47 @@
             
             [self updateUserInfos];
         } else {
-            //Mixpanel
-            [self.mixpanel identify:user.objectId];
-            [self.mixpanel track:@"Login Existing User"];
             
-            UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
-            [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
+            [FBSession.activeSession requestNewPublishPermissions:@[@"publish_stream", @"publish_actions", @"rsvp_event"]
+                                                  defaultAudience:FBSessionDefaultAudienceFriends
+                                                completionHandler:^(FBSession *session, NSError *error) {
+                                                    if (!error) {
+                                                        
+                                                        //Mixpanel
+                                                        [self.mixpanel identify:user.objectId];
+                                                        [self.mixpanel track:@"Login Existing User"];
+                                                        
+                                                        UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
+                                                        [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
+                                                        
+                                                        //Attach this user to this device
+                                                        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+                                                        currentInstallation[@"owner"] = user;
+                                                        [currentInstallation saveInBackground];
+                                                        
+                                                        [self updateUserInfos];
+                                                        
+                                                        
+                                                    }
+                                                    else{
+                                                        //Mixpanel
+                                                        [self.mixpanel identify:user.objectId];
+                                                        [self.mixpanel track:@"Login Existing User"];
+                                                        
+                                                        UIApplication *application = ((TestParseAppDelegate *)[[UIApplication sharedApplication] delegate]).application;
+                                                        [application setMinimumBackgroundFetchInterval:TimeIntervalFetch];
+                                                        
+                                                        //Attach this user to this device
+                                                        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+                                                        currentInstallation[@"owner"] = user;
+                                                        [currentInstallation saveInBackground];
+                                                        
+                                                        [self updateUserInfos];
+                                                    }
+                                                    
+                                                }];
             
-            //Attach this user to this device
-            PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-            currentInstallation[@"owner"] = user;
-            [currentInstallation saveInBackground];
-            
-            [self updateUserInfos];
+           
         }
     }];
 }

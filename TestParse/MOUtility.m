@@ -14,6 +14,7 @@
 #import "KeenClient.h"
 #import "FbEventsUtilities.h"
 #import "Photo.h"
+#import "UIImage+ResizeAdditions.h"
 
 @implementation MOUtility
 
@@ -1658,7 +1659,7 @@
 
 
 #pragma mark - Photos
-+(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events{
++(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forInvitations:(NSArray *)invitations{
     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
     __block NSInteger nbPhotos = 0;
     //__block NSMutableArray *photosArray = [[NSMutableArray alloc] init];
@@ -1670,13 +1671,13 @@
         
         NSMutableArray *eventsInfosPhotos = [[NSMutableArray alloc] init];
         
-        for(PFObject *event in events){
+        for(PFObject *invitation in invitations){
             NSInteger nbPhotos = 0;
             NSMutableArray *photosArray = [[NSMutableArray alloc] init];
             NSMutableDictionary *infosEvent = [[NSMutableDictionary alloc] init];
             [infosEvent setObject:[NSNumber numberWithInteger:nbPhotos] forKey:@"nb_photos"];
             [infosEvent setObject:photosArray forKey:@"photos"];
-            [infosEvent setObject:event forKey:@"event"];
+            [infosEvent setObject:invitation forKey:@"invitation"];
             
             [eventsInfosPhotos addObject:infosEvent];
         }
@@ -1700,7 +1701,7 @@
                                 
                                 for(NSMutableDictionary *infosEvent in eventsInfosPhotos){
                                     
-                                    PFObject *event = infosEvent[@"event"];
+                                    PFObject *event = infosEvent[@"invitation"][@"event"];
                                     NSInteger nbPhotos = [(NSNumber *)infosEvent[@"nb_photos"] integerValue];
                                     NSMutableArray *arrayPhotos = (NSMutableArray *)infosEvent[@"photos"];
                                     
@@ -1768,6 +1769,178 @@
     });
     
  
+    return task.task;
+}
+
+
++(BFTask *)completeUploadImage:(NSOperation *)cancellationToken forPhoto:(Photo *)photo{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    if (cancellationToken.isCancelled) {
+        return [BFTask cancelledTask];
+    }
+    
+    dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(aQueue, ^{
+        
+        /*
+        NSData *thumbnailImageData = UIImagePNGRepresentation(photo.thumbnail);
+        PFFile *thumbnailFile = [PFFile fileWithData:thumbnailImageData];
+        thumbnailImageData = nil;*/
+        __block float width;
+        __block float height;
+        
+        
+        //Upload thumbnail
+        /*
+        [[[[self uploadFileToServer:thumbnailFile] continueWithSuccessBlock:^id(BFTask *task) {
+            
+            //Get Image from lib
+            return [self getUIImageFromAssetURL:photo.assetUrl];
+        }] continueWithSuccessBlock:^id(BFTask *task) {
+            UIImage *image = (UIImage *)task.result;
+            UIImage *resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[MOUtility newBoundsForMaxSize:800.0f andActualSize:image.size] interpolationQuality:kCGInterpolationHigh];
+            NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.8f);
+            
+            width = resizedImage.size.width;
+            height = resizedImage.size.height;
+            
+            PFFile *imageFile = [PFFile fileWithData:imageData];
+            imageData = nil;
+            
+            //Upload large file
+            return [self uploadFileToServer:imageFile];
+        }] continueWithBlock:^id(BFTask *taskFinal) {
+            if (taskFinal.error) {
+                [task setError:taskFinal.error];
+            }
+            else{
+                NSDictionary *photo = @{@"large_file": taskFinal.result, @"thumbnail":thumbnailFile, @"width": [NSNumber numberWithFloat:width], @"height": [NSNumber numberWithFloat:height]};
+                
+                [task setResult:photo];
+            }
+            
+            return nil;
+        }];*/
+        
+        
+        [[[self getUIImageFromAssetURL:photo.assetUrl] continueWithSuccessBlock:^id(BFTask *task) {
+            UIImage *image = (UIImage *)task.result;
+            UIImage *resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[MOUtility newBoundsForMaxSize:800.0f andActualSize:image.size] interpolationQuality:kCGInterpolationHigh];
+            NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.8f);
+            
+            width = resizedImage.size.width;
+            height = resizedImage.size.height;
+            
+            PFFile *imageFile = [PFFile fileWithData:imageData];
+            imageData = nil;
+            
+            //Upload large file
+            return [self uploadFileToServer:imageFile];
+        }] continueWithBlock:^id(BFTask *taskFinal) {
+            if (taskFinal.error) {
+                [task setError:taskFinal.error];
+            }
+            else{
+                NSDictionary *photo = @{@"large_file": taskFinal.result, @"width": [NSNumber numberWithFloat:width], @"height": [NSNumber numberWithFloat:height]};
+                
+                [task setResult:photo];
+            }
+            
+            return nil;
+        }];
+        
+    });
+    
+    
+    
+    
+    
+    return task.task;
+}
+
++(BFTask *)uploadFileToServer:(PFFile *)file{
+    BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(aQueue, ^{
+        
+        [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                [task setError:error];
+            }
+            else{
+                [task setResult:file];
+            }
+        }];
+    });
+        
+    
+   
+    
+    return task.task;
+}
+
++(BFTask *)getUIImageFromAssetURL:(NSURL *)assetUrl{
+     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    
+    dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(aQueue, ^{
+    
+        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
+        [assetsLibrary assetForURL:assetUrl resultBlock: ^(ALAsset *asset) {
+            
+            if (asset) {
+                
+                @autoreleasepool {
+                    ALAssetRepresentation *representation = [asset defaultRepresentation];
+                    CGImageRef fullResImage = representation.fullResolutionImage;
+                    
+                    NSString *adjustment = representation.metadata[@"AdjustmentXMP"];
+                    
+                    if (adjustment) {
+                        NSData *xmpData = [adjustment dataUsingEncoding:NSUTF8StringEncoding];
+                        CIImage *image = [CIImage imageWithCGImage:fullResImage];
+                        
+                        NSError *error = nil;
+                        NSArray *filterArray = [CIFilter filterArrayFromSerializedXMP:xmpData
+                                                                     inputImageExtent:image.extent
+                                                                                error:&error];
+                        CIContext *context = [CIContext contextWithOptions:nil];
+                        if (filterArray && !error) {
+                            for (CIFilter *filter in filterArray) {
+                                [filter setValue:image forKey:kCIInputImageKey];
+                                image = [filter outputImage];
+                            }
+                            fullResImage = [context createCGImage:image fromRect:[image extent]];
+                        }
+                    }
+                    
+                    
+                    
+                    UIImage *img = [UIImage imageWithCGImage:fullResImage
+                                                       scale:representation.scale
+                                                 orientation:(UIImageOrientation)representation.orientation];
+                    
+                    fullResImage = nil;
+                    
+                    //NSData *photoData = UIImageJPEGRepresentation(img, 0.8);
+                    
+                    
+                    [task setResult:img];
+                }
+            }
+            
+        } failureBlock:^(NSError *error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            [task setError:error];
+        }];
+    });
+    
     return task.task;
 }
 

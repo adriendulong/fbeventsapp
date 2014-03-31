@@ -17,7 +17,7 @@
 @property (strong, nonatomic) NSMutableArray *imagesFound;
 @property (assign, nonatomic) int numberOfPhotosSelectedPhone;
 @property (assign, nonatomic) int numberOfPhotosSelectedFB;
-@property (strong, nonatomic) NSMutableArray *events;
+@property (strong, nonatomic) NSMutableArray *invitations;
 //@property (strong, nonatomic) NSDictionary *event;
 @property (strong, nonatomic) NSDate *endDate;
 
@@ -27,7 +27,10 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *validateButton;
 
+@property (strong, nonatomic) NSOperation *operationUpload;
+
 
 - (IBAction)finishImport:(UIBarButtonItem *)sender;
+- (IBAction)selectOrDeselectAll:(id)sender;
 
 @end

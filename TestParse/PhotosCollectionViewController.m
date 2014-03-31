@@ -645,7 +645,7 @@
                 
                 for (PFObject *guest in objects) {
                     if (guest[@"user"]) {
-                        NSDictionary *invitation = @{@"name": guest[@"user"][@"name"], @"facebookId":guest[@"user"][@"facebookId"], @"rsvp_status":guest[@"rsvp_status"]};
+                        NSDictionary *invitation = @{@"facebookId":guest[@"user"][@"facebookId"], @"rsvp_status":guest[@"rsvp_status"]};
                         if (invitation!=nil) {
                             [self.invited addObject:invitation];
                         }
@@ -703,7 +703,7 @@
 }
 
 -(void)addOrUpdateInvited:(NSDictionary *)invited{
-    NSDictionary *invitation = @{@"name": invited[@"name"], @"facebookId":invited[@"id"], @"rsvp_status":invited[@"rsvp_status"]};
+    NSDictionary *invitation = @{@"facebookId":invited[@"id"], @"rsvp_status":invited[@"rsvp_status"]};
     [self.invited addObject:invitation];
     
 }
@@ -862,7 +862,7 @@
     else if ([segue.identifier isEqualToString:@"DirectImport"]){
         
         PhotosImportedViewController *photoImported = (PhotosImportedViewController *)segue.destinationViewController;
-        photoImported.events = [NSArray arrayWithObject:self.invitation[@"event"]];
+        photoImported.invitations = [[NSArray arrayWithObject:self.invitation] mutableCopy];
         photoImported.levelRoot = 1;
     }
     else if([segue.identifier isEqualToString:@"DescriptionDetail"]){

@@ -20,6 +20,7 @@
 #import "GAIFields.h"
 #import <Crashlytics/Crashlytics.h>
 #import <float.h>
+#import "FbEventsUtilities.h"
 
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
@@ -539,7 +540,7 @@
 - (void)getCountPhotosMatchedWithEventDate
 {
     NSDate *startDate = [(NSDate *)self.event[@"start_time"] dateByAddingTimeInterval:-6*3600];
-    NSDate *endDate = [MOUtility getEndDateEvent:self.event];
+    NSDate *endDate = [FbEventsUtilities getEndDateEvent:self.event];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     

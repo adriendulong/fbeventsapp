@@ -22,9 +22,11 @@
 @property (strong, nonatomic) NSArray *previewPhotos;
 @property (strong, nonatomic) NSMutableArray *imagesBackgroundEvents;
 @property (strong, nonatomic) NSMutableArray *allPastEventsInfosPhotos;
+@property (strong, nonatomic) NSArray *invitationsToImport;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
 
 - (IBAction)changeEventsPrinted:(id)sender;
+- (IBAction)importAction:(id)sender;
 
 @end
