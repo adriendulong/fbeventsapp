@@ -15,6 +15,8 @@
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
+#import "FbEventsUtilities.h"
+#import "Photo.h"
 
 @interface MemoriesImportViewController ()
 
@@ -66,6 +68,11 @@
 
 #pragma mark - Table view data source
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 110;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -74,13 +81,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    if (self.thereIsMore) {
-        return ([self.arrayEvents count]+1);
-    }
-    else{
-        return self.arrayEvents.count;
-    }
+    
+    return self.arrayEvents.count;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -92,157 +94,21 @@
         
         NSMutableDictionary *eventCustom = [[self.arrayEvents objectAtIndex:indexPath.row] mutableCopy];
         NSDictionary *eventFacebook = eventCustom[@"event"];
+
         
-        __block PFObject *event;
-        
-        //This event is only on the server ?
-        PFQuery*queryEvent = [PFQuery queryWithClassName:@"Event"];
-        [queryEvent whereKey:@"eventId" equalTo:eventFacebook[@"id"]];
-        [queryEvent getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-            //Event already exists
-            if (!error) {
-                event = object;
-                
-                //See if an invitation exists
-                
-                PFQuery *queryInvit  = [PFQuery queryWithClassName:@"Invitation"];
-                [queryInvit whereKey:@"user" equalTo:[PFUser currentUser]];
-                [queryInvit whereKey:@"event" equalTo:event];
-                [queryInvit getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
-                    //There is an invitation
-                    if (!error) {
-                        if (![object[@"is_memory"] boolValue]) {
-                            object[@"is_memory"] = @YES;
-                            [object saveInBackground];
-                        }
-                        
-                        //If end time but not have set type we do it now
-                        if (event[@"end_time"] && !event[@"type"]) {
-                            int type = [MOUtility typeEvent:event];
-                            event[@"type"] = [NSNumber numberWithInt:type];
-                            [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                
-                                ////
-                                // PERFORM SEGUE
-                                ////
-                                
-                                eventCustom[@"event"] = event;
-                                self.chosedEvent = eventCustom;
-                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
-                                [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                
-                                
-                            }];
-                        }
-                        else{
-                            ////
-                            // PERFORM SEGUE
-                            ////
-                            eventCustom[@"event"] = event;
-                            self.chosedEvent = eventCustom;
-                            if (event[@"end_time"]) {
-                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
-                                [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                
-                            }
-                            else{
-                                [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
-                                [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
-                                
-                            }
-                        }
-                    }
-                    //No Invitation; create one
-                    else{
-                        PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
-                        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            if (succeeded) {
-                                ////
-                                // PERFORM SEGUE
-                                ////
-                                
-                                //If end time but not have set type we do it now
-                                if (event[@"end_time"] && !event[@"type"]) {
-                                    int type = [MOUtility typeEvent:event];
-                                    event[@"type"] = [NSNumber numberWithInt:type];
-                                    [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                                        
-                                        ////
-                                        // PERFORM SEGUE
-                                        ////
-                                        eventCustom[@"event"] = event;
-                                        self.chosedEvent = eventCustom;
-                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
-                                        [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                        
-                                        
-                                    }];
-                                }
-                                else{
-                                    ////
-                                    // PERFORM SEGUE
-                                    ////
-                                    eventCustom[@"event"] = event;
-                                    self.chosedEvent = eventCustom;
-                                    if (event[@"end_time"]) {
-                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
-                                        [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                        
-                                    }
-                                    else{
-                                        [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
-                                        [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
-                                        
-                                    }
-                                }
-                            }
-                            else{
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Problem" message:@"Problème lors de l'importation de l'évènement, veuillez reessayer plus tard" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
-                                [alert show];
-                            }
-                        }];
-                    }
-                }];
-                
-                
+        [[FbEventsUtilities saveEventAsync:eventFacebook] continueWithBlock:^id(BFTask *task) {
+            if (task.error) {
+                NSLog(@"Error saveing/creatin event");
             }
-            //NO event, must create it
-            else if(error && error.code == kPFErrorObjectNotFound){
-                PFObject *event = [MOUtility createEventFromFacebookDict:eventFacebook];
-                [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (succeeded) {
-                        //Create invitation
-                        PFObject *invitation = [MOUtility createInvitationFromFacebookDict:eventFacebook andEvent:event];
-                        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                            if (succeeded) {
-                                /////
-                                // PERFORM SEGUE
-                                /////
-                                eventCustom[@"event"] = event;
-                                self.chosedEvent = eventCustom;
-                                if (event[@"end_time"]) {
-                                    [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @YES}];
-                                    [self performSegueWithIdentifier:@"DirectImport" sender:nil];
-                                }
-                                else{
-                                    [[Mixpanel sharedInstance] track:@"Select Event Import" properties:@{@"has_end_time": @NO}];
-                                    [self performSegueWithIdentifier:@"TypeEvent" sender:nil];
-                                }
-                            }
-                            else{
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message3", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Problem_Title", nil), nil];
-                                [alert show];
-                            }
-                        }];
-                    }
-                    else{
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UIAlertView_Problem_Title", nil) message:NSLocalizedString(@"UIAlertView_Problem_Message3", nil) delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"UIAlertView_Problem_Title", nil), nil];
-                        [alert show];
-                    }
-                }];
+            else{
+                NSLog(@"Invitation : %@", task.result);
+                self.chosenInvitation = task.result;
+                [self performSegueWithIdentifier:@"DirectImport" sender:self];
+            }
             
+            [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
             
-        }
+            return nil;
         }];
     }
     
@@ -272,7 +138,7 @@
             
         }
         
-        NSDictionary *eventCustom = [self.arrayEvents objectAtIndex:indexPath.row];
+        NSMutableDictionary *eventCustom = [self.arrayEvents objectAtIndex:indexPath.row];
         NSDictionary *event = eventCustom[@"event"];
         
         //Date
@@ -287,11 +153,44 @@
         
         //Fill the cell
         cell.nameLabel.text = event[@"name"];
-        cell.placeLabel.text = [NSString stringWithFormat:@"A %@", event[@"location"]];
         cell.monthLabel.text = [[NSString stringWithFormat:@"%@", [formatterMonth stringFromDate:start_date]] uppercaseString];
         cell.dayLabel.text = [NSString stringWithFormat:@"%@", [formatterDay stringFromDate:start_date]];
-        cell.peopleLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"MemoriesImportViewController_By", nil), event[@"owner"][@"name"]];
-        cell.nbPhotosFound.text = [eventCustom[@"nb_photos"] stringValue];
+        /*cell.peopleLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"MemoriesImportViewController_By", nil), event[@"owner"][@"name"]];*/
+        
+
+        cell.nbPhotosFound.text = [NSString stringWithFormat:@"%i photos retrouvées", [eventCustom[@"nb_photos"] integerValue]] ;
+        
+        if ([eventCustom[@"photos"] count]>0) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:0]).thumbnail;
+        }
+        
+        if ([eventCustom[@"photos"] count]>1) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:2];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:1]).thumbnail;
+        }
+
+        if ([eventCustom[@"photos"] count]>2) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:3];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:2]).thumbnail;
+        }
+        
+        if ([eventCustom[@"photos"] count]>3) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:4];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:3]).thumbnail;
+        }
+        
+        if ([eventCustom[@"photos"] count]>4) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:5];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:4]).thumbnail;
+        }
+        
+        if ([eventCustom[@"photos"] count]>5) {
+            UIImageView *imageView = (UIImageView *)[cell viewWithTag:6];
+            imageView.image = ((Photo *)[eventCustom[@"photos"] objectAtIndex:5]).thumbnail;
+        }
+
+        
         
         return cell;
     }
@@ -336,36 +235,101 @@
             //NSLog(@"%@", result);
             
             NSArray *resultArray = result[@"data"];
+            NSMutableArray *idsEvents = [[NSMutableArray alloc] init];
             
             
             for (int e=0; e < resultArray.count; e++) {
                 
                 NSDictionary *event = (NSDictionary *)resultArray[e];
                 
-                NSDate *startDate = [MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
-                NSDate *endTimeWoovent = (NSDate *)[MOUtility getEndDateWooventEvent:event];
+                [idsEvents addObject:event[@"id"]];
                 
-                [self getNbPhotosBetweenDate:startDate andDate:endTimeWoovent withCallback:^(int nbPhotos) {
-                    
-                    NSDictionary *eventCustom = @{ @"event": event,
-                                                   @"end_time_woovent": endTimeWoovent,
-                                                   @"nb_photos": [NSNumber numberWithInt:nbPhotos]
-                                                 };
-                    
-                    //[self.arrayEvents addObject:event];
-                    [self.arrayEvents addObject:eventCustom];
-                    self.nbTotalEvents++;
-                    
-                    if (e == resultArray.count-1) {
-                        //NSLog(@"Reload");
-                        [self.tableView reloadData];
-                    }
-                    
-                }];
+                
+                
+                
+                
+                
             }
             
+            [[self getFacebookIdOfEventAlreadyInvited:[idsEvents copy]] continueWithBlock:^id(BFTask *task) {
+                if (task.error) {
+                    NSLog(@"Error");
+                    
+                    for(NSDictionary *event in result[@"data"]){
+                        NSDate *endTimeWoovent = (NSDate *)[MOUtility getEndDateWooventEvent:event];
+                        NSDate *start_time = (NSDate *)[MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+                        
+                        NSMutableDictionary *eventCustom = [[NSMutableDictionary alloc] init];
+                        [eventCustom setObject:event forKey:@"event"];
+                        [eventCustom setObject:endTimeWoovent forKey:@"end_time_woovent"];
+                        [eventCustom setObject:start_time forKey:@"start_time"];
+                        [eventCustom setObject:[NSNumber numberWithInt:0] forKey:@"nb_photos"];
+                        [eventCustom setObject:[[NSMutableArray alloc] init] forKey:@"photos"];
+                        
+                        [self.arrayEvents addObject:eventCustom];
+                    }
+                    
+                    [self getNbPhotosBetweenDate:self.arrayEvents withCallback:^(NSArray *events) {
+                        
+                        NSMutableArray *eventsWithPhotos = [[NSMutableArray alloc] init];
+                        
+                        for(NSMutableDictionary *event in events){
+                            if ([event[@"nb_photos"] intValue]>0) {
+                                [eventsWithPhotos addObject:event];
+                            }
+                        }
+                        
+                        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"nb_photos"  ascending:NO];
+                        self.arrayEvents = [[eventsWithPhotos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]] copy];
+                        [self.activityIndicator stopAnimating];
+                        [self.activityIndicator setHidden:YES];
+                        [self.tableView reloadData];
+                    }];
+                    
+                }
+                else{
+                    NSLog(@"Ids deja invités : %@", task.result);
+                    NSArray *eventsToRemove = (NSArray *)task.result;
+                    
+                    for(NSDictionary *event in result[@"data"]){
+                        if (![eventsToRemove containsObject:event[@"id"]]) {
+                            NSDate *endTimeWoovent = (NSDate *)[MOUtility getEndDateWooventEvent:event];
+                            NSDate *start_time = (NSDate *)[MOUtility parseFacebookDate:event[@"start_time"] isDateOnly:[event[@"is_date_only"] boolValue]];
+                            
+                            NSMutableDictionary *eventCustom = [[NSMutableDictionary alloc] init];
+                            [eventCustom setObject:event forKey:@"event"];
+                            [eventCustom setObject:endTimeWoovent forKey:@"end_time_woovent"];
+                            [eventCustom setObject:start_time forKey:@"start_time"];
+                            [eventCustom setObject:[NSNumber numberWithInt:0] forKey:@"nb_photos"];
+                            [eventCustom setObject:[[NSMutableArray alloc] init] forKey:@"photos"];
+
+                            [self.arrayEvents addObject:eventCustom];
+                        }
+                        
+                    }
+                    
+                    [self getNbPhotosBetweenDate:self.arrayEvents withCallback:^(NSArray *events) {
+                        NSMutableArray *eventsWithPhotos = [[NSMutableArray alloc] init];
+                        
+                        for(NSMutableDictionary *event in events){
+                            if ([event[@"nb_photos"] intValue]>0) {
+                                [eventsWithPhotos addObject:event];
+                            }
+                        }
+
+                        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"nb_photos"  ascending:NO];
+                        self.arrayEvents = [[eventsWithPhotos sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]] copy];
+                        [self.activityIndicator stopAnimating];
+                        [self.activityIndicator setHidden:YES];
+                        [self.tableView reloadData];
+                    }];
+                }
+                
+                return nil;
+            }];
             
-            if(result[@"paging"][@"next"]){
+            
+            /*if(result[@"paging"][@"next"]){
                 //NSLog(@"result[@\"paging\"][@\"next\"] = %@", result[@"paging"][@"next"]);
                 self.thereIsMore = YES;
                 NSURL *previous = [NSURL URLWithString:result[@"paging"][@"next"]];
@@ -378,10 +342,9 @@
             else{
                 self.thereIsMore = NO;
                 
-            }
+            }*/
             
-            [self.activityIndicator stopAnimating];
-            [self.activityIndicator setHidden:YES];
+            
             //[self.tableView reloadData];
             
             
@@ -397,14 +360,15 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     [self.hud hide:YES];
 
-    if ([segue.identifier isEqualToString:@"TypeEvent"]){
+    /*if ([segue.identifier isEqualToString:@"TypeEvent"]){
         ChooseLastEventViewController *chooseLastEvent = (ChooseLastEventViewController *)segue.destinationViewController;
-        chooseLastEvent.event = self.chosedEvent;
+        chooseLastEvent.event = self.chosenInvitation;
         chooseLastEvent.levelRoot = 0;
-    }
-    else if([segue.identifier isEqualToString:@"DirectImport"]){
+    }*/
+    if([segue.identifier isEqualToString:@"DirectImport"]){
+        
         PhotosImportedViewController *photosImported = (PhotosImportedViewController *)segue.destinationViewController;
-        photosImported.events = [NSMutableArray arrayWithObject:self.chosedEvent];
+        photosImported.invitations = [NSMutableArray arrayWithObject:self.chosenInvitation];
         photosImported.levelRoot = 0;
     }
     
@@ -413,32 +377,56 @@
 
 #pragma mark - Load photos
 
-- (void)getNbPhotosBetweenDate:(NSDate *)startDate andDate:(NSDate *)endDate withCallback:(void (^)(int nbPhotos))callback
+- (void)getNbPhotosBetweenDate:(NSArray *)events withCallback:(void (^)(NSArray *events))callback
 {
-    __block int nbPhotos = 0;
+    
+    __block NSMutableArray *nbPhotosEvents = [[NSMutableArray alloc] init];
+    
+    for(NSDictionary *event in events){
+        int nbPhotos = 0;
+        [nbPhotosEvents addObject:[NSNumber numberWithInt:nbPhotos]];
+    }
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
-    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+    [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
         
         @autoreleasepool {
             if (group) {
-                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop2) {
-                    if (result) {
-                        
-                        NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
-                        
-                        if ([MOUtility date:photoDate isBetweenDate:startDate andDate:endDate]) {
-                            nbPhotos++;
-                        }
-                        
-                    }
-                }];
                 
-                if (stop) {
-                    callback(nbPhotos);
+                if ([[group valueForProperty:ALAssetsGroupPropertyType] compare:[NSNumber numberWithInt:ALAssetsGroupPhotoStream]]!=NSOrderedSame) {
+                    [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+                    [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop2) {
+                        if (result) {
+                            
+                            for(NSMutableDictionary *event in events){
+                                int nbPhotos = [(NSNumber *)event[@"nb_photos"] intValue];
+                                
+                                NSDate *photoDate = (NSDate *)[result valueForProperty:ALAssetPropertyDate];
+                                
+                                if ([MOUtility date:photoDate isBetweenDate:(NSDate *)event[@"start_time"] andDate:(NSDate *)event[@"end_time_woovent"]]) {
+                                    nbPhotos++;
+                                    
+                                    if (nbPhotos<7) {
+                                        Photo *photo = [[Photo alloc] init];
+                                        photo.thumbnail = [UIImage imageWithCGImage:result.thumbnail];
+                                        [event[@"photos"] addObject:photo];
+                                    }
+
+                                }
+                                
+                                
+                                [event setObject:[NSNumber numberWithInt:nbPhotos] forKey:@"nb_photos"];
+                            }
+                        }
+                    }];
+                    
+                    if (stop) {
+                        callback(events);
+                    }
+                    
                 }
+                
             }
         }
         
@@ -447,4 +435,40 @@
     }];
 }
 
+
+-(BFTask *)getFacebookIdOfEventAlreadyInvited:(NSArray *)idsFacebookEvent{
+     BFTaskCompletionSource *task = [BFTaskCompletionSource taskCompletionSource];
+    NSMutableArray *idsFacebookEventAlreadyInvited = [[NSMutableArray alloc] init];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Event"];
+    [query whereKey:@"eventId" containedIn:idsFacebookEvent];
+    [query whereKey:@"nb_photos" greaterThan:[NSNumber numberWithInt:0]];
+    
+    PFQuery *queryInvitation = [PFQuery queryWithClassName:@"Invitation"];
+    [queryInvitation whereKey:@"user" equalTo:[PFUser currentUser]];
+    [queryInvitation whereKey:@"event" matchesQuery:query];
+    [queryInvitation includeKey:@"event"];
+    
+    [queryInvitation findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            for(PFObject *invitation in objects){
+                PFObject *event = invitation[@"event"];
+                [idsFacebookEventAlreadyInvited addObject:event[@"eventId"]];
+            }
+            
+            [task setResult:[idsFacebookEventAlreadyInvited copy]];
+        }
+        else{
+            [task setError:error];
+        }
+    }];
+    
+    
+    return task.task;
+}
+
+- (IBAction)finish:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSURL *assetUrl;
 @property (nonatomic) BOOL isSelected;
+@property (nonatomic) BOOL isUploaded;
+@property (strong, nonatomic) NSDictionary *infosForUpload;
 
 @property (strong, nonatomic) NSString *sourceUrl;
 @property (strong, nonatomic) NSString *pictureUrl;

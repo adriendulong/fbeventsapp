@@ -14,6 +14,7 @@
 #import "Notification.h"
 #import "Event.h"
 #import "TestParseAppDelegate.h"
+#import "Photo.h"
 
 @interface MOUtility : NSObject <UIAlertViewDelegate>
 
@@ -23,7 +24,7 @@
 
 #pragma mark - Date
 + (BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
-+(NSDate *)getEndDateEvent:(PFObject *)event;
+//+(NSDate *)getEndDateEvent:(PFObject *)event;
 +(NSDate *)getEndDateWooventEvent:(NSDictionary *)event;
 +(NSMutableArray *)sortByStartDate:(NSMutableArray *)invitations isAsc:(BOOL)ascending;
 +(NSDate *)birthdayStringToDate:(NSString *)birthdayString;
@@ -122,7 +123,10 @@
 
 
 #pragma mark - Photos
-+(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forEvents:(NSArray *)events;
++(BFTask *)getNumberOfPhotosToImport:(NSDate *)lastUploadDate forInvitations:(NSArray *)events;
++(BFTask *)completeUploadImage:(NSOperation *)cancellationToken forPhoto:(Photo *)photo;
++(BFTask *)uploadFileToServer:(PFFile *)file;
++(BFTask *)getUIImageFromAssetURL:(NSURL *)assetUrl;
 
 
 @end

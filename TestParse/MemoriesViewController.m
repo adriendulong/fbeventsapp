@@ -19,6 +19,7 @@
 #import "MBProgressHUD.h"
 #import "Photo.h"
 #import "PastEventsCell.h"
+#import "PhotosImportedViewController.h"
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 #define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
@@ -362,32 +363,6 @@
 }
 
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        PFObject *invitation = [self.memoriesInvitations objectAtIndex:(indexPath.row)];
-        invitation[@"is_memory"] = @NO;
-        [invitation saveEventually];
-        
-        [self.memoriesInvitations removeObjectAtIndex:(indexPath.row)];
-        [self.photosEvent removeObjectAtIndex:(indexPath.row)];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-        //Remove from database
-        [MOUtility deleteInvitation:invitation.objectId];
-        
-        [self isEmptyTableView];
-        
-        
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}*/
-
 
 #pragma mark - Parse Events
 
@@ -424,7 +399,7 @@
                     [self.memoriesInvitations addObject:invitation];
                 }
                 [self.allPastInvitations addObject:invitation];
-                [allEvents addObject:invitation[@"event"]];
+                [allEvents addObject:invitation];
             }
             
             //Do we have to paginate
@@ -455,28 +430,40 @@
             
 
             //Get number of photos for all events
-            [[MOUtility getNumberOfPhotosToImport:nil forEvents:[allEvents copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
+            [[MOUtility getNumberOfPhotosToImport:nil forInvitations:[allEvents copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
                 NSLog(@"On main thread : %d",[NSThread isMainThread] ? 1:0);
                 if (task.error) {
                     NSLog(@"Error");
                 }
                 else{
+                    NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+                    
+                    int i=0;
+                    if (self.hasPhotosToImport) {
+                        i++;
+                    }
+                    
                     for(NSMutableDictionary *dicInfos in (NSMutableArray *)task.result){
                         NSDictionary *infosPhotos = @{@"nb_photos": dicInfos[@"nb_photos"], @"photos" : dicInfos[@"photos"]};
                         [self.allPastEventsInfosPhotos addObject:infosPhotos];
+                        
+                        if ([infosPhotos[@"nb_photos"] intValue]>0) {
+                            [insertIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                        }
                     }
                     
                     if ([self.segmentControl selectedSegmentIndex]==1) {
-                        [self isEmptyTableView];
-                        [self.tableView reloadData];
+                        [self.tableView reloadRowsAtIndexPaths:[insertIndexPaths copy] withRowAnimation:UITableViewRowAnimationNone];
                     }
+                    
                 }
                 
                 return nil;
             }];
             
-            /*[[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInteger:self.memoriesInvitations.count]}];
+            [[Mixpanel sharedInstance].people set:@{@"Memories": [NSNumber numberWithInteger:self.memoriesInvitations.count]}];
             
+            /*
             for(PFObject *invitation in objects){
                 [MOUtility saveInvitationWithEvent:invitation];
             }*/
@@ -538,6 +525,15 @@
     else if ([segue.identifier isEqualToString:@"ImportTopBar"]) {
         
         [[Mixpanel sharedInstance] track:@"Click Import" properties:@{@"From": @"Top bar"}];
+    }
+    else if([segue.identifier isEqualToString:@"DirectImport"]){
+        
+        UINavigationController *navController = (UINavigationController *)segue.destinationViewController;
+        PhotosImportedViewController *photosImported = (PhotosImportedViewController *)[navController.viewControllers objectAtIndex:0];
+        photosImported.invitations = [self.invitationsToImport mutableCopy];
+        photosImported.levelRoot = 0;
+        
+        photosImported.hidesBottomBarWhenPushed = YES;
     }
 
 }
@@ -633,7 +629,7 @@
 //Nombre de photos à uploader en attente
 -(void)getPhotosToUpload{
     NSDate *last_upload = (NSDate *)[PFUser currentUser][@"last_upload"];
-    NSMutableArray *eventsToCheck = [[NSMutableArray alloc] init];
+    NSMutableArray *invitationsToCheck = [[NSMutableArray alloc] init];
     
     for(PFObject *invitation in self.allPastInvitations){
         NSDate *start_date = (NSDate *)invitation[@"event"][@"start_time"];
@@ -641,11 +637,11 @@
         //If start time event after last upload
         if (last_upload) {
             if ([last_upload compare:start_date]==NSOrderedAscending) {
-                [eventsToCheck addObject:invitation[@"event"]];
+                [invitationsToCheck addObject:invitation];
             }
         }
         else{
-            [eventsToCheck addObject:invitation[@"event"]];
+            [invitationsToCheck addObject:invitation];
         }
         
     }
@@ -653,32 +649,81 @@
     ALAuthorizationStatus autho =  [ALAssetsLibrary authorizationStatus];
     NSLog(@"Authorisation : %ld", autho);
     
-    self.nbEventsToImportFrom = [eventsToCheck count];
+    self.nbEventsToImportFrom = [invitationsToCheck count];
     
     if (self.nbEventsToImportFrom >0) {
-        [[MOUtility getNumberOfPhotosToImport:last_upload forEvents:[eventsToCheck copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
+        [[MOUtility getNumberOfPhotosToImport:last_upload forInvitations:[invitationsToCheck copy]] continueWithExecutor:[BFExecutor mainThreadExecutor] withBlock:^id(BFTask *task) {
             if (task.error) {
                 NSLog(@"Error");
                 if (self.hasPhotosToImport) {
                     self.hasPhotosToImport = NO;
-                    [self.tableView reloadData];
+                    
+                    [UIView beginAnimations:@"myAnimationId" context:nil];
+                    
+                    [UIView setAnimationDuration:1.0]; // Set duration here
+                    
+                    [CATransaction begin];
+                    [CATransaction setCompletionBlock:^{
+                        NSLog(@"Complete!");
+                    }];
+                    
+                    [self.tableView beginUpdates];
+                    // my table changes
+                    NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                 [NSIndexPath indexPathForRow:0 inSection:0],
+                                                 nil];
+                    [self.tableView deleteRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                    [self.tableView endUpdates];
+                    
+                    [CATransaction commit];
+                    [UIView commitAnimations];
                 }
             }
             else{
-                //NSLog(@"Nombre de photos %@", task.result[@"nb_photos"]);
-                if (self.hasPhotosToImport) {
-                    self.nbEventsWhichHavePhotos = [self realNumberOfEventsWhichHavePhotos:task.result];
-                    self.hasPhotosToImport = YES;
-                    self.nbPhotosToImport = [self decryptTotalNbPhotos:task.result];
-                    self.previewPhotos = [self getTwoPreviewPhotos:task.result];
-                    [self.tableView reloadData];
-                }
-                else if(self.nbPhotosToImport != [self decryptTotalNbPhotos:task.result]){
-                    self.nbEventsWhichHavePhotos = [self realNumberOfEventsWhichHavePhotos:task.result];
-                    self.hasPhotosToImport = YES;
-                    self.nbPhotosToImport = [self decryptTotalNbPhotos:task.result];
-                    self.previewPhotos = [self getTwoPreviewPhotos:task.result];
-                    [self.tableView reloadData];
+                if ([self decryptTotalNbPhotos:task.result]>0) {
+                    //NSLog(@"Nombre de photos %@", task.result[@"nb_photos"]);
+                    if ((self.hasPhotosToImport)) {
+                        self.nbEventsWhichHavePhotos = [self realNumberOfEventsWhichHavePhotos:task.result];
+                        self.hasPhotosToImport = YES;
+                        self.nbPhotosToImport = [self decryptTotalNbPhotos:task.result];
+                        self.previewPhotos = [self getTwoPreviewPhotos:task.result];
+                        self.invitationsToImport = [self getInvitationsWhichHaveToImport:task.result];
+                        
+                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                     [NSIndexPath indexPathForRow:0 inSection:0],
+                                                     nil];
+                        
+                        [self.tableView reloadRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationNone];
+                        
+                        
+                    }
+                    else {
+                        self.nbEventsWhichHavePhotos = [self realNumberOfEventsWhichHavePhotos:task.result];
+                        self.hasPhotosToImport = YES;
+                        self.nbPhotosToImport = [self decryptTotalNbPhotos:task.result];
+                        self.previewPhotos = [self getTwoPreviewPhotos:task.result];
+                        self.invitationsToImport = [self getInvitationsWhichHaveToImport:task.result];
+                        [UIView beginAnimations:@"myAnimationId" context:nil];
+                        
+                        [UIView setAnimationDuration:1.5]; // Set duration here
+                        
+                        [CATransaction begin];
+                        [CATransaction setCompletionBlock:^{
+                            NSLog(@"Complete!");
+                        }];
+                        
+                        [self.tableView beginUpdates];
+                        // my table changes
+                        NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                     [NSIndexPath indexPathForRow:0 inSection:0],
+                                                     nil];
+                        [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                        [self.tableView endUpdates];
+                        
+                        [CATransaction commit];
+                        [UIView commitAnimations];
+                    }
+                    
                 }
                 
             }
@@ -713,6 +758,18 @@
     }
     
     return nbPhotos;
+}
+
+-(NSArray *)getInvitationsWhichHaveToImport:(NSMutableArray *)eventsInfos{
+    NSMutableArray *invitationsToImport = [[NSMutableArray alloc] init];
+    
+    for(NSMutableDictionary *eventInfo in eventsInfos){
+        if ([(NSNumber *)eventInfo[@"nb_photos"] integerValue]>0) {
+            [invitationsToImport addObject:eventInfo[@"invitation"]];
+        } 
+    }
+    
+    return [invitationsToImport copy];
 }
 
 -(NSArray *)getTwoPreviewPhotos:(NSMutableArray *)eventsInfos{
@@ -776,6 +833,11 @@
     [self isEmptyTableView];
     [self.tableView reloadData];
     
+}
+
+- (IBAction)importAction:(id)sender {
+    
+    [self performSegueWithIdentifier:@"DirectImport" sender:nil];
 }
 
 @end

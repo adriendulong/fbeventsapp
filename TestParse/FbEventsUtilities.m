@@ -649,6 +649,7 @@
     PFQuery *query = [PFQuery queryWithClassName:@"Invitation"];
     [query whereKey:@"user" equalTo:user];
     [query whereKey:@"event" equalTo:event];
+    [query includeKey:@"event"];
     
     [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
         if (error && error.code == kPFErrorObjectNotFound) {
@@ -680,11 +681,11 @@
         end_date = (NSDate *)event[@"end_time"];
     }
     else{
-        if (event[@"is_date_only"]) {
-            end_date = [start_date dateByAddingTimeInterval:1*3600];
+        if ([event[@"is_date_only"] boolValue]) {
+            end_date = [start_date dateByAddingTimeInterval:36*3600];
         }
         else{
-            end_date = [start_date dateByAddingTimeInterval:1*3600];
+            end_date = [start_date dateByAddingTimeInterval:12*3600];
         }
     }
     
