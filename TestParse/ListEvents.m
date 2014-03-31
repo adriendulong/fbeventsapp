@@ -19,6 +19,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 #import "MBProgressHUD.h"
+#import "iRate.h"
 
 
 @interface ListEvents ()
@@ -30,6 +31,27 @@
 }
 
 @synthesize invitations;
+
+- (void)initRate
+{
+    /* ------------------ iRate ------------------- */
+    /*          ---> Noter l'application <--        */
+    /* -------------------------------------------- */
+    
+    //set the bundle ID. normally you wouldn't need to do this
+    //as it is picked up automatically from your Info.plist file
+    //but we want to test with an app that's actually on the store
+    [iRate sharedInstance].applicationBundleID = @"com.moment.Woovent";
+    [iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    [iRate sharedInstance].appStoreID = 781588768;
+    [iRate sharedInstance].daysUntilPrompt = 2;
+    [iRate sharedInstance].usesUntilPrompt = 10;
+    [iRate sharedInstance].applicationName = @"Woovent";
+    //[iRate sharedInstance].useAllAvailableLanguages = NO;
+    
+    //enable preview mode
+    [iRate sharedInstance].previewMode = YES;
+}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"FacebookEventUploaded" object:nil];
@@ -142,6 +164,8 @@
         //Sync with FB
         [self retrieveEventsSinceAsync:[NSDate date] to:nil isJoin:YES];
         [self retrieveEventsSinceAsync:[NSDate date] to:nil isJoin:NO];
+    
+        [self initRate];
     }
 
     // Uncomment the following line to preserve selection between presentations.
