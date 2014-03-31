@@ -28,6 +28,22 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
++ (void)initialize
+{
+    //set the bundle ID. normally you wouldn't need to do this
+    //as it is picked up automatically from your Info.plist file
+    //but we want to test with an app that's actually on the store
+    [iRate sharedInstance].applicationBundleID = @"com.moment.Woovent";
+	[iRate sharedInstance].onlyPromptIfLatestVersion = NO;
+    [iRate sharedInstance].appStoreID = 781588768;
+    [iRate sharedInstance].daysUntilPrompt = 2;
+    [iRate sharedInstance].usesUntilPrompt = 10;
+    [iRate sharedInstance].applicationName = @"Woovent";
+    //[iRate sharedInstance].useAllAvailableLanguages = NO;
+    
+    //enable preview mode
+    [iRate sharedInstance].previewMode = YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -70,26 +86,7 @@
     
     //Crashlytics
     [Crashlytics startWithAPIKey:@"9e1ac2698261626f408a06299471b1f9ca65f65e"];
-    
-    
-    /* ------------------ iRate ------------------- */
-    /*          ---> Noter l'application <--        */
-    /* -------------------------------------------- */
-    //configure iRate
-    iRate *config = [iRate sharedInstance];
-    [config setAppStoreCountry:@"FR"];
-    [config setAppStoreID:781588768];
-    config.daysUntilPrompt = 2;
-    config.usesUntilPrompt = 10;
-#ifdef DEBUG
-    config.verboseLogging = YES;
-    //config.previewMode = YES;
-#else
-    config.verboseLogging = NO;
-#endif
-    [iRate load];
-    
-    
+
     
     // Register for push notifications
     [application registerForRemoteNotificationTypes:
