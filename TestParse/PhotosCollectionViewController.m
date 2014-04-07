@@ -281,6 +281,26 @@
                 
                 [headerView.mapView setRegion:viewRegion animated:NO];
                 
+            } else if (event[@"venue"][@"name"]) {
+                
+                if (!self.geocoder) {
+                    self.geocoder = [[CLGeocoder alloc] init];
+                }
+                
+                [self.geocoder geocodeAddressString:event[@"venue"][@"name"] completionHandler:^(NSArray *placemarks, NSError *error) {
+                    if ([placemarks count] > 0) {
+                        CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                        CLLocation *location = placemark.location;
+                        CLLocationCoordinate2D coordinate = location.coordinate;
+                        
+                        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(coordinate, 2*METERS_PER_MILE, 2*METERS_PER_MILE);
+                        
+                        [headerView.mapView setRegion:viewRegion animated:NO];
+                    } else {
+                        [headerView.mapView setHidden:YES];
+                        [[headerView viewWithTag:999] setHidden:YES];
+                    }
+                }];
             }
             else{
                 [headerView.mapView setHidden:YES];
@@ -398,7 +418,7 @@
     if (section==0) {
         if (self.isDuringOrAfter) {
             if (self.isShowingDetails) {
-                if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
+                if (!self.invitation[@"event"][@"venue"][@"latitude"] && !self.invitation[@"event"][@"venue"][@"name"]) {
                     return CGSizeMake(800, 720);
                 }
                 else{
@@ -411,7 +431,7 @@
         }
         else{
             if (self.isShowingDetails) {
-                if (!self.invitation[@"event"][@"venue"][@"latitude"]) {
+                if (!self.invitation[@"event"][@"venue"][@"latitude"] && !self.invitation[@"event"][@"venue"][@"name"]) {
                     return CGSizeMake(800, 680);
                 }
                 else{

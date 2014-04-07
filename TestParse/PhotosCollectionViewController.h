@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "InfoHeaderCollectionView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <CoreLocation/CoreLocation.h>
 
 /*@interface APActivityProvider : UIActivityItemProvider <UIActivityItemSource>
 @end*/
@@ -22,6 +23,7 @@
 
 @interface PhotosCollectionViewController : UICollectionViewController
 
+@property (strong, nonatomic) CLGeocoder *geocoder;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) PFObject *invitation;
 @property (strong, nonatomic) NSMutableArray *invited;
